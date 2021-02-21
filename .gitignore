@@ -1,1 +1,4 @@
-resources/*
+.idea
+resources
+
+hugo.exe
