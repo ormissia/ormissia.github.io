@@ -1,0 +1,21 @@
+# some information about you
+name: "Ormissia"
+nickname: "Ormissia"
+image: "images/avatar.png"
+
+
+# greeting message before your name. it will default to "Hi! I am" if not provided
+greeting: "Hi, I am"
+
+# give your contact information. they will be used in the footer
+contactInfo:
+  email: "ormissia@outlook.com"
+  QQ: "1432050813"
+
+# a summary of what you do
+summary:
+  - I am a Developer
+  - I am a Devops
+  - I love servers
+  - I work on open-source projects
+  - I love to work with some fun projects

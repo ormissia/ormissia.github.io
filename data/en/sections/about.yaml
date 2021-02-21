@@ -1,0 +1,43 @@
+# section information
+section:
+  name: About
+  id: about
+  enable: true
+  weight: 1
+  showOnNavbar: true
+  template: sections/about.html
+
+# your designation
+designation: Software Engineer
+
+# your company information
+company:
+  name: GitHub Page.
+  url: "https://ormissia.github.io"
+
+# your resume. this file path should be relative to you "static" directory
+# resume: "files/resume.pdf"
+
+# a summary about you
+summary: '目前主要做Java开发。喜欢在空余时间敲代码，这是我的 [GitHub 首页](https://github.com/ormisia)。'
+
+# your social links
+# give as many as you want. use font-awesome for the icons.
+socialLinks:
+- name: Github
+  icon: "fab fa-github"
+  url: "https://www.github.com/ormissa"
+- name: Blog
+  icon: "fa fa-book"
+  url: "http://ormissia.com:13880"
+
+# your soft skills
+# give the percentage between 50 to 100 with 5 intervals.
+# currently supported colors: blue, yellow, pink, green, sky, orange
+softSkills:
+- name: Golang
+  percentage: 90
+  color: sky
+- name: Java
+  percentage: 85
+  color: yellow
