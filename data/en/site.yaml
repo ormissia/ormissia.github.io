@@ -4,5 +4,5 @@ copyright: © 2021 Copyright.
 description: Ormissia's GitHub Pages Blog. 安红豆的 GitHub Pages 博客
 
 customMenus:
-- name: GitHub
-  url: https://github.com/ormissia
+  - name: GitHub
+    url: https://github.com/ormissia

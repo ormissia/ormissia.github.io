@@ -10,47 +10,47 @@ section:
 
 # filter buttons
 buttons:
-- name: All
-  filter: "all"
-- name: Professional
-  filter: "professional"
-- name: Academic
-  filter: "academic"
-- name: Hobby
-  filter: "hobby"
+  - name: All
+    filter: "all"
+  - name: Professional
+    filter: "professional"
+  - name: Hobby
+    filter: "hobby"
+  - name: NotSerious
+    filter: "notSerious"
 
 # your projects
 projects:
-- name: go-rabbitmq
-  logo: /images/sections/projects/go.png
-  role: Contributor
-  timeline: "March 2018 - Present"
-  repo: https://github.com/ormissia/go-rabbitmq # If your project is a public repo on GitHub, then provide this link. it will show star count.
-  #url: ""  # If your project is not a public repo but it has a website or any external details url then provide it here. don't provide "repo" and "url" simultaneously.
-  summary: Production-Grade Container Scheduling and Management.
-  tags: ["professional", "kubernetes", "cloud"]
+  - name: go-rabbitmq
+    logo: /images/sections/projects/go.png
+    role: Owner
+    timeline: "Maybe 5 days"
+    repo: https://github.com/ormissia/go-rabbitmq # If your project is a public repo on GitHub, then provide this link. it will show star count.
+    #url: ""  # If your project is not a public repo but it has a website or any external details url then provide it here. don't provide "repo" and "url" simultaneously.
+    summary: 对[RabbitMQ Go API](https://github.com/streadway/amqp)的二次封装，根据自己实际需求简化了创建连接时所需要设置的参数。
+    tags: [ "golang", "rabbitmq", "api" ]
 
-- name: Tensorflow
-  logo: /images/sections/projects/tensorflow.png
-  role: Developer
-  timeline: "Jun 2018 - Present"
-  repo: https://github.com/tensorflow/tensorflow
-  #url: ""
-  summary: An Open Source Machine Learning Framework for Everyone.
-  tags: ["professional", "machine-learning","academic"]
+  - name: go-gin-blog
+    logo: /images/sections/projects/go.png
+    role: Owner
+    timeline: "Dec 2020 - Present"
+    repo: https://github.com/ormissia/go-gin-blog
+    #url: ""
+    summary: 我的博客后端`Go`语言版（之前时Java版，已不再维护），也是我第一个真正意义上的`Golang`项目。使用`Docker镜像` → `Jenkins`的部署方式
+    tags: [ "go-web","gin","gorm","dockerfile","ci-cd" ]
 
-- name: Toha
-  logo: /images/sections/projects/toha.png
-  role: Owner
-  timeline: "Jun 2019 - Present"
-  repo: https://github.com/hossainemruz/toha
-  summary: A Hugo theme for personal portfolio.
-  tags: ["hobby","hugo","theme","professional"]
+  - name: vue-element-blog
+    logo: /images/sections/projects/go.png
+    role: Owner
+    timeline: "Sep 2020 - Present"
+    repo: https://github.com/ormissia/vue-element-blog
+    summary: 我的博客前端项目，使用`VUE`开发，并且使用`Element UI`作为UI框架，通过这个项目，我理解到了前后端分离的概念，也学习了各种在工作中可能遇不到的问题。这个项目依然采用`Jenkins`自动打包成静态文件部署到`Nginx`服务器上。
+    tags: [ "vue","element-ui","echarts","axios","word-cloud" ]
 
-- name: Toha
-  logo: /images/sections/projects/toha.png
-  role: Owner
-  timeline: "Jun 2019 - Present"
-  repo: https://github.com/hossainemruz/toha
-  summary: A Hugo theme for personal portfolio.
-  tags: ["hobby","hugo","theme","professional"]
+  - name: EggUselessSimulator
+    logo: /images/sections/projects/go.png
+    role: Owner
+    timeline: "Feb 2021 - Present"
+    repo: https://github.com/ormissia/EggUselessSimulator
+    summary: 中文名：没什么卵用模拟器🤡🤡🤡。有一天突发奇想就写了这么个不正经的项目，一股浓浓的修仙文字网游味道的...的姑且叫游戏的这么一个东西。用代码模拟水浒梁山内讧的过程，可以用配置文件来指定角色，装备以及各种属性。
+    tags: [ "hobby","hugo","theme","professional" ]
