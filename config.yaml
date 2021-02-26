@@ -1,14 +1,18 @@
 baseURL: https://ormissia.github.io
 
 languageCode: en-us
+# 默认语言修改为中文
+defaultContentLanguage: cn
+# 页面左上角和标签栏的标题标题
 title: "Ormissia's Blog"
+# 主题
 theme: "toha"
 
 # Manage languages
 # For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
 languages:
-  en:
-    languageName: English
+  cn:
+    languageName: 中文
     weight: 1
 
 # Control TOC depth
@@ -28,7 +32,9 @@ params:
   # It will default to the theme logos if not provided.
   logo:
     main: images/default-hero.jpg
+    # 页面左上角logo
     inverted: images/inverted-logo.png
+    # 标签logo
     favicon: images/favicon.png
 
   # GitHub repo URL of your site
@@ -44,4 +50,3 @@ params:
   # Currently, you can just hide it from the footer.
   newsletter:
     enable: false
-  
