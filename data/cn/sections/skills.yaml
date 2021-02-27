@@ -17,35 +17,35 @@ skills:
     url: "https://golang.org/"
 
   - name: Java
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/java.png"
     summary: "目前工作中主要使用的语言。熟悉JVM调优，熟练使用Springboot、MyBatis、shiro等主流框架"
 
   - name: Linux
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/linux.png"
     summary: "熟练使用常见Linux命令，日常学习和部署个人服务的环境都是基于自己搭建的Linux集群。当然不仅限于Linux，也捣鼓过FreeNAS(FreeBSD)，使用过VMWare ESXI。"
 
   - name: MySQL
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/mysql.png"
     summary: "熟练编写常用SQL语句，熟悉MySQL的调优，能根据业务需求对SQL进行有针对性的优化。"
 
   - name: Redis
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/redis.png"
     summary: "熟练使用Redis...(施工中)"
 
   - name: RabbitMQ
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/rabbitmq.png"
     summary: "熟悉RabbitMQ的各种概念，理解消息中间件在项目中起到的流量削峰、系统解耦、延迟处理等作用"
 
   - name: Docker、k8s
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/kubernets.png"
     summary: "熟练使用Docker，熟悉Dockerfile的编写。个人博客后端程序Go语言版即使用打包成Docker镜像的方式进行部署。"
 
   - name: Git
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/git.png"
     summary: "熟练使用Git进行代码版本和分支的管理，所有个人代码均托管于GitHub。仅2020.10~2021.2五个月的时间贡献了5w行代码。"
 
   - name: Jenkins
-    logo: "/images/sections/skills/go.png"
+    logo: "/images/sections/skills/jenkins.png"
     summary: "理解CI/CD整个流程，熟悉Jenkins的基础使用。个人博客前后端均采用GitHub → (Docker Hub) → Jenkins → Server的方式进行部署。"
 
   - name: consul、etcd
