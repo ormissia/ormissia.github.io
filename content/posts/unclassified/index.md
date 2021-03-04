@@ -6,7 +6,7 @@ menu:
   sidebar:
     name: Markdown Sample
     identifier: markdown
-    weight: 30
+    weight: 1
 ---
 
 This is a sample post intended to test the followings:
