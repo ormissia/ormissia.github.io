@@ -38,7 +38,7 @@ params:
     favicon: images/favicon.png
 
   # GitHub repo URL of your site
-  gitRepo: https://github.com/ormissia.github.io
+  gitRepo: https://github.com/ormissia/ormissia.github.io
 
   # specify whether you want to write some blog posts or not
   enableBlogPost: true
