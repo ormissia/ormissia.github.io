@@ -3,7 +3,6 @@ name: "Ormissia"
 nickname: "Ormissia"
 image: "images/avatar.png"
 
-
 # greeting message before your name. it will default to "Hi! I am" if not provided
 greeting: "Hi, I am"
 
@@ -16,6 +15,6 @@ contactInfo:
 summary:
   - I am a Developer
   - I am a Devops
+  - I love to code
   - I love servers
-  - I work on open-source projects
   - I love to work with some fun projects

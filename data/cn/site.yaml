@@ -1,5 +1,8 @@
 copyright: © 2021 Copyright.
 
+# A disclaimer notice for the footer. Make sure you have set "params.footer.disclaimer.enable: true" in your `config.yaml` file.
+disclaimer: "老铁都看底了，要负责的哦"
+
 # Meta description for your site.  This will help the search engines to find your site.
 description: Ormissia's GitHub Pages Blog. 安红豆的 GitHub Pages 博客
 
@@ -8,3 +11,11 @@ customMenus:
     url: https://github.com/ormissia
   - name: ormissia.com
     url: http://ormissia.com:13880
+
+# Specify OpenGraph Headers
+openGraph:
+  title: Ormissia's Blog
+  type: website
+  description: 安红豆的个人博客
+  image: images/avatar.png
+  url: https://ormissia.github.io
