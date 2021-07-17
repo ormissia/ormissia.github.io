@@ -1,5 +1,6 @@
 .idea
 resources
 
+.DS_Store
 hugo
 hugo.exe
