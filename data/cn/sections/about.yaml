@@ -40,25 +40,47 @@ socialLinks:
     icon: "fa fa-envelope"
     url: "ormissia@outlook.com"
 
-# your soft skills
-# give the percentage between 50 to 100 with 5 intervals.
-# currently supported colors: blue, yellow, pink, green, sky, orange
-softSkills:
-  - name: Golang
+# Show your badges
+# You can show your verifiable certificates from https://www.credly.com.
+# You can also show a circular bar indicating the level of expertise on a certain skill
+badges:
+  #  - type: certification
+  #    name: Certified Kubernetes Security Specialist
+  #    url: "https://www.credly.com/org/the-linux-foundation/badge/exam-developer-certified-kubernetes-security-specialist"
+  #    badge: "https://images.credly.com/size/680x680/images/f4bf92ed-8985-40b2-bc07-2f9308780854/kubernetes-security-specialist-logo-examdev.png"
+
+  - type: soft-skill-indicator
+    name: Golang
     percentage: 95
     color: sky
-  - name: Java
+
+  - type: soft-skill-indicator
+    name: Java
     percentage: 85
     color: yellow
-  - name: Linux
+
+  - type: soft-skill-indicator
+    name: Linux
     percentage: 80
     color: green
-  - name: Microservice
+
+  - type: soft-skill-indicator
+    name: Microservice
     percentage: 50
     color: pink
-  - name: Algorithm
+
+  - type: soft-skill-indicator
+    name: Algorithm
     percentage: 60
     color: blue
-  - name: CI/CD
+
+  - type: soft-skill-indicator
+    name: CI/CD
     percentage: 80
     color: orange
+
+# you can also provide color code instead of the color name
+# - type: soft-skill-indicator
+#   name: Example 1
+#   percentage: 75
+#   color: "#00adb5"
