@@ -1,10 +1,10 @@
 ---
 title: Advance
-weight: 2
+weight: 12
 menu:
   notes:
     name: Advance
     identifier: notes-go-advance
     parent: notes-go
-    weight: 2
+    weight: 12
 ---

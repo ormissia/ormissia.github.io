@@ -1,17 +1,30 @@
 ---
 title: Go Timer
-weight: 2
+weight: 111
 menu:
   notes:
     name: Go Timer
-    identifier: notes-go-go-timer
-    parent: notes-go-advance
-    weight: 1
+    identifier: notes-go-basics-timer
+    parent: notes-go-basics
+    weight: 111
 ---
 <!-- String Type -->
 
-{{< note title="Strings" >}}
+{{< note title="时间转换" >}}
+字符串转时间
 ```go
-afdaf
+time.Parse()
+```
+时间转字符串
+```go
+time.Format()
+```
+时间转时间戳
+```go
+Time.Unix()
+```
+时间戳转时间
+```go
+time.Unix()
 ```
 {{< /note >}}

@@ -1,10 +1,10 @@
 ---
-title: Basics
-weight: 1
+title: Basic
+weight: 31
 menu:
   notes:
-    name: Basics
-    identifier: notes-scala-basics
+    name: Basic
+    identifier: notes-scala-basic
     parent: notes-scala
-    weight: 1
+    weight: 31
 ---

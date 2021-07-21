@@ -1,10 +1,10 @@
 ---
 title: Basics
-weight: 1
+weight: 11
 menu:
   notes:
     name: Basics
     identifier: notes-go-basics
     parent: notes-go
-    weight: 1
+    weight: 11
 ---

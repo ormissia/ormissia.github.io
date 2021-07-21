@@ -1,10 +1,10 @@
 ---
 title: Basics
-weight: 1
+weight: 21
 menu:
   notes:
     name: Basics
     identifier: notes-java-basics
     parent: notes-java
-    weight: 1
+    weight: 21
 ---

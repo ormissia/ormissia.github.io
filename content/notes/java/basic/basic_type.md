@@ -1,12 +1,12 @@
 ---
 title: Basic Types
-weight: 20
+weight: 211
 menu:
   notes:
     name: Basic Types
-    identifier: notes-go-basics-types
-    parent: notes-go-basics
-    weight: 20
+    identifier: notes-java-basics-types
+    parent: notes-java-basics
+    weight: 211
 ---
 <!-- String Type -->
 {{< note title="Strings" >}}

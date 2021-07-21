@@ -1,12 +1,12 @@
 ---
-title: Basic Types
-weight: 20
+title: Advance Types
+weight: 121
 menu:
   notes:
-    name: Basic Types
-    identifier: notes-go-basics-types
-    parent: notes-go-basics
-    weight: 20
+    name: Advance Types
+    identifier: notes-go-advance-types
+    parent: notes-go-advance
+    weight: 121
 ---
 <!-- String Type -->
 {{< note title="Strings" >}}
