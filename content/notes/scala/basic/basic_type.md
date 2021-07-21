@@ -10,25 +10,6 @@ menu:
 ---
 <!-- 基础 -->
 
-{{< note title="表达式" >}}
-
-表达式是可计算的语句。
-```
-println(1) // 1
-println(1 + 1) // 2
-println("Hello!") // Hello!
-println("Hello," + " world!") // Hello, world!
-```
-常量（Values）
-
-你可以使用val关键字来给表达式的结果命名。
-```
-val x = 1 + 1
-println(x) // 2
-```
-
-{{< /note >}}
-
 
 {{< note title="函数" >}}
 
@@ -58,3 +39,34 @@ val c = s"$a+$b=${a + b}"
 ```
 {{< /note >}}
 
+
+{{< note title="对象" >}}
+约等于static单例对象
+```
+object TestObj {
+  def main(args: Array[String]): Unit = {
+    val a = 1
+    val b = 2
+    val c = s"$a+$b=${a + b}"
+    println(c)
+  }
+}
+```
+{{< /note >}}
+
+
+{{< note title="类" >}}
+
+> 可以使用`class`关键字定义一个类，后面跟着它的名字和构造参数。
+- 类里，裸露的代码是默认构造中的
+- 类名构造器中的参数就是类的成员属性，默认是`val`类型，且是`private`
+- 只有在类名构造器中的参数可以设置成`var`，其他方法函数中的参数都是`val`类型的，且不允许设置成`var`类型
+```
+class Greeter(prefix: String, var suffix: String) {
+  var name = "name"
+
+  def greet(name: String): Unit =
+    println(prefix + name + suffix)
+}
+```
+{{< /note >}}
