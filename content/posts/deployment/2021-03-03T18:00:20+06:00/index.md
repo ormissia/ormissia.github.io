@@ -1,7 +1,7 @@
 ---
 title: "我的博客后端Docker镜像打包自动部署流程"
 date: 2021-03-03T18:00:20+06:00
-hero: hero.png
+hero: head.svg
 menu:
   sidebar:
     name: 我的博客后端Docker镜像打包自动部署流程
@@ -17,6 +17,7 @@ menu:
 #### 本地代码→GitHub
 这一步是通过`git commit`-`git push`或是直接使用IDE将代码托管到GitHub上。
 在这一步的同时需要编写Dockerfile文件，用来指定Docker镜像打包时的各种参数
+
 ```Dockerfile
 # Go程序编译之后会得到一个可执行的二进制文件，其实在最终的镜像中是不需要go编译器的，也就是说我们只需要一个运行最终二进制文件的容器即可。
 # 作为别名为"builder"的编译镜像，下面会用到
@@ -38,7 +39,7 @@ COPY go.sum .
 RUN go mod download
 
 # 将代码复制到容器中
-COPY . .
+COPY 2021-03-04T18:02:29 .
 
 # 将代码编译成二进制可执行文件app
 RUN go build -o go-blog-app .
