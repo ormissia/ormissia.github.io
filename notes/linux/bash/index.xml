@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bash on Ormissia's Blog</title><link>https://ormissia.github.io/notes/linux/bash/</link><description>Recent content in Bash on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://ormissia.github.io/notes/linux/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Bash Command</title><link>https://ormissia.github.io/notes/linux/bash/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/bash/basic/</guid><description>快捷键 Ctrl+a回到命令行开头&amp;ndash;Home Ctrl+e回到命令行的尾部&amp;ndash;End Ctrl+u删除光标前边的所有字符 Ctrl+k删除光标后边的所有字符 Ctrl+w删除光标前的一个单词 Ctrl+r输入曾经的命令下的某个单词或字母，按照单词的匹配history cat 在cat输出时候显示行数
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bash on Ormissia's Blog</title><link>https://ormissia.github.io/notes/linux/bash/</link><description>Recent content in Bash on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://ormissia.github.io/notes/linux/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Bash Command</title><link>https://ormissia.github.io/notes/linux/bash/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/bash/basic/</guid><description>快捷键 Ctrl+a回到命令行开头&amp;ndash;Home
+Ctrl+e回到命令行的尾部&amp;ndash;End
+Ctrl+u删除光标前边的所有字符
+Ctrl+k删除光标后边的所有字符
+Ctrl+w删除光标前的一个单词
+Ctrl+r输入曾经的命令下的某个单词或字母，按照单词的匹配history cat 在cat输出时候显示行数
 cat -n maim.go wc 统计文件行、单词、字符数量 格式：
 usage: wc [-clmw] [file ...] 统计main.go的行、单词、字符数量
 wc main.go 选项：
