@@ -13,8 +13,8 @@ menu:
 
 
 {{< note title="快捷键" >}}
-- `Ctrl+a`回到命令行开头--`Home`
-- `Ctrl+e`回到命令行的尾部--`End`
+`Ctrl+a`回到命令行开头--`Home`
+`Ctrl+e`回到命令行的尾部--`End`
 ---
 `Ctrl+u`删除光标前边的所有字符
 `Ctrl+k`删除光标后边的所有字符
