@@ -12,6 +12,18 @@ menu:
 <!-- Basic Command -->
 
 
+{{< note title="快捷键" >}}
+- `Ctrl+a`回到命令行开头--`Home`
+- `Ctrl+e`回到命令行的尾部--`End`
+---
+`Ctrl+u`删除光标前边的所有字符
+`Ctrl+k`删除光标后边的所有字符
+`Ctrl+w`删除光标前的一个单词
+---
+`Ctrl+r`输入曾经的命令下的某个单词或字母，按照单词的匹配`history`
+{{< /note >}}
+
+
 {{< note title="cat" >}}
 在`cat`输出时候显示行数
 ```bash
