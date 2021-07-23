@@ -37,7 +37,7 @@ def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
 
 方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。
 
-方法由def关键字定义。def后面跟着一个名字、参数列表、返回类型和方法体。
+方法由`def`关键字定义。`def`后面跟着一个名字、参数列表、返回类型和方法体。
 ```
 def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
 println(addThenMultiply(1, 2)(3)) // 9
@@ -55,7 +55,7 @@ val c = s"$a+$b=${a + b}"
 
 
 {{< note title="对象" >}}
-约等于static单例对象
+约等于`static`单例对象
 ```
 object TestObj {
   def main(args: Array[String]): Unit = {
@@ -86,7 +86,7 @@ class Greeter(prefix: String, var suffix: String) {
 {{< /note >}}
 
 {{< note title="循环" >}}
-scala中嵌套`for`循环可以写到一起，循环上可以加守卫（条件）。
+`scala`中嵌套`for`循环可以写到一起，循环上可以加守卫（条件）。
 循环结果可以通过`yield`收集到一个集合中
 ```go
 // val value = for (i <- 1 to 9; j <- 1 to i) yield {
