@@ -1,51 +1,304 @@
-<!doctype html><html><head><title>Notes</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_2.png><meta property="og:title" content="Notes"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://ormissia.github.io/notes/"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css><link rel=stylesheet href=/css/layouts/notes.css><link rel=stylesheet href=/css/navigators/sidebar.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span></button>
-<a class=navbar-brand href=/><img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_2.png alt=Logo>
+<!doctype html><html>
+<head>
+<title>Notes</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Notes">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ormissia.github.io/notes/">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/notes.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"></ul></div></div><img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_2.png class=d-none id=main-logo alt=Logo>
-<img src=/images/inverted-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_2.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=Search data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/notes data-filter=all>笔记</a></li><div class=subtree><li><i class="fas fa-plus-circle"></i><a href=/notes/go/>Go</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/go/basic/>Basics</a><ul><li><a href=/notes/go/basic/timer/ title="Go Timer">Go Timer</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/go/advance/>Advance</a><ul><li><a href=/notes/go/advance/basic_type/ title="Advance Types">Advance Types</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/java/>Java</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/java/basic/>Basics</a><ul><li><a href=/notes/java/basic/basic_type/ title="Basic Types">Basic Types</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/scala/>Scala</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/scala/basic/>Basic</a><ul><li><a href=/notes/scala/basic/basic_type/ title="Basic Types">Basic Types</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/python/>Python</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/python/basic/>Basic</a><ul><li><a href=/notes/python/basic/basic/ title=Basic>Basic</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/js/>JavaScript</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/js/basic/>Basic</a><ul><li><a href=/notes/js/basic/basic/ title=Basic>Basic</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/sql/>SQL</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/sql/dml/>DML</a><ul><li><a href=/notes/sql/dml/dml/ title="SQL DML">SQL DML</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/linux/>Linux</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/linux/bash/>Bash</a><ul><li><a href=/notes/linux/bash/basic/ title="Bash Command">Bash Command</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class="content container-fluid" id=content><div class="container-fluid note-card-holder" id=note-card-holder><div class=note-card><div class=item><h5 class=note-title><span>时间转换</span></h5><div class=card><div class=card-body><p>字符串转时间</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Parse</span>()
-</code></pre></div><p>时间转字符串</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Format</span>()
-</code></pre></div><p>时间转时间戳</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>Time</span>.<span style=color:#a6e22e>Unix</span>()
-</code></pre></div><p>时间戳转时间</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Unix</span>()
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>Strings</span></h5><div class=card><div class=card-body><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>str</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;Hello&#34;</span>
-</code></pre></div><p>Multiline string</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>str</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>`Multiline
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/inverted-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=Search data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/notes data-filter=all>笔记</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/go/>Go</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/go/basic/>Basics</a>
+<ul>
+<li><a href=/notes/go/basic/timer/ title="Go Timer">Go Timer</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/go/advance/>Advance</a>
+<ul>
+<li><a href=/notes/go/advance/basic_type/ title="Advance Types">Advance Types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/java/>Java</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/java/basic/>Basics</a>
+<ul>
+<li><a href=/notes/java/basic/basic_type/ title="Basic Types">Basic Types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/scala/>Scala</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/scala/basic/>Basic</a>
+<ul>
+<li><a href=/notes/scala/basic/basic_type/ title="Basic Types">Basic Types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/python/>Python</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/python/basic/>Basic</a>
+<ul>
+<li><a href=/notes/python/basic/basic/ title=Basic>Basic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/js/>JavaScript</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/js/basic/>Basic</a>
+<ul>
+<li><a href=/notes/js/basic/basic/ title=Basic>Basic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/sql/>SQL</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/sql/dml/>DML</a>
+<ul>
+<li><a href=/notes/sql/dml/dml/ title="SQL DML">SQL DML</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/linux/>Linux</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/linux/bash/>Bash</a>
+<ul>
+<li><a href=/notes/linux/bash/basic/ title="Bash Command">Bash Command</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class="content container-fluid" id=content>
+<div class="container-fluid note-card-holder" id=note-card-holder>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>时间转换</span></h5>
+<div class=card>
+<div class=card-body><p>字符串转时间</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Parse</span>()
+</code></pre></div><p>时间转字符串</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Format</span>()
+</code></pre></div><p>时间转时间戳</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>Time</span>.<span style=color:#a6e22e>Unix</span>()
+</code></pre></div><p>时间戳转时间</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Unix</span>()
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Strings</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>str</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;Hello&#34;</span>
+</code></pre></div><p>Multiline string</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>str</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>`Multiline
 </span><span style=color:#e6db74>string`</span>
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>Numbers</span></h5><div class=card><div class=card-body><p>Typical types</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>3</span>          <span style=color:#75715e>// int
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Numbers</span></h5>
+<div class=card>
+<div class=card-body><p>Typical types</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>3</span>          <span style=color:#75715e>// int
 </span><span style=color:#75715e></span><span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>3.</span>         <span style=color:#75715e>// float64
 </span><span style=color:#75715e></span><span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>3</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>4i</span>     <span style=color:#75715e>// complex128
 </span><span style=color:#75715e></span><span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> byte(<span style=color:#e6db74>&#39;a&#39;</span>)  <span style=color:#75715e>// byte (alias for uint8)
-</span></code></pre></div><p>Other Types</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>u</span> <span style=color:#66d9ef>uint</span> = <span style=color:#ae81ff>7</span>        <span style=color:#75715e>// uint (unsigned)
+</span></code></pre></div><p>Other Types</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>u</span> <span style=color:#66d9ef>uint</span> = <span style=color:#ae81ff>7</span>        <span style=color:#75715e>// uint (unsigned)
 </span><span style=color:#75715e></span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>p</span> <span style=color:#66d9ef>float32</span> = <span style=color:#ae81ff>22.7</span>  <span style=color:#75715e>// 32-bit float
-</span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>Arrays</span></h5><div class=card><div class=card-body><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// var numbers [5]int
+</span></code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Arrays</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// var numbers [5]int
 </span><span style=color:#75715e></span><span style=color:#a6e22e>numbers</span> <span style=color:#f92672>:=</span> [<span style=color:#f92672>...</span>]<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>}
-</code></pre></div></div></div></div></div><div class="note-card medium-note"><div class=item><h5 class=note-title><span>Pointers</span></h5><div class=card><div class=card-body><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span> () {
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class="note-card medium-note">
+<div class=item>
+<h5 class=note-title><span>Pointers</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span> () {
   <span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>getPointer</span>()
   <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Value is&#34;</span>, <span style=color:#a6e22e>b</span>)
-</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getPointer</span> () (<span style=color:#a6e22e>myPointer</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>int</span>) {
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>getPointer</span> () (<span style=color:#a6e22e>myPointer</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>int</span>) {
   <span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>234</span>
   <span style=color:#66d9ef>return</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>a</span>
-</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> new(<span style=color:#66d9ef>int</span>)
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> new(<span style=color:#66d9ef>int</span>)
 <span style=color:#f92672>*</span><span style=color:#a6e22e>a</span> = <span style=color:#ae81ff>234</span>
-</code></pre></div><p>Pointers point to a memory location of a variable. Go is fully garbage-collected.</p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>Type Conversion</span></h5><div class=card><div class=card-body><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>2</span>
+</code></pre></div><p>Pointers point to a memory location of a variable. Go is fully garbage-collected.</p>
+</div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Type Conversion</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>2</span>
 <span style=color:#a6e22e>f</span> <span style=color:#f92672>:=</span> float64(<span style=color:#a6e22e>i</span>)
 <span style=color:#a6e22e>u</span> <span style=color:#f92672>:=</span> uint(<span style=color:#a6e22e>i</span>)
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>Slice</span></h5><div class=card><div class=card-body><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>slice</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>4</span>}
-</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>slice</span> <span style=color:#f92672>:=</span> []byte(<span style=color:#e6db74>&#34;Hello&#34;</span>)
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>Strings</span></h5><div class=card><div class=card-body><p>test</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>String</span> <span style=color:#a6e22e>str</span> = <span style=color:#e6db74>&#34;123&#34;</span>;
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>函数</span></h5><div class=card><div class=card-body><p>函数参数为<code>val</code>类型，且可以给出默认值</p><pre><code>def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Slice</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>slice</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>4</span>}
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>slice</span> <span style=color:#f92672>:=</span> []byte(<span style=color:#e6db74>&#34;Hello&#34;</span>)
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Strings</span></h5>
+<div class=card>
+<div class=card-body><p>test</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>String</span> <span style=color:#a6e22e>str</span> = <span style=color:#e6db74>&#34;123&#34;</span>;
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>函数</span></h5>
+<div class=card>
+<div class=card-body><p>函数参数为<code>val</code>类型，且可以给出默认值</p>
+<pre><code>def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
   println(s&quot;$a $b $c&quot;)
 }
   
   test(1, 2)      //1 2 2
   test(1, c = 4)  //1 1 4
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>匿名函数</span></h5><div class=card><div class=card-body><p>函数是带有参数的表达式。</p><pre><code>(x: Int) =&gt; x + 1
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>方法</span></h5><div class=card><div class=card-body><p>方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。</p><p>方法由<code>def</code>关键字定义。<code>def</code>后面跟着一个名字、参数列表、返回类型和方法体。</p><pre><code>def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>匿名函数</span></h5>
+<div class=card>
+<div class=card-body><p>函数是带有参数的表达式。</p>
+<pre><code>(x: Int) =&gt; x + 1
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>方法</span></h5>
+<div class=card>
+<div class=card-body><p>方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。</p>
+<p>方法由<code>def</code>关键字定义。<code>def</code>后面跟着一个名字、参数列表、返回类型和方法体。</p>
+<pre><code>def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
 println(addThenMultiply(1, 2)(3)) // 9
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>字符串拼接</span></h5><div class=card><div class=card-body><pre><code>val a = 1
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>字符串拼接</span></h5>
+<div class=card>
+<div class=card-body><pre><code>val a = 1
 val b = 2
 val c = s&quot;$a+$b=${a + b}&quot;
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>对象</span></h5><div class=card><div class=card-body><p>约等于<code>static</code>单例对象</p><pre><code>object TestObj {
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>对象</span></h5>
+<div class=card>
+<div class=card-body><p>约等于<code>static</code>单例对象</p>
+<pre><code>object TestObj {
   def main(args: Array[String]): Unit = {
     val a = 1
     val b = 2
@@ -53,27 +306,67 @@ val c = s&quot;$a+$b=${a + b}&quot;
     println(c)
   }
 }
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>类</span></h5><div class=card><div class=card-body><p>可以使用<code>class</code>关键字定义一个类，后面跟着它的名字和构造参数。</p><ul><li>类里裸露的代码是默认构造中的</li><li>类名构造器中的参数就是类的成员属性，默认是<code>val</code>类型，且是<code>private</code></li><li>只有在类名构造器中的参数可以设置成<code>var</code>，其他方法函数中的参数都是<code>val</code>类型的，且不允许设置成<code>var</code>类型</li></ul><pre><code>class Greeter(prefix: String, var suffix: String) {
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>类</span></h5>
+<div class=card>
+<div class=card-body><p>可以使用<code>class</code>关键字定义一个类，后面跟着它的名字和构造参数。</p>
+<ul>
+<li>类里裸露的代码是默认构造中的</li>
+<li>类名构造器中的参数就是类的成员属性，默认是<code>val</code>类型，且是<code>private</code></li>
+<li>只有在类名构造器中的参数可以设置成<code>var</code>，其他方法函数中的参数都是<code>val</code>类型的，且不允许设置成<code>var</code>类型</li>
+</ul>
+<pre><code>class Greeter(prefix: String, var suffix: String) {
   var name = &quot;name&quot;
 
   def greet(name: String): Unit =
     println(prefix + name + suffix)
 }
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>循环</span></h5><div class=card><div class=card-body><p><code>scala</code>中嵌套<code>for</code>循环可以写到一起，循环上可以加守卫（条件）。
-循环结果可以通过<code>yield</code>收集到一个集合中</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// val value = for (i &lt;- 1 to 9; j &lt;- 1 to i) yield {
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>循环</span></h5>
+<div class=card>
+<div class=card-body><p><code>scala</code>中嵌套<code>for</code>循环可以写到一起，循环上可以加守卫（条件）。
+循环结果可以通过<code>yield</code>收集到一个集合中</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// val value = for (i &lt;- 1 to 9; j &lt;- 1 to i) yield {
 </span><span style=color:#75715e></span><span style=color:#a6e22e>val</span> <span style=color:#a6e22e>value</span> = <span style=color:#66d9ef>for</span> (<span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>1</span> <span style=color:#a6e22e>to</span> <span style=color:#ae81ff>9</span>; <span style=color:#a6e22e>j</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>1</span> <span style=color:#a6e22e>to</span> <span style=color:#ae81ff>10</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>j</span> <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>i</span>)) <span style=color:#a6e22e>yield</span> {
   <span style=color:#a6e22e>i</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>j</span>
 }
 <span style=color:#66d9ef>for</span> (<span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>value</span>) {
   println(<span style=color:#a6e22e>i</span>)
 }
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>偏应用函数</span></h5><div class=card><div class=card-body><p>类似于重新封装一下函数</p><pre><code>def log(date: Date, logType: String, msg: String): Unit = {
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>偏应用函数</span></h5>
+<div class=card>
+<div class=card-body><p>类似于重新封装一下函数</p>
+<pre><code>def log(date: Date, logType: String, msg: String): Unit = {
   println(s&quot;$date\t$logType\t$msg&quot;)
 }
 
 val info = log(_, &quot;info&quot;, _)
 info(new Date, &quot;this is a info msg&quot;)  //Thu Jul 22 23:14:04 CST 2021	info	this is a info msg
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>可变长度参数以及foreach</span></h5><div class=card><div class=card-body><pre><code>def foreachTest(a: Int*): Unit = {
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>可变长度参数以及foreach</span></h5>
+<div class=card>
+<div class=card-body><pre><code>def foreachTest(a: Int*): Unit = {
   //for (i &lt;- a) {
   //  print(i)
   //}
@@ -87,14 +380,27 @@ info(new Date, &quot;this is a info msg&quot;)  //Thu Jul 22 23:14:04 CST 2021	i
 }
 
 foreachTest(1, 2, 3, 4, 5)  //12345
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>高阶函数</span></h5><div class=card><div class=card-body><p>函数作为参数</p><pre><code>def computer(a: Int, b: Int, f: (Int, Int) =&gt; Int): Unit = {
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>高阶函数</span></h5>
+<div class=card>
+<div class=card-body><p>函数作为参数</p>
+<pre><code>def computer(a: Int, b: Int, f: (Int, Int) =&gt; Int): Unit = {
   val res = f(a, b)
   println(res)
 }
 
 computer(1, 2, (x: Int, y: Int) =&gt; {x + y}) //3
 computer(1, 2, _ + _)                       //3
-</code></pre></div></div><div class=card><div class=card-body><p>函数作为返回值</p><pre><code>def factory(i: String): (Int, Int) =&gt; Int = {
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>函数作为返回值</p>
+<pre><code>def factory(i: String): (Int, Int) =&gt; Int = {
   def plus(x: Int, y: Int): Int = {
     x + y
   }
@@ -108,15 +414,90 @@ computer(1, 2, _ + _)                       //3
 
 val plus = factory(&quot;+&quot;)
 computer(1,2,plus)  //3
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>柯里化</span></h5><div class=card><div class=card-body><p>多个参数列表</p><pre><code>def testFunc(a:Int*)(b:Int*)(c:String*): Unit ={
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>柯里化</span></h5>
+<div class=card>
+<div class=card-body><p>多个参数列表</p>
+<pre><code>def testFunc(a:Int*)(b:Int*)(c:String*): Unit ={
   a.foreach(print)
   b.foreach(print)
   c.foreach(print)
 }
 
 testFunc(1,2,3)(2,3,4)(&quot;3&quot;,&quot;4&quot;,&quot;5&quot;) //123234345
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>函数</span></h5><div class=card><div class=card-body></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>函数</span></h5><div class=card><div class=card-body></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>按年月日分组聚合</span></h5><div class=card><div class=card-body><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>group</span> <span style=color:#66d9ef>by</span> date_format(<span style=color:#f92672>&lt;</span>field_name<span style=color:#f92672>&gt;</span>, <span style=color:#f92672>&lt;</span>format<span style=color:#f92672>&gt;</span>);
-</code></pre></div><p>根据format字符串格式化date值。下列修饰符可以被用在format字符串中：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>%M 月名字<span style=color:#f92672>(</span>January……December<span style=color:#f92672>)</span> 
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>数据集</span></h5>
+<div class=card>
+<div class=card-body><p>数组
+<code>scala</code>中泛型是<code>[]</code>，数组用<code>()</code></p>
+<p><code>val</code>约等于<code>final</code>，不可变描述的是<code>val</code>指定的引用（字面值、地址）</p>
+<pre><code>val arr1 = Array[Int](1, 2, 3)
+arr1(1) = 99
+println(arr1(1))  //99
+
+//遍历
+for (elem &lt;- arr1) {}
+//foreach需要函数接收元素
+arr1.foreach(println)
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>链表</p>
+<p><code>scala</code>中<code>collections</code>中有两个包：<code>immutable,mutable</code>，默认是不可变的<code>immutable</code></p>
+<pre><code>val list1 = List(1, 2, 3, 4)
+
+//++ += ++: :++
+val list2 = new ListBuffer[Int]
+list2.+=(1)
+list2.+=(2)
+list2.+=(3)
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p><code>set</code></p>
+<pre><code>val set1 = Set(1, 2, 3, 4, 1, 2)  //1 2 3 4
+
+//可变的
+val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
+set2.add(1)
+set2.add(5) //1 2 3 4 5
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>函数</span></h5>
+<div class=card>
+<div class=card-body></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>函数</span></h5>
+<div class=card>
+<div class=card-body></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>按年月日分组聚合</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>group</span> <span style=color:#66d9ef>by</span> date_format(<span style=color:#f92672>&lt;</span>field_name<span style=color:#f92672>&gt;</span>, <span style=color:#f92672>&lt;</span>format<span style=color:#f92672>&gt;</span>);
+</code></pre></div><p>根据format字符串格式化date值。下列修饰符可以被用在format字符串中：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>%M 月名字<span style=color:#f92672>(</span>January……December<span style=color:#f92672>)</span> 
 %W 星期名字<span style=color:#f92672>(</span>Sunday……Saturday<span style=color:#f92672>)</span> 
 %D 有英语前缀的月份的日期<span style=color:#f92672>(</span>1st, 2nd, 3rd, 等等。） 
 %Y 年, 数字, <span style=color:#ae81ff>4</span> 位 
@@ -143,19 +524,78 @@ testFunc(1,2,3)(2,3,4)(&quot;3&quot;,&quot;4&quot;,&quot;5&quot;) //123234345
 %U 星期<span style=color:#f92672>(</span>0……52<span style=color:#f92672>)</span>, 这里星期天是星期的第一天 
 %u 星期<span style=color:#f92672>(</span>0……52<span style=color:#f92672>)</span>, 这里星期一是星期的第一天 
 %% 一个文字“%”
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>快捷键</span></h5><div class=card><div class=card-body><p><code>Ctrl+a</code>回到命令行开头&ndash;<code>Home</code></p><p><code>Ctrl+e</code>回到命令行的尾部&ndash;<code>End</code></p></div></div><div class=card><div class=card-body><p><code>Ctrl+u</code>删除光标前边的所有字符</p><p><code>Ctrl+k</code>删除光标后边的所有字符</p><p><code>Ctrl+w</code>删除光标前的一个单词</p></div></div><div class=card><div class=card-body><code>Ctrl+r</code>输入曾经的命令下的某个单词或字母，按照单词的匹配<code>history</code></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>cat</span></h5><div class=card><div class=card-body><p>在<code>cat</code>输出时候显示行数</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cat -n maim.go
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>wc</span></h5><div class=card><div class=card-body><p>统计文件行、单词、字符数量
-格式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>usage: wc <span style=color:#f92672>[</span>-clmw<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>file ...<span style=color:#f92672>]</span>
-</code></pre></div><p>统计<code>main.go</code>的行、单词、字符数量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wc main.go
-</code></pre></div><p>选项：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-l 统计行数
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>快捷键</span></h5>
+<div class=card>
+<div class=card-body><p><code>Ctrl+a</code>回到命令行开头&ndash;<code>Home</code></p>
+<p><code>Ctrl+e</code>回到命令行的尾部&ndash;<code>End</code></p>
+</div>
+</div>
+<div class=card>
+<div class=card-body><p><code>Ctrl+u</code>删除光标前边的所有字符</p>
+<p><code>Ctrl+k</code>删除光标后边的所有字符</p>
+<p><code>Ctrl+w</code>删除光标前的一个单词</p>
+</div>
+</div>
+<div class=card>
+<div class=card-body><code>Ctrl+r</code>输入曾经的命令下的某个单词或字母，按照单词的匹配<code>history</code></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>cat</span></h5>
+<div class=card>
+<div class=card-body><p>在<code>cat</code>输出时候显示行数</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cat -n maim.go
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>wc</span></h5>
+<div class=card>
+<div class=card-body><p>统计文件行、单词、字符数量
+格式：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>usage: wc <span style=color:#f92672>[</span>-clmw<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>file ...<span style=color:#f92672>]</span>
+</code></pre></div><p>统计<code>main.go</code>的行、单词、字符数量</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wc main.go
+</code></pre></div><p>选项：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-l 统计行数
 -c 统计字符数
 -w 统计单词数
 -L 统计最长的行的字符数
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>nc</span></h5><div class=card><div class=card-body><p>接收方</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc -l <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &gt; filename
-</code></pre></div><p>发送方</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc <span style=color:#f92672>[</span>ip<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &lt; filename
-</code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>xargs</span></h5><div class=card><div class=card-body><p><code>xargs</code>是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
-格式:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
-</code></pre></div><p>选项：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-a file 从文件中读入作为 stdin
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>nc</span></h5>
+<div class=card>
+<div class=card-body><p>接收方</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc -l <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &gt; filename
+</code></pre></div><p>发送方</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc <span style=color:#f92672>[</span>ip<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &lt; filename
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>xargs</span></h5>
+<div class=card>
+<div class=card-body><p><code>xargs</code>是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
+格式:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
+</code></pre></div><p>选项：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-a file 从文件中读入作为 stdin
 -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。
 -p 当每次执行一个argument的时候询问一次用户。
 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。
@@ -167,6 +607,79 @@ testFunc(1,2,3)(2,3,4)(&quot;3&quot;,&quot;4&quot;,&quot;5&quot;) //123234345
 -l 同 -L。
 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。
 -x exit的意思，主要是配合-s使用。。
-</code></pre></div></div></div></div></div></div><div class=paginator><ul class=pagination><li class=page-item><a href=/notes/ class=page-link aria-label=First><span aria-hidden=true>&#171;&#171;</span></a></li><li class="page-item disabled"><a class=page-link aria-label=Previous><span aria-hidden=true>&#171;</span></a></li><li class="page-item active"><a class=page-link href=/notes/>1</a></li><li class=page-item><a class=page-link href=/notes/page/2/>2</a></li><li class=page-item><a href=/notes/page/2/ class=page-link aria-label=Next><span aria-hidden=true>&#187;</span></a></li><li class=page-item><a href=/notes/page/2/ class=page-link aria-label=Last><span aria-hidden=true>&#187;&#187;</span></a></li></ul></div></div></section></div><footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><span>Email:</span> <span>ormissia@outlook.com</span></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>责任通知:</strong> 老铁都看底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_2.png alt="Toha Theme Logo">
-Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script><script type=text/javascript src=/js/popper.min.js></script><script type=text/javascript src=/js/bootstrap.min.js></script><script type=text/javascript src=/js/navbar.js></script><script type=text/javascript src=/js/plyr.js></script><script type=text/javascript src=/js/main.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script><script src=/js/imagesloaded.pkgd.min.js></script><script src=/js/note.js></script><script>hljs.initHighlightingOnLoad()</script></body></html>
+</code></pre></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class=paginator>
+<ul class="pagination pagination-default">
+<li class="page-item disabled">
+<a href=# aria-disabled=true aria-label=First class=page-link role=button tabindex=-1><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class="page-item disabled">
+<a href=# aria-disabled=true aria-label=Previous class=page-link role=button tabindex=-1><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class="page-item active">
+<a href=# aria-current=page aria-label="Page 1" class=page-link role=button>1</a>
+</li>
+<li class=page-item>
+<a href=/notes/page/2/ aria-label="Page 2" class=page-link role=button>2</a>
+</li>
+<li class=page-item>
+<a href=/notes/page/2/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/notes/page/2/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><span>Email: </span> <span>ormissia@outlook.com</span></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>责任通知:</strong> 老铁都看底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/imagesloaded.pkgd.min.js></script>
+<script src=/js/note.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
