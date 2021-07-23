@@ -1,12 +1,12 @@
 ---
 title: Bash Command
-weight: 611
+weight: 711
 menu:
   notes:
     name: Bash Command
     identifier: notes-linux-bash-command
     parent: notes-linux-bash
-    weight: 611
+    weight: 711
 ---
 
 <!-- Basic Command -->

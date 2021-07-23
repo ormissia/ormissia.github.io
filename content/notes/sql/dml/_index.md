@@ -1,10 +1,10 @@
 ---
 title: DML
-weight: 51
+weight: 61
 menu:
   notes:
-    name: DDL
+    name: DML
     identifier: notes-sql-dml
     parent: notes-sql
-    weight: 51
+    weight: 61
 ---

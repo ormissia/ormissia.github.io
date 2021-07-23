@@ -1,12 +1,12 @@
 ---
 title: SQL DML
-weight: 511
+weight: 611
 menu:
   notes:
     name: SQL DML
     identifier: notes-sql-dml-basic
     parent: notes-sql-dml
-    weight: 511
+    weight: 611
 ---
 
 <!-- Advance Script -->

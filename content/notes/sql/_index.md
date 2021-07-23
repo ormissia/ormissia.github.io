@@ -4,7 +4,7 @@ menu:
   notes:
     name: SQL
     identifier: notes-sql
-    weight: 5
+    weight: 6
 ---
 
 # SQL Notes
