@@ -33,6 +33,7 @@ def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
 
 {{< /note >}}
 
+
 {{< note title="方法" >}}
 
 方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。
@@ -85,6 +86,7 @@ class Greeter(prefix: String, var suffix: String) {
 ```
 {{< /note >}}
 
+
 {{< note title="循环" >}}
 `scala`中嵌套`for`循环可以写到一起，循环上可以加守卫（条件）。
 循环结果可以通过`yield`收集到一个集合中
@@ -99,6 +101,7 @@ for (i <- value) {
 ```
 {{< /note >}}
 
+
 {{< note title="偏应用函数" >}}
 
 类似于重新封装一下函数
@@ -112,6 +115,7 @@ info(new Date, "this is a info msg")  //Thu Jul 22 23:14:04 CST 2021	info	this i
 ```
 
 {{< /note >}}
+
 
 {{< note title="可变长度参数以及foreach" >}}
 
@@ -170,6 +174,7 @@ computer(1,2,plus)  //3
 ```
 {{< /note >}}
 
+
 {{< note title="柯里化" >}}
 
 多个参数列表
@@ -182,5 +187,55 @@ def testFunc(a:Int*)(b:Int*)(c:String*): Unit ={
 
 testFunc(1,2,3)(2,3,4)("3","4","5") //123234345
 ```
+
+{{< /note >}}
+
+
+{{< note title="数据集" >}}
+
+数组
+`scala`中泛型是`[]`，数组用`()`
+
+`val`约等于`final`，不可变描述的是`val`指定的引用（字面值、地址）
+```
+val arr1 = Array[Int](1, 2, 3)
+arr1(1) = 99
+println(arr1(1))  //99
+
+//遍历
+for (elem <- arr1) {}
+//foreach需要函数接收元素
+arr1.foreach(println)
+```
+
+---
+
+链表
+
+`scala`中`collections`中有两个包：`immutable,mutable`，默认是不可变的`immutable`
+
+```
+val list1 = List(1, 2, 3, 4)
+
+//++ += ++: :++
+val list2 = new ListBuffer[Int]
+list2.+=(1)
+list2.+=(2)
+list2.+=(3)
+```
+
+---
+
+`set`
+
+```
+val set1 = Set(1, 2, 3, 4, 1, 2)  //1 2 3 4
+
+//可变的
+val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
+set2.add(1)
+set2.add(5) //1 2 3 4 5
+```
+
 
 {{< /note >}}
