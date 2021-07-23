@@ -11,12 +11,12 @@ Ormissia's Blog</a>
   test(1, 2)      //1 2 2
   test(1, c = 4)  //1 1 4
 </code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>匿名函数</span></h5><div class=card><div class=card-body><p>函数是带有参数的表达式。</p><pre><code>(x: Int) =&gt; x + 1
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>方法</span></h5><div class=card><div class=card-body><p>方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。</p><p>方法由def关键字定义。def后面跟着一个名字、参数列表、返回类型和方法体。</p><pre><code>def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
+</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>方法</span></h5><div class=card><div class=card-body><p>方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。</p><p>方法由<code>def</code>关键字定义。<code>def</code>后面跟着一个名字、参数列表、返回类型和方法体。</p><pre><code>def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
 println(addThenMultiply(1, 2)(3)) // 9
 </code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>字符串拼接</span></h5><div class=card><div class=card-body><pre><code>val a = 1
 val b = 2
 val c = s&quot;$a+$b=${a + b}&quot;
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>对象</span></h5><div class=card><div class=card-body><p>约等于static单例对象</p><pre><code>object TestObj {
+</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>对象</span></h5><div class=card><div class=card-body><p>约等于<code>static</code>单例对象</p><pre><code>object TestObj {
   def main(args: Array[String]): Unit = {
     val a = 1
     val b = 2
@@ -30,7 +30,7 @@ val c = s&quot;$a+$b=${a + b}&quot;
   def greet(name: String): Unit =
     println(prefix + name + suffix)
 }
-</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>循环</span></h5><div class=card><div class=card-body><p>scala中嵌套<code>for</code>循环可以写到一起，循环上可以加守卫（条件）。
+</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>循环</span></h5><div class=card><div class=card-body><p><code>scala</code>中嵌套<code>for</code>循环可以写到一起，循环上可以加守卫（条件）。
 循环结果可以通过<code>yield</code>收集到一个集合中</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// val value = for (i &lt;- 1 to 9; j &lt;- 1 to i) yield {
 </span><span style=color:#75715e></span><span style=color:#a6e22e>val</span> <span style=color:#a6e22e>value</span> = <span style=color:#66d9ef>for</span> (<span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>1</span> <span style=color:#a6e22e>to</span> <span style=color:#ae81ff>9</span>; <span style=color:#a6e22e>j</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>1</span> <span style=color:#a6e22e>to</span> <span style=color:#ae81ff>10</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>j</span> <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>i</span>)) <span style=color:#a6e22e>yield</span> {
   <span style=color:#a6e22e>i</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>j</span>
