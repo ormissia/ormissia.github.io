@@ -19,8 +19,8 @@ def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
   println(s"$a $b $c")
 }
   
-  test(1, 2)      //1 2 2
-  test(1, c = 4)  //1 1 4
+test(1, 2)      //1 2 2
+test(1, c = 4)  //1 1 4
 ```
 {{< /note >}}
 
@@ -307,4 +307,24 @@ val map2 = mutable.Map(("a", 1), "b" -> 2, ("c", 3), ("a", 4))
 map2.put("a", 5)
 ```
 
+{{< /note >}}
+
+
+{{< note title="案例类" >}}
+{{< /note >}}
+
+
+{{< note title="模式匹配" >}}
+{{< /note >}}
+
+
+{{< note title="特质" >}}
+{{< /note >}}
+
+
+{{< note title="偏函数" >}}
+{{< /note >}}
+
+
+{{< note title="隐式转换" >}}
 {{< /note >}}
