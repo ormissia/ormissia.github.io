@@ -338,7 +338,7 @@ testFunc(1,2,3)(2,3,4)(&quot;3&quot;,&quot;4&quot;,&quot;5&quot;) //123234345
 </div>
 <div class=note-card>
 <div class=item>
-<h5 class=note-title><span>数据集</span></h5>
+<h5 class=note-title><span>数组</span></h5>
 <div class=card>
 <div class=card-body><p>数组
 <code>scala</code>中泛型是<code>[]</code>，数组用<code>()</code></p>
@@ -347,15 +347,24 @@ testFunc(1,2,3)(2,3,4)(&quot;3&quot;,&quot;4&quot;,&quot;5&quot;) //123234345
 arr1(1) = 99
 println(arr1(1))  //99
 
-//遍历
+
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>遍历</p>
+<pre><code>
 for (elem &lt;- arr1) {}
 //foreach需要函数接收元素
 arr1.foreach(println)
 </code></pre></div>
 </div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>链表</span></h5>
 <div class=card>
-<div class=card-body><p>链表</p>
-<p><code>scala</code>中<code>collections</code>中有两个包：<code>immutable,mutable</code>，默认是不可变的<code>immutable</code></p>
+<div class=card-body><p><code>scala</code>中<code>collections</code>中有两个包：<code>immutable,mutable</code>，默认是不可变的<code>immutable</code></p>
 <pre><code>val list1 = List(1, 2, 3, 4)
 
 //++ += ++: :++
@@ -366,13 +375,62 @@ list2.+=(3)
 </code></pre></div>
 </div>
 <div class=card>
-<div class=card-body><p><code>set</code></p>
+<div class=card-body><pre><code>val list1 = List(1, 2, 3, 4)
+val list2 = list1.map(_ * 2)
+list2.foreach(print) //2468
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Set</span></h5>
+<div class=card>
+<div class=card-body><p><code>Set</code></p>
+<p>不可变的</p>
 <pre><code>val set1 = Set(1, 2, 3, 4, 1, 2)  //1 2 3 4
-
-//可变的
-val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>可变的</p>
+<pre><code>val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
 set2.add(1)
 set2.add(5) //1 2 3 4 5
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>Map</span></h5>
+<div class=card>
+<div class=card-body><p><code>Map</code></p>
+<pre><code>val map1 = Map((&quot;a&quot;, 1), &quot;b&quot; -&gt; 2, (&quot;c&quot;, 3), (&quot;a&quot;, 4))
+
+map1.foreach(print) //(a,4)(b,2)(c,3)
+println(map1.get(&quot;a&quot;)) //Some(4)
+println(map1.get(&quot;d&quot;)) //None
+println(map1.getOrElse(&quot;a&quot;, &quot;test&quot;)) //4
+println(map1.getOrElse(&quot;d&quot;, &quot;test&quot;)) //test
+
+val keys = map1.keys
+keys.foreach(println)
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>遍历</p>
+<pre><code>for (m &lt;- map1) {
+  print(s&quot;$m&quot;)
+}
+for (k &lt;- keys) {
+  print(s&quot;($k,${map1(k)})&quot;)
+}
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>可变的</p>
+<pre><code>val map2 = mutable.Map((&quot;a&quot;, 1), &quot;b&quot; -&gt; 2, (&quot;c&quot;, 3), (&quot;a&quot;, 4))
+map2.put(&quot;a&quot;, 5)
 </code></pre></div>
 </div>
 </div>
