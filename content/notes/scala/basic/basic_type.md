@@ -191,7 +191,7 @@ testFunc(1,2,3)(2,3,4)("3","4","5") //123234345
 {{< /note >}}
 
 
-{{< note title="数据集" >}}
+{{< note title="数组" >}}
 
 数组
 `scala`中泛型是`[]`，数组用`()`
@@ -202,15 +202,24 @@ val arr1 = Array[Int](1, 2, 3)
 arr1(1) = 99
 println(arr1(1))  //99
 
-//遍历
+
+```
+
+---
+
+遍历
+
+```
+
 for (elem <- arr1) {}
 //foreach需要函数接收元素
 arr1.foreach(println)
 ```
 
----
+{{< /note >}}
 
-链表
+
+{{< note title="链表" >}}
 
 `scala`中`collections`中有两个包：`immutable,mutable`，默认是不可变的`immutable`
 
@@ -226,16 +235,76 @@ list2.+=(3)
 
 ---
 
-`set`
+```
+val list1 = List(1, 2, 3, 4)
+val list2 = list1.map(_ * 2)
+list2.foreach(print) //2468
+```
+
+{{< /note >}}
+
+
+{{< note title="Set" >}}
+
+`Set`
+
+不可变的
 
 ```
 val set1 = Set(1, 2, 3, 4, 1, 2)  //1 2 3 4
+```
 
-//可变的
+---
+
+可变的
+
+```
 val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
 set2.add(1)
 set2.add(5) //1 2 3 4 5
 ```
 
+
+{{< /note >}}
+
+
+{{< note title="Map" >}}
+
+`Map`
+
+```
+val map1 = Map(("a", 1), "b" -> 2, ("c", 3), ("a", 4))
+
+map1.foreach(print) //(a,4)(b,2)(c,3)
+println(map1.get("a")) //Some(4)
+println(map1.get("d")) //None
+println(map1.getOrElse("a", "test")) //4
+println(map1.getOrElse("d", "test")) //test
+
+val keys = map1.keys
+keys.foreach(println)
+```
+
+---
+
+遍历
+
+```
+for (m <- map1) {
+  print(s"$m")
+}
+for (k <- keys) {
+  print(s"($k,${map1(k)})")
+}
+```
+
+---
+
+可变的
+
+```
+val map2 = mutable.Map(("a", 1), "b" -> 2, ("c", 3), ("a", 4))
+map2.put("a", 5)
+```
 
 {{< /note >}}
