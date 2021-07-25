@@ -1,75 +1,15 @@
 ---
-title: Bash Command
-weight: 711
+title: Advance
+weight: 712
 menu:
   notes:
-    name: Bash Command
-    identifier: notes-linux-bash-command
-    parent: notes-linux-bash
-    weight: 711
+    name: Advance
+    identifier: notes-linux-shell-advance
+    parent: notes-linux-shell
+    weight: 712
 ---
 
-<!-- Basic Command -->
-
-
-{{< note title="快捷键" >}}
-
-`Ctrl+a`回到命令行开头--`Home`
-
-`Ctrl+e`回到命令行的尾部--`End`
-
----
-
-`Ctrl+u`删除光标前边的所有字符
-
-`Ctrl+k`删除光标后边的所有字符
-
-`Ctrl+w`删除光标前的一个单词
-
----
-`Ctrl+r`输入曾经的命令下的某个单词或字母，按照单词的匹配`history`
-
-{{< /note >}}
-
-
-{{< note title="cat" >}}
-在`cat`输出时候显示行数
-```bash
-cat -n maim.go
-```
-{{< /note >}}
-
-
-{{< note title="wc" >}}
-统计文件行、单词、字符数量
-格式：
-```bash
-usage: wc [-clmw] [file ...]
-```
-统计`main.go`的行、单词、字符数量
-```bash
-wc main.go
-```
-选项：
-```bash
--l 统计行数
--c 统计字符数
--w 统计单词数
--L 统计最长的行的字符数
-```
-{{< /note >}}
-
-
-{{< note title="nc" >}}
-接收方
-```bash
-nc -l [port] > filename
-```
-发送方
-```bash
-nc [ip] [port] < filename
-```
-{{< /note >}}
+<!-- Advance Command -->
 
 
 {{< note title="xargs" >}}
@@ -94,4 +34,3 @@ somecommand | xargs [-item] [command]
 -x exit的意思，主要是配合-s使用。。
 ```
 {{< /note >}}
-
