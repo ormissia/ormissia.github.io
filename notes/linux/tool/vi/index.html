@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Bash Command</title>
+<title>vi</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,22 +12,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Bash Command">
-<meta property="og:description" content="快捷键 Ctrl+a回到命令行开头&ndash;Home
-Ctrl+e回到命令行的尾部&ndash;End
-  Ctrl+u删除光标前边的所有字符
-Ctrl+k删除光标后边的所有字符
-Ctrl+w删除光标前的一个单词
-  Ctrl+r输入曾经的命令下的某个单词或字母，按照单词的匹配history    cat 在cat输出时候显示行数
-cat -n maim.go     wc 统计文件行、单词、字符数量 格式：
-usage: wc [-clmw] [file ...] 统计main.go的行、单词、字符数量
-wc main.go 选项：
--l 统计行数 -c 统计字符数 -w 统计单词数 -L 统计最长的行的字符数     nc 接收方
-nc -l [port] > filename 发送方
-nc [ip] [port] < filename     xargs xargs是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。 格式:
-somecommand | xargs [-item] [command] 选项：">
+<meta property="og:title" content="vi">
+<meta property="og:description" content="快捷键     命令 显示行号
+:set number   在vi中执行shell命令
+:!ls-l   将shell命令的结果插入到当前行的下一行
+:r !date //读取系统时间并插入到当前行的下一行   将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容
+:62,72 !sort //将62行到72行的内容进行排序 当前光标所在行，除可以指定行号外，也可以用.表示
+:. !tr [a-z] [A-Z] //将当前行的小写转为大写   将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容
+:62,72 w !sort //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域   将某一行作为shell命令执行
+:62 w !bash //将会把第62行的内容作为bash命令来执行并显示结果，而且不会改变当前编辑的文件的内容     ">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://ormissia.github.io/notes/linux/bash/basic/"><meta property="article:section" content="notes">
+<meta property="og:url" content="https://ormissia.github.io/notes/linux/tool/vi/"><meta property="article:section" content="notes">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/notes.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -139,9 +134,16 @@ Ormissia's Blog</a>
 <i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/>Linux</a>
 <ul class=active>
 <li>
-<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/bash/>Bash</a>
+<i class="fas fa-plus-circle"></i><a href=/notes/linux/shell/>Shell</a>
+<ul>
+<li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li>
+<li><a href=/notes/linux/shell/advance/ title=Advance>Advance</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/tool/>Tool</a>
 <ul class=active>
-<li><a class=active href=/notes/linux/bash/basic/ title="Bash Command">Bash Command</a></li>
+<li><a class=active href=/notes/linux/tool/vi/ title=vi>vi</a></li>
 </ul>
 </li>
 </ul>
@@ -159,82 +161,44 @@ Ormissia's Blog</a>
 <div class=item>
 <h5 class=note-title><span>快捷键</span></h5>
 <div class=card>
-<div class=card-body><p><code>Ctrl+a</code>回到命令行开头&ndash;<code>Home</code></p>
-<p><code>Ctrl+e</code>回到命令行的尾部&ndash;<code>End</code></p>
-</div>
-</div>
-<div class=card>
-<div class=card-body><p><code>Ctrl+u</code>删除光标前边的所有字符</p>
-<p><code>Ctrl+k</code>删除光标后边的所有字符</p>
-<p><code>Ctrl+w</code>删除光标前的一个单词</p>
-</div>
-</div>
-<div class=card>
-<div class=card-body><code>Ctrl+r</code>输入曾经的命令下的某个单词或字母，按照单词的匹配<code>history</code></div>
+<div class=card-body></div>
 </div>
 </div>
 </div>
 <div class=note-card>
 <div class=item>
-<h5 class=note-title><span>cat</span></h5>
+<h5 class=note-title><span>命令</span></h5>
 <div class=card>
-<div class=card-body><p>在<code>cat</code>输出时候显示行数</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cat -n maim.go
-</code></pre></div></div>
+<div class=card-body><p>显示行号</p>
+<pre><code>:set number
+</code></pre></div>
 </div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>wc</span></h5>
 <div class=card>
-<div class=card-body><p>统计文件行、单词、字符数量
-格式：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>usage: wc <span style=color:#f92672>[</span>-clmw<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>file ...<span style=color:#f92672>]</span>
-</code></pre></div><p>统计<code>main.go</code>的行、单词、字符数量</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wc main.go
-</code></pre></div><p>选项：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-l 统计行数
--c 统计字符数
--w 统计单词数
--L 统计最长的行的字符数
-</code></pre></div></div>
+<div class=card-body><p>在<code>vi</code>中执行shell命令</p>
+<pre><code>:!ls-l
+</code></pre></div>
 </div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>nc</span></h5>
 <div class=card>
-<div class=card-body><p>接收方</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc -l <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &gt; filename
-</code></pre></div><p>发送方</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nc <span style=color:#f92672>[</span>ip<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &lt; filename
-</code></pre></div></div>
+<div class=card-body><p>将<code>shell</code>命令的结果插入到当前行的下一行</p>
+<pre><code>:r !date  //读取系统时间并插入到当前行的下一行
+</code></pre></div>
 </div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>xargs</span></h5>
 <div class=card>
-<div class=card-body><p><code>xargs</code>是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
-格式:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
-</code></pre></div><p>选项：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-a file 从文件中读入作为 stdin
--e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。
--p 当每次执行一个argument的时候询问一次用户。
--n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。
--t 表示先打印命令，然后再执行。
--i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 <span style=color:#f92672>{}</span>，可以用 <span style=color:#f92672>{}</span> 代替。
--r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。
--s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。
--L num 从标准输入一次读取 num 行送给 command 命令。
--l 同 -L。
--d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。
--x exit的意思，主要是配合-s使用。。
-</code></pre></div></div>
+<div class=card-body><p>将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容</p>
+<pre><code>:62,72 !sort  //将62行到72行的内容进行排序
+</code></pre><p>当前光标所在行，除可以指定行号外，也可以用<code>.</code>表示</p>
+<pre><code>:. !tr [a-z] [A-Z]  //将当前行的小写转为大写
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容</p>
+<pre><code>:62,72 w !sort  //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域
+</code></pre></div>
+</div>
+<div class=card>
+<div class=card-body><p>将某一行作为<code>shell</code>命令执行</p>
+<pre><code>:62 w !bash //将会把第62行的内容作为bash命令来执行并显示结果，而且不会改变当前编辑的文件的内容
+</code></pre></div>
 </div>
 </div>
 </div>
