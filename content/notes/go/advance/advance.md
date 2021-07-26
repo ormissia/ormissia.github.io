@@ -1,12 +1,12 @@
 ---
-title: Go Timer
-weight: 111
+title: Advance
+weight: 121
 menu:
   notes:
-    name: Go Timer
-    identifier: notes-go-basics-timer
-    parent: notes-go-basics
-    weight: 111
+    name: Advance
+    identifier: notes-go-advance-types
+    parent: notes-go-advance
+    weight: 121
 ---
 <!-- String Type -->
 
@@ -28,3 +28,4 @@ Time.Unix()
 time.Unix()
 ```
 {{< /note >}}
+
