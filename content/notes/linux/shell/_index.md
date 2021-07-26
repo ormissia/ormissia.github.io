@@ -1,10 +1,10 @@
 ---
-title: Bash
+title: Shell
 weight: 71
 menu:
   notes:
-    name: Bash
-    identifier: notes-linux-bash
+    name: Shell
+    identifier: notes-linux-shell
     parent: notes-linux
     weight: 71
 ---
