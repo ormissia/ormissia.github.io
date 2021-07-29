@@ -11,7 +11,10 @@
 1Byte 类似 uint8 rune
 4Byte 类似 int32 uint
 4Byte / 8Byte 32 或 64 位 int
-4Byte / 8Byte 与 uint 一样大小 float32</description></item><item><title>Advance</title><link>https://ormissia.github.io/notes/go/advance/advance/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/advance/</guid><description>时间转换 字符串转时间
+4Byte / 8Byte 与 uint 一样大小 float32
+4Byte float64
+8Byte string
+1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型）</description></item><item><title>Advance</title><link>https://ormissia.github.io/notes/go/advance/advance/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/advance/</guid><description>时间转换 字符串转时间
 time.Parse() 时间转字符串
 time.Format() 时间转时间戳
 Time.Unix() 时间戳转时间

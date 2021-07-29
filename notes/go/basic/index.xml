@@ -11,4 +11,7 @@
 1Byte 类似 uint8 rune
 4Byte 类似 int32 uint
 4Byte / 8Byte 32 或 64 位 int
-4Byte / 8Byte 与 uint 一样大小 float32</description></item></channel></rss>
+4Byte / 8Byte 与 uint 一样大小 float32
+4Byte float64
+8Byte string
+1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型）</description></item></channel></rss>
