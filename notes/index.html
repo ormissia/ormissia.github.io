@@ -564,8 +564,8 @@ map2.put(&quot;a&quot;, 5)
 <div class=item>
 <h5 class=note-title><span>按年月日分组聚合</span></h5>
 <div class=card>
-<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>group</span> <span style=color:#66d9ef>by</span> date_format(<span style=color:#f92672>&lt;</span>field_name<span style=color:#f92672>&gt;</span>, <span style=color:#f92672>&lt;</span>format<span style=color:#f92672>&gt;</span>);
-</code></pre></div><p>根据format字符串格式化date值。下列修饰符可以被用在format字符串中：</p>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>group</span> <span style=color:#66d9ef>by</span> date_format(field_name, format);
+</code></pre></div><p>根据<code>format</code>字符串格式化<code>date</code>值。下列修饰符可以被用在<code>format</code>字符串中：</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>%M 月名字<span style=color:#f92672>(</span>January……December<span style=color:#f92672>)</span> 
 %W 星期名字<span style=color:#f92672>(</span>Sunday……Saturday<span style=color:#f92672>)</span> 
 %D 有英语前缀的月份的日期<span style=color:#f92672>(</span>1st, 2nd, 3rd, 等等。） 
@@ -599,9 +599,9 @@ map2.put(&quot;a&quot;, 5)
 </div>
 <div class=note-card>
 <div class=item>
-<h5 class=note-title><span>`count`统计不重复个数</span></h5>
+<h5 class=note-title><span>count统计不重复个数</span></h5>
 <div class=card>
-<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>select</span> <span style=color:#66d9ef>count</span>(<span style=color:#66d9ef>distinct</span> (col_name))
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>select</span> <span style=color:#66d9ef>count</span>(<span style=color:#66d9ef>distinct</span> (field_name))
 <span style=color:#66d9ef>from</span> <span style=color:#66d9ef>table_name</span>
 </code></pre></div></div>
 </div>
