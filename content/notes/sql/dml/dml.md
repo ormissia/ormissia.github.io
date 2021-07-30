@@ -47,3 +47,11 @@ group by date_format(<field_name>, <format>);
 %% 一个文字“%”
 ```
 {{< /note >}}
+
+
+{{< note title="`count`统计不重复个数" >}}
+```sql
+select count(distinct (col_name))
+from table_name
+```
+{{< /note >}}
