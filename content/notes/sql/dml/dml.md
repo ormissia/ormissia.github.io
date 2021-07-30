@@ -14,9 +14,9 @@ menu:
 
 {{< note title="按年月日分组聚合" >}}
 ```sql
-group by date_format(<field_name>, <format>);
+group by date_format(field_name, format);
 ```
-根据format字符串格式化date值。下列修饰符可以被用在format字符串中：
+根据`format`字符串格式化`date`值。下列修饰符可以被用在`format`字符串中：
 ```bash
 %M 月名字(January……December) 
 %W 星期名字(Sunday……Saturday) 
@@ -49,9 +49,9 @@ group by date_format(<field_name>, <format>);
 {{< /note >}}
 
 
-{{< note title="`count`统计不重复个数" >}}
+{{< note title="count统计不重复个数" >}}
 ```sql
-select count(distinct (col_name))
+select count(distinct (field_name))
 from table_name
 ```
 {{< /note >}}
