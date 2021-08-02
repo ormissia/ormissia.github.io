@@ -5,7 +5,7 @@ hero: head.svg
 menu:
   sidebar:
     name: 请求参数校验
-    identifier: knowledge-go-pattern-1
+    identifier: knowledge-go-param-verify
     parent: knowledge
     weight: 1
 ---

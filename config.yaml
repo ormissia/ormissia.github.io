@@ -2,7 +2,7 @@ baseURL: https://ormissia.github.io
 
 languageCode: en-us
 # 默认语言修改为中文
-defaultContentLanguage: cn
+#defaultContentLanguage: cn
 # 页面左上角和标签栏的标题标题
 title: "Ormissia's Blog"
 # 主题
@@ -14,6 +14,9 @@ languages:
   cn:
     languageName: 中文
     weight: 1
+  en:
+    languageName: English
+    weight: 2
 
 # Control TOC depth
 markup:
@@ -53,6 +56,8 @@ params:
 
   # GitHub repo URL of your site
   gitRepo: https://github.com/ormissia/ormissia.github.io
+  # Default branch of your Git repo
+  gitBranch: master
 
   # Configure various features of this theme
   features:
