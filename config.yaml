@@ -2,7 +2,7 @@ baseURL: https://ormissia.github.io
 
 languageCode: en-us
 # 默认语言修改为中文
-#defaultContentLanguage: cn
+defaultContentLanguage: zh-cn
 # 页面左上角和标签栏的标题标题
 title: "Ormissia's Blog"
 # 主题
@@ -11,12 +11,9 @@ theme: "toha"
 # Manage languages
 # For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
 languages:
-  cn:
+  zh-cn:
     languageName: 中文
     weight: 1
-  en:
-    languageName: English
-    weight: 2
 
 # Control TOC depth
 markup:
