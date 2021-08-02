@@ -4,5 +4,5 @@ menu:
   sidebar:
     name: 疑难杂症
     identifier: problems
-    weight: 5
+    weight: 5000
 ---

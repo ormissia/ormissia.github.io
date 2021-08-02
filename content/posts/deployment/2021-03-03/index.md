@@ -7,7 +7,7 @@ menu:
     name: 我的博客后端Docker镜像打包自动部署流程
     identifier: ci/cd github docker jenkins golang gin
     parent: deployment
-    weight: 1
+    weight: 3001
 ---
 
 > 博客后端使用Golang重构之后使用GitHub-DockerHub-Jenkins自动打包部署流程

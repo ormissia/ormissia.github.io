@@ -7,7 +7,7 @@ menu:
     name: 函数选项模式
     identifier: knowledge-go-pattern-1
     parent: knowledge
-    weight: 1
+    weight: 2001
 ---
 
 > 作为 Golang 开发者，遇到的许多问题之一就是尝试将函数的参数设置成可选项。这是一个十分常见的场景，您可以使用一些已经设置默认配置和开箱即用的对象，同时您也可以使用一些更为详细的配置。

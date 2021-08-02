@@ -1,12 +1,13 @@
 ---
 title: "Markdown Samples"
 date: 2020-06-08T08:06:25+06:00
-description: Markdown rendering samples
+hero: head.svg
 menu:
   sidebar:
     name: Markdown Sample
-    identifier: markdown
-    weight: 1
+    identifier: unclassified-markdown
+    parent: unclassified
+    weight: 6001
 ---
 
 This is a sample post intended to test the followings:

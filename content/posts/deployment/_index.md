@@ -4,5 +4,5 @@ menu:
   sidebar:
     name: 环境部署
     identifier: deployment
-    weight: 3
+    weight: 3000
 ---

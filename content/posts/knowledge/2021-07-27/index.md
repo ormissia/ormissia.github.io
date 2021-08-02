@@ -7,7 +7,7 @@ menu:
     name: 实体参数校验
     identifier: knowledge-go-param-verify
     parent: knowledge
-    weight: 1
+    weight: 2002
 ---
 
 > A："请用一句话让别人知道你写过Golang。"  

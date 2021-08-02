@@ -4,5 +4,5 @@ menu:
   sidebar:
     name: 每日力扣
     identifier: leetcod
-    weight: 4
+    weight: 4000
 ---
