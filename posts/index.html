@@ -51,7 +51,6 @@ Ormissia's Blog</a>
 <ul class=tree id=tree>
 <li id=list-heading><a href=/posts data-filter=all>博文</a></li>
 <div class=subtree>
-<li><a href=/posts/unclassified/ title="Markdown Sample">Markdown Sample</a></li>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
 <ul>
@@ -67,6 +66,12 @@ Ormissia's Blog</a>
 </li>
 <li><a href=/posts/leetcode/ title=每日力扣>每日力扣</a></li>
 <li><a href=/posts/problems/ title=疑难杂症>疑难杂症</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
 </div>
 </ul>
 </div>
@@ -144,10 +149,10 @@ func NewStuffClient(conn Connection) StuffClient { return &stuffClient{ conn: co
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/unclassified/ class=post-card-link>
+<a href=/posts/unclassified/markdown/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/unclassified/hero.svg alt="Hero Image">
+<img class=card-img-top src=/posts/unclassified/markdown/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Markdown Samples</h5>
@@ -157,7 +162,7 @@ H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo. Aqu
 </div>
 <div class=card-footer>
 <span class=float-left>June 8, 2020</span>
-<a href=/posts/unclassified/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/unclassified/markdown/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
