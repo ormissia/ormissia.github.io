@@ -1,5 +1,5 @@
 ---
-title: "Go 惯用模式：函数选项模式"
+title: Go 惯用模式：函数选项模式
 date: 2021-07-22T11:13:56+08:00
 hero: head.svg
 menu:

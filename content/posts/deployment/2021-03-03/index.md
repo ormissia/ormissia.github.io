@@ -1,5 +1,5 @@
 ---
-title: "我的博客后端Docker镜像打包自动部署流程"
+title: 我的博客后端Docker镜像打包自动部署流程
 date: 2021-03-03T18:00:20+06:00
 hero: head.svg
 menu:
