@@ -56,7 +56,7 @@ Ormissia's Blog</a>
 <i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
 <ul>
 <li><a href=/posts/knowledge/2021-07-22/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2021-07-27/ title=请求参数校验>请求参数校验</a></li>
+<li><a href=/posts/knowledge/2021-07-27/ title=实体参数校验>实体参数校验</a></li>
 </ul>
 </li>
 <li>
@@ -83,8 +83,13 @@ Ormissia's Blog</a>
 <img class=card-img-top src=/posts/knowledge/2021-07-27/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
-<h5 class=card-title>请求参数校验</h5>
-<p class="card-text post-summary"></p>
+<h5 class=card-title>Golang 实体参数校验</h5>
+<p class="card-text post-summary">A：&ldquo;请用一句话让别人知道你写过Golang。&rdquo;
+B：&ldquo;if err!= nil &mldr;&rdquo;
+起因 只要是接触过Golang的人，无不为其if err != nil的语法感到惊奇，或是大加赞赏，或是狠狠痛批。作为使用者，不管喜欢也好，反对也罢， 目前还是要接受这种错误处理模式。
+而最令人头痛的就是请求参数中各种值的校验。比如Get请求中接收分页参数时，需要将string格式的参数转换成int类型，再如时间类型的参数 转换， 诸如此类，等等等等。好家伙，一个接口写完if err != nil的判断占了一多半的行数，看着实在不爽。
+下面就是一个典型的例子，而且这个接口参数还不是特别多
+func Export(c *gin.Context) { //删除开头 //... var param map[string]string err := c.ShouldBindJSON(&param) if err != nil { ErrRsponse(c,errCode) return } var vId, userId, userName, format string if v, ok := param["vId"]; ok { vId = v } else { ErrRsponse(c,errCode) return } if len(vId) == 0 { ErrRsponse(c,errCode) return } if v, ok := param["userId"]; ok { userId = v } else { ErrRsponse(c,errCode) return } if v, ok := param["userName"]; ok { userName = v } else { ErrRsponse(c,errCode) return } if v, ok := param["format"]; ok { format = v } else { ErrRsponse(c,errCode) return } if !</p>
 </div>
 <div class=card-footer>
 <span class=float-left>July 27, 2021</span>
