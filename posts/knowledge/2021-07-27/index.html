@@ -160,13 +160,13 @@ B：&ldquo;if err!= nil &mldr;&rdquo;</p>
 </span><span style=color:#75715e></span>	<span style=color:#75715e>//删除结尾
 </span><span style=color:#75715e></span>}
 </code></pre></div><h2 id=机遇>机遇</h2>
-<p>前几天在看<a href=https://github.com/flipped-aurora/gin-vue-admin>GIN-VUE-ADMIN</a>代码的时候，偶然看到一个同过反射去做参数校验的方式。
+<p>前几天在看<a href=https://github.com/flipped-aurora/gin-vue-admin>GIN-VUE-ADMIN</a>代码的时候，偶然看到一个通过反射去做参数校验的方式。
 嘿，学到了！</p>
 <h2 id=改变>改变</h2>
 <h3 id=定义规则>定义规则</h3>
 <p>校验规则使用一个<code>map</code>存储，<code>key</code>为字段名，<code>value</code>为规则列表，并使用一个<code>string</code>类型的切片来存储。</p>
 <blockquote>
-<p>后续计划加入<code>tag</code>标签定义规则的功能</p>
+<p>后续计划加入<code>tag</code>标签定义规则的功能以及增加通过函数参数的方式，实现自定义规则校验</p>
 </blockquote>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Rules</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>][]<span style=color:#66d9ef>string</span>
 </code></pre></div><p>支持的规则有：</p>
@@ -250,7 +250,7 @@ B：&ldquo;if err!= nil &mldr;&rdquo;</p>
 	}
 }
 </code></pre></div><h3 id=封装>封装</h3>
-<p>为了调用方便，做了一层封装，使用<a href=http://localhost:1313/posts/knowledge/2021-07-22/>函数选项模式</a>对校验器进行封装，使调用更为方便。</p>
+<p>为了调用方便，做了一层封装，使用<a href=https://ormissia.github.io/posts/knowledge/2021-07-22/>函数选项模式</a>对校验器进行封装，使调用更为方便。</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>defaultVerifierOptions</span> = <span style=color:#a6e22e>verifierOptions</span>{
 	<span style=color:#a6e22e>separator</span>: <span style=color:#e6db74>&#34;:&#34;</span>,
 	<span style=color:#a6e22e>conditions</span>: <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>bool</span>{
@@ -320,7 +320,7 @@ B：&ldquo;if err!= nil &mldr;&rdquo;</p>
 那么这就需要发布到<a href=https://pkg.go.dev>pkg.go.dev</a>才能通过<code>go get</code>命令正常被其他项目所引用。</p>
 </blockquote>
 <ol>
-<li>首先是<code>git commit</code>、<code>git push</code>一把梭把项目整到<code>GitHub</code>上。</li>
+<li>首先是<code>git commit</code>、<code>git push</code>一把梭将项目整到<code>GitHub</code>上。</li>
 <li>由于<a href=https://pkg.go.dev>pkg.go.dev</a>的版本管理机制需要给项目打上<code>tag</code>，<code>git tag v0.0.1</code>基础版本，😋先定个<code>0.0.1</code>吧，
 然后<code>git push</code>再走一遍。</li>
 <li>当然这时候还没完，需要自己<code>go get</code>一下，加上<code>GitHub</code>仓库名执行一下<code>go get github.com/ormissia/go-opv</code></li>
@@ -335,6 +335,11 @@ B：&ldquo;if err!= nil &mldr;&rdquo;</p>
 <h2 id=检验>检验</h2>
 <p>测试用例？<br>
 好吧，<code>// TODO</code></p>
+<blockquote>
+<p>老铁看到底了，来个star吧😁<br>
+↓↓↓↓↓↓↓↓↓<br>
+<a href=https://github.com/ormissia/go-opv>GitHub仓库</a></p>
+</blockquote>
 </div>
 <div class=btn-improve-page>
 <a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2021-07-27/index.md title=改善此页面 target=_blank rel=noopener>
