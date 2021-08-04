@@ -14,4 +14,4 @@
 4Byte / 8Byte 与 uint 一样大小 float32
 4Byte float64
 8Byte string
-1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型）</description></item></channel></rss>
+1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型） 切片拼接 slice1 := []int{0, 1, 2, 3} slice2 := []int{3, 4, 5} slice1 = append(slice1, slice2.</description></item></channel></rss>

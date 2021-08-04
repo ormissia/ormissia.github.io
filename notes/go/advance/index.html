@@ -63,8 +63,8 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-minus-circle"></i><a class=active href=/notes/go/advance/>Advance</a>
 <ul class=active>
-<li><a href=/notes/go/advance/advance/ title=Advance>Advance</a></li>
-<li><a href=/notes/go/advance/gomod/ title=Advance>Advance</a></li>
+<li><a href=/notes/go/advance/time/ title=time>time</a></li>
+<li><a href=/notes/go/advance/gomod/ title="go mod">go mod</a></li>
 </ul>
 </li>
 </ul>
@@ -164,6 +164,55 @@ Ormissia's Blog</a>
 </code></pre></div><p>时间戳转时间</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Unix</span>()
 </code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>计时</span></h5>
+<div class=card>
+<div class=card-body><p>朴素方法</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>	<span style=color:#a6e22e>startTime</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>()
+	<span style=color:#75715e>//do something
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+	<span style=color:#a6e22e>duration</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Since</span>(<span style=color:#a6e22e>startTime</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;经过时间：%v\n&#34;</span>, <span style=color:#a6e22e>duration</span>)
+	
+<span style=color:#75715e>//经过时间：1.005046959s
+</span></code></pre></div></div>
+</div>
+<div class=card>
+<div class=card-body><p>简洁方法</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// TimeCost 耗时统计函数
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TimeCost</span>(<span style=color:#a6e22e>start</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>) {
+	<span style=color:#a6e22e>duration</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Since</span>(<span style=color:#a6e22e>start</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;经过时间：%v\n&#34;</span>, <span style=color:#a6e22e>duration</span>)
+}
+
+	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>TimeCost</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>())
+	<span style=color:#75715e>//do something
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+	
+<span style=color:#75715e>//经过时间：1.005054375s
+</span></code></pre></div></div>
+</div>
+<div class=card>
+<div class=card-body><p>优雅方法</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// TimeCost 耗时统计函数
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TimeCost</span>() <span style=color:#66d9ef>func</span>() {
+	<span style=color:#a6e22e>start</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>()
+	<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>func</span>() {
+		<span style=color:#a6e22e>duration</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Since</span>(<span style=color:#a6e22e>start</span>)
+		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;经过时间：%v\n&#34;</span>, <span style=color:#a6e22e>duration</span>)
+	}
+}
+
+	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>TimeCost</span>()()
+	<span style=color:#75715e>//do something
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+	
+<span style=color:#75715e>//经过时间：1.005033916s
+</span></code></pre></div></div>
 </div>
 </div>
 </div>
