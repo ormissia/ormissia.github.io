@@ -82,3 +82,16 @@ menu:
 {{< /note >}}
 
 
+{{< note title="切片拼接" >}}
+
+```go
+slice1 := []int{0, 1, 2, 3}
+slice2 := []int{3, 4, 5}
+
+slice1 = append(slice1, slice2...)
+fmt.Println(slice1)
+
+//[0 1 2 3 3 4 5]
+```
+
+{{< /note >}}

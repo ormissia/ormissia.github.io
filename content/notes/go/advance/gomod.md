@@ -1,9 +1,9 @@
 ---
-title: Advance
+title: go mod
 weight: 122
 menu:
   notes:
-    name: Advance
+    name: go mod
     identifier: notes-go-advance-gomod
     parent: notes-go-advance
     weight: 122
