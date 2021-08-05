@@ -20,7 +20,7 @@ B：&ldquo;if err!= nil &mldr;&rdquo;
 下面就是一个典型的例子，而且这个接口参数还不是特别多
 func Export(c *gin.Context) { //删除开头  //... 	var param map[string]string err := c.ShouldBindJSON(&param) if err != nil { ErrRsponse(c,errCode) return } var vId, userId, userName, format string if v, ok := param[&#34;vId&#34;]; ok { vId = v } else { ErrRsponse(c,errCode) return } if len(vId) == 0 { ErrRsponse(c,errCode) return } if v, ok := param[&#34;userId&#34;]; ok { userId = v } else { ErrRsponse(c,errCode) return } if v, ok := param[&#34;userName&#34;]; ok { userName = v } else { ErrRsponse(c,errCode) return } if v, ok := param[&#34;format&#34;]; ok { format = v } else { ErrRsponse(c,errCode) return } if !">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2021-07-27/"><meta property="article:section" content="posts">
+<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2002-go-param-verify/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-07-27T15:08:44+08:00">
 <meta property="article:modified_time" content="2021-07-27T15:08:44+08:00">
 <meta name=description content="Golang 实体参数校验">
@@ -63,14 +63,15 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
 <ul class=active>
-<li><a href=/posts/knowledge/2021-07-22/ title=函数选项模式>函数选项模式</a></li>
-<li><a class=active href=/posts/knowledge/2021-07-27/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a class=active href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
 </ul>
 </li>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
 <ul>
-<li><a href=/posts/deployment/2021-03-03/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
 </ul>
 </li>
 <li><a href=/posts/leetcode/ title=每日力扣>每日力扣</a></li>
@@ -78,7 +79,7 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
 <ul>
-<li><a href=/posts/unclassified/markdown/ title="Markdown Sample">Markdown Sample</a></li>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
 </ul>
 </li>
 </div>
@@ -90,7 +91,7 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class=content>
 <div class="container p-0 read-area">
-<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/knowledge/2021-07-27/head.svg)>
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/knowledge/2002-go-param-verify/head.svg)>
 </div>
 <div class=page-content>
 <div class="author-profile ml-auto align-self-lg-center">
@@ -342,7 +343,7 @@ B：&ldquo;if err!= nil &mldr;&rdquo;</p>
 </blockquote>
 </div>
 <div class=btn-improve-page>
-<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2021-07-27/index.md title=改善此页面 target=_blank rel=noopener>
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2002-go-param-verify/index.md title=改善此页面 target=_blank rel=noopener>
 <i class="fas fa-code-branch"></i>
 改善此页面
 </a>
@@ -350,15 +351,15 @@ B：&ldquo;if err!= nil &mldr;&rdquo;</p>
 <hr>
 <div class="row next-prev-navigator">
 <div class="col-md-6 previous-article">
-<a href=/posts/knowledge/2021-07-22/ title="Go 惯用模式：函数选项模式" class="btn btn-outline-info">
+<a href=/posts/knowledge/2001-go-partten-1/ title="Go 惯用模式：函数选项模式" class="btn btn-outline-info">
 <div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
 <div class=next-prev-text>Go 惯用模式：函数选项模式</div>
 </a>
 </div>
 <div class="col-md-6 next-article">
-<a href=/posts/deployment/2021-03-03/ title=我的博客后端Docker镜像打包自动部署流程 class="btn btn-outline-info">
+<a href=/posts/knowledge/2003-go-reflect/ title=Golang反射 class="btn btn-outline-info">
 <div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
-<div class=next-prev-text>我的博客后端Docker镜像打包自动部署流程</div>
+<div class=next-prev-text>Golang反射</div>
 </a>
 </div>
 </div>
