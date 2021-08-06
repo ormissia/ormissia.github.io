@@ -1,12 +1,12 @@
 ---
 title: Basic
-weight: 011
+weight: 131
 menu:
   notes:
     name: Basic
-    identifier: notes-algorithm-basics-basic
-    parent: notes-algorithm-basics
-    weight: 011
+    identifier: notes-go-algorithm-basic
+    parent: notes-go-algorithm
+    weight: 131
 ---
 
 <!-- Basic Type -->
