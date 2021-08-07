@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>每日力扣</title>
+<title>算法</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,10 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="每日力扣">
+<meta property="og:title" content="算法">
 <meta property="og:description" content>
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/posts/leetcode/">
+<meta property="og:url" content="https://ormissia.github.io/posts/algorithm/">
 <link rel=stylesheet href=/css/layouts/list.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
 <link rel=stylesheet href=/css/style.css>
@@ -66,7 +66,12 @@ Ormissia's Blog</a>
 <li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
 </ul>
 </li>
-<li><a class=active href=/posts/leetcode/ title=每日力扣>每日力扣</a></li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/algorithm/>算法</a>
+<ul class=active>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+</ul>
+</li>
 <li><a href=/posts/problems/ title=疑难杂症>疑难杂症</a></li>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
@@ -83,6 +88,25 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/algorithm/4001-algorithm-sort/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/algorithm/4001-algorithm-sort/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>排序算法</h5>
+<p class="card-text post-summary">归并排序 思想：整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
+核心代码：
+func merge(arr []interface{}, l, mid, r int, compare Compare) { help := make([]interface{}, r-l+1) i := 0 p1 := l p2 := mid + 1 for p1 &lt;= mid && p2 &lt;= r { if compare(arr[p1], arr[p2]) { help[i] = arr[p1] p1++ } else { help[i] = arr[p2] p2++ } i++ } //要么p1越界了，要么p2越界了 for p1 &lt;= mid { help[i] = arr[p1] i++ p1++ } for p2 &lt;= r { help[i] = arr[p2] i++ p2++ } for j, _ := range help { arr[l+j] = help[j] } } 递归 核心代码</p>
+</div>
+<div class=card-footer>
+<span class=float-left>August 7, 2021</span>
+<a href=/posts/algorithm/4001-algorithm-sort/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 </div>
 <div class=paginator>
 </div>
