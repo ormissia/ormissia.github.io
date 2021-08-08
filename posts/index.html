@@ -97,6 +97,7 @@ Ormissia's Blog</a>
 <div class=card-body>
 <h5 class=card-title>排序算法</h5>
 <p class="card-text post-summary">归并排序 思想：整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
+具体实现
 核心代码：
 func merge(arr []interface{}, l, mid, r int, compare Compare) { help := make([]interface{}, r-l+1) i := 0 p1 := l p2 := mid + 1 for p1 &lt;= mid && p2 &lt;= r { if compare(arr[p1], arr[p2]) { help[i] = arr[p1] p1++ } else { help[i] = arr[p2] p2++ } i++ } //要么p1越界了，要么p2越界了 for p1 &lt;= mid { help[i] = arr[p1] i++ p1++ } for p2 &lt;= r { help[i] = arr[p2] i++ p2++ } for j, _ := range help { arr[l+j] = help[j] } } 递归 核心代码</p>
 </div>

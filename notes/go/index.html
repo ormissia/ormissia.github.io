@@ -317,6 +317,28 @@ Ormissia's Blog</a>
 </div>
 </div>
 </div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>堆</span></h5>
+<div class=card>
+<div class=card-body><blockquote>
+<p>堆的实质是一棵完全二叉树</p>
+</blockquote>
+<p>堆可分为两种类型：</p>
+<ul>
+<li>大根堆：所有子树的根节点均为最大值</li>
+<li>小根堆：所有子树的根节点均为最小值</li>
+</ul>
+<p>一般情况下堆可以用一个有序数组来存储<br>
+[0&mldr;i&mldr;n]
+<code>i</code>节点的左孩子<code>index</code>为<code>2*i+1</code>，右孩子为<code>2i+2</code>，父节点为<code>(i-1)/2</code></p>
+<p>也有一种特例是从1开始(位运算比加减法快)<br>
+[01&mldr;i&mldr;n]
+<code>i</code>节点的左孩子<code>index</code>为<code>2*i</code>即<code>i&lt;&lt;1</code>，右孩子为<code>2i+1</code>即<code>i&lt;&lt;1|1</code>，父节点为<code>i/2</code></p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class=paginator>
 </div>

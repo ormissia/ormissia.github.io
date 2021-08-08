@@ -14,7 +14,8 @@
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="排序算法">
 <meta property="og:description" content="归并排序  思想：整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
- 核心代码：
+ 具体实现
+核心代码：
 func merge(arr []interface{}, l, mid, r int, compare Compare) { help := make([]interface{}, r-l+1) i := 0 p1 := l p2 := mid + 1 for p1 <= mid && p2 <= r { if compare(arr[p1], arr[p2]) { help[i] = arr[p1] p1++ } else { help[i] = arr[p2] p2++ } i++ } //要么p1越界了，要么p2越界了 	for p1 <= mid { help[i] = arr[p1] i++ p1++ } for p2 <= r { help[i] = arr[p2] i++ p2++ } for j, _ := range help { arr[l+j] = help[j] } } 递归 核心代码">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/algorithm/4001-algorithm-sort/"><meta property="article:section" content="posts">
@@ -110,6 +111,7 @@ Ormissia's Blog</a>
 <blockquote>
 <p>思想：整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序</p>
 </blockquote>
+<p><a href=https://github.com/ormissia/go-algorithm/blob/4f24160d20d8bed12ae4e3cf057dee5129b94554/basic/sort/merge_sort.go#L7>具体实现</a></p>
 <p>核心代码：</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>merge</span>(<span style=color:#a6e22e>arr</span> []<span style=color:#66d9ef>interface</span>{}, <span style=color:#a6e22e>l</span>, <span style=color:#a6e22e>mid</span>, <span style=color:#a6e22e>r</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>compare</span> <span style=color:#a6e22e>Compare</span>) {
 	<span style=color:#a6e22e>help</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>interface</span>{}, <span style=color:#a6e22e>r</span><span style=color:#f92672>-</span><span style=color:#a6e22e>l</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
@@ -179,6 +181,7 @@ Ormissia's Blog</a>
 		<span style=color:#a6e22e>mergeSize</span> <span style=color:#f92672>&lt;&lt;=</span> <span style=color:#ae81ff>1</span>
 	}
 </code></pre></div><h2 id=快速排序>快速排序</h2>
+<p><a href=https://github.com/ormissia/go-algorithm/blob/4f24160d20d8bed12ae4e3cf057dee5129b94554/basic/sort/quick_sort.go#L10>具体实现</a></p>
 <blockquote>
 <p>思想：给定一个数组<code>arr</code>和一个整数<code>num</code>，把小于等于<code>num</code>的数放在数组左边，大于<code>num</code>的数放在数组的右边。</p>
 </blockquote>
@@ -224,7 +227,8 @@ Ormissia's Blog</a>
 	<span style=color:#a6e22e>quickProcess</span>(<span style=color:#a6e22e>arr</span>, <span style=color:#a6e22e>l</span>, <span style=color:#a6e22e>i</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#a6e22e>isEqual</span>, <span style=color:#a6e22e>isSmall</span>)
 	<span style=color:#a6e22e>quickProcess</span>(<span style=color:#a6e22e>arr</span>, <span style=color:#a6e22e>j</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, <span style=color:#a6e22e>r</span>, <span style=color:#a6e22e>isEqual</span>, <span style=color:#a6e22e>isSmall</span>)
 }
-</code></pre></div>
+</code></pre></div><h2 id=堆排序>堆排序</h2>
+<h2 id=桶排序>桶排序</h2>
 </div>
 <div class=btn-improve-page>
 <a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/algorithm/4001-algorithm-sort/index.md title=改善此页面 target=_blank rel=noopener>
@@ -271,6 +275,8 @@ Ormissia's Blog</a>
 <li><a href=#递归-1>递归</a></li>
 </ul>
 </li>
+<li><a href=#堆排序>堆排序</a></li>
+<li><a href=#桶排序>桶排序</a></li>
 </ul>
 </nav>
 </div>
