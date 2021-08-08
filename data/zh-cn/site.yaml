@@ -1,7 +1,7 @@
 copyright: © 2021 Copyright.
 
 # A disclaimer notice for the footer. Make sure you have set "params.footer.disclaimer.enable: true" in your `config.yaml` file.
-disclaimer: "老铁都看底了，要负责的哦"
+disclaimer: "老铁看到底了，要负责的哦"
 
 # Meta description for your site.  This will help the search engines to find your site.
 description: Ormissia's GitHub Pages Blog. 安红豆的 GitHub Pages 博客
