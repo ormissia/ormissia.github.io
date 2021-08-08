@@ -14,6 +14,8 @@ menu:
 
 > 思想：整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
 
+[具体实现](https://github.com/ormissia/go-algorithm/blob/4f24160d20d8bed12ae4e3cf057dee5129b94554/basic/sort/merge_sort.go#L7)
+
 核心代码：
 
 ```go
@@ -98,6 +100,8 @@ func mergeProcess(arr []interface{}, l, r int, compare Compare) {
 
 ## 快速排序
 
+[具体实现](https://github.com/ormissia/go-algorithm/blob/4f24160d20d8bed12ae4e3cf057dee5129b94554/basic/sort/quick_sort.go#L10)
+
 > 思想：给定一个数组`arr`和一个整数`num`，把小于等于`num`的数放在数组左边，大于`num`的数放在数组的右边。
 
 > 额外空间复杂度是O(1)，时间复杂度O(N)
@@ -149,3 +153,7 @@ func quickProcess(arr []interface{}, l, r int, isEqual, isSmall Compare) {
 	quickProcess(arr, j+1, r, isEqual, isSmall)
 }
 ```
+
+## 堆排序
+
+## 桶排序

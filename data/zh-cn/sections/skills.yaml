@@ -14,7 +14,7 @@ skills:
   # 语言
   - name: Golang
     logo: /images/sections/skills/go.svg
-    summary: 熟悉Golang底层吗，熟练使用pprof等工具进行性能调优
+    summary: 熟悉Golang底层，熟练使用pprof等工具进行性能调优
     url: https://golang.org
 
   - name: Scala
