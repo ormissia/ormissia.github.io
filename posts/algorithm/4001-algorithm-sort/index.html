@@ -228,6 +228,23 @@ Ormissia's Blog</a>
 	<span style=color:#a6e22e>quickProcess</span>(<span style=color:#a6e22e>arr</span>, <span style=color:#a6e22e>j</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, <span style=color:#a6e22e>r</span>, <span style=color:#a6e22e>isEqual</span>, <span style=color:#a6e22e>isSmall</span>)
 }
 </code></pre></div><h2 id=堆排序>堆排序</h2>
+<blockquote>
+<p>堆的实质是一棵完全二叉树</p>
+</blockquote>
+<p>堆可分为两种类型：</p>
+<ul>
+<li>大根堆：所有子树的根节点均为最大值</li>
+<li>小根堆：所有子树的根节点均为最小值</li>
+</ul>
+<p>一般情况下堆可以用一个有序数组来存储<br>
+[0&mldr;i&mldr;n]
+<code>i</code>节点的左孩子<code>index</code>为<code>2*i+1</code>，右孩子为<code>2i+2</code>，父节点为<code>(i-1)/2</code></p>
+<p>也有一种特例是从1开始(位运算比加减法快)<br>
+[01&mldr;i&mldr;n]
+<code>i</code>节点的左孩子<code>index</code>为<code>2*i</code>即<code>i&lt;&lt;1</code>，右孩子为<code>2i+1</code>即<code>i&lt;&lt;1|1</code>，父节点为<code>i/2</code></p>
+<blockquote>
+<p>堆排序思想：依次弹出</p>
+</blockquote>
 <h2 id=桶排序>桶排序</h2>
 </div>
 <div class=btn-improve-page>
