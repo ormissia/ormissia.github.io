@@ -5,7 +5,7 @@ hero: head.svg
 menu:
   sidebar:
     name: 排序算法
-    identifier: algorithm-sort
+    identifier: algorithm-sort-all
     parent: algorithm
     weight: 4001
 ---
@@ -155,5 +155,21 @@ func quickProcess(arr []interface{}, l, r int, isEqual, isSmall Compare) {
 ```
 
 ## 堆排序
+
+> 堆的实质是一棵完全二叉树
+
+堆可分为两种类型：
+- 大根堆：所有子树的根节点均为最大值
+- 小根堆：所有子树的根节点均为最小值
+
+一般情况下堆可以用一个有序数组来存储  
+[0...i...n]
+`i`节点的左孩子`index`为`2*i+1`，右孩子为`2i+2`，父节点为`(i-1)/2`
+
+也有一种特例是从1开始(位运算比加减法快)  
+[01...i...n]
+`i`节点的左孩子`index`为`2*i`即`i<<1`，右孩子为`2i+1`即`i<<1|1`，父节点为`i/2`
+
+> 堆排序思想：依次弹出
 
 ## 桶排序
