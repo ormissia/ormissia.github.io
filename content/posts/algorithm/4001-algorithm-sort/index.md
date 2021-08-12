@@ -12,11 +12,13 @@ menu:
 
 ## 归并排序
 
-> 思想：整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
+### 思想
+
+整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
 
 [具体实现](https://github.com/ormissia/go-algorithm/blob/4f24160d20d8bed12ae4e3cf057dee5129b94554/basic/sort/merge_sort.go#L7)
 
-核心代码：
+### 核心代码
 
 ```go
 func merge(arr []interface{}, l, mid, r int, compare Compare) {
@@ -51,7 +53,7 @@ func merge(arr []interface{}, l, mid, r int, compare Compare) {
 }
 ```
 
-### 递归
+#### 递归
 
 核心代码
 
@@ -67,7 +69,7 @@ func mergeProcess(arr []interface{}, l, r int, compare Compare) {
 }
 ```
 
-### 非递归
+#### 非递归
 
 核心代码：
 
@@ -102,11 +104,13 @@ func mergeProcess(arr []interface{}, l, r int, compare Compare) {
 
 [具体实现](https://github.com/ormissia/go-algorithm/blob/4f24160d20d8bed12ae4e3cf057dee5129b94554/basic/sort/quick_sort.go#L10)
 
-> 思想：给定一个数组`arr`和一个整数`num`，把小于等于`num`的数放在数组左边，大于`num`的数放在数组的右边。
+### 思想
+
+给定一个数组`arr`和一个整数`num`，把小于等于`num`的数放在数组左边，大于`num`的数放在数组的右边。
 
 > 额外空间复杂度是O(1)，时间复杂度O(N)
 
-核心代码：
+### 核心代码
 
 ```go
 func netherlandsFlag(arr []interface{}, l, r int, isEqual, isSmall Compare) (i, j int) {
@@ -136,7 +140,7 @@ func netherlandsFlag(arr []interface{}, l, r int, isEqual, isSmall Compare) (i, 
 }
 ```
 
-### 递归
+#### 递归
 
 核心代码：
 
@@ -170,6 +174,94 @@ func quickProcess(arr []interface{}, l, r int, isEqual, isSmall Compare) {
 [01...i...n]
 `i`节点的左孩子`index`为`2*i`即`i<<1`，右孩子为`2i+1`即`i<<1|1`，父节点为`i/2`
 
-> 堆排序思想：依次弹出
+- 让整个数组都变成大根堆的结构，建堆的过程：
+  - 从上到下的方法：时间复杂度为O(N*logN)
+  - 从下到上的方法：时间复杂度为O(N)
+- 把堆的根节点个末尾值交换，减小堆的大小之后，再去调整堆，周而复始，时间复杂度为O(N*logN)
+
+### 思想
+
+依次弹出根节点，假设将大根堆弹出的值依次放到数组头部，则得到一个由小到大的数组
+
+> 适合元素在固定范围内移动
+
+[具体实现](https://github.com/ormissia/go-algorithm/blob/57013ea33b4f9086b6cc68a750fa7c75c8afd731/basic/heap/heap.go#L25)
+
+### 核心代码
+
+#### 上浮
+
+```go
+//上浮（通常是最后一个节点）
+//停止条件：1.没有父节点大，2.上浮到根节点了
+func (h *maxHeap) heapInsert() {
+	index := h.heapSize - 1
+	for h.comparator(h.Content[(index-1)/2], h.Content[index]) > 0 {
+		h.Content[index], h.Content[(index-1)/2] = h.Content[(index-1)/2], h.Content[index]
+		index = (index - 1) / 2
+	}
+}
+```
+
+#### 下沉
+
+```go
+//index位置节点不断下沉
+//停止条件，1.没有孩子比自己大，2.没有孩子
+func (h *maxHeap) heapify(index int) {
+	left := index*2 + 1
+	for left < h.heapSize {
+		//先比较左右两个孩子，挑出大的那个
+		largest := left
+		if left+1 < h.heapSize && h.comparator(h.Content[left], h.Content[left+1]) > 0 {
+			largest = left + 1
+		}
+		//再比较根节点和大的那个孩子，如果最大的那个孩子也没有index大，就break
+		if h.comparator(h.Content[index], h.Content[largest]) <= 0 {
+			break
+		}
+		h.Content[index], h.Content[largest] = h.Content[largest], h.Content[index]
+		index = largest
+		left = index*2 + 1
+	}
+}
+```
+
+#### 插入
+
+```go
+func (h *maxHeap) Push(value interface{}) (err error) {
+	if h.IsFull() {
+		return errHeepFull
+	}
+
+	h.Content[h.heapSize] = value
+	h.heapSize++
+	h.heapInsert()
+
+	return nil
+}
+```
+
+#### 弹出
+
+```go
+func (h *maxHeap) Pop() (value interface{}, err error) {
+	if h.IsEmpty() {
+		return nil, errHeepEmpty
+	}
+
+	value = h.Content[0]
+
+	h.heapSize--
+	h.Content[0] = h.Content[h.heapSize]
+	h.heapify(0)
+
+	return value, nil
+}
+
+```
 
 ## 桶排序
+
+## 排序算法总结
