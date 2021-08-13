@@ -12,7 +12,7 @@ menu:
 
 > StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
 
-> 源码中对`tag`的解释：
+> 源码中对`struct tag`的解释：
 > > By convention, tag strings are a concatenation of optionally space-separated key:"value" pairs.
 > > Each key is a non-empty string consisting of non-control characters other than space (U+0020 ' '), quote (U+0022 '"'),
 > > and colon (U+003A ':').  Each value is quoted using U+0022 '"' characters and Go string literal syntax.
