@@ -151,7 +151,7 @@ No content shown here is rendered, all content is based in the template layouts/
 Setting a very low sitemap priority will tell search engines this is not important content.
 This implementation uses Fusejs, jquery and mark.js
 Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>Golang struct tag浅析与自定义tag实践</title><link>https://ormissia.github.io/posts/knowledge/2005-go-tag/</link><pubDate>Fri, 13 Aug 2021 16:55:47 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2005-go-tag/</guid><description>StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
-源码中对tag的解释：
+源码中对struct tag的解释：
 By convention, tag strings are a concatenation of optionally space-separated key:&amp;ldquo;value&amp;rdquo; pairs. Each key is a non-empty string consisting of non-control characters other than space (U+0020 ' &amp;lsquo;), quote (U+0022 &amp;lsquo;&amp;quot;'), and colon (U+003A &amp;lsquo;:'). Each value is quoted using U+0022 &amp;lsquo;&amp;quot;&amp;rsquo; characters and Go string literal syntax.
 简单应用 最常见的，比如json的tag应用：
 json序列化和反序列化时候使用的key都是在struct字段上定义的

@@ -99,7 +99,7 @@ Ormissia's Blog</a>
 <div class=card-body>
 <h5 class=card-title>Golang struct tag浅析与自定义tag实践</h5>
 <p class="card-text post-summary">StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
-源码中对tag的解释：
+源码中对struct tag的解释：
 By convention, tag strings are a concatenation of optionally space-separated key:&ldquo;value&rdquo; pairs. Each key is a non-empty string consisting of non-control characters other than space (U+0020 ' &lsquo;), quote (U+0022 &lsquo;"'), and colon (U+003A &lsquo;:'). Each value is quoted using U+0022 &lsquo;"&rsquo; characters and Go string literal syntax.
 简单应用 最常见的，比如json的tag应用：
 json序列化和反序列化时候使用的key都是在struct字段上定义的
