@@ -58,6 +58,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
 <li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
 <li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
 </ul>
 </li>
 <li>
@@ -89,6 +90,28 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/knowledge/2005-go-tag/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2005-go-tag/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Golang struct tag浅析与自定义tag实践</h5>
+<p class="card-text post-summary">StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
+源码中对tag的解释：
+By convention, tag strings are a concatenation of optionally space-separated key:&ldquo;value&rdquo; pairs. Each key is a non-empty string consisting of non-control characters other than space (U+0020 ' &lsquo;), quote (U+0022 &lsquo;"'), and colon (U+003A &lsquo;:'). Each value is quoted using U+0022 &lsquo;"&rsquo; characters and Go string literal syntax.
+简单应用 最常见的，比如json的tag应用：
+json序列化和反序列化时候使用的key都是在struct字段上定义的
+package main import ( "encoding/json" "fmt" ) type User struct { ID int `json:"id"` Username string `json:"username"` Age int `json:"age"` Email string `json:"email"` } func main() { u := User{ ID: 1, Username: "ormissia", Age: 90, Email: "email@example.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>August 13, 2021</span>
+<a href=/posts/knowledge/2005-go-tag/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/knowledge/2004-go-pprof/ class=post-card-link>
 <div class=card>
