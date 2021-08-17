@@ -14,7 +14,7 @@ reflect.TypeOf 能获取类型信息 reflect.ValueOf 能获取数据的运行时
 因为Go语言的函数调用都是值传递的，所以变量会在函数调用时进行类型转换。基本类型int会转换成interface{}类型， 这也就是为什么第一条法则是从接口到反射对象。
 上面提到的reflect.TypeOf 和reflect.ValueOf 函数就能完成这里的转换，如果我们认为Go语言的类型和反射类型处于两个不同的世界，那么这两个函数就是连接这两个世界的桥梁。
 我们可以通过以下例子简单介绍它们的作用， reflect.TypeOf 获取了变量author的类型， reflect.ValueOf 获取了变量的值ormissia。如果我们知道了一个变量的类型和值，那么就意味着我们知道了这个变量的全部信息。
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;reflect&amp;#34; ) func main() { author := &amp;#34;ormissia&amp;#34; fmt.Println(&amp;#34;TypeOf author:&amp;#34;, reflect.</description></item><item><title>Golang 实体参数校验</title><link>https://ormissia.github.io/posts/knowledge/2002-go-param-verify/</link><pubDate>Tue, 27 Jul 2021 15:08:44 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2002-go-param-verify/</guid><description>A：&amp;ldquo;请用一句话让别人知道你写过Golang。&amp;rdquo;
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;reflect&amp;#34; ) func main() { author := &amp;#34;ormissia&amp;#34; fmt.</description></item><item><title>Golang 实体参数校验</title><link>https://ormissia.github.io/posts/knowledge/2002-go-param-verify/</link><pubDate>Tue, 27 Jul 2021 15:08:44 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2002-go-param-verify/</guid><description>A：&amp;ldquo;请用一句话让别人知道你写过Golang。&amp;rdquo;
 B：&amp;ldquo;if err!= nil &amp;hellip;&amp;rdquo;
 起因 只要是接触过Golang的人，无不为其if err != nil的语法感到惊奇，或是大加赞赏，或是狠狠痛批。作为使用者，不管喜欢也好，反对也罢， 目前还是要接受这种错误处理模式。
 而最令人头痛的就是请求参数中各种值的校验。比如Get请求中接收分页参数时，需要将string格式的参数转换成int类型，再如时间类型的参数 转换， 诸如此类，等等等等。好家伙，一个接口写完if err != nil的判断占了一多半的行数，看着实在不爽。

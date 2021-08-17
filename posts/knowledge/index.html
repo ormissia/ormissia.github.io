@@ -148,7 +148,7 @@ reflect.TypeOf 能获取类型信息 reflect.ValueOf 能获取数据的运行时
 因为Go语言的函数调用都是值传递的，所以变量会在函数调用时进行类型转换。基本类型int会转换成interface{}类型， 这也就是为什么第一条法则是从接口到反射对象。
 上面提到的reflect.TypeOf 和reflect.ValueOf 函数就能完成这里的转换，如果我们认为Go语言的类型和反射类型处于两个不同的世界，那么这两个函数就是连接这两个世界的桥梁。
 我们可以通过以下例子简单介绍它们的作用， reflect.TypeOf 获取了变量author的类型， reflect.ValueOf 获取了变量的值ormissia。如果我们知道了一个变量的类型和值，那么就意味着我们知道了这个变量的全部信息。
-package main import ( "fmt" "reflect" ) func main() { author := "ormissia" fmt.Println("TypeOf author:", reflect.</p>
+package main import ( "fmt" "reflect" ) func main() { author := "ormissia" fmt.</p>
 </div>
 <div class=card-footer>
 <span class=float-left>August 3, 2021</span>

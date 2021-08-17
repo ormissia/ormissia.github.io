@@ -21,7 +21,7 @@
 因为Go语言的函数调用都是值传递的，所以变量会在函数调用时进行类型转换。基本类型int会转换成interface{}类型， 这也就是为什么第一条法则是从接口到反射对象。
 上面提到的reflect.TypeOf 和reflect.ValueOf 函数就能完成这里的转换，如果我们认为Go语言的类型和反射类型处于两个不同的世界，那么这两个函数就是连接这两个世界的桥梁。
 我们可以通过以下例子简单介绍它们的作用， reflect.TypeOf 获取了变量author的类型， reflect.ValueOf 获取了变量的值ormissia。如果我们知道了一个变量的类型和值，那么就意味着我们知道了这个变量的全部信息。
-package main import ( &#34;fmt&#34; &#34;reflect&#34; ) func main() { author := &#34;ormissia&#34; fmt.Println(&#34;TypeOf author:&#34;, reflect.">
+package main import ( &#34;fmt&#34; &#34;reflect&#34; ) func main() { author := &#34;ormissia&#34; fmt.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2003-go-reflect/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-08-03T17:17:01+08:00">
@@ -114,6 +114,11 @@ Ormissia's Blog</a>
 <h1>Golang反射</h1>
 </div>
 <div class=post-content id=post-content>
+<hr>
+<p><img src=https://img.shields.io/badge/-Golang-blue alt=Golang>
+<img src=https://img.shields.io/badge/-%E5%8F%8D%E5%B0%84-orange alt=反射>
+<img src=https://img.shields.io/badge/-reflect-red alt=reflect></p>
+<hr>
 <h2 id=反射简介>反射简介</h2>
 <blockquote>
 <p>Golang提供了一种机制，在编译时不知道类型的情况下，可更新变量、运行时查看值、调用方法以及直接对他们的布局进行操作的机制，称为反射。</p>
