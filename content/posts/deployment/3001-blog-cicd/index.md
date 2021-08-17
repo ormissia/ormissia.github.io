@@ -10,6 +10,15 @@ menu:
     weight: 3001
 ---
 
+---
+
+![GitHub](https://img.shields.io/badge/-GitHub-black)
+![Docker](https://img.shields.io/badge/-Docker-blue)
+![Jenkins](https://img.shields.io/badge/-Jenkins-orange)
+![CI/CD](https://img.shields.io/badge/-CI%2FCD-green)
+
+---
+
 > 博客后端使用Golang重构之后使用GitHub-DockerHub-Jenkins自动打包部署流程
 
 > 虽然说Golang打包生成的是二进制可执行文件，不需要像JAVA一样部署环境变量，但依然也是需要打包的流程。由于考虑到在不(hen)久(yuan)的将来可能做成简单的微服务程序，又要使用Docker部署，所以在这就直接使用Docker镜像的方式来部署运行。

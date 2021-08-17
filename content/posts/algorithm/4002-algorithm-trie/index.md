@@ -10,6 +10,13 @@ menu:
     weight: 4002
 ---
 
+---
+
+![Golang](https://img.shields.io/badge/-Golang-blue)
+![算法](https://img.shields.io/badge/-%E7%AE%97%E6%B3%95-green)
+
+---
+
 > 前缀树又称字典树
 
 ## Trie的应用

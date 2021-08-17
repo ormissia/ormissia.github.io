@@ -10,6 +10,13 @@ menu:
     weight: 2001
 ---
 
+---
+
+![Golang](https://img.shields.io/badge/-Golang-blue)
+![设计模式](https://img.shields.io/badge/-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-green)
+
+---
+
 > 作为 Golang 开发者，遇到的许多问题之一就是尝试将函数的参数设置成可选项。这是一个十分常见的场景，您可以使用一些已经设置默认配置和开箱即用的对象，同时您也可以使用一些更为详细的配置。
 
 ## 问题出发点
