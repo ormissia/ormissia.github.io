@@ -10,6 +10,14 @@ menu:
     weight: 2003
 ---
 
+---
+
+![Golang](https://img.shields.io/badge/-Golang-blue)
+![反射](https://img.shields.io/badge/-%E5%8F%8D%E5%B0%84-orange)
+![reflect](https://img.shields.io/badge/-reflect-red)
+
+---
+
 ## 反射简介
 
 > Golang提供了一种机制，在编译时不知道类型的情况下，可更新变量、运行时查看值、调用方法以及直接对他们的布局进行操作的机制，称为反射。

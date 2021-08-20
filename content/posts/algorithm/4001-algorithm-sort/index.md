@@ -10,6 +10,14 @@ menu:
     weight: 4001
 ---
 
+---
+
+![Golang](https://img.shields.io/badge/-Golang-blue)
+![算法](https://img.shields.io/badge/-%E7%AE%97%E6%B3%95-green)
+![排序](https://img.shields.io/badge/-%E6%8E%92%E5%BA%8F-yellow)
+
+---
+
 ## 归并排序
 
 ### 思想
