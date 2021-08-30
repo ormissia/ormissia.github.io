@@ -193,10 +193,10 @@ help analyze the data. It can generate both text and graphical reports (through 
 <span style=color:#a6e22e>threadcreate</span>: <span style=color:#a6e22e>Stack</span> <span style=color:#a6e22e>traces</span> <span style=color:#a6e22e>that</span> <span style=color:#a6e22e>led</span> <span style=color:#a6e22e>to</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>creation</span> <span style=color:#a6e22e>of</span> <span style=color:#a6e22e>new</span> <span style=color:#a6e22e>OS</span> <span style=color:#a6e22e>threads</span>
 <span style=color:#a6e22e>trace</span>: <span style=color:#a6e22e>A</span> <span style=color:#a6e22e>trace</span> <span style=color:#a6e22e>of</span> <span style=color:#a6e22e>execution</span> <span style=color:#a6e22e>of</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>current</span> <span style=color:#a6e22e>program</span>. <span style=color:#a6e22e>You</span> <span style=color:#a6e22e>can</span> <span style=color:#a6e22e>specify</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>duration</span> <span style=color:#a6e22e>in</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>seconds</span> <span style=color:#a6e22e>GET</span> <span style=color:#a6e22e>parameter</span>. <span style=color:#a6e22e>After</span> <span style=color:#a6e22e>you</span> <span style=color:#a6e22e>get</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>trace</span> <span style=color:#a6e22e>file</span>, <span style=color:#a6e22e>use</span> <span style=color:#a6e22e>the</span> <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>tool</span> <span style=color:#a6e22e>trace</span> <span style=color:#a6e22e>command</span> <span style=color:#a6e22e>to</span> <span style=color:#a6e22e>investigate</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>trace</span>.
 </code></pre></div><h3 id=通过终端访问>通过终端访问</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>go tool pprof http://localhost:6060/debug/pprof/profile<span style=color:#ae81ff>\?</span>seconds<span style=color:#ae81ff>\=</span><span style=color:#ae81ff>60</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go tool pprof http://localhost:6060/debug/pprof/profile<span style=color:#ae81ff>\?</span>seconds<span style=color:#ae81ff>\=</span><span style=color:#ae81ff>60</span>
 </code></pre></div><p>执行该命令后，需等待60秒（可调整<code>seconds</code>的值），<code>pprof</code>会进行<code>CPU Profiling</code>。结束后将默认进入<code>pprof</code>的交互式命令模式，
 可以对分析的结果进行查看或导出。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Fetching profile over HTTP from http://localhost:6060/debug/pprof/profile?seconds<span style=color:#f92672>=</span><span style=color:#ae81ff>60</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Fetching profile over HTTP from http://localhost:6060/debug/pprof/profile?seconds<span style=color:#f92672>=</span><span style=color:#ae81ff>60</span>
 Saved profile in /Users/orimissia/pprof/pprof.samples.cpu.003.pb.gz
 Type: cpu
 Time: Aug 6, <span style=color:#ae81ff>2021</span> at 2:41pm <span style=color:#f92672>(</span>CST<span style=color:#f92672>)</span>
@@ -204,7 +204,7 @@ Duration: 1mins, Total samples <span style=color:#f92672>=</span> 10ms <span sty
 Entering interactive mode <span style=color:#f92672>(</span>type <span style=color:#e6db74>&#34;help&#34;</span> <span style=color:#66d9ef>for</span> commands, <span style=color:#e6db74>&#34;o&#34;</span> <span style=color:#66d9ef>for</span> options<span style=color:#f92672>)</span>
 <span style=color:#f92672>(</span>pprof<span style=color:#f92672>)</span> 
 </code></pre></div><p>具体可执行<code>pprof help</code>查看命令说明</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#f92672>(</span>pprof<span style=color:#f92672>)</span> top10
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#f92672>(</span>pprof<span style=color:#f92672>)</span> top10
 Showing nodes accounting <span style=color:#66d9ef>for</span> 10ms, 100% of 10ms total
       flat  flat%   sum%        cum   cum%
       10ms   100%   100%       10ms   100%  runtime.kevent
@@ -223,8 +223,8 @@ Showing nodes accounting <span style=color:#66d9ef>for</span> 10ms, 100% of 10ms
 <blockquote>
 <p>最后一列为函数名称，在大多数的情况下，我们可以通过这五列得出一个应用程序的运行情况，加以优化。</p>
 </blockquote>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>go tool pprof http://localhost:6060/debug/pprof/heap
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>Saved profile in /Users/orimissia/pprof/pprof.alloc_objects.alloc_space.inuse_objects.inuse_space.001.pb.gz
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go tool pprof http://localhost:6060/debug/pprof/heap
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Saved profile in /Users/orimissia/pprof/pprof.alloc_objects.alloc_space.inuse_objects.inuse_space.001.pb.gz
 Type: inuse_space
 Time: Aug 6, <span style=color:#ae81ff>2021</span> at 2:46pm <span style=color:#f92672>(</span>CST<span style=color:#f92672>)</span>
 No samples were found with the default sample value type.
@@ -261,7 +261,7 @@ Entering interactive mode <span style=color:#f92672>(</span>type <span style=col
 	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>sData</span>
 }
 </code></pre></div><p>执行测试用例</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>% go test -bench<span style=color:#f92672>=</span>. -cpuprofile<span style=color:#f92672>=</span>cpu.prof
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>% go test -bench<span style=color:#f92672>=</span>. -cpuprofile<span style=color:#f92672>=</span>cpu.prof
 goos: darwin
 goarch: arm64
 pkg: awesomeProject/pprof
@@ -270,9 +270,9 @@ PASS
 ok      awesomeProject/pprof    2.366s
 </code></pre></div><p>启动<code>pprof</code>可视化界面</p>
 <p>方法一</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>go tool pprof -http<span style=color:#f92672>=</span>:8080 cpu.prof
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go tool pprof -http<span style=color:#f92672>=</span>:8080 cpu.prof
 </code></pre></div><p>方法二</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>go tool pprof cpu.prof 
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go tool pprof cpu.prof 
 <span style=color:#f92672>(</span>pprof<span style=color:#f92672>)</span> web
 </code></pre></div><p>可视化界面</p>
 <p><img src=pprof-index.png alt=pprof-index></p>

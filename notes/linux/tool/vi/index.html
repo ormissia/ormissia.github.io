@@ -20,7 +20,7 @@
 :62,72 !sort //将62行到72行的内容进行排序 当前光标所在行，除可以指定行号外，也可以用.表示
 :. !tr [a-z] [A-Z] //将当前行的小写转为大写   将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容
 :62,72 w !sort //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域   将某一行作为shell命令执行
-:62 w !bash //将会把第62行的内容作为bash命令来执行并显示结果，而且不会改变当前编辑的文件的内容     ">
+:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容     ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/notes/linux/tool/vi/"><meta property="article:section" content="notes">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
@@ -145,6 +145,7 @@ Ormissia's Blog</a>
 <ul>
 <li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li>
 <li><a href=/notes/linux/shell/advance/ title=Advance>Advance</a></li>
+<li><a href=/notes/linux/shell/script/ title=Script>Script</a></li>
 </ul>
 </li>
 <li>
@@ -204,7 +205,7 @@ Ormissia's Blog</a>
 </div>
 <div class=card>
 <div class=card-body><p>将某一行作为<code>shell</code>命令执行</p>
-<pre><code>:62 w !bash //将会把第62行的内容作为bash命令来执行并显示结果，而且不会改变当前编辑的文件的内容
+<pre><code>:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容
 </code></pre></div>
 </div>
 </div>

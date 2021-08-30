@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Java Notes</title>
+<title>Script</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,10 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Java Notes">
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/notes/java/">
+<meta property="og:title" content="Script">
+<meta property="og:description" content="脚本执行方式  需要可执行权限  相对路径执行 绝对路径执行   不需要可执行权限  sh 脚本文件名 source 脚本文件名 // 不会启动子进程，通过pstree查看进程树        定义变量  定义变量：变量名=变量值 取消变量：unset 变量名 注意事项：  =两边不能有空格 不能使用关键字做变量名，如：ls、cd等 如果变量名已存在，则会覆盖之前的变量值 变量名称由字母、数字、下划线组成，不能以数字开头        变量类型  环境变量：变量名通常大写，由操作系统维护 位置变量：shell内置变量，存储脚本执行时的参数  使用$n表示，n为数字序列号：$1、$2、&mldr;、${10}、${11}、&mldr;   预定义变量：shell内置变量，可以直接调用但是不能赋值或修改'  $0：存储所在的进程或脚本名 $$：当前进程的PID号 $?：命令执行后的返回状态，0-正常，其他-异常 $#：已加载的位置变量的个数 $*：所有位置变量的值   自定义变量：用户自主设置      多种引号的区别  双引号：允许扩展，以$引用其他变量 单引号：禁用扩展，将$视为普通字符 反引号：将命令执行的输出作为变量值，$()与反引号等效      变量的作用范围  局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用 全局变量：在当前Shell以及子Shell中均有效（export a=1：定义全局变量a）      read标准输入取值 read从键盘读入变量值完成赋值">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/notes/linux/shell/script/"><meta property="article:section" content="notes">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/notes.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -76,8 +76,8 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-minus-circle"></i><a class=active href=/notes/java/>Java</a>
-<ul class=active>
+<i class="fas fa-plus-circle"></i><a href=/notes/java/>Java</a>
+<ul>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/notes/java/basic/>Basics</a>
 <ul>
@@ -131,14 +131,14 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/>Linux</a>
-<ul>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/>Linux</a>
+<ul class=active>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/shell/>Shell</a>
-<ul>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/shell/>Shell</a>
+<ul class=active>
 <li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li>
 <li><a href=/notes/linux/shell/advance/ title=Advance>Advance</a></li>
-<li><a href=/notes/linux/shell/script/ title=Script>Script</a></li>
+<li><a class=active href=/notes/linux/shell/script/ title=Script>Script</a></li>
 </ul>
 </li>
 <li>
@@ -160,16 +160,116 @@ Ormissia's Blog</a>
 <div class="container-fluid note-card-holder" id=note-card-holder>
 <div class=note-card>
 <div class=item>
-<h5 class=note-title><span>Strings</span></h5>
+<h5 class=note-title><span>脚本执行方式</span></h5>
 <div class=card>
-<div class=card-body><p>test</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>String</span> <span style=color:#a6e22e>str</span> = <span style=color:#e6db74>&#34;123&#34;</span>;
-</code></pre></div></div>
+<div class=card-body><ol>
+<li>需要可执行权限
+<ul>
+<li>相对路径执行</li>
+<li>绝对路径执行</li>
+</ul>
+</li>
+<li>不需要可执行权限
+<ul>
+<li><code>sh 脚本文件名</code></li>
+<li><code>source 脚本文件名</code> // 不会启动子进程，通过<code>pstree</code>查看进程树</li>
+</ul>
+</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div class=paginator>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>定义变量</span></h5>
+<div class=card>
+<div class=card-body><ul>
+<li>定义变量：<code>变量名=变量值</code></li>
+<li>取消变量：<code>unset 变量名</code></li>
+<li>注意事项：
+<ul>
+<li><code>=</code>两边不能有空格</li>
+<li>不能使用关键字做变量名，如：<code>ls</code>、<code>cd</code>等</li>
+<li>如果变量名已存在，则会覆盖之前的变量值</li>
+<li>变量名称由字母、数字、下划线组成，不能以数字开头</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>变量类型</span></h5>
+<div class=card>
+<div class=card-body><ul>
+<li>环境变量：变量名通常大写，由操作系统维护</li>
+<li>位置变量：shell内置变量，存储脚本执行时的参数
+<ul>
+<li>使用<code>$n</code>表示，<code>n</code>为数字序列号：<code>$1</code>、<code>$2</code>、&mldr;、<code>${10}</code>、<code>${11}</code>、&mldr;</li>
+</ul>
+</li>
+<li>预定义变量：shell内置变量，可以直接调用但是不能赋值或修改'
+<ul>
+<li><code>$0</code>：存储所在的进程或脚本名</li>
+<li><code>$$</code>：当前进程的<code>PID</code>号</li>
+<li><code>$?</code>：命令执行后的返回状态，0-正常，其他-异常</li>
+<li><code>$#</code>：已加载的位置变量的个数</li>
+<li><code>$*</code>：所有位置变量的值</li>
+</ul>
+</li>
+<li>自定义变量：用户自主设置</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>多种引号的区别</span></h5>
+<div class=card>
+<div class=card-body><ul>
+<li>双引号：允许扩展，以<code>$</code>引用其他变量</li>
+<li>单引号：禁用扩展，将<code>$</code>视为普通字符</li>
+<li>反引号：将命令执行的输出作为变量值，<code>$()</code>与反引号等效</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>变量的作用范围</span></h5>
+<div class=card>
+<div class=card-body><ul>
+<li>局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用</li>
+<li>全局变量：在当前Shell以及子Shell中均有效（<code>export a=1</code>：定义全局变量<code>a</code>）</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>read标准输入取值</span></h5>
+<div class=card>
+<div class=card-body><p><code>read</code>从键盘读入变量值完成赋值</p>
+<ul>
+<li>格式：<code>read [参数] [变量名]</code></li>
+<li>参数：
+<ul>
+<li><code>-p</code>：提示信息</li>
+<li><code>-t</code>：指定超时秒数</li>
+<li><code>-s</code>：设置是否在终端显示输入的内容</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>

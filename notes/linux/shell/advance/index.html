@@ -140,6 +140,7 @@ Ormissia's Blog</a>
 <ul class=active>
 <li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li>
 <li><a class=active href=/notes/linux/shell/advance/ title=Advance>Advance</a></li>
+<li><a href=/notes/linux/shell/script/ title=Script>Script</a></li>
 </ul>
 </li>
 <li>
@@ -165,9 +166,9 @@ Ormissia's Blog</a>
 <div class=card>
 <div class=card-body><p><code>xargs</code>是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
 格式:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
 </code></pre></div><p>选项：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>-a file 从文件中读入作为 stdin
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>-a file 从文件中读入作为 stdin
 -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。
 -p 当每次执行一个argument的时候询问一次用户。
 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。
