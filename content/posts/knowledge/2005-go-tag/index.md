@@ -67,7 +67,7 @@ func main() {
 
 输出：
 
-```bash
+```shell
 {"id":1,"username":"ormissia","age":90,"email":"email@example.com"}
 &{ID:2 Username:ormissia Age:900 Email:ormissia@example.com}
 ```

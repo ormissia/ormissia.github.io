@@ -106,14 +106,14 @@ trace: A trace of execution of the current program. You can specify the duration
 
 ### 通过终端访问
 
-```bash
+```shell
 go tool pprof http://localhost:6060/debug/pprof/profile\?seconds\=60
 ```
 
 执行该命令后，需等待60秒（可调整`seconds`的值），`pprof`会进行`CPU Profiling`。结束后将默认进入`pprof`的交互式命令模式，
 可以对分析的结果进行查看或导出。
 
-```bash
+```shell
 Fetching profile over HTTP from http://localhost:6060/debug/pprof/profile?seconds=60
 Saved profile in /Users/orimissia/pprof/pprof.samples.cpu.003.pb.gz
 Type: cpu
@@ -125,7 +125,7 @@ Entering interactive mode (type "help" for commands, "o" for options)
 
 具体可执行`pprof help`查看命令说明
 
-```bash
+```shell
 (pprof) top10
 Showing nodes accounting for 10ms, 100% of 10ms total
       flat  flat%   sum%        cum   cum%
@@ -145,11 +145,11 @@ Showing nodes accounting for 10ms, 100% of 10ms total
 
 > 最后一列为函数名称，在大多数的情况下，我们可以通过这五列得出一个应用程序的运行情况，加以优化。
 
-```bash
+```shell
 go tool pprof http://localhost:6060/debug/pprof/heap
 ```
 
-```bash
+```shell
 Saved profile in /Users/orimissia/pprof/pprof.alloc_objects.alloc_space.inuse_objects.inuse_space.001.pb.gz
 Type: inuse_space
 Time: Aug 6, 2021 at 2:46pm (CST)
@@ -193,7 +193,7 @@ func Con(str string) string {
 
 执行测试用例
 
-```bash
+```shell
 % go test -bench=. -cpuprofile=cpu.prof
 goos: darwin
 goarch: arm64
@@ -207,13 +207,13 @@ ok      awesomeProject/pprof    2.366s
 
 方法一
 
-```bash
+```shell
 go tool pprof -http=:8080 cpu.prof
 ```
 
 方法二
 
-```bash
+```shell
 go tool pprof cpu.prof 
 (pprof) web
 ```

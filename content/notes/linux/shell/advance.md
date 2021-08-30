@@ -15,11 +15,11 @@ menu:
 {{< note title="xargs" >}}
 `xargs`是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
 格式:
-```bash
+```shell
 somecommand | xargs [-item] [command]
 ```
 选项：
-```bash
+```shell
 -a file 从文件中读入作为 stdin
 -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。
 -p 当每次执行一个argument的时候询问一次用户。
