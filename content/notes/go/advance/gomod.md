@@ -11,7 +11,7 @@ menu:
 <!-- go mod -->
 
 {{< note title="go get 下载指定版本" >}}
-```bash
+```shell
 go get github.com/ormissia/go-opv@v0.0.2
 ```
 {{< /note >}}

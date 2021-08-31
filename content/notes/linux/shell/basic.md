@@ -52,7 +52,7 @@ Ctrl+r
 
 {{< note title="cat" >}}
 在`cat`输出时候显示行数
-```bash
+```shell
 cat -n maim.go
 ```
 {{< /note >}}
@@ -61,15 +61,15 @@ cat -n maim.go
 {{< note title="wc" >}}
 统计文件行、单词、字符数量
 格式：
-```bash
+```shell
 usage: wc [-clmw] [file ...]
 ```
 统计`main.go`的行、单词、字符数量
-```bash
+```shell
 wc main.go
 ```
 选项：
-```bash
+```shell
 -l 统计行数
 -c 统计字符数
 -w 统计单词数
@@ -83,11 +83,11 @@ wc main.go
 简单的文件传输工具
 
 接收方
-```bash
+```shell
 nc -l [port] > filename
 ```
 发送方
-```bash
+```shell
 nc [ip] [port] < filename
 ```
 {{< /note >}}

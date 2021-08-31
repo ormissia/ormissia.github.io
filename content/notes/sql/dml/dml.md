@@ -17,7 +17,7 @@ menu:
 group by date_format(field_name, format);
 ```
 根据`format`字符串格式化`date`值。下列修饰符可以被用在`format`字符串中：
-```bash
+```shell
 %M 月名字(January……December) 
 %W 星期名字(Sunday……Saturday) 
 %D 有英语前缀的月份的日期(1st, 2nd, 3rd, 等等。） 
