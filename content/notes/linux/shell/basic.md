@@ -51,7 +51,9 @@ Ctrl+r
 
 
 {{< note title="cat" >}}
+
 在`cat`输出时候显示行数
+
 ```shell
 cat -n maim.go
 ```
@@ -61,14 +63,18 @@ cat -n maim.go
 {{< note title="wc" >}}
 统计文件行、单词、字符数量
 格式：
+
 ```shell
 usage: wc [-clmw] [file ...]
 ```
 统计`main.go`的行、单词、字符数量
+
 ```shell
 wc main.go
 ```
+
 选项：
+
 ```shell
 -l 统计行数
 -c 统计字符数
@@ -98,8 +104,24 @@ nc [ip] [port] < filename
 解压`*.gz`的压缩文件
 
 与`*.tar.gz`文件不同，`*.gz`文件需要用`gzip`来解压
-```
+
+```shell
 gzip -d filename
 ```
 {{< /note >}}
 
+{{< note title="hostnamectl" >}}
+
+修改`hostname`，重启也生效
+
+```shell
+hostnamectl set-hostname CentOS
+```
+
+查看`hostname`
+
+```shell
+hostname
+```
+
+{{< /note >}}
