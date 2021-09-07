@@ -55,3 +55,17 @@ select count(distinct (field_name))
 from table_name
 ```
 {{< /note >}}
+
+
+{{< note title="sum结果为null时置为0" >}}
+
+SQL中使用`sum`统计总数时:`sum(col_name)`，如果某列不符合`sum`的条件（比如某列中含有NULL元素，或者不是数值类型，或者没有符合`where`条件的行），那么会返回NULL
+有的时候不希望sum的结果为`NULL`，可以做如下的处理：
+
+```sql
+SELECT COALESCE(sum(col_name), 0) FROM Table
+```
+
+此外还有`ISNULL(SQL Server)`，`NVL(Oracle)`以及`IFNULL(MySQL)`的用法，起到同样的效果
+
+{{< /note >}}
