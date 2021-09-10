@@ -110,6 +110,7 @@ gzip -d filename
 ```
 {{< /note >}}
 
+
 {{< note title="hostnamectl" >}}
 
 修改`hostname`，重启也生效
@@ -122,6 +123,52 @@ hostnamectl set-hostname CentOS
 
 ```shell
 hostname
+```
+
+{{< /note >}}
+
+
+
+{{< note title="echo" >}}
+
+`-n`：不换行
+`-e`：支持扩展属性
+
+```shell
+# 红色显示OK
+echo -e "\033[31mOK\033[0m"
+# 绿色显示OK
+echo -e "\033[32mOK\033[0m"
+```
+
+{{< /note >}}
+
+
+{{< note title="tr" >}}
+
+删除多余重复字符串
+
+```shell
+# 删除多余的空格
+echo "a   b   c" | tr -s " "
+# 输出：a b c
+```
+
+```shell
+# 删除多余的a
+echo "aaaaacccdetaaadfa   c" | tr -s "a"
+# 输出：acccdetadfa   c
+```
+
+{{< /note >}}
+
+
+{{< note title="cut" >}}
+
+```shell
+# 以冒号为分隔，过滤第一列
+cut -d: -f1 /etc/passwd
+# 输出当前系统下所有用户名
 ```
 
 {{< /note >}}
