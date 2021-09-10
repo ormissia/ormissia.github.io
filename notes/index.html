@@ -873,6 +873,46 @@ map2.put(&quot;a&quot;, 5)
 </div>
 </div>
 </div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>echo</span></h5>
+<div class=card>
+<div class=card-body><p><code>-n</code>：不换行
+<code>-e</code>：支持扩展属性</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 红色显示OK</span>
+echo -e <span style=color:#e6db74>&#34;\033[31mOK\033[0m&#34;</span>
+<span style=color:#75715e># 绿色显示OK</span>
+echo -e <span style=color:#e6db74>&#34;\033[32mOK\033[0m&#34;</span>
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>tr</span></h5>
+<div class=card>
+<div class=card-body><p>删除多余重复字符串</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 删除多余的空格</span>
+echo <span style=color:#e6db74>&#34;a   b   c&#34;</span> | tr -s <span style=color:#e6db74>&#34; &#34;</span>
+<span style=color:#75715e># 输出：a b c</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 删除多余的a</span>
+echo <span style=color:#e6db74>&#34;aaaaacccdetaaadfa   c&#34;</span> | tr -s <span style=color:#e6db74>&#34;a&#34;</span>
+<span style=color:#75715e># 输出：acccdetadfa   c</span>
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>cut</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 以冒号为分隔，过滤第一列</span>
+cut -d: -f1 /etc/passwd
+<span style=color:#75715e># 输出当前系统下所有用户名</span>
+</code></pre></div></div>
+</div>
+</div>
+</div>
 </div>
 <div class=paginator>
 <ul class="pagination pagination-default">
