@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Algorithm</title>
+<title>System</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,10 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Algorithm">
+<meta property="og:title" content="System">
 <meta property="og:description" content>
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/notes/go/algorithm/">
+<meta property="og:url" content="https://ormissia.github.io/notes/linux/system/">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/notes.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -52,8 +52,8 @@ Ormissia's Blog</a>
 <li id=list-heading><a href=/notes data-filter=all>笔记</a></li>
 <div class=subtree>
 <li>
-<i class="fas fa-minus-circle"></i><a class=active href=/notes/go/>Go</a>
-<ul class=active>
+<i class="fas fa-plus-circle"></i><a href=/notes/go/>Go</a>
+<ul>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/notes/go/basic/>Basics</a>
 <ul>
@@ -68,8 +68,8 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-minus-circle"></i><a class=active href=/notes/go/algorithm/>Algorithm</a>
-<ul class=active>
+<i class="fas fa-plus-circle"></i><a href=/notes/go/algorithm/>Algorithm</a>
+<ul>
 <li><a href=/notes/go/algorithm/basic/ title=Basic>Basic</a></li>
 </ul>
 </li>
@@ -131,8 +131,8 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/>Linux</a>
-<ul>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/>Linux</a>
+<ul class=active>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/notes/linux/shell/>Shell</a>
 <ul>
@@ -143,8 +143,8 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/system/>System</a>
-<ul>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/system/>System</a>
+<ul class=active>
 <li><a href=/notes/linux/system/system/ title=Memory>Memory</a></li>
 </ul>
 </li>
@@ -161,83 +161,37 @@ Ormissia's Blog</a>
 <div class="container-fluid note-card-holder" id=note-card-holder>
 <div class=note-card>
 <div class=item>
-<h5 class=note-title><span>异或</span></h5>
+<h5 class=note-title><span>内存</span></h5>
 <div class=card>
-<div class=card-body><ul>
-<li>异或运算法则：无进位相加</li>
-<li>异或运算性质：
+<div class=card-body><p>一般来说内存占用大小有如下规律：VSS >= RSS >= PSS >= USS</p>
 <ul>
-<li>0 ^ N = N</li>
-<li>N ^ N = 0</li>
-<li>满足交换律和结合律</li>
+<li>VSS - Virtual Set Size 虚拟耗用内存（包含共享库占用的内存）</li>
+<li>RSS - Resident Set Size 实际使用物理内存（包含共享库占用的内存）</li>
+<li>PSS - Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存）</li>
+<li>USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存）</li>
 </ul>
-</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span><span style=color:#a6e22e>b1100</span>
-<span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span><span style=color:#a6e22e>b1001</span>
-<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%b&#34;</span>,<span style=color:#a6e22e>a</span>^<span style=color:#a6e22e>b</span>)
-<span style=color:#75715e>//101
-</span></code></pre></div><p>简单应用：不申请额外内存交换两个变量的值</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span><span style=color:#a6e22e>b1100</span>
-<span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span><span style=color:#a6e22e>b1001</span>
-
-<span style=color:#a6e22e>a</span> = <span style=color:#a6e22e>a</span> ^ <span style=color:#a6e22e>b</span>
-<span style=color:#a6e22e>b</span> = <span style=color:#a6e22e>a</span> ^ <span style=color:#a6e22e>b</span> <span style=color:#75715e>//b = (a ^ b) ^ b = a
-</span><span style=color:#75715e></span><span style=color:#a6e22e>a</span> = <span style=color:#a6e22e>a</span> ^ <span style=color:#a6e22e>b</span> <span style=color:#75715e>//a = (a ^ b) ^ a = b
-</span><span style=color:#75715e></span><span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;a:%b,b:%b&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
-<span style=color:#75715e>//a:1001,b:1100
-</span></code></pre></div></div>
 </div>
 </div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>堆</span></h5>
 <div class=card>
-<div class=card-body><blockquote>
-<p>堆的实质是一棵完全二叉树</p>
-</blockquote>
-<p>堆可分为两种类型：</p>
+<div class=card-body><p>RSS / VSZ</p>
 <ul>
-<li>大根堆：所有子树的根节点均为最大值</li>
-<li>小根堆：所有子树的根节点均为最小值</li>
+<li>RSS是<code>Resident Set Size</code>（常驻内存大小）的缩写，用于表示进程使用了多少内存（RAM中的物理内存），
+RSS不包含已经被换出的内存。RSS包含了它所链接的动态库并且被加载到物理内存中的内存。RSS还包含栈内存和堆内存。</li>
+<li>VSZ是<code>Virtual Memory Size</code>（虚拟内存大小）的缩写。它包含了进程所能访问的所有内存，包含了被换出的内存，
+被分配但是还没有被使用的内存，以及动态库中的内存。</li>
 </ul>
-<p>一般情况下堆可以用一个有序数组来存储<br>
-[0&mldr;i&mldr;n]
-<code>i</code>节点的左孩子<code>index</code>为<code>2*i+1</code>，右孩子为<code>2i+2</code>，父节点为<code>(i-1)/2</code></p>
-<p>也有一种特例是从1开始(位运算比加减法快)<br>
-[01&mldr;i&mldr;n]
-<code>i</code>节点的左孩子<code>index</code>为<code>2*i</code>即<code>i&lt;&lt;1</code>，右孩子为<code>2i+1</code>即<code>i&lt;&lt;1|1</code>，父节点为<code>i/2</code></p>
-<ul>
-<li>堆的基本操作：
-<ul>
-<li>上浮</li>
-<li>下沉</li>
-</ul>
-</li>
-<li>堆的插入弹出
-<ul>
-<li>插入
-<ol>
-<li>在最后插入节点</li>
-<li>依次上浮</li>
-</ol>
-</li>
-<li>弹出
-<ol>
-<li>弹出根节点</li>
-<li>将最后一个节点放入根节点</li>
-<li>将根节点下沉</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>堆排序
-<ul>
-<li>依次弹出根节点</li>
-</ul>
-</li>
-</ul>
+<p>假设进程A的二进制文件是500K，并且链接了一个2500K的动态库，堆和栈共使用了200K，其中100K在内存中（剩下的被换出或者不再被使用），
+一共加载了动态库中的1000K内容以及二进制文件中的400K内容至内存中，那么：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>RSS: 400K + 1000K + 100K <span style=color:#f92672>=</span> 1500K
+VSZ: 500K + 2500K + 200K <span style=color:#f92672>=</span> 3200K
+</code></pre></div><p>由于部分内存是共享的，被多个进程使用，所以如果将所有进程的RSS值加起来可能会大于系统的内存总量。</p>
+<p>申请过的内存如果程序没有实际使用，则可能不显示在RSS里。比如说一个程序，预先申请了一大批内存，
+过了一段时间才使用，你会发现RSS会增长而VSZ保持不变。</p>
+<p>还有一个概念是PSS，它是<code>proportional set size</code>（proportional是成比例的意思）的缩写。
+这是一种新的度量方式。它将动态库所使用的内存按比例划分。比如我们前面例子中的动态库如果是被两个进程使用，那么：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>PSS: 400K + <span style=color:#f92672>(</span>1000K/2<span style=color:#f92672>)</span> + 100K <span style=color:#f92672>=</span> 400K + 500K + 100K <span style=color:#f92672>=</span> 1000K
+</code></pre></div><p>一个进程中的多个线程共享同样的地址空间。所以一个进程中的多个线程的RSS，VSZ，PSS是完全相同的。linux下可以使用ps或者top命令查看这些信息。</p>
+<p><a href=https://stackoverflow.com/a/21049737>英文原文</a></p>
 </div>
 </div>
 </div>

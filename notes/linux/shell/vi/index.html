@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Tool</title>
+<title>vi</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,10 +12,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Tool">
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/notes/linux/tool/">
+<meta property="og:title" content="vi">
+<meta property="og:description" content="命令 显示行号
+:set number   在vi中执行shell命令
+:!ls-l   将shell命令的结果插入到当前行的下一行
+:r !date //读取系统时间并插入到当前行的下一行   将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容
+:62,72 !sort //将62行到72行的内容进行排序 当前光标所在行，除可以指定行号外，也可以用.表示
+:. !tr [a-z] [A-Z] //将当前行的小写转为大写   将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容
+:62,72 w !sort //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域   将某一行作为shell命令执行
+:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容     ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/notes/linux/shell/vi/"><meta property="article:section" content="notes">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/notes.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -134,17 +141,18 @@ Ormissia's Blog</a>
 <i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/>Linux</a>
 <ul class=active>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/shell/>Shell</a>
-<ul>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/shell/>Shell</a>
+<ul class=active>
 <li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li>
 <li><a href=/notes/linux/shell/advance/ title=Advance>Advance</a></li>
+<li><a class=active href=/notes/linux/shell/vi/ title=vi>vi</a></li>
 <li><a href=/notes/linux/shell/script/ title=Script>Script</a></li>
 </ul>
 </li>
 <li>
-<i class="fas fa-minus-circle"></i><a class=active href=/notes/linux/tool/>Tool</a>
-<ul class=active>
-<li><a href=/notes/linux/tool/vi/ title=vi>vi</a></li>
+<i class="fas fa-plus-circle"></i><a href=/notes/linux/system/>System</a>
+<ul>
+<li><a href=/notes/linux/system/system/ title=Memory>Memory</a></li>
 </ul>
 </li>
 </ul>
@@ -158,14 +166,6 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid note-card-holder" id=note-card-holder>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>快捷键</span></h5>
-<div class=card>
-<div class=card-body></div>
-</div>
-</div>
-</div>
 <div class=note-card>
 <div class=item>
 <h5 class=note-title><span>命令</span></h5>
@@ -203,8 +203,6 @@ Ormissia's Blog</a>
 </div>
 </div>
 </div>
-</div>
-<div class=paginator>
 </div>
 </div>
 </section>
