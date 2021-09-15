@@ -1,12 +1,12 @@
 ---
 title: Script
-weight: 713
+weight: 714
 menu:
   notes:
     name: Script
     identifier: notes-linux-shell-cript
     parent: notes-linux-shell
-    weight: 713
+    weight: 714
 ---
 
 <!-- Advance Command -->

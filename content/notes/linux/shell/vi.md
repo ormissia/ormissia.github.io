@@ -1,20 +1,15 @@
 ---
 title: vi
-weight: 721
+weight: 713
 menu:
   notes:
     name: vi
-    identifier: notes-linux-tool-vi
-    parent: notes-linux-tool
-    weight: 721
+    identifier: notes-linux-shell-vi
+    parent: notes-linux-shell
+    weight: 713
 ---
 
 <!-- vi -->
-
-
-{{< note title="快捷键" >}}
-
-{{< /note >}}
 
 
 {{< note title="命令" >}}

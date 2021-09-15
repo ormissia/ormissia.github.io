@@ -1,10 +1,10 @@
 ---
-title: Tool
+title: System
 weight: 72
 menu:
   notes:
-    name: Tool
-    identifier: notes-linux-tool
+    name: System
+    identifier: notes-linux-system
     parent: notes-linux
     weight: 72
 ---
