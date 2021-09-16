@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 13 Aug 2021 16:55:47 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 15 Sep 2021 15:35:01 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
 1Byte true/false uint8
 1Byte 0-255 uint16
 2Byte 0-65535 uint32
@@ -43,8 +43,7 @@ wc main.go 选项：
 nc -l [port] &amp;gt; filename 发送方
 nc [ip] [port] &amp;lt; filename gzip 解压*.</description></item><item><title>Advance</title><link>https://ormissia.github.io/notes/linux/shell/advance/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/advance/</guid><description>xargs xargs是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。 格式:
 somecommand | xargs [-item] [command] 选项：
--a file 从文件中读入作为 stdin -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。 -p 当每次执行一个argument的时候询问一次用户。 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。 -t 表示先打印命令，然后再执行。 -i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 {}，可以用 {} 代替。 -r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。 -s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。 -L num 从标准输入一次读取 num 行送给 command 命令。 -l 同 -L。 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。 -x exit的意思，主要是配合-s使用。。 top // TODO 测试线上能否正常显示图片
-Linux top命令VIRT,RES,SHR,DATA的含义:
+-a file 从文件中读入作为 stdin -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。 -p 当每次执行一个argument的时候询问一次用户。 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。 -t 表示先打印命令，然后再执行。 -i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 {}，可以用 {} 代替。 -r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。 -s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。 -L num 从标准输入一次读取 num 行送给 command 命令。 -l 同 -L。 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。 -x exit的意思，主要是配合-s使用。。 top Linux top命令VIRT,RES,SHR,DATA的含义:
 VIRT:virtual memory usage虚拟内存 进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等 假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量 RES:resident memory usage常驻内存 进程当前使用的内存大小，但不包括swap out 包含其他进程的共享 如果申请100m的内存，实际使用10m，它只增长10m，与VIRT相反 关于库占用内存的情况，它只统计加载的库文件所占内存大小 SHR:shared memory共享内存 除了自身进程的共享内存，也包括其他进程的共享内存 虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小 计算某个进程所占的物理内存大小公式：RES – SHR swap out后，它将会降下来 top运行中可以通过top的内部命令对进程的显示方式进行控制。内部命令如下：</description></item><item><title>vi</title><link>https://ormissia.github.io/notes/linux/shell/vi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/vi/</guid><description>命令 显示行号
 :set number 在vi中执行shell命令
 :!ls-l 将shell命令的结果插入到当前行的下一行
@@ -156,7 +155,20 @@ Initial setup Search depends on additional output content type of JSON in config
 No content shown here is rendered, all content is based in the template layouts/page/search.html
 Setting a very low sitemap priority will tell search engines this is not important content.
 This implementation uses Fusejs, jquery and mark.js
-Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>Golang struct tag浅析与自定义tag实践</title><link>https://ormissia.github.io/posts/knowledge/2005-go-tag/</link><pubDate>Fri, 13 Aug 2021 16:55:47 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2005-go-tag/</guid><description>StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
+Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>记一次线上的内存持续增长问题</title><link>https://ormissia.github.io/posts/problems/5000-go-online-service-oom/</link><pubDate>Wed, 15 Sep 2021 15:35:01 +0800</pubDate><guid>https://ormissia.github.io/posts/problems/5000-go-online-service-oom/</guid><description>问题现象 前些天从Grafana上看到某一个pod内存涨上去就再没下来（从9/1~9/2之间的一个时间开始），并且看这个趋势涨上去就没有下来的意思。中间有几次pod重新发布 才导致内存恢复到一个比较低的水平，但内存依旧持续上涨。
+初步分析 初步推测大概率与日志有关，此次发版改动了日志输出格式，以及修改了日志没有写入磁盘的问题。
+先把服务稳住 由于清楚问题的大致方向，先将服务中几个打印log比较频繁的位置注释掉，在9/3~9/4之间的一个位置重新发布。从之后的趋势上可以看出，注释掉几个打印日志的 地方之后，内存增长速度明显放缓。
+至此，基本可以确认内存增长与日志相关。
+问题排查 猜测一 回头又捋了几遍代码，也没发现什么端倪。
+于是祭出pprof抓了一下内存分析了一通，依旧无果。
+可以看出，内存占用并没有多高。
+猜测二 在 Go1.12 以前，Go Runtime在Linux上使用的是MADV_DONTNEED策略，可以让RSS下降的比较快，就是效率差点。 在 Go1.12 及以后，Go Runtime专门针对其进行了优化，使用了更为高效的MADV_FREE策略。但这样子所带来的副作用就是RSS不会立刻下降， 要等到系统有内存压力了才会释放占用，RSS才会下降。 查看容器的 Linux 内核版本：
+# 查看命令 uname -a 课件容器版本为3.10.0，但MADV_FREE的策略改变，需要Linux内核在4.5及以上（详细可见go/issues/23687 ）， 因此可以排除。
+猜想三 通过top命令可以通过可以查看容器中程序的内存占用VSZ为711，无法查看RSS，关于RSS和VSZ的区别，可以参考RSS和VSZ
+容器内存判定是通过container_memory_working_set_bytes，而container_memory_working_set_bytes是由cadvisor提供的。
+原因 从cadvisor/issues/638 可得知container_memory_working_set_bytes指标的组 成实际上是RSS + Cache。而Cache高的情况，常见于进程有大量文件IO，占用Cache可能就会比较高，猜测也与Go版本、Linux 内核版本的Cache释放、回收方式有较大关系。 只要是涉及有大量文件IO的服务，基本上是这个问题的老常客了，写这类服务基本写一个中一个，因为这是一个混合问题，像其它单纯操作为主的业务服务就很 “正常”，不会出现内存居高不下。
+没多久看到烤鱼佬的一篇文章，与这个情况类似，他的解决办法也就是写了个脚本，&amp;ldquo;手动&amp;quot;HPA（其实也就是自动重启）。
+总结 虽然这问题时间跨度比较长，整体来讲都是阶段性排查，本质上可以说是对Kubernetes的不熟悉有关。但因为内存居高不下的可能性有很多种，要一个个排查。</description></item><item><title>Golang struct tag浅析与自定义tag实践</title><link>https://ormissia.github.io/posts/knowledge/2005-go-tag/</link><pubDate>Fri, 13 Aug 2021 16:55:47 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2005-go-tag/</guid><description>StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
 源码中对struct tag的解释：
 By convention, tag strings are a concatenation of optionally space-separated key:&amp;ldquo;value&amp;rdquo; pairs. Each key is a non-empty string consisting of non-control characters other than space (U+0020 ' &amp;lsquo;), quote (U+0022 &amp;lsquo;&amp;quot;'), and colon (U+003A &amp;lsquo;:'). Each value is quoted using U+0022 &amp;lsquo;&amp;quot;&amp;rsquo; characters and Go string literal syntax.
 简单应用 最常见的，比如json的tag应用：
