@@ -38,9 +38,6 @@ somecommand | xargs [-item] [command]
 
 {{< note title="top" >}}
 
-// TODO 测试线上能否正常显示图片  
-![top](top.png)
-
 Linux `top`命令VIRT,RES,SHR,DATA的含义:
 
 - `VIRT`:`virtual memory usage`虚拟内存
