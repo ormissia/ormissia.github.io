@@ -222,7 +222,7 @@ total_inactive_file <span style=color:#ae81ff>12058624</span>
 total_active_file <span style=color:#ae81ff>26136576</span>
 total_unevictable <span style=color:#ae81ff>0</span>
 </code></pre></div><p>记录此时<br>
-total_inactive_file 12058624 Bytes = 11.5M
+total_inactive_file 12058624 Bytes = 11.5M<br>
 total_active_file 26136576 Bytes = 24.9M</p>
 <h3 id=遍历日志文件>遍历日志文件</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/sys/fs/cgroup/memory <span style=color:#75715e># grep &#34;hello&#34; /data/log/xxx.log</span>
@@ -258,8 +258,8 @@ total_active_anon <span style=color:#ae81ff>13459456</span>
 total_inactive_file <span style=color:#ae81ff>20709376</span>
 total_active_file <span style=color:#ae81ff>26140672</span>
 total_unevictable <span style=color:#ae81ff>0</span>
-</code></pre></div><p>记录此时
-total_inactive_file 20709376 Bytes = 19.6M
+</code></pre></div><p>记录此时<br>
+total_inactive_file 20709376 Bytes = 19.6M<br>
 total_active_file 26140672 Bytes = 24.9M</p>
 <p>此时<code>total_inactive_file</code>占用较上次增加大约8M左右，即遍历过的日志文件的大小。</p>
 <h3 id=第二次遍历日志文件>第二次遍历日志文件</h3>
@@ -297,8 +297,8 @@ total_active_anon <span style=color:#ae81ff>13459456</span>
 total_inactive_file <span style=color:#ae81ff>12025856</span>
 total_active_file <span style=color:#ae81ff>34824192</span>
 total_unevictable <span style=color:#ae81ff>0</span>
-</code></pre></div><p>记录此时
-total_inactive_file 12025856 Bytes = 11.5M
+</code></pre></div><p>记录此时<br>
+total_inactive_file 12025856 Bytes = 11.5M<br>
 total_active_file 34824192 Bytes = 33.2M</p>
 <p>此时<code>total_inactive_file</code>较上次减少8M，而<code>total_active_file</code>较上次增加8M</p>
 <h3 id=查看grafana>查看Grafana</h3>
