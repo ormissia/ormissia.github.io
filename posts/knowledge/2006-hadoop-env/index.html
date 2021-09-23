@@ -1,0 +1,320 @@
+<!doctype html><html>
+<head>
+<title>Hadoop生态组件</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Hadoop生态组件">
+<meta property="og:description" content="最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
+ HDFS（hadoop分布式文件系统） HDFS是hadoop体系中数据存储管理的基础。他是一个高度容错的系统，能检测和应对硬件故障。
+有以下几个角色：
+  client：切分文件，访问HDFS，与那么弄得交互，获取文件位置信息，与DataNode交互，读取和写入数据。
+  namenode：master节点，在hadoop1.x中只有一个，管理HDFS的名称空间和数据块映射信息，配置副本策略，处理客户 端请求。
+  DataNode：slave节点，存储实际的数据，汇报存储信息给namenode。
+  secondary namenode：辅助namenode，分担其工作量：定期合并fsimage和fsedits，推送给namenode；紧急情况下和辅助恢复namenode，但其并非namenode的热备。
+  mapreduce（分布式计算框架） mapreduce是一种计算模型，用于处理大数据量的计算。其中map对应数据集上的独立元素进行指定的操作，生成键-值对形式中间，reduce则对中间结果中相同的键的所有值进行规约，以得到最终结果。
+  jobtracker：master节点，只有一个，管理所有作业，任务/作业的监控，错误处理等，将任务分解成一系列任务，并分派给tasktracker。
+  tacktracker：slave节点，运行 map task和reducetask；并与jobtracker交互，汇报任务状态。
+  map task：解析每条数据记录，传递给用户编写的map（）并执行，将输出结果写入到本地磁盘（如果为map—only作业，则直接写入HDFS）。
+  reduce task：从map 它深刻地执行结果中，远程读取输入数据，对数据进行排序，将数据分组传递给用户编写的reduce函数执行。
+  hive（基于hadoop的数据仓库） 由Facebook开源，最初用于解决海量结构化的日志数据统计问题。
+hive定于了一种类似sql的查询语言（hql）将sql转化为mapreduce任务在hadoop上执行。
+hbase（分布式列存数据库） hbase是一个针对结构化数据的可伸缩，高可靠，高性能，分布式和面向列的动态模式数据库。和传统关系型数据库不同，hbase采用了bigtable的数据模型： 增强了稀疏排序映射表（key/value）。其中，键由行关键字，列关键字和时间戳构成，hbase提供了对大规模数据的随机，实时读写访问，同时，hbase中保 存的数据可以使用mapreduce来处理，它将数据存储和并行计算完美结合在一起。
+zookeeper（分布式协作服务） 解决分布式环境下的数据管理问题：统一命名，状态同步，集群管理，配置同步等。
+sqoop（数据同步工具） sqoop是sql-to-hadoop的缩写，主要用于传统数据库和hadoop之间传输数据。数据的导入和导出本质上是mapreduce程序，充分利用了MR的并行化和容错性。
+pig（基于hadoop的数据流系统） 定义了一种数据流语言-pig latin，将脚本转换为mapreduce任务在hadoop上执行。通常用于离线分析。
+mahout（数据挖掘算法库） mahout的主要目标是创建一些可扩展的机器学习领域经典算法的实现，旨在帮助开发人员更加方便快捷地创建只能应用程序。mahout现在已经包含了聚类，分类， 推荐引擎（协同过滤）和频繁集挖掘等广泛使用的数据挖掘方法。除了算法是，mahout还包含了数据的输入/输出工具，与其他存储系统（如数据库，mongoDB或 Cassandra）集成等数据挖掘支持架构。
+flume（日志收集工具） cloudera开源的日志收集系统，具有分布式，高可靠，高容错，易于定制和扩展的特点。他将数据从产生，传输，处理并写入目标的路径的过程抽象为数据流，在 具体的数据流中，数据源支持在flume中定制数据发送方，从而支持收集各种不同协议数据。
+资源管理器的简单介绍（YARN和mesos） 随着互联网的高速发展，基于数据 密集型应用 的计算框架不断出现，从支持离线处理的mapreduce，到支持在线处理的storm，从迭代式计算框架到 流式处理框 架s4，&mldr;，在大部分互联网公司中，这几种框架可能都会采用，比如对于搜索引擎公司，可能的技术方法如下：网页建索引采用mapreduce框架，自然语言处理/ 数据挖掘采用spark，对性能要求到的数据挖掘算法用mpi等。公司一般将所有的这些框架部署到一个公共的集群中，让它们共享集群的资源，并对资源进行统一使 用，这样便诞生了资源统一管理与调度平台，典型的代表是mesos和yarn。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2006-hadoop-env/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-09-17T11:16:25+08:00">
+<meta property="article:modified_time" content="2021-09-17T11:16:25+08:00">
+<meta name=description content="Hadoop生态组件">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/single.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/inverted-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=Search data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
+<ul class=active>
+<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a class=active href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2007-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
+<ul>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5000-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class=content>
+<div class="container p-0 read-area">
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/knowledge/2006-hadoop-env/head.svg)>
+</div>
+<div class=page-content>
+<div class="author-profile ml-auto align-self-lg-center">
+<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
+<h5 class=author-name>Ormissia</h5>
+<p>September 17, 2021</p>
+</div>
+<div class=title>
+<h1>Hadoop生态组件</h1>
+</div>
+<div class=post-content id=post-content>
+<blockquote>
+<p>最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。</p>
+</blockquote>
+<p><img src=hadoop.jpg alt=hadoop></p>
+<h2 id=hdfshadoop分布式文件系统>HDFS（hadoop分布式文件系统）</h2>
+<p>HDFS是hadoop体系中数据存储管理的基础。他是一个高度容错的系统，能检测和应对硬件故障。</p>
+<p>有以下几个角色：</p>
+<ul>
+<li>
+<p>client：切分文件，访问HDFS，与那么弄得交互，获取文件位置信息，与DataNode交互，读取和写入数据。</p>
+</li>
+<li>
+<p>namenode：master节点，在hadoop1.x中只有一个，管理HDFS的名称空间和数据块映射信息，配置副本策略，处理客户 端请求。</p>
+</li>
+<li>
+<p>DataNode：slave节点，存储实际的数据，汇报存储信息给namenode。</p>
+</li>
+<li>
+<p>secondary namenode：辅助namenode，分担其工作量：定期合并fsimage和fsedits，推送给namenode；紧急情况下和辅助恢复namenode，但其并非namenode的热备。</p>
+</li>
+</ul>
+<h2 id=mapreduce分布式计算框架>mapreduce（分布式计算框架）</h2>
+<p>mapreduce是一种计算模型，用于处理大数据量的计算。其中map对应数据集上的独立元素进行指定的操作，生成键-值对形式中间，reduce则对中间结果中相同的键的所有值进行规约，以得到最终结果。</p>
+<ul>
+<li>
+<p>jobtracker：master节点，只有一个，管理所有作业，任务/作业的监控，错误处理等，将任务分解成一系列任务，并分派给tasktracker。</p>
+</li>
+<li>
+<p>tacktracker：slave节点，运行 map task和reducetask；并与jobtracker交互，汇报任务状态。</p>
+</li>
+<li>
+<p>map task：解析每条数据记录，传递给用户编写的map（）并执行，将输出结果写入到本地磁盘（如果为map—only作业，则直接写入HDFS）。</p>
+</li>
+<li>
+<p>reduce task：从map 它深刻地执行结果中，远程读取输入数据，对数据进行排序，将数据分组传递给用户编写的reduce函数执行。</p>
+</li>
+</ul>
+<h2 id=hive基于hadoop的数据仓库>hive（基于hadoop的数据仓库）</h2>
+<p>由Facebook开源，最初用于解决海量结构化的日志数据统计问题。</p>
+<p>hive定于了一种类似sql的查询语言（hql）将sql转化为mapreduce任务在hadoop上执行。</p>
+<h2 id=hbase分布式列存数据库>hbase（分布式列存数据库）</h2>
+<p>hbase是一个针对结构化数据的可伸缩，高可靠，高性能，分布式和面向列的动态模式数据库。和传统关系型数据库不同，hbase采用了bigtable的数据模型：
+增强了稀疏排序映射表（key/value）。其中，键由行关键字，列关键字和时间戳构成，hbase提供了对大规模数据的随机，实时读写访问，同时，hbase中保
+存的数据可以使用mapreduce来处理，它将数据存储和并行计算完美结合在一起。</p>
+<h2 id=zookeeper分布式协作服务>zookeeper（分布式协作服务）</h2>
+<p>解决分布式环境下的数据管理问题：统一命名，状态同步，集群管理，配置同步等。</p>
+<h2 id=sqoop数据同步工具>sqoop（数据同步工具）</h2>
+<p>sqoop是sql-to-hadoop的缩写，主要用于传统数据库和hadoop之间传输数据。数据的导入和导出本质上是mapreduce程序，充分利用了MR的并行化和容错性。</p>
+<h2 id=pig基于hadoop的数据流系统>pig（基于hadoop的数据流系统）</h2>
+<p>定义了一种数据流语言-pig latin，将脚本转换为mapreduce任务在hadoop上执行。通常用于离线分析。</p>
+<h2 id=mahout数据挖掘算法库>mahout（数据挖掘算法库）</h2>
+<p>mahout的主要目标是创建一些可扩展的机器学习领域经典算法的实现，旨在帮助开发人员更加方便快捷地创建只能应用程序。mahout现在已经包含了聚类，分类，
+推荐引擎（协同过滤）和频繁集挖掘等广泛使用的数据挖掘方法。除了算法是，mahout还包含了数据的输入/输出工具，与其他存储系统（如数据库，mongoDB或
+Cassandra）集成等数据挖掘支持架构。</p>
+<h2 id=flume日志收集工具>flume（日志收集工具）</h2>
+<p>cloudera开源的日志收集系统，具有分布式，高可靠，高容错，易于定制和扩展的特点。他将数据从产生，传输，处理并写入目标的路径的过程抽象为数据流，在
+具体的数据流中，数据源支持在flume中定制数据发送方，从而支持收集各种不同协议数据。</p>
+<h2 id=资源管理器的简单介绍yarn和mesos>资源管理器的简单介绍（YARN和mesos）</h2>
+<p>随着互联网的高速发展，基于数据 密集型应用 的计算框架不断出现，从支持离线处理的mapreduce，到支持在线处理的storm，从迭代式计算框架到 流式处理框
+架s4，&mldr;，在大部分互联网公司中，这几种框架可能都会采用，比如对于搜索引擎公司，可能的技术方法如下：网页建索引采用mapreduce框架，自然语言处理/
+数据挖掘采用spark，对性能要求到的数据挖掘算法用mpi等。公司一般将所有的这些框架部署到一个公共的集群中，让它们共享集群的资源，并对资源进行统一使
+用，这样便诞生了资源统一管理与调度平台，典型的代表是mesos和yarn。</p>
+<h2 id=其他的一些开源组件>其他的一些开源组件：</h2>
+<h3 id=cloudrea-impala>cloudrea impala：</h3>
+<p>一个开源的查询引擎。与hive相同的元数据，SQL语法，ODBC驱动程序和用户接口，可以直接在HDFS上提供快速，交互式SQL查询。impala不再使用缓慢的
+hive+mapreduce批处理，而是通过与商用并行关系数据库中类似的分布式查询引擎。可以直接从HDFS或者Hbase中用select，join和统计函数查询数据，从而
+大大降低延迟。</p>
+<h3 id=spark>spark：</h3>
+<p>spark是个开源的数据 分析集群计算框架，最初由加州大学伯克利分校AMPLab，建立于HDFS之上。spark与hadoop一样，用于构建大规模，延迟低的数据分析
+应用。spark采用Scala语言实现，使用Scala作为应用框架。</p>
+<p>spark采用基于内存的分布式数据集，优化了迭代式的工作负载以及交互式查询。</p>
+<p>与hadoop不同的是，spark与Scala紧密集成，Scala象管理本地collective对象那样管理分布式数据集。spark支持分布式数据集上的迭代式任务，实际上可
+以在hadoop文件系统上与hadoop一起运行（通过YARN,MESOS等实现）。</p>
+<h3 id=storm>storm</h3>
+<p>storm是一个分布式的，容错的计算系统，storm属于流处理平台，多用于实时计算并更新数据库。storm也可被用于“连续计算”，对数据流做连续查询，在计算
+时将结果一流的形式输出给用户。他还可被用于“分布式RPC”,以并行的方式运行昂贵的运算。</p>
+<h3 id=kafka>kafka</h3>
+<p>kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的
+网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求
+而通过处理日志和日志聚合来解决。 对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka的目的是通
+过Hadoop的并行加载机制来统一线上和离线的消息处理，也是为了通过集群来提供实时的消息</p>
+</div>
+<div class=btn-improve-page>
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2006-hadoop-env/index.md title=改善此页面 target=_blank rel=noopener>
+<i class="fas fa-code-branch"></i>
+改善此页面
+</a>
+</div>
+<hr>
+<div class="row next-prev-navigator">
+<div class="col-md-6 previous-article">
+<a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag浅析与自定义tag实践" class="btn btn-outline-info">
+<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
+<div class=next-prev-text>Golang struct tag浅析与自定义tag实践</div>
+</a>
+</div>
+<div class="col-md-6 next-article">
+<a href=/posts/knowledge/2007-k8s-memory/ title=Grafana上监控kubernetes中Pod已用内存不准问题分析 class="btn btn-outline-info">
+<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
+<div class=next-prev-text>Grafana上监控kubernetes中Pod已用内存不准问题分析</div>
+</a>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
+</section>
+<section class=toc-section id=toc-section>
+<div class=toc-holder>
+<h5 class="text-center pl-3">目录</h5>
+<hr>
+<div class=toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#hdfshadoop分布式文件系统>HDFS（hadoop分布式文件系统）</a></li>
+<li><a href=#mapreduce分布式计算框架>mapreduce（分布式计算框架）</a></li>
+<li><a href=#hive基于hadoop的数据仓库>hive（基于hadoop的数据仓库）</a></li>
+<li><a href=#hbase分布式列存数据库>hbase（分布式列存数据库）</a></li>
+<li><a href=#zookeeper分布式协作服务>zookeeper（分布式协作服务）</a></li>
+<li><a href=#sqoop数据同步工具>sqoop（数据同步工具）</a></li>
+<li><a href=#pig基于hadoop的数据流系统>pig（基于hadoop的数据流系统）</a></li>
+<li><a href=#mahout数据挖掘算法库>mahout（数据挖掘算法库）</a></li>
+<li><a href=#flume日志收集工具>flume（日志收集工具）</a></li>
+<li><a href=#资源管理器的简单介绍yarn和mesos>资源管理器的简单介绍（YARN和mesos）</a></li>
+<li><a href=#其他的一些开源组件>其他的一些开源组件：</a>
+<ul>
+<li><a href=#cloudrea-impala>cloudrea impala：</a></li>
+<li><a href=#spark>spark：</a></li>
+<li><a href=#storm>storm</a></li>
+<li><a href=#kafka>kafka</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</div>
+<footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><span>Email: </span> <span>ormissia@outlook.com</span></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/single.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

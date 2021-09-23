@@ -1,0 +1,446 @@
+<!doctype html><html>
+<head>
+<title>Grafana上监控kubernetes中Pod已用内存不准问题分析</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Grafana上监控kubernetes中Pod已用内存不准问题分析">
+<meta property="og:description" content="结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
+ 问题现象 近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平， 随着服务运行时间增长，pod的内存占用也随之水涨船高。直到内存占用增长到pod限制的上限附近，内存才出现回收的迹象，并且回收幅度不是特别明显， 但同时又不会出现OOM。
+  Golang某个服务内存占用情况   JAVA某个服务内存占用情况   简单分析 记一次线上的内存持续增长问题
+↑这个是初次遇到这个问题时候的分析，当时以为是代码写的有漏洞，程序发生了内存泄漏。于是祭出了pprof分析了一顿，结果可想而知，当然是没看出有问题。
+现在是多个服务都出现类似问题，那这个情况相对也就比较值得重视了。之前那个服务是因为日志写的比较多，造成磁盘IO比较大。同样的， 近期发现的这几个内存持续不断增长的服务也都是日志量比较大的。
+进一步分析 集群日志架构 所有pod中的日志都是写入挂载到/data/log目录的物理机磁盘中，因此所有写日志的操作都会有磁盘IO。日志量越大的pod，磁盘IO相应地也越高。
+集群监控 普通pod监控采用了常见的Prometheus+Grafana的方案。
+数据源计算方式 监控数据是采集的kubernetes中监控程序cadvisor上报的container_memory_working_set_bytes字段（ 表格参照 ）
+查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes与memory.stat total_inactive_file二者的差值
+func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ...  // ...  inactiveFileKeyName := &#34;total_inactive_file&#34; if cgroups.IsCgroup2UnifiedMode() { inactiveFileKeyName = &#34;inactive_file&#34; } workingSet := ret.Memory.Usage if v, ok := s.MemoryStats.Stats[inactiveFileKeyName]; ok { if workingSet < v { workingSet = 0 } else { workingSet -= v } } ret.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2007-k8s-memory/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-09-22T19:17:39+08:00">
+<meta property="article:modified_time" content="2021-09-22T19:17:39+08:00">
+<meta name=description content="Grafana上监控kubernetes中Pod已用内存不准问题分析">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/single.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/inverted-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=Search data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
+<ul class=active>
+<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a class=active href=/posts/knowledge/2007-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
+<ul>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5000-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class=content>
+<div class="container p-0 read-area">
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/knowledge/2007-k8s-memory/head.svg)>
+</div>
+<div class=page-content>
+<div class="author-profile ml-auto align-self-lg-center">
+<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
+<h5 class=author-name>Ormissia</h5>
+<p>September 22, 2021</p>
+</div>
+<div class=title>
+<h1>Grafana上监控kubernetes中Pod已用内存不准问题分析</h1>
+</div>
+<div class=post-content id=post-content>
+<blockquote>
+<p>结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题</p>
+</blockquote>
+<h2 id=问题现象>问题现象</h2>
+<p>近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平，
+随着服务运行时间增长，pod的内存占用也随之水涨船高。直到内存占用增长到pod限制的上限附近，内存才出现回收的迹象，并且回收幅度不是特别明显，
+但同时又不会出现OOM。</p>
+<ul>
+<li>
+<p>Golang某个服务内存占用情况
+<img src=memory1.png alt=memory1></p>
+</li>
+<li>
+<p>JAVA某个服务内存占用情况
+<img src=memory2.png alt=memory2></p>
+</li>
+</ul>
+<h2 id=简单分析>简单分析</h2>
+<p><a href=https://ormissia.github.io/posts/problems/5000-go-online-service-oom/>记一次线上的内存持续增长问题</a><br>
+↑这个是初次遇到这个问题时候的分析，当时以为是代码写的有漏洞，程序发生了内存泄漏。于是祭出了pprof分析了一顿，结果可想而知，当然是没看出有问题。<br>
+现在是多个服务都出现类似问题，那这个情况相对也就比较值得重视了。之前那个服务是因为日志写的比较多，造成磁盘IO比较大。同样的，
+近期发现的这几个内存持续不断增长的服务也都是日志量比较大的。</p>
+<h2 id=进一步分析>进一步分析</h2>
+<h3 id=集群日志架构>集群日志架构</h3>
+<p>所有pod中的日志都是写入挂载到<code>/data/log</code>目录的物理机磁盘中，因此所有写日志的操作都会有磁盘IO。日志量越大的pod，磁盘IO相应地也越高。</p>
+<p><img src=log_framework.jpg alt=log_framework></p>
+<h3 id=集群监控>集群监控</h3>
+<p>普通pod监控采用了常见的Prometheus+Grafana的方案。</p>
+<p><img src=k8s_monitor.png alt=k8s_monitor></p>
+<h3 id=数据源计算方式>数据源计算方式</h3>
+<p>监控数据是采集的kubernetes中监控程序cadvisor上报的<code>container_memory_working_set_bytes</code>字段（ <a href=https://github.com/google/cadvisor/blob/master/docs/storage/prometheus.md>表格参照</a> ）</p>
+<p><img src=cmwsb.png alt=cmswb></p>
+<p>查看cadvisor源码中<a href=https://github.com/google/cadvisor/blob/80e65740c169abb5097d848f0b44debd0fa20876/container/libcontainer/handler.go#L792>setMemoryStats</a>
+可知，<code>container_memory_working_set_bytes</code>字段是<code>cgroup memory.usage_in_bytes</code>与<code>memory.stat total_inactive_file</code>二者的差值</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>setMemoryStats</span>(<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>cgroups</span>.<span style=color:#a6e22e>Stats</span>, <span style=color:#a6e22e>ret</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>info</span>.<span style=color:#a6e22e>ContainerStats</span>) {
+	<span style=color:#75715e>// ...
+</span><span style=color:#75715e></span>
+	<span style=color:#75715e>// ...
+</span><span style=color:#75715e></span>
+	<span style=color:#a6e22e>inactiveFileKeyName</span> <span style=color:#f92672>:=</span> <span style=color:#e6db74>&#34;total_inactive_file&#34;</span>
+	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>cgroups</span>.<span style=color:#a6e22e>IsCgroup2UnifiedMode</span>() {
+		<span style=color:#a6e22e>inactiveFileKeyName</span> = <span style=color:#e6db74>&#34;inactive_file&#34;</span>
+	}
+
+	<span style=color:#a6e22e>workingSet</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ret</span>.<span style=color:#a6e22e>Memory</span>.<span style=color:#a6e22e>Usage</span>
+	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>v</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>MemoryStats</span>.<span style=color:#a6e22e>Stats</span>[<span style=color:#a6e22e>inactiveFileKeyName</span>]; <span style=color:#a6e22e>ok</span> {
+		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>workingSet</span> &lt; <span style=color:#a6e22e>v</span> {
+			<span style=color:#a6e22e>workingSet</span> = <span style=color:#ae81ff>0</span>
+		} <span style=color:#66d9ef>else</span> {
+			<span style=color:#a6e22e>workingSet</span> <span style=color:#f92672>-=</span> <span style=color:#a6e22e>v</span>
+		}
+	}
+	<span style=color:#a6e22e>ret</span>.<span style=color:#a6e22e>Memory</span>.<span style=color:#a6e22e>WorkingSet</span> = <span style=color:#a6e22e>workingSet</span>
+}
+</code></pre></div><p>而<code>memory.usage_in_bytes</code>的统计数据是包含了所有的file cache的，<code>total_active_file</code>和<code>total_inactive_file</code>都属于file cache的一部分，
+但是这两个数据并不是Pod中的程序真正占用的内存，只是系统为了提高磁盘IO的效率，将读写过的文件缓存在内存中。file cache并不会随着进程退出而释放，只会当容器销毁或者系统内存不足时才会由系统自动回收。</p>
+<p>所以cadvisor采用<code>memory.usage_in_bytes - total_inactive_file</code>计算出的结果并不是当前Pod中程序所占用的内存，当Pod内存资源紧张时<code>total_active_file</code>也是可回收利用的。</p>
+<h2 id=验证结论>验证结论</h2>
+<h3 id=准备环境>准备环境</h3>
+<p>去测试环境找到一个服务重启一下，并进入容器命令行</p>
+<p><img src=reboot.png alt=reboot></p>
+<h3 id=准备一个较大的文件>准备一个较大的文件</h3>
+<p>找一个比较大的文件，这里找了一个8M左右的日志文件</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/app <span style=color:#75715e># ls -lah /data/log/xxxx.log</span>
+-rw-r--r--    <span style=color:#ae81ff>1</span> root     root        8.2M May <span style=color:#ae81ff>31</span> 10:54 /data/log/xxxx.log
+</code></pre></div><h3 id=查看内存数据>查看内存数据</h3>
+<p>在容器中进入<code>/sys/fs/cgroup/memory/</code>目录，并查看<code>cat memory.stat</code>内容</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/app <span style=color:#75715e># cd /sys/fs/cgroup/memory/</span>
+/sys/fs/cgroup/memory <span style=color:#75715e># cat memory.stat</span>
+cache <span style=color:#ae81ff>38195200</span>
+rss <span style=color:#ae81ff>13484032</span>
+rss_huge <span style=color:#ae81ff>0</span>
+mapped_file <span style=color:#ae81ff>495616</span>
+swap <span style=color:#ae81ff>0</span>
+pgpgin <span style=color:#ae81ff>1550811</span>
+pgpgout <span style=color:#ae81ff>1538194</span>
+pgfault <span style=color:#ae81ff>1512338</span>
+pgmajfault <span style=color:#ae81ff>36</span>
+inactive_anon <span style=color:#ae81ff>0</span>
+active_anon <span style=color:#ae81ff>13422592</span>
+inactive_file <span style=color:#ae81ff>12058624</span>
+active_file <span style=color:#ae81ff>26136576</span>
+unevictable <span style=color:#ae81ff>0</span>
+hierarchical_memory_limit <span style=color:#ae81ff>314572800</span>
+hierarchical_memsw_limit <span style=color:#ae81ff>314572800</span>
+total_cache <span style=color:#ae81ff>38195200</span>
+total_rss <span style=color:#ae81ff>13484032</span>
+total_rss_huge <span style=color:#ae81ff>0</span>
+total_mapped_file <span style=color:#ae81ff>495616</span>
+total_swap <span style=color:#ae81ff>0</span>
+total_pgpgin <span style=color:#ae81ff>1550811</span>
+total_pgpgout <span style=color:#ae81ff>1538194</span>
+total_pgfault <span style=color:#ae81ff>1512338</span>
+total_pgmajfault <span style=color:#ae81ff>36</span>
+total_inactive_anon <span style=color:#ae81ff>0</span>
+total_active_anon <span style=color:#ae81ff>13422592</span>
+total_inactive_file <span style=color:#ae81ff>12058624</span>
+total_active_file <span style=color:#ae81ff>26136576</span>
+total_unevictable <span style=color:#ae81ff>0</span>
+</code></pre></div><p>记录此时<br>
+total_inactive_file 12058624 Bytes = 11.5M
+total_active_file 26136576 Bytes = 24.9M</p>
+<h3 id=遍历日志文件>遍历日志文件</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/sys/fs/cgroup/memory <span style=color:#75715e># grep &#34;hello&#34; /data/log/xxx.log</span>
+</code></pre></div><h3 id=第二次查看内存>第二次查看内存</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/sys/fs/cgroup/memory <span style=color:#75715e># cat memory.stat </span>
+cache <span style=color:#ae81ff>46850048</span>
+rss <span style=color:#ae81ff>13500416</span>
+rss_huge <span style=color:#ae81ff>0</span>
+mapped_file <span style=color:#ae81ff>495616</span>
+swap <span style=color:#ae81ff>0</span>
+pgpgin <span style=color:#ae81ff>1552994</span>
+pgpgout <span style=color:#ae81ff>1538260</span>
+pgfault <span style=color:#ae81ff>1512642</span>
+pgmajfault <span style=color:#ae81ff>36</span>
+inactive_anon <span style=color:#ae81ff>0</span>
+active_anon <span style=color:#ae81ff>13459456</span>
+inactive_file <span style=color:#ae81ff>20709376</span>
+active_file <span style=color:#ae81ff>26140672</span>
+unevictable <span style=color:#ae81ff>0</span>
+hierarchical_memory_limit <span style=color:#ae81ff>314572800</span>
+hierarchical_memsw_limit <span style=color:#ae81ff>314572800</span>
+total_cache <span style=color:#ae81ff>46850048</span>
+total_rss <span style=color:#ae81ff>13500416</span>
+total_rss_huge <span style=color:#ae81ff>0</span>
+total_mapped_file <span style=color:#ae81ff>495616</span>
+total_swap <span style=color:#ae81ff>0</span>
+total_pgpgin <span style=color:#ae81ff>1552994</span>
+total_pgpgout <span style=color:#ae81ff>1538260</span>
+total_pgfault <span style=color:#ae81ff>1512642</span>
+total_pgmajfault <span style=color:#ae81ff>36</span>
+total_inactive_anon <span style=color:#ae81ff>0</span>
+total_active_anon <span style=color:#ae81ff>13459456</span>
+total_inactive_file <span style=color:#ae81ff>20709376</span>
+total_active_file <span style=color:#ae81ff>26140672</span>
+total_unevictable <span style=color:#ae81ff>0</span>
+</code></pre></div><p>记录此时
+total_inactive_file 20709376 Bytes = 19.6M
+total_active_file 26140672 Bytes = 24.9M</p>
+<p>此时<code>total_inactive_file</code>占用较上次增加大约8M左右，即遍历过的日志文件的大小。</p>
+<h3 id=第二次遍历日志文件>第二次遍历日志文件</h3>
+<p>对同一个文件第二次遍历访问</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/sys/fs/cgroup/memory <span style=color:#75715e># grep &#34;hello&#34; /data/log/xxx.log</span>
+</code></pre></div><h3 id=第三次查看内存>第三次查看内存</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/sys/fs/cgroup/memory <span style=color:#75715e># cat memory.stat </span>
+cache <span style=color:#ae81ff>46850048</span>
+rss <span style=color:#ae81ff>13504512</span>
+rss_huge <span style=color:#ae81ff>0</span>
+mapped_file <span style=color:#ae81ff>495616</span>
+swap <span style=color:#ae81ff>0</span>
+pgpgin <span style=color:#ae81ff>1553058</span>
+pgpgout <span style=color:#ae81ff>1538323</span>
+pgfault <span style=color:#ae81ff>1512941</span>
+pgmajfault <span style=color:#ae81ff>36</span>
+inactive_anon <span style=color:#ae81ff>0</span>
+active_anon <span style=color:#ae81ff>13459456</span>
+inactive_file <span style=color:#ae81ff>12025856</span>
+active_file <span style=color:#ae81ff>34824192</span>
+unevictable <span style=color:#ae81ff>0</span>
+hierarchical_memory_limit <span style=color:#ae81ff>314572800</span>
+hierarchical_memsw_limit <span style=color:#ae81ff>314572800</span>
+total_cache <span style=color:#ae81ff>46850048</span>
+total_rss <span style=color:#ae81ff>13504512</span>
+total_rss_huge <span style=color:#ae81ff>0</span>
+total_mapped_file <span style=color:#ae81ff>495616</span>
+total_swap <span style=color:#ae81ff>0</span>
+total_pgpgin <span style=color:#ae81ff>1553058</span>
+total_pgpgout <span style=color:#ae81ff>1538323</span>
+total_pgfault <span style=color:#ae81ff>1512941</span>
+total_pgmajfault <span style=color:#ae81ff>36</span>
+total_inactive_anon <span style=color:#ae81ff>0</span>
+total_active_anon <span style=color:#ae81ff>13459456</span>
+total_inactive_file <span style=color:#ae81ff>12025856</span>
+total_active_file <span style=color:#ae81ff>34824192</span>
+total_unevictable <span style=color:#ae81ff>0</span>
+</code></pre></div><p>记录此时
+total_inactive_file 12025856 Bytes = 11.5M
+total_active_file 34824192 Bytes = 33.2M</p>
+<p>此时<code>total_inactive_file</code>较上次减少8M，而<code>total_active_file</code>较上次增加8M</p>
+<h3 id=查看grafana>查看Grafana</h3>
+<ul>
+<li>
+<p>遍历日志文件之前
+<img src=cat1.png alt=cat1></p>
+</li>
+<li>
+<p>遍历日志文件之后
+<img src=cat2.png alt=cat2></p>
+</li>
+</ul>
+<p>此时查看对应服务的Grafana面板可以看到，使用shell的<code>grep</code>命令遍历一个8M多的文件之后，在Pod中内存占用上升了大概8M。
+而此时这块内存并没有被Pod中任何程序所引用，只是一个file cache的占用。</p>
+<h2 id=总结>总结</h2>
+<p>根据上述实验结果可以印证内存持续增长但不会OOM的现象。服务启动并向磁盘中持续追加日志文件，随之file cache持续上涨，直至达到Pod的内存上限之后，会出现GC。</p>
+<h2 id=结论>结论</h2>
+<p><code>memory.usage_in_bytes</code>统计包含了<code>Cached</code>和<code>Buffers</code>，<code>Cached</code>中除了<code>mlock_file</code>和<code>Shmem</code>（IPCS shared memory & tmpfs）外，
+其他部分<code>file cache</code>是可以回收使用的，<code>Buffers</code>也是可以回收利用的，所以Pod容器所在cgroup实际使用的内存计算公式可以转化为
+(因<code>memory.stat</code>未导出<code>SReclaimable</code>，这里忽略<code>SReclaimable</code>)：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>real_used <span style=color:#f92672>=</span> memory.usage_in_bytes – <span style=color:#f92672>(</span>Cached- Shmem - mlock_file + Buffers <span style=color:#f92672>)</span>  
+          <span style=color:#f92672>=</span> memory.usage_in_bytes – memory.stat .<span style=color:#f92672>(</span> total_inactive_file + total_active_file <span style=color:#f92672>)</span>
+</code></pre></div><p>因此cadvisor中<code>container_memory_working_set_bytes</code>字段在计算实际已使用内存时应该改为：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>real_used <span style=color:#f92672>=</span> memory.usage_in_bytes – memory.stat.total_inactive_file - memory.stat.total_active_file
+</code></pre></div><h2 id=但是>但是</h2>
+<p>过程中去<a href=https://github.com/kubernetes/kubernetes>kubernetes</a> 的<a href=https://github.com/kubernetes/kubernetes/issues>issue</a>
+中逛了一圈，发现了几个相关问题的讨论：</p>
+<ul>
+<li><a href=https://github.com/kubernetes/kubernetes/issues/43916>https://github.com/kubernetes/kubernetes/issues/43916</a></li>
+<li><a href=https://github.com/kubernetes/kubernetes/issues/104533>https://github.com/kubernetes/kubernetes/issues/104533</a></li>
+</ul>
+<p>其中一个给我笑出声<br>
+<code>kubernetes should not count active_file as used memory, I have been waiting for 4 years!</code></p>
+<p>等了四年了，这个问题还没有解决。<strong>也许，我们从一开始就错了？缓存也应该算是pod内存占用？</strong></p>
+</div>
+<div class=btn-improve-page>
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2007-k8s-memory/index.md title=改善此页面 target=_blank rel=noopener>
+<i class="fas fa-code-branch"></i>
+改善此页面
+</a>
+</div>
+<hr>
+<div class="row next-prev-navigator">
+<div class="col-md-6 previous-article">
+<a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件 class="btn btn-outline-info">
+<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
+<div class=next-prev-text>Hadoop生态组件</div>
+</a>
+</div>
+<div class="col-md-6 next-article">
+<a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程 class="btn btn-outline-info">
+<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
+<div class=next-prev-text>我的博客后端Docker镜像打包自动部署流程</div>
+</a>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
+</section>
+<section class=toc-section id=toc-section>
+<div class=toc-holder>
+<h5 class="text-center pl-3">目录</h5>
+<hr>
+<div class=toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#问题现象>问题现象</a></li>
+<li><a href=#简单分析>简单分析</a></li>
+<li><a href=#进一步分析>进一步分析</a>
+<ul>
+<li><a href=#集群日志架构>集群日志架构</a></li>
+<li><a href=#集群监控>集群监控</a></li>
+<li><a href=#数据源计算方式>数据源计算方式</a></li>
+</ul>
+</li>
+<li><a href=#验证结论>验证结论</a>
+<ul>
+<li><a href=#准备环境>准备环境</a></li>
+<li><a href=#准备一个较大的文件>准备一个较大的文件</a></li>
+<li><a href=#查看内存数据>查看内存数据</a></li>
+<li><a href=#遍历日志文件>遍历日志文件</a></li>
+<li><a href=#第二次查看内存>第二次查看内存</a></li>
+<li><a href=#第二次遍历日志文件>第二次遍历日志文件</a></li>
+<li><a href=#第三次查看内存>第三次查看内存</a></li>
+<li><a href=#查看grafana>查看Grafana</a></li>
+</ul>
+</li>
+<li><a href=#总结>总结</a></li>
+<li><a href=#结论>结论</a></li>
+<li><a href=#但是>但是</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</div>
+<footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><span>Email: </span> <span>ormissia@outlook.com</span></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/single.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
