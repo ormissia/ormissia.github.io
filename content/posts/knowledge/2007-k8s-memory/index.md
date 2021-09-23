@@ -140,7 +140,7 @@ total_unevictable 0
 ```
 
 记录此时  
-total_inactive_file 12058624 Bytes = 11.5M
+total_inactive_file 12058624 Bytes = 11.5M  
 total_active_file 26136576 Bytes = 24.9M
 
 ### 遍历日志文件
@@ -185,8 +185,8 @@ total_active_file 26140672
 total_unevictable 0
 ```
 
-记录此时
-total_inactive_file 20709376 Bytes = 19.6M
+记录此时  
+total_inactive_file 20709376 Bytes = 19.6M  
 total_active_file 26140672 Bytes = 24.9M
 
 此时`total_inactive_file`占用较上次增加大约8M左右，即遍历过的日志文件的大小。
@@ -235,8 +235,8 @@ total_active_file 34824192
 total_unevictable 0
 ```
 
-记录此时
-total_inactive_file 12025856 Bytes = 11.5M
+记录此时  
+total_inactive_file 12025856 Bytes = 11.5M  
 total_active_file 34824192 Bytes = 33.2M
 
 此时`total_inactive_file`较上次减少8M，而`total_active_file`较上次增加8M
