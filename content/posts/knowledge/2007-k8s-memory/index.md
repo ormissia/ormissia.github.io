@@ -53,7 +53,7 @@ menu:
 ![cmswb](cmwsb.png)
 
 查看cadvisor源码中[setMemoryStats](https://github.com/google/cadvisor/blob/80e65740c169abb5097d848f0b44debd0fa20876/container/libcontainer/handler.go#L792)
-可知，`container_memory_working_set_bytes`字段是`cgroup memory.usage_in_bytes`与`memory.stat total_inactive_file`二者的差值
+可知，`container_memory_working_set_bytes`字段是`cgroup memory.usage_in_bytes`（`RSS` + `Cache`）与`memory.stat total_inactive_file`二者的差值
 
 ```golang
 func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) {
