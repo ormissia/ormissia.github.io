@@ -113,7 +113,7 @@ Golang某个服务内存占用情况 JAVA某个服务内存占用情况 简单�
 进一步分析 集群日志架构 所有pod中的日志都是写入挂载到/data/log目录的物理机磁盘中，因此所有写日志的操作都会有磁盘IO。日志量越大的pod，磁盘IO相应地也越高。
 集群监控 普通pod监控采用了常见的Prometheus+Grafana的方案。
 数据源计算方式 监控数据是采集的kubernetes中监控程序cadvisor上报的container_memory_working_set_bytes字段（ 表格参照 ）
-查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes与memory.stat total_inactive_file二者的差值
+查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes（RSS + Cache）与memory.stat total_inactive_file二者的差值
 func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... inactiveFileKeyName := "total_inactive_file" if cgroups.IsCgroup2UnifiedMode() { inactiveFileKeyName = "inactive_file" } workingSet := ret.Memory.Usage if v, ok := s.MemoryStats.Stats[inactiveFileKeyName]; ok { if workingSet &lt; v { workingSet = 0 } else { workingSet -= v } } ret.</p>
 </div>
 <div class=card-footer>

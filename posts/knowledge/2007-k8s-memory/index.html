@@ -21,7 +21,7 @@
 进一步分析 集群日志架构 所有pod中的日志都是写入挂载到/data/log目录的物理机磁盘中，因此所有写日志的操作都会有磁盘IO。日志量越大的pod，磁盘IO相应地也越高。
 集群监控 普通pod监控采用了常见的Prometheus+Grafana的方案。
 数据源计算方式 监控数据是采集的kubernetes中监控程序cadvisor上报的container_memory_working_set_bytes字段（ 表格参照 ）
-查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes与memory.stat total_inactive_file二者的差值
+查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes（RSS + Cache）与memory.stat total_inactive_file二者的差值
 func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ...  // ...  inactiveFileKeyName := &#34;total_inactive_file&#34; if cgroups.IsCgroup2UnifiedMode() { inactiveFileKeyName = &#34;inactive_file&#34; } workingSet := ret.Memory.Usage if v, ok := s.MemoryStats.Stats[inactiveFileKeyName]; ok { if workingSet < v { workingSet = 0 } else { workingSet -= v } } ret.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2007-k8s-memory/"><meta property="article:section" content="posts">
@@ -155,7 +155,7 @@ Ormissia's Blog</a>
 <p>监控数据是采集的kubernetes中监控程序cadvisor上报的<code>container_memory_working_set_bytes</code>字段（ <a href=https://github.com/google/cadvisor/blob/master/docs/storage/prometheus.md>表格参照</a> ）</p>
 <p><img src=cmwsb.png alt=cmswb></p>
 <p>查看cadvisor源码中<a href=https://github.com/google/cadvisor/blob/80e65740c169abb5097d848f0b44debd0fa20876/container/libcontainer/handler.go#L792>setMemoryStats</a>
-可知，<code>container_memory_working_set_bytes</code>字段是<code>cgroup memory.usage_in_bytes</code>与<code>memory.stat total_inactive_file</code>二者的差值</p>
+可知，<code>container_memory_working_set_bytes</code>字段是<code>cgroup memory.usage_in_bytes</code>（<code>RSS</code> + <code>Cache</code>）与<code>memory.stat total_inactive_file</code>二者的差值</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>setMemoryStats</span>(<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>cgroups</span>.<span style=color:#a6e22e>Stats</span>, <span style=color:#a6e22e>ret</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>info</span>.<span style=color:#a6e22e>ContainerStats</span>) {
 	<span style=color:#75715e>// ...
 </span><span style=color:#75715e></span>
