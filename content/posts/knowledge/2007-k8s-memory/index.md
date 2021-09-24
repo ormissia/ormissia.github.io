@@ -285,3 +285,7 @@ real_used = memory.usage_in_bytes – memory.stat.total_inactive_file - memory.s
 `kubernetes should not count active_file as used memory, I have been waiting for 4 years!`
 
 等了四年了，这个问题还没有解决。**也许，我们从一开始就错了？缓存也应该算是pod内存占用？**
+
+## 参考
+
+- [https://lwn.net/Articles/432224/](https://lwn.net/Articles/432224/)
