@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 22 Sep 2021 19:17:39 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 08 Oct 2021 14:18:39 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
 1Byte true/false uint8
 1Byte 0-255 uint16
 2Byte 0-65535 uint32
@@ -162,7 +162,14 @@ Initial setup Search depends on additional output content type of JSON in config
 No content shown here is rendered, all content is based in the template layouts/page/search.html
 Setting a very low sitemap priority will tell search engines this is not important content.
 This implementation uses Fusejs, jquery and mark.js
-Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>Grafana上监控kubernetes中Pod已用内存不准问题分析</title><link>https://ormissia.github.io/posts/knowledge/2007-k8s-memory/</link><pubDate>Wed, 22 Sep 2021 19:17:39 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2007-k8s-memory/</guid><description>结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
+Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>Linux部署Nginx流程</title><link>https://ormissia.github.io/posts/deployment/3002-linux-nginx/</link><pubDate>Fri, 08 Oct 2021 14:18:39 +0800</pubDate><guid>https://ormissia.github.io/posts/deployment/3002-linux-nginx/</guid><description>安装依赖 编译工具及库文件 yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel 安装PCRE PCRE作用是让Nginx支持Rewrite功能
+PCRE安装包下载地址： https://sourceforge.net/projects/pcre/files/pcre/
+选择对应版本下载即可
+下载PCRE安装包 cd /usr/local/src/ wget http://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.gz 解压安装包并进入目录 tar -zxvf pcre-8.45.tar.gz cd pcre-8.45 编译安装 ./configure make &amp;amp;&amp;amp; make install 验证安装 pcre-config --version 可能遇到的问题 安装完成之后有可能找不到命令，查看编译安装时的默认安装目录，将其添加到Linux环境变量PATH即可
+创建管理Nginx的用户和组 创建nginx运行用户nginx并加入到nginx组，不允许nginx用户直接登录系统
+groupadd nginx useradd -g nginx nginx -s /sbin/nologin 安装Nginx 下载安装包 Nginx下载地址： http://nginx.org/en/download.html
+没有特殊需求的话，选择Stable version稳定版下载即可
+cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安装包并进入目录 tar -zxvf nginx-1.20.1 cd nginx-1.20.1 编译安装 .</description></item><item><title>Grafana上监控kubernetes中Pod已用内存不准问题分析</title><link>https://ormissia.github.io/posts/knowledge/2007-k8s-memory/</link><pubDate>Wed, 22 Sep 2021 19:17:39 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2007-k8s-memory/</guid><description>结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
 问题现象 近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平， 随着服务运行时间增长，pod的内存占用也随之水涨船高。直到内存占用增长到pod限制的上限附近，内存才出现回收的迹象，并且回收幅度不是特别明显， 但同时又不会出现OOM。
 Golang某个服务内存占用情况 JAVA某个服务内存占用情况 简单分析 记一次线上的内存持续增长问题
 ↑这个是初次遇到这个问题时候的分析，当时以为是代码写的有漏洞，程序发生了内存泄漏。于是祭出了pprof分析了一顿，结果可想而知，当然是没看出有问题。

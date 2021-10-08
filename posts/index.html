@@ -67,6 +67,7 @@ Ormissia's Blog</a>
 <i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
 <ul>
 <li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
 </ul>
 </li>
 <li>
@@ -97,6 +98,30 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/deployment/3002-linux-nginx/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/deployment/3002-linux-nginx/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Linux部署Nginx流程</h5>
+<p class="card-text post-summary">安装依赖 编译工具及库文件 yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel 安装PCRE PCRE作用是让Nginx支持Rewrite功能
+PCRE安装包下载地址： https://sourceforge.net/projects/pcre/files/pcre/
+选择对应版本下载即可
+下载PCRE安装包 cd /usr/local/src/ wget http://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.gz 解压安装包并进入目录 tar -zxvf pcre-8.45.tar.gz cd pcre-8.45 编译安装 ./configure make && make install 验证安装 pcre-config --version 可能遇到的问题 安装完成之后有可能找不到命令，查看编译安装时的默认安装目录，将其添加到Linux环境变量PATH即可
+创建管理Nginx的用户和组 创建nginx运行用户nginx并加入到nginx组，不允许nginx用户直接登录系统
+groupadd nginx useradd -g nginx nginx -s /sbin/nologin 安装Nginx 下载安装包 Nginx下载地址： http://nginx.org/en/download.html
+没有特殊需求的话，选择Stable version稳定版下载即可
+cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安装包并进入目录 tar -zxvf nginx-1.20.1 cd nginx-1.20.1 编译安装 .</p>
+</div>
+<div class=card-footer>
+<span class=float-left>October 8, 2021</span>
+<a href=/posts/deployment/3002-linux-nginx/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/knowledge/2007-k8s-memory/ class=post-card-link>
 <div class=card>
@@ -361,27 +386,28 @@ func NewStuffClient(conn Connection) StuffClient { return &stuffClient{ conn: co
 </div>
 </a>
 </div>
-<div class=post-card>
-<a href=/posts/unclassified/6001-markdown/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/unclassified/6001-markdown/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Markdown Samples</h5>
-<p class="card-text post-summary">This is a sample post intended to test the followings:
-A different post author. Table of contents. Markdown content rendering. Math rendering. Emoji rendering. Markdown Syntax Rendering Headings The following HTML &lt;h1>—&lt;h6> elements represent six levels of section headings. &lt;h1> is the highest section level while &lt;h6> is the lowest.
-H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur?</p>
-</div>
-<div class=card-footer>
-<span class=float-left>June 8, 2020</span>
-<a href=/posts/unclassified/6001-markdown/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
 </div>
 <div class=paginator>
+<ul class="pagination pagination-default">
+<li class="page-item disabled">
+<a href=# aria-disabled=true aria-label=First class=page-link role=button tabindex=-1><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class="page-item disabled">
+<a href=# aria-disabled=true aria-label=Previous class=page-link role=button tabindex=-1><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class="page-item active">
+<a href=# aria-current=page aria-label="Page 1" class=page-link role=button>1</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/2/ aria-label="Page 2" class=page-link role=button>2</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/2/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/2/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul>
 </div>
 </div>
 </section>
