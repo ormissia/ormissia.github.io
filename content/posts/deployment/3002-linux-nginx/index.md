@@ -341,7 +341,7 @@ systemctl stop nginx.service
 yum remove httpd -y
 ```
 
-### 验证安装
+## 验证安装
 
 执行
 
