@@ -31,6 +31,7 @@ sudo systemctl status grafana-server
 
 Grafana默认端口为`:3000`，默认用户名密码均为`admin`，程序启动后即可通过3000端口访问管理页面。
 
+![grafana-login](grafana-login.png)
 
 ## 开机自启
 
