@@ -1,0 +1,632 @@
+<!doctype html><html>
+<head>
+<title>Linux部署Traefik流程</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Linux部署Traefik流程">
+<meta property="og:description" content="Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience. It receives requests on behalf of your system and finds out which components are responsible for handling them. What sets Traefik apart, besides its many features, is that it automatically discovers the right configuration for your services. The magic happens when Traefik inspects your infrastructure, where it finds relevant information and discovers which service serves which request.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/posts/deployment/3003-linux-traefik/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-10-09T20:42:33+08:00">
+<meta property="article:modified_time" content="2021-10-09T20:42:33+08:00">
+<meta name=description content="Linux部署Traefik流程">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/single.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/inverted-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=Search data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2007-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/deployment/>环境部署</a>
+<ul class=active>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
+<li><a class=active href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5000-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class=content>
+<div class="container p-0 read-area">
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/deployment/3003-linux-traefik/head.png)>
+</div>
+<div class=page-content>
+<div class="author-profile ml-auto align-self-lg-center">
+<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
+<h5 class=author-name>Ormissia</h5>
+<p>October 9, 2021</p>
+</div>
+<div class=title>
+<h1>Linux部署Traefik流程</h1>
+</div>
+<div class=post-content id=post-content>
+<blockquote>
+<p>Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience. It receives requests on behalf of your system and finds out which components are responsible for handling them.
+What sets Traefik apart, besides its many features, is that it automatically discovers the right configuration for your services. The magic happens when Traefik inspects your infrastructure, where it finds relevant information and discovers which service serves which request.
+Traefik is natively compliant with every major cluster technology, such as Kubernetes, Docker, Docker Swarm, AWS, Mesos, Marathon, and the list goes on; and can handle many at the same time. (It even works for legacy software running on bare metal.)
+With Traefik, there is no need to maintain and synchronize a separate configuration file: everything happens automatically, in real time (no restarts, no connection interruptions). With Traefik, you spend time developing and deploying new features to your system, not on configuring and maintaining its working state.
+Developing Traefik, our main goal is to make it simple to use, and we&rsquo;re sure you&rsquo;ll enjoy it.</p>
+<p>&ndash; The Traefik Maintainer Team</p>
+</blockquote>
+<h2 id=程序下载>程序下载</h2>
+<p>由于Traefik是由Golang语言所编写，程序是二进制包的形式。直接到Traefik在GitHub仓库的releases中下载即可。</p>
+<p>我使用的是基于x86的64位Linux系统，所以在这里选择的是linux_amd64版本的包</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>wget https://github.com/traefik/traefik/releases/download/v2.5.3/traefik_v2.5.3_linux_amd64.tar.gz
+</code></pre></div><p>解压得到程序</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tar -zxvf traefik_v2.5.3_linux_amd64.tar.gz
+</code></pre></div><p>将程序重命名为<code>traefik</code>并放到<code>/usr/local/bin/</code>目录下</p>
+<h2 id=静态配置>静态配置</h2>
+<blockquote>
+<p>静态配置是Traefik在程序启动的时候从配置文件、环境变量或启动参数中加载到内存中的配置参数。如果需要修改，则需要重启Traefik。</p>
+</blockquote>
+<p><a href=https://doc.traefik.io/traefik/getting-started/configuration-overview/#configuration-file>静态配置的官方文档</a></p>
+<p>根据文档介绍，Traefik会从以下几个目录读取名为<code>traefik.yml</code>（或<code>traefik.yaml</code>或<code>traefik.toml</code>）的静态配置文件：</p>
+<ul>
+<li><code>/etc/traefik/</code></li>
+<li><code>$XDG_CONFIG_HOME/</code></li>
+<li><code>$HOME/.config/</code></li>
+<li><code>.</code>(Traefik程序运行的当前目录)</li>
+</ul>
+<p>或者在启动的时候以参数形式指定静态配置文件：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>traefik --configFile<span style=color:#f92672>=</span>foo/bar/myconfigfile.yml
+</code></pre></div><h3 id=代理端口>代理端口</h3>
+<p><img src=entrypoints.png alt=entrypoints></p>
+<p>使用<code>entryPoints</code>向外暴露端口</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>entryPoints</span>:
+  <span style=color:#f92672>web</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:80&#34;</span>
+  <span style=color:#f92672>websecure</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:443&#34;</span>
+</code></pre></div><h3 id=添加动态配置>添加动态配置</h3>
+<p>Traefik支持动态配置，即配置修改后Traefik可以自动重新加载，我在这里选择了从文件读取动态配置，通过<code>providers</code>添加动态配置的配置文件的路径或文件名，在这里我使用了目录的形式（<code>dictory</code>和<code>filename</code>二选一）。</p>
+<p>这里也可以修改动态配置的重新加载间隔时间，默认是<code>2S</code>，我在这里使用了默认配置，不做修改。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>providers</span>:
+  <span style=color:#f92672>file</span>:
+    <span style=color:#f92672>directory</span>: <span style=color:#ae81ff>/etc/traefik/dynamic-conf</span>
+    <span style=color:#f92672>watch</span>: <span style=color:#66d9ef>true</span>
+</code></pre></div><h3 id=开启api>开启API</h3>
+<p>在这里可以开启Traefik的dashboard以及api</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>api</span>:
+  <span style=color:#f92672>insecure</span>: <span style=color:#66d9ef>true</span>
+</code></pre></div><p>dashboard默认使用的是<code>8080</code>端口，如果要修改，则需要在<code>entryPoints</code>下添加名为<code>traefik</code>的端口配置：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>entryPoints</span>:
+  <span style=color:#f92672>traefik</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:10000&#34;</span>
+</code></pre></div><h3 id=程序日志>程序日志</h3>
+<p>Traefik支持将程序运行的日志输出到文件，通过<code>log</code>标签可以设置日志输出文件，输出格式以及日志级别。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>log</span>:
+  <span style=color:#f92672>filePath</span>: <span style=color:#ae81ff>/etc/traefik/traefik.log</span>
+  <span style=color:#f92672>format</span>: <span style=color:#ae81ff>json</span>
+  <span style=color:#f92672>level</span>: <span style=color:#ae81ff>ERROR</span>
+</code></pre></div><h3 id=访问日志>访问日志</h3>
+<p>Traefik支持将访问日志输出到文件，通过<code>accessLog</code>配置</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>accessLog</span>:
+  <span style=color:#f92672>filePath</span>: <span style=color:#ae81ff>/etc/traefik/access.log</span>
+  <span style=color:#f92672>format</span>: <span style=color:#ae81ff>json</span>
+</code></pre></div><h3 id=监控>监控</h3>
+<p><code>// TODO</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>metrics</span>:
+  <span style=color:#f92672>prometheus</span>:
+    <span style=color:#f92672>addRoutersLabels</span>: <span style=color:#66d9ef>true</span>
+    <span style=color:#f92672>entryPoint</span>: <span style=color:#ae81ff>metrics</span>
+</code></pre></div><h2 id=动态配置>动态配置</h2>
+<blockquote>
+<p>动态配置中存储的是路由、服务、中间件等配置信息，是可以在程序运行时动态修改的值。</p>
+</blockquote>
+<p>以下是Traefik所支持的动态配置提供者：</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Type</th>
+<th>Configuration Type</th>
+<th>Provider Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker</td>
+<td>Orchestrator</td>
+<td>Label</td>
+<td>docker</td>
+</tr>
+<tr>
+<td>Kubernetes IngressRoute</td>
+<td>Orchestrator</td>
+<td>Custom Resource</td>
+<td>kubernetescrd</td>
+</tr>
+<tr>
+<td>Kubernetes Ingress</td>
+<td>Orchestrator</td>
+<td>Ingress</td>
+<td>kubernetes</td>
+</tr>
+<tr>
+<td>Kubernetes Gateway API</td>
+<td>Orchestrator</td>
+<td>Gateway API Resource</td>
+<td>kubernetesgateway</td>
+</tr>
+<tr>
+<td>Consul Catalog</td>
+<td>Orchestrator</td>
+<td>Label</td>
+<td>consulcatalog</td>
+</tr>
+<tr>
+<td>ECS</td>
+<td>Orchestrator</td>
+<td>Label</td>
+<td>ecs</td>
+</tr>
+<tr>
+<td>Marathon</td>
+<td>Orchestrator</td>
+<td>Label</td>
+<td>marathon</td>
+</tr>
+<tr>
+<td>Rancher</td>
+<td>Orchestrator</td>
+<td>Label</td>
+<td>rancher</td>
+</tr>
+<tr>
+<td>File</td>
+<td>Manual</td>
+<td>YAML/TOML format</td>
+<td>file</td>
+</tr>
+<tr>
+<td>Consul</td>
+<td>KV</td>
+<td>KV</td>
+<td>consul</td>
+</tr>
+<tr>
+<td>Etcd</td>
+<td>KV</td>
+<td>KV</td>
+<td>etcd</td>
+</tr>
+<tr>
+<td>ZooKeeper</td>
+<td>KV</td>
+<td>KV</td>
+<td>zookeeper</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>KV</td>
+<td>KV</td>
+<td>redis</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>Manual</td>
+<td>JSON format</td>
+<td>http</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<blockquote>
+<p>我在这里选择了<code>File</code>类型的提供者，以下均为<code>File</code>类型的介绍</p>
+</blockquote>
+<h3 id=路由>路由</h3>
+<p><img src=routers.png alt=routers></p>
+<p>路由类型分为三种，分别为：<code>http</code>、<code>tcp</code>、<code>udp</code></p>
+<p>在这里我使用的是<code>HTTP</code>的路由功能：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>http</span>:
+  <span style=color:#f92672>routers</span>:
+    <span style=color:#f92672>router-traefik</span>:
+      <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>HostRegexp(`traefik.{domain:.*}`)</span>
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>traefik</span>
+    <span style=color:#f92672>router-grafana</span>:
+      <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>HostRegexp(`grafana.{domain:.*}`)</span>
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>grafana</span>
+</code></pre></div><blockquote>
+<p><code>service</code>指向的是下面定义的Service的名称</p>
+</blockquote>
+<h4 id=路由规则>路由规则</h4>
+<p>路由规则是指，Traefik接收到的请求，根据给定规则路由到不同的服务中。</p>
+<p>Traefik一共支持以下规则：</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Headers(`key`, `value`)</td>
+<td>Check if there is a key keydefined in the headers, with the value value</td>
+</tr>
+<tr>
+<td>HeadersRegexp(`key`, `regexp`)</td>
+<td>Check if there is a key keydefined in the headers, with a value that matches the regular expression regexp</td>
+</tr>
+<tr>
+<td>Host(`example.com`, &mldr;)</td>
+<td>Check if the request domain (host header value) targets one of the given domains.</td>
+</tr>
+<tr>
+<td>HostHeader(`example.com`, &mldr;)</td>
+<td>Check if the request domain (host header value) targets one of the given domains.</td>
+</tr>
+<tr>
+<td>HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`, &mldr;)</td>
+<td>Check if the request domain matches the given regexp.</td>
+</tr>
+<tr>
+<td>Method(`GET`, &mldr;)</td>
+<td>Check if the request method is one of the given methods (GET, POST, PUT, DELETE, PATCH, HEAD)</td>
+</tr>
+<tr>
+<td>Path(`/path`, `/articles/{cat:[a-z]+}/{id:[0-9]+}`, &mldr;)</td>
+<td>Match exact request path. It accepts a sequence of literal and regular expression paths.</td>
+</tr>
+<tr>
+<td>PathPrefix(`/products/`, `/articles/{cat:[a-z]+}/{id:[0-9]+}`)</td>
+<td>Match request prefix path. It accepts a sequence of literal and regular expression prefix paths.</td>
+</tr>
+<tr>
+<td>Query(`foo=bar`, `bar=baz`)</td>
+<td>Match Query String parameters. It accepts a sequence of key=value pairs.</td>
+</tr>
+<tr>
+<td>ClientIP(`10.0.0.0/16`, `::1`)</td>
+<td>Match if the request client IP is one of the given IP/CIDR. It accepts IPv4, IPv6 and CIDR formats</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>我这这里主要会用到<code>HostRegexp</code>和<code>PathPrefix</code>，即对请求url的两种使用正则的过滤规则，前者用于匹配二级域名，后者用于将不同路径的请求转发至不同服务。</p>
+<blockquote>
+<p>这个正则配起来稍微有点小坑，哈哈。我研究了好久才搞明白要怎么写。</p>
+</blockquote>
+<p>为了对<code>Host</code>和<code>Path</code>使用正则表达式，需要声明一个任意命名的变量，然后跟上用冒号分隔的正则表达式，所有这些都用花括号括起来。</p>
+<p><em>示例：HostRegexp(`grafana.{domain:.*}`)</em></p>
+<h3 id=服务>服务</h3>
+<p><img src=services.png alt=services></p>
+<p>服务负责配置如何到达实际的服务，最终将处理传入的请求。使用<code>service</code>定义：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>http</span>:
+  <span style=color:#f92672>services</span>:
+    <span style=color:#f92672>traefik</span>:
+      <span style=color:#f92672>loadBalancer</span>:
+        <span style=color:#f92672>servers</span>:
+          - <span style=color:#f92672>url</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:10000&#34;</span>
+</code></pre></div><p>我们将上面开启的Traefik的监控面板作为服务封装了起来，只要路由到<code>traefik</code>这个服务上，即可访问监控面板。</p>
+<p>在这里也可以实现负载均衡等功能，可以参照<a href=https://doc.traefik.io/traefik/routing/services/>官网介绍</a></p>
+<h2 id=开机启动>开机启动</h2>
+<blockquote>
+<p>有了上次部署Nginx的经验，这里我们完全采用<code>Systemd</code>来管理。即，使用<code>systemctl</code>命令来管理服务。</p>
+</blockquote>
+<h3 id=原理>原理</h3>
+<p>Systemd默认从目录<code>/etc/systemd/system/</code>读取配置文件。但是，里面存放的大部分文件都是符号链接，指向目录<code>/usr/lib/systemd/system/</code>，真正的配置文件存放在那个目录</p>
+<p><code>systemctl enable</code>命令用于在上面两个目录之间，建立符号链接关系。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl enable traefik.service
+<span style=color:#75715e># 等同于</span>
+ln -s <span style=color:#e6db74>&#39;/usr/lib/systemd/system/traefik.service&#39;</span> <span style=color:#e6db74>&#39;/etc/systemd/system/multi-user.target.wants/traefik.service&#39;</span>
+</code></pre></div><h3 id=unit配置文件>Unit配置文件</h3>
+<p>下面是我创建的配置文件，其中有几个需要注意的点：</p>
+<ul>
+<li><code>Type</code>：程序启动方式</li>
+<li><code>ExecStart</code>：程序运行的命令，在这里直接指向程序本身</li>
+<li><code>WatchdogSec</code>：程序检测时间</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#f92672>[</span>Unit<span style=color:#f92672>]</span>
+Description<span style=color:#f92672>=</span>Traefik
+Documentation<span style=color:#f92672>=</span>https://docs.traefik.io
+<span style=color:#75715e># After=network-online.target</span>
+<span style=color:#75715e># AssertFileIsExecutable=/usr/local/bin/traefik</span>
+<span style=color:#75715e># AssertPathExists=/etc/traefik/traefik.yml</span>
+
+<span style=color:#f92672>[</span>Service<span style=color:#f92672>]</span>
+<span style=color:#75715e># Run traefik as its own user (create new user with: groupadd traefik &amp;&amp; useradd -g traefik traefik -s /sbin/nologin)</span>
+<span style=color:#75715e># User=traefik</span>
+<span style=color:#75715e># AmbientCapabilities=CAP_NET_BIND_SERVICE</span>
+<span style=color:#75715e># configure service behavior</span>
+Type<span style=color:#f92672>=</span>simple
+ExecStart<span style=color:#f92672>=</span>/usr/local/bin/traefik
+Restart<span style=color:#f92672>=</span>always
+WatchdogSec<span style=color:#f92672>=</span>1s
+
+<span style=color:#f92672>[</span>Install<span style=color:#f92672>]</span>
+WantedBy<span style=color:#f92672>=</span>multi-user.target
+
+</code></pre></div><h3 id=作为服务开启>作为服务开启</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctil start traefik.service
+</code></pre></div><h3 id=设置开机启动>设置开机启动</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctil enable traefik.service
+</code></pre></div><h3 id=查看运行状态>查看运行状态</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctil status traefik.service
+</code></pre></div><h2 id=文件汇总>文件汇总</h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>root
+├─ etc
+│	└─ traefik
+│	 	├─ access.log           // 访问日志
+│	 	├─ dynamic_conf         // 动态配置存放文件夹
+│	 	│	└─ dynamic_conf.yml // 动态配置文件
+│	 	├─ traefik.log          // 程序日志
+│	 	└─ traefik.yml          // 静态配置文件
+└─ usr
+ 	└─ local
+ 	 	└─ bin
+ 	 	 	└─ traefik          // 程序本身
+</code></pre></div><h3 id=静态配置-1>静态配置</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e>## Static configuration</span>
+<span style=color:#f92672>entryPoints</span>:
+  <span style=color:#f92672>web</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:80&#34;</span>
+  <span style=color:#f92672>websecure</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:443&#34;</span>
+  <span style=color:#f92672>traefik</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:10000&#34;</span>
+  <span style=color:#f92672>metrics</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:8082&#34;</span>
+
+<span style=color:#75715e># 动态配置的配置</span>
+<span style=color:#f92672>providers</span>:
+  <span style=color:#f92672>file</span>:
+    <span style=color:#f92672>directory</span>: <span style=color:#ae81ff>/etc/traefik/dynamic-conf</span>
+    <span style=color:#f92672>watch</span>: <span style=color:#66d9ef>true</span>
+
+<span style=color:#75715e># API</span>
+<span style=color:#f92672>api</span>:
+  <span style=color:#f92672>insecure</span>: <span style=color:#66d9ef>true</span>
+
+<span style=color:#75715e># 运行日志</span>
+<span style=color:#f92672>log</span>:
+  <span style=color:#f92672>filePath</span>: <span style=color:#ae81ff>/etc/traefik/traefik.log</span>
+  <span style=color:#f92672>format</span>: <span style=color:#ae81ff>json</span>
+  <span style=color:#f92672>level</span>: <span style=color:#ae81ff>ERROR</span>
+
+<span style=color:#75715e># 访问日志</span>
+<span style=color:#f92672>accessLog</span>:
+  <span style=color:#f92672>filePath</span>: <span style=color:#ae81ff>/etc/traefik/access.log</span>
+  <span style=color:#f92672>format</span>: <span style=color:#ae81ff>json</span>
+
+<span style=color:#75715e># 监控</span>
+<span style=color:#f92672>metrics</span>:
+  <span style=color:#f92672>prometheus</span>:
+    <span style=color:#f92672>addRoutersLabels</span>: <span style=color:#66d9ef>true</span>
+    <span style=color:#f92672>entryPoint</span>: <span style=color:#ae81ff>metrics</span>
+</code></pre></div><h3 id=动态配置-1>动态配置</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e>## Dynamic configuration</span>
+<span style=color:#f92672>http</span>:
+  <span style=color:#f92672>routers</span>:
+    <span style=color:#f92672>router-traefik</span>:
+      <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>HostRegexp(`traefik.{domain:.*}`)</span>
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>traefik</span>
+    <span style=color:#f92672>router-grafana</span>:
+      <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>HostRegexp(`grafana.{domain:.*}`)</span>
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>grafana</span>
+    <span style=color:#f92672>router-prometheus</span>:
+      <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>HostRegexp(`prometheus.{domain:.*}`)</span>
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>prometheus</span>
+
+  <span style=color:#f92672>services</span>:
+    <span style=color:#f92672>traefik</span>:
+      <span style=color:#f92672>loadBalancer</span>:
+        <span style=color:#f92672>servers</span>:
+          - <span style=color:#f92672>url</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:10000&#34;</span>
+    <span style=color:#f92672>grafana</span>:
+      <span style=color:#f92672>loadBalancer</span>:
+        <span style=color:#f92672>servers</span>:
+          - <span style=color:#f92672>url</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:3000&#34;</span>
+    <span style=color:#f92672>prometheus</span>:
+      <span style=color:#f92672>loadBalancer</span>:
+        <span style=color:#f92672>servers</span>:
+          - <span style=color:#f92672>url</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:9090&#34;</span>
+</code></pre></div><h2 id=参考链接>参考链接</h2>
+<ul>
+<li><a href=https://github.com/traefik/traefik>Traefik源码仓库</a></li>
+<li><a href=https://traefik.io>Traefik官网</a></li>
+<li><a href=https://doc.traefik.io/traefik/reference/static-configuration/file/>Traefik静态配置项-File provider</a></li>
+<li><a href=https://www.freedesktop.org/software/systemd/man/systemd.unit.html>Systemd文档</a></li>
+</ul>
+</div>
+<div class="row pl-3 pr-3">
+<div class="col-md-6 share-buttons">
+</div>
+<div class="col-md-6 btn-improve-page">
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/deployment/3003-linux-traefik/index.md title=改善此页面 target=_blank rel=noopener>
+<i class="fas fa-code-branch"></i>
+改善此页面
+</a>
+</div>
+</div>
+<hr>
+<div class="row next-prev-navigator">
+<div class="col-md-6 previous-article">
+<a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程 class="btn btn-outline-info">
+<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
+<div class=next-prev-text>Linux部署Nginx流程</div>
+</a>
+</div>
+<div class="col-md-6 next-article">
+<a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法 class="btn btn-outline-info">
+<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
+<div class=next-prev-text>排序算法</div>
+</a>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
+</section>
+<section class=toc-section id=toc-section>
+<div class=toc-holder>
+<h5 class="text-center pl-3">目录</h5>
+<hr>
+<div class=toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#程序下载>程序下载</a></li>
+<li><a href=#静态配置>静态配置</a>
+<ul>
+<li><a href=#代理端口>代理端口</a></li>
+<li><a href=#添加动态配置>添加动态配置</a></li>
+<li><a href=#开启api>开启API</a></li>
+<li><a href=#程序日志>程序日志</a></li>
+<li><a href=#访问日志>访问日志</a></li>
+<li><a href=#监控>监控</a></li>
+</ul>
+</li>
+<li><a href=#动态配置>动态配置</a>
+<ul>
+<li><a href=#路由>路由</a>
+<ul>
+<li><a href=#路由规则>路由规则</a></li>
+</ul>
+</li>
+<li><a href=#服务>服务</a></li>
+</ul>
+</li>
+<li><a href=#开机启动>开机启动</a>
+<ul>
+<li><a href=#原理>原理</a></li>
+<li><a href=#unit配置文件>Unit配置文件</a></li>
+<li><a href=#作为服务开启>作为服务开启</a></li>
+<li><a href=#设置开机启动>设置开机启动</a></li>
+<li><a href=#查看运行状态>查看运行状态</a></li>
+</ul>
+</li>
+<li><a href=#文件汇总>文件汇总</a>
+<ul>
+<li><a href=#静态配置-1>静态配置</a></li>
+<li><a href=#动态配置-1>动态配置</a></li>
+</ul>
+</li>
+<li><a href=#参考链接>参考链接</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</div>
+<footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><span>Email: </span> <span>ormissia@outlook.com</span></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/single.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
