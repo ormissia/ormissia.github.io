@@ -403,6 +403,209 @@ http:
           - url: "http://127.0.0.1:9090"
 ```
 
+> 至此，我们已经配置完成了Traefik的基础功能，实现了路由，日志，开机启动等功能
+
+---
+
+## 中间件
+
+![middleware](middleware.png)
+
+> 从图中基本可以明白中间件的作用，也可以理解成拦截器，亦或者是类似于`Spring`中的`切面`。  
+> Traefik中有几种可用的中间件：一些可以修改请求、请求头，一些负责重定向，一些可以添加身份验证等等。
+
+中间件的配置格式类似于`Service`，大致是先定义，再使用。
+
+下面是一个官网给出的示例：
+
+```yaml
+# As YAML Configuration File
+http:
+  routers:
+    router1:
+      service: myService
+      middlewares:
+        - "foo-add-prefix"
+      rule: "Host(`example.com`)"
+
+  middlewares:
+    foo-add-prefix:
+      addPrefix:
+        prefix: "/foo"
+
+  services:
+    service1:
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1:80"
+```
+
+### 页面访问认证
+
+![basicauth](basicauth.png)
+
+由于Traefik的管理页面给有给出登录的功能，因此这里使用官方提供的`BasicAuth`中间件来实现访问认证的功能。
+
+#### 定义权限认证中间件
+
+定义名为`traefik-auth`的中间件：
+
+```yaml
+## Dynamic configuration
+http:
+
+# ...
+
+  middlewares:
+    traefik-auth:
+      basicAuth:
+        users:
+          - "test:$apr1$cxKgflNX$3PWH2/iPEdZrBEWYGfSBm."
+
+```
+
+_`user`下面的密码使用`htpasswd`生成_
+
+#### 给对应路由添加中间件
+
+给路由添加中间件
+
+```yaml
+## Dynamic configuration
+http:
+  routers:
+    router-traefik:
+      middlewares:
+        - traefik-auth
+      rule: Host(`traefik.ormissia.com`)
+      service: traefik
+```
+
+这样在访问相应路由的时候会经过`basicAuth`的中间件，在浏览器弹出窗口输入之前使用`htpasswd`生成的用户名密码即可。
+
+## 配置获取免费证书
+
+在这里我面选择让Traefik自动获取免费证书，并且申请泛域名的证书。
+
+### 端口重定向
+
+将`80`端口的流量重定向到`443`端口，并开启`http`代理的`tls`
+
+```yaml
+## Static configuration
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+    http:
+      tls: {}
+```
+
+这个时候我们将`80`代理到了`443`，因此访问页面会显示成这样：
+
+![unsafe](unsafe.png)
+
+_接下来我们给Traefik添加自动获取证书的功能_
+
+### 开启ACME
+
+```yaml
+# certificate
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: example@email.com
+      storage: /etc/traefik/acme/acme.json
+      dnsChallenge:
+        provider: acme-dns
+```
+
+这里面有三个属性是必填的：
+- `email`：邮箱
+- `storage`：证书存储文件
+- `dnsChallenge`：由于我们选择申请泛域名的证书，目前只有`dnsChallenge`支持申请泛域名。
+
+#### storage
+
+创建一个文件，权限必须是`600`，里面主要用来存证书的信息，信息格式为`json`。
+
+```shell
+cd /etc/traefik/acme/
+touch acme.json && chmod 600 acme.json
+```
+
+#### dnsChallenge
+
+`dnsChallenge`支持各种不同的`provider`，具体可以参考[官网介绍](https://doc.traefik.io/traefik/https/acme/#providers)，这里就不再贴了。  
+如果自己的域名在表格中有对应的云厂商，可以使用对应的`provider`。这里虽然我使用的这个域名是阿里云上的，只是感觉创建token或者RAM账户有点难于管理，而且要设置一些权限等等。
+因此这里我选择了通用的方式，使用`acme-dns`作为`provider`。
+
+使用`acme-dns`作为`provider`，需要添加两个环境变量：
+- `ACME_DNS_API_BASE`：这里我使用了`acme-dns`官方提供的地址-`https://auth.acme-dns.io`
+- `ACME_DNS_STORAGE_PATH`：这个文件存储了从上一个url中获取的DNS信息，需要手动创建一下
+
+由于未知原因，这里我在`/etc/profile`中添加对应环境变量并且使用`source`编译之后，Traefik运行时候未能正确读取到，因此我选择将两个变量写入`systemd`的配置文件中：
+
+```shell
+vi /usr/lib/systemd/system/traefik.service
+```
+
+```shell
+[Unit]
+# ...
+
+[Service]
+Environment="ACME_DNS_API_BASE=https://auth.acme-dns.io" "ACME_DNS_STORAGE_PATH=/etc/traefik/acme/dns.json"
+# ...
+
+[Install]
+# ...
+```
+
+直接在服务的配置文件中添加，这样在Traefik启动的时候就能正确读取到两个环境变量了。
+
+### 添加CNAME解析
+
+当完成上面的配置之后，运行一下Traefik之后，`/etc/traefik/acme/dns.json`会获得对应信息：
+
+```json
+{
+  "ormissia.com":{
+    "fulldomain":"123.auth.acme-dns.io",
+    "subdomain":"123",
+    "username":"123",
+    "password":"123",
+    "server_url":"https://auth.acme-dns.io"
+  }
+}
+```
+
+取`fulldomain`的值，到自己的域名管理添加一条`CNAME`类型的解析：`_acme-challenge.ormissia.com`指向上面得到的`fulldomain`的值即可。  
+等待片刻执行下面命令查看解析是否成功：
+
+```shell
+dig _acme-challenge.ormissia.com
+```
+
+可以看到返回值中有这样一行：
+
+```shell
+;; ANSWER SECTION:
+_acme-challenge.ormissia.com. 600 IN	CNAME	123.auth.acme-dns.io.
+```
+
+即代表解析成功。
+
+重启Traefik之后，刷新页面，即可以从浏览器中看到证书获取成功。
+
+![certificate](certificate.png)
+
 ## 参考链接
 
 - [Traefik源码仓库](https://github.com/traefik/traefik)
