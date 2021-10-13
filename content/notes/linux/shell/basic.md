@@ -172,3 +172,66 @@ cut -d: -f1 /etc/passwd
 ```
 
 {{< /note >}}
+
+
+{{< note title="date" >}}
+
+查看系统时间
+
+```shell
+date
+# Tue Oct 12 13:36:24 CST 2021
+```
+
+{{< /note >}}
+
+
+{{< note title="tzselect" >}}
+
+查看时区
+
+```shell
+ls -l /etc/localtime
+# lrwxrwxrwx. 1 root root 33 Oct 12 11:32 /etc/localtime -> /usr/share/zoneinfo/Asia/Shanghai
+```
+
+---
+
+获取TZ时区
+
+```shell
+tzselect
+```
+
+输出：
+
+```shell
+Please identify a location so that time zone rules can be set correctly.
+Please select a continent, ocean, "coord", or "TZ".
+ 1) Africa
+ 2) Americas
+ 3) Antarctica
+ 4) Asia
+ 5) Atlantic Ocean
+ 6) Australia
+ 7) Europe
+ 8) Indian Ocean
+ 9) Pacific Ocean
+10) coord - I want to use geographical coordinates.
+11) TZ - I want to specify the time zone using the Posix TZ format.
+#? 
+
+# 选择数字，依次选择地区、国家、城市，即可得到对应时区
+# Asia/Shanghai
+```
+
+---
+
+修改系统时区（所有用户生效）
+
+```shell
+rm -f /etc/localtime
+ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+```
+
+{{< /note >}}
