@@ -519,11 +519,151 @@ WantedBy<span style=color:#f92672>=</span>multi-user.target
       <span style=color:#f92672>loadBalancer</span>:
         <span style=color:#f92672>servers</span>:
           - <span style=color:#f92672>url</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:9090&#34;</span>
-</code></pre></div><h2 id=参考链接>参考链接</h2>
+</code></pre></div><blockquote>
+<p>至此，我们已经配置完成了Traefik的基础功能，实现了路由，日志，开机启动等功能</p>
+</blockquote>
+<hr>
+<h2 id=中间件>中间件</h2>
+<p><img src=middleware.png alt=middleware></p>
+<blockquote>
+<p>从图中基本可以明白中间件的作用，也可以理解成拦截器，亦或者是类似于<code>Spring</code>中的<code>切面</code>。<br>
+Traefik中有几种可用的中间件：一些可以修改请求、请求头，一些负责重定向，一些可以添加身份验证等等。</p>
+</blockquote>
+<p>中间件的配置格式类似于<code>Service</code>，大致是先定义，再使用。</p>
+<p>下面是一个官网给出的示例：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># As YAML Configuration File</span>
+<span style=color:#f92672>http</span>:
+  <span style=color:#f92672>routers</span>:
+    <span style=color:#f92672>router1</span>:
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>myService</span>
+      <span style=color:#f92672>middlewares</span>:
+        - <span style=color:#e6db74>&#34;foo-add-prefix&#34;</span>
+      <span style=color:#f92672>rule</span>: <span style=color:#e6db74>&#34;Host(`example.com`)&#34;</span>
+
+  <span style=color:#f92672>middlewares</span>:
+    <span style=color:#f92672>foo-add-prefix</span>:
+      <span style=color:#f92672>addPrefix</span>:
+        <span style=color:#f92672>prefix</span>: <span style=color:#e6db74>&#34;/foo&#34;</span>
+
+  <span style=color:#f92672>services</span>:
+    <span style=color:#f92672>service1</span>:
+      <span style=color:#f92672>loadBalancer</span>:
+        <span style=color:#f92672>servers</span>:
+          - <span style=color:#f92672>url</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:80&#34;</span>
+</code></pre></div><h3 id=页面访问认证>页面访问认证</h3>
+<p><img src=basicauth.png alt=basicauth></p>
+<p>由于Traefik的管理页面给有给出登录的功能，因此这里使用官方提供的<code>BasicAuth</code>中间件来实现访问认证的功能。</p>
+<h4 id=定义权限认证中间件>定义权限认证中间件</h4>
+<p>定义名为<code>traefik-auth</code>的中间件：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e>## Dynamic configuration</span>
+<span style=color:#f92672>http</span>:
+
+<span style=color:#75715e># ...</span>
+
+  <span style=color:#f92672>middlewares</span>:
+    <span style=color:#f92672>traefik-auth</span>:
+      <span style=color:#f92672>basicAuth</span>:
+        <span style=color:#f92672>users</span>:
+          - <span style=color:#e6db74>&#34;test:$apr1$cxKgflNX$3PWH2/iPEdZrBEWYGfSBm.&#34;</span>
+
+</code></pre></div><p><em><code>user</code>下面的密码使用<code>htpasswd</code>生成</em></p>
+<h4 id=给对应路由添加中间件>给对应路由添加中间件</h4>
+<p>给路由添加中间件</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e>## Dynamic configuration</span>
+<span style=color:#f92672>http</span>:
+  <span style=color:#f92672>routers</span>:
+    <span style=color:#f92672>router-traefik</span>:
+      <span style=color:#f92672>middlewares</span>:
+        - <span style=color:#ae81ff>traefik-auth</span>
+      <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>Host(`traefik.ormissia.com`)</span>
+      <span style=color:#f92672>service</span>: <span style=color:#ae81ff>traefik</span>
+</code></pre></div><p>这样在访问相应路由的时候会经过<code>basicAuth</code>的中间件，在浏览器弹出窗口输入之前使用<code>htpasswd</code>生成的用户名密码即可。</p>
+<h2 id=配置获取免费证书>配置获取免费证书</h2>
+<p>在这里我面选择让Traefik自动获取免费证书，并且申请泛域名的证书。</p>
+<h3 id=端口重定向>端口重定向</h3>
+<p>将<code>80</code>端口的流量重定向到<code>443</code>端口，并开启<code>http</code>代理的<code>tls</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e>## Static configuration</span>
+<span style=color:#f92672>entryPoints</span>:
+  <span style=color:#f92672>web</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:80&#34;</span>
+    <span style=color:#f92672>http</span>:
+      <span style=color:#f92672>redirections</span>:
+        <span style=color:#f92672>entryPoint</span>:
+          <span style=color:#f92672>to</span>: <span style=color:#ae81ff>websecure</span>
+          <span style=color:#f92672>scheme</span>: <span style=color:#ae81ff>https</span>
+  <span style=color:#f92672>websecure</span>:
+    <span style=color:#f92672>address</span>: <span style=color:#e6db74>&#34;:443&#34;</span>
+    <span style=color:#f92672>http</span>:
+      <span style=color:#f92672>tls</span>: {}
+</code></pre></div><p>这个时候我们将<code>80</code>代理到了<code>443</code>，因此访问页面会显示成这样：</p>
+<p><img src=unsafe.png alt=unsafe></p>
+<p><em>接下来我们给Traefik添加自动获取证书的功能</em></p>
+<h3 id=开启acme>开启ACME</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># certificate</span>
+<span style=color:#f92672>certificatesResolvers</span>:
+  <span style=color:#f92672>myresolver</span>:
+    <span style=color:#f92672>acme</span>:
+      <span style=color:#f92672>email</span>: <span style=color:#ae81ff>example@email.com</span>
+      <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>/etc/traefik/acme/acme.json</span>
+      <span style=color:#f92672>dnsChallenge</span>:
+        <span style=color:#f92672>provider</span>: <span style=color:#ae81ff>acme-dns</span>
+</code></pre></div><p>这里面有三个属性是必填的：</p>
+<ul>
+<li><code>email</code>：邮箱</li>
+<li><code>storage</code>：证书存储文件</li>
+<li><code>dnsChallenge</code>：由于我们选择申请泛域名的证书，目前只有<code>dnsChallenge</code>支持申请泛域名。</li>
+</ul>
+<h4 id=storage>storage</h4>
+<p>创建一个文件，权限必须是<code>600</code>，里面主要用来存证书的信息，信息格式为<code>json</code>。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /etc/traefik/acme/
+touch acme.json <span style=color:#f92672>&amp;&amp;</span> chmod <span style=color:#ae81ff>600</span> acme.json
+</code></pre></div><h4 id=dnschallenge>dnsChallenge</h4>
+<p><code>dnsChallenge</code>支持各种不同的<code>provider</code>，具体可以参考<a href=https://doc.traefik.io/traefik/https/acme/#providers>官网介绍</a>，这里就不再贴了。<br>
+如果自己的域名在表格中有对应的云厂商，可以使用对应的<code>provider</code>。这里虽然我使用的这个域名是阿里云上的，只是感觉创建token或者RAM账户有点难于管理，而且要设置一些权限等等。
+因此这里我选择了通用的方式，使用<code>acme-dns</code>作为<code>provider</code>。</p>
+<p>使用<code>acme-dns</code>作为<code>provider</code>，需要添加两个环境变量：</p>
+<ul>
+<li><code>ACME_DNS_API_BASE</code>：这里我使用了<code>acme-dns</code>官方提供的地址-<code>https://auth.acme-dns.io</code></li>
+<li><code>ACME_DNS_STORAGE_PATH</code>：这个文件存储了从上一个url中获取的DNS信息，需要手动创建一下</li>
+</ul>
+<p>由于未知原因，这里我在<code>/etc/profile</code>中添加对应环境变量并且使用<code>source</code>编译之后，Traefik运行时候未能正确读取到，因此我选择将两个变量写入<code>systemd</code>的配置文件中：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>vi /usr/lib/systemd/system/traefik.service
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#f92672>[</span>Unit<span style=color:#f92672>]</span>
+<span style=color:#75715e># ...</span>
+
+<span style=color:#f92672>[</span>Service<span style=color:#f92672>]</span>
+Environment<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ACME_DNS_API_BASE=https://auth.acme-dns.io&#34;</span> <span style=color:#e6db74>&#34;ACME_DNS_STORAGE_PATH=/etc/traefik/acme/dns.json&#34;</span>
+<span style=color:#75715e># ...</span>
+
+<span style=color:#f92672>[</span>Install<span style=color:#f92672>]</span>
+<span style=color:#75715e># ...</span>
+</code></pre></div><p>直接在服务的配置文件中添加，这样在Traefik启动的时候就能正确读取到两个环境变量了。</p>
+<h3 id=添加cname解析>添加CNAME解析</h3>
+<p>当完成上面的配置之后，运行一下Traefik之后，<code>/etc/traefik/acme/dns.json</code>会获得对应信息：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;ormissia.com&#34;</span>:{
+    <span style=color:#f92672>&#34;fulldomain&#34;</span>:<span style=color:#e6db74>&#34;123.auth.acme-dns.io&#34;</span>,
+    <span style=color:#f92672>&#34;subdomain&#34;</span>:<span style=color:#e6db74>&#34;123&#34;</span>,
+    <span style=color:#f92672>&#34;username&#34;</span>:<span style=color:#e6db74>&#34;123&#34;</span>,
+    <span style=color:#f92672>&#34;password&#34;</span>:<span style=color:#e6db74>&#34;123&#34;</span>,
+    <span style=color:#f92672>&#34;server_url&#34;</span>:<span style=color:#e6db74>&#34;https://auth.acme-dns.io&#34;</span>
+  }
+}
+</code></pre></div><p>取<code>fulldomain</code>的值，到自己的域名管理添加一条<code>CNAME</code>类型的解析：<code>_acme-challenge.ormissia.com</code>指向上面得到的<code>fulldomain</code>的值即可。<br>
+等待片刻执行下面命令查看解析是否成功：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>dig _acme-challenge.ormissia.com
+</code></pre></div><p>可以看到返回值中有这样一行：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>;; ANSWER SECTION:
+_acme-challenge.ormissia.com. <span style=color:#ae81ff>600</span> IN	CNAME	123.auth.acme-dns.io.
+</code></pre></div><p>即代表解析成功。</p>
+<p>重启Traefik之后，刷新页面，即可以从浏览器中看到证书获取成功。</p>
+<p><img src=certificate.png alt=certificate></p>
+<h2 id=参考链接>参考链接</h2>
 <ul>
 <li><a href=https://github.com/traefik/traefik>Traefik源码仓库</a></li>
 <li><a href=https://traefik.io>Traefik官网</a></li>
 <li><a href=https://doc.traefik.io/traefik/reference/static-configuration/file/>Traefik静态配置项-File provider</a></li>
+<li><a href=https://letsencrypt.org/>Let&rsquo;s Encrypt</a></li>
 <li><a href=https://www.freedesktop.org/software/systemd/man/systemd.unit.html>Systemd文档</a></li>
 </ul>
 </div>
@@ -599,6 +739,28 @@ WantedBy<span style=color:#f92672>=</span>multi-user.target
 <ul>
 <li><a href=#静态配置-1>静态配置</a></li>
 <li><a href=#动态配置-1>动态配置</a></li>
+</ul>
+</li>
+<li><a href=#中间件>中间件</a>
+<ul>
+<li><a href=#页面访问认证>页面访问认证</a>
+<ul>
+<li><a href=#定义权限认证中间件>定义权限认证中间件</a></li>
+<li><a href=#给对应路由添加中间件>给对应路由添加中间件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href=#配置获取免费证书>配置获取免费证书</a>
+<ul>
+<li><a href=#端口重定向>端口重定向</a></li>
+<li><a href=#开启acme>开启ACME</a>
+<ul>
+<li><a href=#storage>storage</a></li>
+<li><a href=#dnschallenge>dnsChallenge</a></li>
+</ul>
+</li>
+<li><a href=#添加cname解析>添加CNAME解析</a></li>
 </ul>
 </li>
 <li><a href=#参考链接>参考链接</a></li>
