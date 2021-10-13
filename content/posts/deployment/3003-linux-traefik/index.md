@@ -245,7 +245,7 @@ ln -s '/usr/lib/systemd/system/traefik.service' '/etc/systemd/system/multi-user.
 
 ### Unit配置文件
 
-下面是我创建的配置文件，其中有几个需要注意的点：
+下面是Traefik源码仓库中给出的[`traefik.service`](https://github.com/traefik/traefik/blob/master/contrib/systemd/traefik.service) 示例，其中有几个需要注意的点：
 
 - `Type`：程序启动方式
 - `ExecStart`：程序运行的命令，在这里直接指向程序本身
@@ -254,24 +254,45 @@ ln -s '/usr/lib/systemd/system/traefik.service' '/etc/systemd/system/multi-user.
 ```shell
 [Unit]
 Description=Traefik
-Documentation=https://docs.traefik.io
-# After=network-online.target
-# AssertFileIsExecutable=/usr/local/bin/traefik
-# AssertPathExists=/etc/traefik/traefik.yml
+Documentation=https://doc.traefik.io/traefik/
+#After=network-online.target
+#AssertFileIsExecutable=/usr/bin/traefik
+#AssertPathExists=/etc/traefik/traefik.toml
 
 [Service]
-# Run traefik as its own user (create new user with: groupadd traefik && useradd -g traefik traefik -s /sbin/nologin)
-# User=traefik
-# AmbientCapabilities=CAP_NET_BIND_SERVICE
+# Run traefik as its own user (create new user with: useradd -r -s /bin/false -U -M traefik)
+#User=traefik
+#AmbientCapabilities=CAP_NET_BIND_SERVICE
+
 # configure service behavior
-Type=simple
-ExecStart=/usr/local/bin/traefik
+Type=notify
+#ExecStart=/usr/bin/traefik --configFile=/etc/traefik/traefik.toml
 Restart=always
 WatchdogSec=1s
 
+# lock down system access
+# prohibit any operating system and configuration modification
+#ProtectSystem=strict
+# create separate, new (and empty) /tmp and /var/tmp filesystems
+#PrivateTmp=true
+# make /home directories inaccessible
+#ProtectHome=true
+# turns off access to physical devices (/dev/...)
+#PrivateDevices=true
+# make kernel settings (procfs and sysfs) read-only
+#ProtectKernelTunables=true
+# make cgroups /sys/fs/cgroup read-only
+#ProtectControlGroups=true
+
+# allow writing of acme.json
+#ReadWritePaths=/etc/traefik/acme.json
+# depending on log and entrypoint configuration, you may need to allow writing to other paths, too
+
+# limit number of processes in this unit
+#LimitNPROC=1
+
 [Install]
 WantedBy=multi-user.target
-
 ```
 
 ###  作为服务开启
