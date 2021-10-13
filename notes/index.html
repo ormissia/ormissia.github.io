@@ -938,6 +938,57 @@ cut -d: -f1 /etc/passwd
 </div>
 </div>
 </div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>date</span></h5>
+<div class=card>
+<div class=card-body><p>查看系统时间</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>date
+<span style=color:#75715e># Tue Oct 12 13:36:24 CST 2021</span>
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>tzselect</span></h5>
+<div class=card>
+<div class=card-body><p>查看时区</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ls -l /etc/localtime
+<span style=color:#75715e># lrwxrwxrwx. 1 root root 33 Oct 12 11:32 /etc/localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai</span>
+</code></pre></div></div>
+</div>
+<div class=card>
+<div class=card-body><p>获取TZ时区</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tzselect
+</code></pre></div><p>输出：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Please identify a location so that time zone rules can be set correctly.
+Please <span style=color:#66d9ef>select</span> a continent, ocean, <span style=color:#e6db74>&#34;coord&#34;</span>, or <span style=color:#e6db74>&#34;TZ&#34;</span>.
+ 1<span style=color:#f92672>)</span> Africa
+ 2<span style=color:#f92672>)</span> Americas
+ 3<span style=color:#f92672>)</span> Antarctica
+ 4<span style=color:#f92672>)</span> Asia
+ 5<span style=color:#f92672>)</span> Atlantic Ocean
+ 6<span style=color:#f92672>)</span> Australia
+ 7<span style=color:#f92672>)</span> Europe
+ 8<span style=color:#f92672>)</span> Indian Ocean
+ 9<span style=color:#f92672>)</span> Pacific Ocean
+10<span style=color:#f92672>)</span> coord - I want to use geographical coordinates.
+11<span style=color:#f92672>)</span> TZ - I want to specify the time zone using the Posix TZ format.
+<span style=color:#75715e>#? </span>
+
+<span style=color:#75715e># 选择数字，依次选择地区、国家、城市，即可得到对应时区</span>
+<span style=color:#75715e># Asia/Shanghai</span>
+</code></pre></div></div>
+</div>
+<div class=card>
+<div class=card-body><p>修改系统时区（所有用户生效）</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>rm -f /etc/localtime
+ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</code></pre></div></div>
+</div>
+</div>
+</div>
 </div>
 <div class=paginator>
 <ul class="pagination pagination-default">

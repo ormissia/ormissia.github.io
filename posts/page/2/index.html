@@ -70,6 +70,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
 <li><a href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
 <li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
 </ul>
 </li>
 <li>
@@ -100,6 +101,28 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/knowledge/2002-go-param-verify/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2002-go-param-verify/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Golang 实体参数校验</h5>
+<p class="card-text post-summary">A：&ldquo;请用一句话让别人知道你写过Golang。&rdquo;
+B：&ldquo;if err!= nil &mldr;&rdquo;
+起因 只要是接触过Golang的人，无不为其if err != nil的语法感到惊奇，或是大加赞赏，或是狠狠痛批。作为使用者，不管喜欢也好，反对也罢， 目前还是要接受这种错误处理模式。
+而最令人头痛的就是请求参数中各种值的校验。比如Get请求中接收分页参数时，需要将string格式的参数转换成int类型，再如时间类型的参数 转换， 诸如此类，等等等等。好家伙，一个接口写完if err != nil的判断占了一多半的行数，看着实在不爽。
+下面就是一个典型的例子，而且这个接口参数还不是特别多
+func Export(c *gin.Context) { //删除开头 //... var param map[string]string err := c.ShouldBindJSON(&param) if err != nil { ErrRsponse(c,errCode) return } var vId, userId, userName, format string if v, ok := param["vId"]; ok { vId = v } else { ErrRsponse(c,errCode) return } if len(vId) == 0 { ErrRsponse(c,errCode) return } if v, ok := param["userId"]; ok { userId = v } else { ErrRsponse(c,errCode) return } if v, ok := param["userName"]; ok { userName = v } else { ErrRsponse(c,errCode) return } if v, ok := param["format"]; ok { format = v } else { ErrRsponse(c,errCode) return } if !</p>
+</div>
+<div class=card-footer>
+<span class=float-left>July 27, 2021</span>
+<a href=/posts/knowledge/2002-go-param-verify/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/knowledge/2001-go-partten-1/ class=post-card-link>
 <div class=card>

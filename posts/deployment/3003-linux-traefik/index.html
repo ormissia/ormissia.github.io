@@ -74,6 +74,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
 <li><a class=active href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
 <li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
 </ul>
 </li>
 <li>
@@ -387,7 +388,7 @@ Developing Traefik, our main goal is to make it simple to use, and we&rsquo;re s
 <span style=color:#75715e># 等同于</span>
 ln -s <span style=color:#e6db74>&#39;/usr/lib/systemd/system/traefik.service&#39;</span> <span style=color:#e6db74>&#39;/etc/systemd/system/multi-user.target.wants/traefik.service&#39;</span>
 </code></pre></div><h3 id=unit配置文件>Unit配置文件</h3>
-<p>下面是我创建的配置文件，其中有几个需要注意的点：</p>
+<p>下面是Traefik源码仓库中给出的<a href=https://github.com/traefik/traefik/blob/master/contrib/systemd/traefik.service><code>traefik.service</code></a> 示例，其中有几个需要注意的点：</p>
 <ul>
 <li><code>Type</code>：程序启动方式</li>
 <li><code>ExecStart</code>：程序运行的命令，在这里直接指向程序本身</li>
@@ -395,24 +396,45 @@ ln -s <span style=color:#e6db74>&#39;/usr/lib/systemd/system/traefik.service&#39
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#f92672>[</span>Unit<span style=color:#f92672>]</span>
 Description<span style=color:#f92672>=</span>Traefik
-Documentation<span style=color:#f92672>=</span>https://docs.traefik.io
-<span style=color:#75715e># After=network-online.target</span>
-<span style=color:#75715e># AssertFileIsExecutable=/usr/local/bin/traefik</span>
-<span style=color:#75715e># AssertPathExists=/etc/traefik/traefik.yml</span>
+Documentation<span style=color:#f92672>=</span>https://doc.traefik.io/traefik/
+<span style=color:#75715e>#After=network-online.target</span>
+<span style=color:#75715e>#AssertFileIsExecutable=/usr/bin/traefik</span>
+<span style=color:#75715e>#AssertPathExists=/etc/traefik/traefik.toml</span>
 
 <span style=color:#f92672>[</span>Service<span style=color:#f92672>]</span>
-<span style=color:#75715e># Run traefik as its own user (create new user with: groupadd traefik &amp;&amp; useradd -g traefik traefik -s /sbin/nologin)</span>
-<span style=color:#75715e># User=traefik</span>
-<span style=color:#75715e># AmbientCapabilities=CAP_NET_BIND_SERVICE</span>
+<span style=color:#75715e># Run traefik as its own user (create new user with: useradd -r -s /bin/false -U -M traefik)</span>
+<span style=color:#75715e>#User=traefik</span>
+<span style=color:#75715e>#AmbientCapabilities=CAP_NET_BIND_SERVICE</span>
+
 <span style=color:#75715e># configure service behavior</span>
-Type<span style=color:#f92672>=</span>simple
-ExecStart<span style=color:#f92672>=</span>/usr/local/bin/traefik
+Type<span style=color:#f92672>=</span>notify
+<span style=color:#75715e>#ExecStart=/usr/bin/traefik --configFile=/etc/traefik/traefik.toml</span>
 Restart<span style=color:#f92672>=</span>always
 WatchdogSec<span style=color:#f92672>=</span>1s
 
+<span style=color:#75715e># lock down system access</span>
+<span style=color:#75715e># prohibit any operating system and configuration modification</span>
+<span style=color:#75715e>#ProtectSystem=strict</span>
+<span style=color:#75715e># create separate, new (and empty) /tmp and /var/tmp filesystems</span>
+<span style=color:#75715e>#PrivateTmp=true</span>
+<span style=color:#75715e># make /home directories inaccessible</span>
+<span style=color:#75715e>#ProtectHome=true</span>
+<span style=color:#75715e># turns off access to physical devices (/dev/...)</span>
+<span style=color:#75715e>#PrivateDevices=true</span>
+<span style=color:#75715e># make kernel settings (procfs and sysfs) read-only</span>
+<span style=color:#75715e>#ProtectKernelTunables=true</span>
+<span style=color:#75715e># make cgroups /sys/fs/cgroup read-only</span>
+<span style=color:#75715e>#ProtectControlGroups=true</span>
+
+<span style=color:#75715e># allow writing of acme.json</span>
+<span style=color:#75715e>#ReadWritePaths=/etc/traefik/acme.json</span>
+<span style=color:#75715e># depending on log and entrypoint configuration, you may need to allow writing to other paths, too</span>
+
+<span style=color:#75715e># limit number of processes in this unit</span>
+<span style=color:#75715e>#LimitNPROC=1</span>
+
 <span style=color:#f92672>[</span>Install<span style=color:#f92672>]</span>
 WantedBy<span style=color:#f92672>=</span>multi-user.target
-
 </code></pre></div><h3 id=作为服务开启>作为服务开启</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctil start traefik.service
 </code></pre></div><h3 id=设置开机启动>设置开机启动</h3>
