@@ -60,7 +60,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
 <li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
 <li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2007-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
 </ul>
 </li>
 <li>
@@ -71,6 +71,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
 <li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
 <li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程>Linux部署ELK流程</a></li>
 </ul>
 </li>
 <li>
@@ -83,7 +84,9 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
 <ul>
-<li><a href=/posts/problems/5000-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
 </ul>
 </li>
 <li>
@@ -101,6 +104,44 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/problems/5003-elasticsearch-start-failed/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5003-elasticsearch-start-failed/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>CentOS安装完ES无法启动</h5>
+<p class="card-text post-summary">问题现象 按照ES官网文档介绍的安装步骤，使用yum的方式进行安装。安装完成之后，使用如下命令启动：
+systemctl start elasticsearch.service 控制台阻塞一会后，显示启动失败，使用如下命令查看状态：
+systemctl status elasticsearch.service 查询状态为：
+Warning: The unit file, source configuration file or drop-ins of elasticsearch.service changed on disk. Run 'systemctl daemon-reload' to reload units. ● elasticsearch.service - Elasticsearch Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; disabled; vendor preset: disabled) Active: failed (Result: timeout) since Thu 2021-10-14 00:42:40 CST; 2min 15s ago Docs: https://www.elastic.co Main PID: 2547 (code=exited, status=143) Oct 14 00:41:22 gateway systemd[1]: Starting Elasticsearch... Oct 14 00:41:29 gateway bash[2547]: [0.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>October 14, 2021</span>
+<a href=/posts/problems/5003-elasticsearch-start-failed/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
+<a href=/posts/deployment/3006-linux-elk/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/deployment/3006-linux-elk/head.png alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Linux部署ELK流程</h5>
+<p class="card-text post-summary">Logstash Elasticsearch 开启试用 https://www.elastic.co/guide/en/elasticsearch/reference/current/start-trial.html
+{ "license" : { "status" : "active", "uid" : "f9cd2e30-450e-4d54-a928-18d8f135c665", "type" : "trial", "issue_date" : "2021-10-14T05:20:55.621Z", "issue_date_in_millis" : 1634188855621, "expiry_date" : "2021-11-13T05:20:55.621Z", "expiry_date_in_millis" : 1636780855621, "max_nodes" : 1000, "issued_to" : "elasticsearch", "issuer" : "elasticsearch", "start_date_in_millis" : -1 } } https://www.elastic.co/cn/subscriptions</p>
+</div>
+<div class=card-footer>
+<span class=float-left>October 13, 2021</span>
+<a href=/posts/deployment/3006-linux-elk/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/deployment/3005-linux-prometheus/ class=post-card-link>
 <div class=card>
@@ -181,10 +222,28 @@ cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安�
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2007-k8s-memory/ class=post-card-link>
+<a href=/posts/knowledge/2007-hadoop-hdfs/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2007-k8s-memory/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2007-hadoop-hdfs/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>HDFS基础知识</h5>
+<p class="card-text post-summary">//TODO
+Hadoop集群中HDFS节点角色 Master Standy </p>
+</div>
+<div class=card-footer>
+<span class=float-left>September 24, 2021</span>
+<a href=/posts/knowledge/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
+<a href=/posts/problems/5002-k8s-memory/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5002-k8s-memory/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Grafana上监控kubernetes中Pod已用内存不准问题分析</h5>
@@ -201,7 +260,7 @@ func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... 
 </div>
 <div class=card-footer>
 <span class=float-left>September 22, 2021</span>
-<a href=/posts/knowledge/2007-k8s-memory/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/problems/5002-k8s-memory/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
@@ -244,10 +303,10 @@ flume（日志收集工具） cloudera开源的日志收集系统，具有分布
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/problems/5000-go-online-service-oom/ class=post-card-link>
+<a href=/posts/problems/5001-go-online-service-oom/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/problems/5000-go-online-service-oom/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/problems/5001-go-online-service-oom/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>记一次线上的内存持续增长问题</h5>
@@ -268,7 +327,7 @@ flume（日志收集工具） cloudera开源的日志收集系统，具有分布
 </div>
 <div class=card-footer>
 <span class=float-left>September 15, 2021</span>
-<a href=/posts/problems/5000-go-online-service-oom/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/problems/5001-go-online-service-oom/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
@@ -309,70 +368,6 @@ Trie的应用 自动补全,例如：在百度搜索的输入框中,输入一个�
 <div class=card-footer>
 <span class=float-left>August 12, 2021</span>
 <a href=/posts/algorithm/4002-algorithm-trie/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/algorithm/4001-algorithm-sort/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/algorithm/4001-algorithm-sort/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>排序算法</h5>
-<p class="card-text post-summary">归并排序 思想 整体是递归（当然可以用非递归实现），使左边有序，使右边有序，合并左边右边使整体有序
-具体实现
-核心代码 func merge(arr []interface{}, l, mid, r int, compare Compare) { help := make([]interface{}, r-l+1) i := 0 p1 := l p2 := mid + 1 for p1 &lt;= mid && p2 &lt;= r { if compare(arr[p1], arr[p2]) { help[i] = arr[p1] p1++ } else { help[i] = arr[p2] p2++ } i++ } //要么p1越界了，要么p2越界了 for p1 &lt;= mid { help[i] = arr[p1] i++ p1++ } for p2 &lt;= r { help[i] = arr[p2] i++ p2++ } for j, _ := range help { arr[l+j] = help[j] } } 递归 核心代码</p>
-</div>
-<div class=card-footer>
-<span class=float-left>August 7, 2021</span>
-<a href=/posts/algorithm/4001-algorithm-sort/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2004-go-pprof/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2004-go-pprof/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Golang性能分析工具-pprof</h5>
-<p class="card-text post-summary">pprof is a tool for visualization and analysis of profiling data.
-pprof reads a collection of profiling samples in profile.proto format and generates reports to visualize and help analyze the data. It can generate both text and graphical reports (through the use of the dot visualization package).
-PProf是用于可视化和分析性能分析数据的工具，PProf以profile.proto读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告）。
-简介 采集方式 runtime/pprof：采集程序（非Server）的指定区块的运行数据进行分析。 net/http/pprof：基于HTTPServer运行，并且可以采集运行时数据进行分析。 gotest：通过运行测试用例，并指定所需标识来进行采集。 功能 CPUProfiling：CPU分析，按照一定的频率采集所监听的应用程序CPU（含寄存器）的使用情况，可确定应用程序在主动消耗CPU周期时花费时间的位置。 MemoryProfiling：内存分析，在应用程序进行堆分配时记录堆栈跟踪，用于监视当前和历史内存使用情况，以及检查内存泄漏。 BlockProfiling：阻塞分析，记录Goroutine阻塞等待同步（包括定时器通道）的位置，默认不开启，需要调用runtime.SetBlockProfileRate进行设置。 MutexProfiling：互斥锁分析，报告互斥锁的竞争情况，默认不开启，需要调用runtime.SetMutexProfileFraction进行设置。 GoroutineProfiling：Goroutine分析，可以对当前应用程序正在运行的Goroutine进行堆栈跟踪和分析。这项功能在实际排查中会经常用到， 因为很多问题出现时的表象就是Goroutine暴增，而这时候我们要做的事情之一就是查看应用程序中的Goroutine正在做什么事情，因为什么阻塞了， 然后再进行下一步。 简单的例子 注意要在import中引入 _ "net/http/pprof"</p>
-</div>
-<div class=card-footer>
-<span class=float-left>August 5, 2021</span>
-<a href=/posts/knowledge/2004-go-pprof/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2003-go-reflect/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2003-go-reflect/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Golang反射</h5>
-<p class="card-text post-summary">反射简介 Golang提供了一种机制，在编译时不知道类型的情况下，可更新变量、运行时查看值、调用方法以及直接对他们的布局进行操作的机制，称为反射。
-reflect 包中的官方注释：Package reflect implements run-time reflection, allowing a program to manipulate objects with arbitrary types.
-reflect 实现了运行时的反射能力，能够让程序操作不同类型的对象。反射包中有两对非常重要的函数和类型， 两个函数分别是：
-reflect.TypeOf 能获取类型信息 reflect.ValueOf 能获取数据的运行时表示 三大法则 运行时反射是程序在运行期间检查其自身结构的一种方式。反射带来的灵活性是一把双刃剑，反射作为一种元编程方式可以减少重复代码， 但是过量的使用反射会使我们的程序逻辑变得难以理解并且运行缓慢。我们在这一节中会介绍Go语言反射的三大法则，其中包括：
-从interface{}变量可以反射出反射对象； 从反射对象可以获取interface{}变量； 要修改反射对象，其值必须可设置； 第一法则 反射的第一法则是我们能将Go语言的interface{}变量转换成反射对象。很多读者可能会对这以法则产生困惑—为什么是从interface{}变量到反射对象？ 当我们执行reflect.ValueOf(1)时，虽然看起来是获取了基本类型int对应的反射类型，但是由于 reflect.TypeOf 、 reflect.ValueOf 两个方法的入参都是interface{}类型，所以在方法执行的过程中发生了类型转换。
-因为Go语言的函数调用都是值传递的，所以变量会在函数调用时进行类型转换。基本类型int会转换成interface{}类型， 这也就是为什么第一条法则是从接口到反射对象。
-上面提到的reflect.TypeOf 和reflect.ValueOf 函数就能完成这里的转换，如果我们认为Go语言的类型和反射类型处于两个不同的世界，那么这两个函数就是连接这两个世界的桥梁。
-我们可以通过以下例子简单介绍它们的作用， reflect.TypeOf 获取了变量author的类型， reflect.ValueOf 获取了变量的值ormissia。如果我们知道了一个变量的类型和值，那么就意味着我们知道了这个变量的全部信息。
-package main import ( "fmt" "reflect" ) func main() { author := "ormissia" fmt.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>August 3, 2021</span>
-<a href=/posts/knowledge/2003-go-reflect/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
