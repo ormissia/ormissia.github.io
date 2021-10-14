@@ -5,9 +5,9 @@ hero: head.svg
 menu:
   sidebar:
     name: Grafana上监控不准问题排查
-    identifier: knowledge-k8s-memory
-    parent: knowledge
-    weight: 2007
+    identifier: problems-k8s-memory
+    parent: problems
+    weight: 5002
 ---
 
 > 结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
