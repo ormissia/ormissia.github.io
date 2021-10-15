@@ -1,0 +1,633 @@
+<!doctype html><html>
+<head>
+<title>Linux部署Kubernetes流程</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Linux部署Kubernetes流程">
+<meta property="og:description" content="初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
+/.swapfile	none	swap	sw,comment=cloudconfig	0	0 重启之后查看关闭是否成功
+free -m 显示如下内容，swap关闭成功
+total used free shared buff/cache available Mem: 23114 402 22299 32 411 20597 Swap: 0 0 0 ulimit echo &#34;ulimit -n 65535&#34; >> /etc/profile echo &#34;*	hard	nofile	65535&#34; >> /etc/security/limits.conf 重启之后检查是否配置成功
+ulimit -n SSH免密（非必须） 执行命令，一路回车，即可获得当前节点的公钥
+ssh-keygen -t rsa cat id_rsa.pub iptables 查看br_netfilter模块是否开启
+lsmod | grep br_netfilter 如果没有看到输出则执行命令开启">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/posts/deployment/3007-linux-kubernetes/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-10-14T18:09:43+08:00">
+<meta property="article:modified_time" content="2021-10-14T18:09:43+08:00">
+<meta name=description content="Linux部署Kubernetes流程">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/single.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/default-hero_hu6760e73bd186896e9f58f2b8b663dec5_93204_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/inverted-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=Search data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/deployment/>环境部署</a>
+<ul class=active>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
+<li><a href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程>Linux部署ELK流程</a></li>
+<li><a class=active href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class=content>
+<div class="container p-0 read-area">
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/deployment/3007-linux-kubernetes/head.svg)>
+</div>
+<div class=page-content>
+<div class="author-profile ml-auto align-self-lg-center">
+<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
+<h5 class=author-name>Ormissia</h5>
+<p>October 14, 2021</p>
+</div>
+<div class=title>
+<h1>Linux部署Kubernetes流程</h1>
+</div>
+<div class=post-content id=post-content>
+<h2 id=初始化环境>初始化环境</h2>
+<h3 id=防火墙>防火墙</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl stop firewalld.service
+systemctl disable firewalld.service
+</code></pre></div><h3 id=selinux>SELinux</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>vi /etc/selinux/config
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>SELINUX<span style=color:#f92672>=</span>disabled
+</code></pre></div><h3 id=swap>Swap</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>vi /etc/fstab
+</code></pre></div><p>注释掉<code>swap</code>这一行</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>/.swapfile	none	swap	sw,comment<span style=color:#f92672>=</span>cloudconfig	0	<span style=color:#ae81ff>0</span>
+</code></pre></div><p>重启之后查看关闭是否成功</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>free -m
+</code></pre></div><p>显示如下内容，<code>swap</code>关闭成功</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>              total        used        free      shared  buff/cache   available
+Mem:          <span style=color:#ae81ff>23114</span>         <span style=color:#ae81ff>402</span>       <span style=color:#ae81ff>22299</span>          <span style=color:#ae81ff>32</span>         <span style=color:#ae81ff>411</span>       <span style=color:#ae81ff>20597</span>
+Swap:             <span style=color:#ae81ff>0</span>           <span style=color:#ae81ff>0</span>           <span style=color:#ae81ff>0</span>
+</code></pre></div><h3 id=ulimit>ulimit</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>echo <span style=color:#e6db74>&#34;ulimit -n 65535&#34;</span> &gt;&gt; /etc/profile
+echo <span style=color:#e6db74>&#34;*	hard	nofile	65535&#34;</span> &gt;&gt; /etc/security/limits.conf
+</code></pre></div><p>重启之后检查是否配置成功</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ulimit -n
+</code></pre></div><h2 id=ssh免密非必须>SSH免密（非必须）</h2>
+<p>执行命令，一路回车，即可获得当前节点的公钥</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ssh-keygen -t rsa
+cat id_rsa.pub
+</code></pre></div><h2 id=iptables>iptables</h2>
+<p>查看<code>br_netfilter</code>模块是否开启</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>lsmod | grep br_netfilter
+</code></pre></div><p>如果没有看到输出则执行命令开启</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>modprobe br_netfilter
+</code></pre></div><p>作为Linux节点的iptables正确查看桥接流量的要求，应该确保<code>net.bridge.bridge-nf-call-iptables</code>在<code>sysctl</code>配置中设置为<code>1</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+</span><span style=color:#e6db74>br_netfilter
+</span><span style=color:#e6db74>EOF</span>
+
+cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf
+</span><span style=color:#e6db74>net.bridge.bridge-nf-call-ip6tables = 1
+</span><span style=color:#e6db74>net.bridge.bridge-nf-call-iptables = 1
+</span><span style=color:#e6db74>EOF</span>
+sudo sysctl --system
+</code></pre></div><h2 id=安装docker>安装Docker</h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum install -y yum-utils
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum-config-manager <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --add-repo <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    https://download.docker.com/linux/centos/docker-ce.repo
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum install docker-ce docker-ce-cli containerd.io -y
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl start docker
+systemctl enable docker
+</code></pre></div><p>修改Docker Cgroup Driver 为 systemd（大坑一）</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>vi /usr/lib/systemd/system/docker.service
+</code></pre></div><p>修改配置文件中的启动参数</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e>#ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock</span>
+ExecStart<span style=color:#f92672>=</span>/usr/bin/dockerd -H fd:// --containerd<span style=color:#f92672>=</span>/run/containerd/containerd.sock --exec-opt native.cgroupdriver<span style=color:#f92672>=</span>systemd
+</code></pre></div><p>重启Docker</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl daemon-reload
+systemctl restart docker
+</code></pre></div><h2 id=安装kubernetes>安装Kubernetes</h2>
+<ul>
+<li><code>kubeadm</code>：引导集群的命令。</li>
+<li><code>kubelet</code>：在集群中的所有机器上运行的组件，并执行诸如启动<code>Pod</code>和容器之类的操作。</li>
+<li><code>kubectl</code>：用于与集群通信的命令行实用程序</li>
+</ul>
+<p>使用<code>yum</code>安装，添加<code>yum</code>源</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+</span><span style=color:#e6db74>[kubernetes]
+</span><span style=color:#e6db74>name=Kubernetes
+</span><span style=color:#e6db74>baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+</span><span style=color:#e6db74>enabled=1
+</span><span style=color:#e6db74>gpgcheck=1
+</span><span style=color:#e6db74>repo_gpgcheck=1
+</span><span style=color:#e6db74>gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+</span><span style=color:#e6db74>exclude=kubelet kubeadm kubectl
+</span><span style=color:#e6db74>EOF</span>
+</code></pre></div><p>安装并启动</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum install -y kubelet kubeadm kubectl --disableexcludes<span style=color:#f92672>=</span>kubernetes
+systemctl enable --now kubelet
+</code></pre></div><p>至此，集群中所有节点都是相同操作</p>
+<h2 id=初始化master>初始化master</h2>
+<p>使用<code>kubeadm</code>作为集群的初始化工具</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubeadm init --kubernetes-version<span style=color:#f92672>=</span>v1.22.2 --pod-network-cidr<span style=color:#f92672>=</span>10.244.0.0/16
+</code></pre></div><p>成功初始化之后会出现提示，其中有三个需要手动执行，最后一个是需要在从节点上执行（此处有坑）</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mkdir -p <span style=color:#75715e>#HOME/.kube</span>
+sudo cp -i /etc/kubernetes/admin.conf <span style=color:#75715e>#HOME/.kube/config</span>
+sudo chown <span style=color:#75715e>#(id -u):#(id -g) #HOME/.kube/config</span>
+
+kubeadm join --control-plane 10.0.0.105:6443 --token axqrzz.ouonxxxxxxgdvgjz <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>	--discovery-token-ca-cert-hash sha256:3a57ff0d78b1f85xxxxxxxxxxxxxxxxxxxxe0f90f47037a31a33
+</code></pre></div><p>使用<code>kubectl get nodes</code>命令查看节点</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>NAME         STATUS    ROLES                  AGE    VERSION
+arm-node-1   NotReady  control-plane,master   1m     v1.22.2
+</code></pre></div><p>此时可以看到<code>master</code>处于<code>NotReady</code>状态</p>
+<p>查看集群中<code>pod</code>状态</p>
+<blockquote>
+<p>这是后期补的，所以时间很久</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod --all-namespaces
+
+<span style=color:#75715e># 输出</span>
+NAMESPACE     NAME                                 READY   STATUS    RESTARTS       AGE
+kube-system   coredns-78fcd69978-2vcqt             1/1     Pending   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   coredns-78fcd69978-xg98g             1/1     Pending   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   etcd-arm-node-1                      1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-apiserver-arm-node-1            1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-controller-manager-arm-node-1   1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-proxy-q5m5k                     1/1     Running   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-scheduler-arm-node-1            1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+</code></pre></div><p>可以看到两个<code>coredns</code>的<code>pod</code>处于<code>Pending</code>状态，这是由于缺少网络组件<br>
+这里我们选择安装<code>flannel</code></p>
+<p>大坑二</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubctl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+</code></pre></div><p>执行这条命令之后查看pod状态会出现<code>ErrImagePull</code>的提示<br>
+原因是<code>rancher/flannel-cni-plugin:v1.2</code>的镜像拉取不到<br>
+到网上查了一番，看好多是相同的报错，但是因为<code>quay.io/coreos/flannel</code>的镜像拉不到，于是我手动拉了一下<code>rancher/flannel-cni-plugin</code>这个镜像</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker pull rancher/flannel-cni-plugin:v1.2
+<span style=color:#75715e># 输出</span>
+Error response from daemon: pull access denied <span style=color:#66d9ef>for</span> rancher/flannel-cni-plugin, repository does not exist or may require <span style=color:#e6db74>&#39;docker login&#39;</span>: denied: requested access to the resource is denied
+</code></pre></div><p>咦？找不到镜像？
+于是我去Docker Hub的页面去搜了一下，居然没有这个镜像</p>
+<p><img src=dockerhub.png alt=dockerhub></p>
+<p><del>真是啥坑都有</del></p>
+<p>去<a href=https://github.com/flannel-io/flannel/issues/1482>flannel-io/flannel的issue</a>中看了一下，最新的一条就是这个相同的问题</p>
+<p>好吧，删掉换个旧版本重新来过</p>
+<p>在GitHub的<code>flannel-io/flannel</code>仓库中切到<code>v0.14.1</code>版本中看了一下，没有使用到<code>rancher/flannel-cni-plugin</code>这个镜像</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubctl delete -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+kubctl apply -f https://raw.githubusercontent.com/flannel-io/flannel/release/v0.14.1/Documentation/kube-flannel.yml
+</code></pre></div><p>这回成功了，重新查看<code>pod</code>和节点状态</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod --all-namespaces
+
+<span style=color:#75715e># 输出</span>
+NAMESPACE     NAME                                 READY   STATUS    RESTARTS       AGE
+kube-system   coredns-78fcd69978-2vcqt             1/1     Running   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   coredns-78fcd69978-xg98g             1/1     Running   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   etcd-arm-node-1                      1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-apiserver-arm-node-1            1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-controller-manager-arm-node-1   1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-flannel-ds-kdpgp                1/1     Running   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   3h32m
+kube-system   kube-proxy-q5m5k                     1/1     Running   <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+kube-system   kube-scheduler-arm-node-1            1/1     Running   <span style=color:#ae81ff>2</span> <span style=color:#f92672>(</span>126m ago<span style=color:#f92672>)</span>   12h
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get nodes
+
+<span style=color:#75715e># 输出</span>
+NAME         STATUS   ROLES                  AGE    VERSION
+arm-node-1   Ready    control-plane,master   13h    v1.22.2
+</code></pre></div><h2 id=初始化从节点大坑三>初始化从节点（大坑三）</h2>
+<p>对于从节点，安装完<code>kubeadm</code>，<code>kubelet</code>，<code>kebectl</code>三个组件后，直接运行<code>master</code>节点<code>kubeadm init</code>完成之后的输出结果中的最后一条命令</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubeadm join --control-plane 10.0.0.105:6443 --token axqrzz.ouonxxxxxxgdvgjz <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>	--discovery-token-ca-cert-hash sha256:3a57ff0d78b1f85xxxxxxxxxxxxxxxxxxxxe0f90f47037a31a33
+</code></pre></div><p>但是这里我踩到一个坑，复制的这条命令粘贴到命令行中后，在第二行开头会莫名其妙多出来一个<code>.</code></p>
+<p><img src=kubeadmjoin.png alt=kubeadmjoin></p>
+<p>造成执行<code>kubeadm join</code>时一直报参数数量的错误</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>accepts at most <span style=color:#ae81ff>1</span> arg<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span>, received <span style=color:#ae81ff>3</span>
+To see the stack trace of this error execute with --v<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span> or higher
+</code></pre></div><p><em>这个问题也查了好久，最后将命令改为一行去执行</em></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubeadm join --control-plane 10.0.0.105:6443 --token axqrzz.ouonxxxxxxgdvgjz --discovery-token-ca-cert-hash sha256:3a57ff0d78b1f85xxxxxxxxxxxxxxxxxxxxe0f90f47037a31a33
+</code></pre></div><p>命令执行返回加入集群成功后查看节点状态</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get nodes
+
+<span style=color:#75715e># 输出</span>
+NAME         STATUS   ROLES                  AGE    VERSION
+arm-node-1   Ready    control-plane,master   13h    v1.22.2
+arm-node-2   Ready    &lt;none&gt;                 170m   v1.22.2
+</code></pre></div><p>可以看到从节点成功加入主节点</p>
+<h2 id=参考链接>参考链接</h2>
+<ul>
+<li><a href=https://kubernetes.io/>k8s官网</a></li>
+<li><a href=https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion>kubectl开启shell自动补全</a></li>
+<li><a href=https://docs.docker.com/>Docker 文档</a></li>
+<li><a href=https://hub.docker.com/>Docker Hub</a></li>
+<li><a href=https://github.com/flannel-io/flannel>flannel GitHub</a></li>
+<li><a href=https://raw.githubusercontent.com/flannel-io/flannel/release/v0.14.1/Documentation/kube-flannel.yml>v0.14.1 kube-flannel.yml</a></li>
+</ul>
+<h2 id=v0141kube-flannelyml>v0.14.1/kube-flannel.yml</h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># v0.14.1/kube-flannel.yml</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>policy/v1beta1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PodSecurityPolicy</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>psp.flannel.unprivileged</span>
+  <span style=color:#f92672>annotations</span>:
+    <span style=color:#f92672>seccomp.security.alpha.kubernetes.io/allowedProfileNames</span>: <span style=color:#ae81ff>docker/default</span>
+    <span style=color:#f92672>seccomp.security.alpha.kubernetes.io/defaultProfileName</span>: <span style=color:#ae81ff>docker/default</span>
+    <span style=color:#f92672>apparmor.security.beta.kubernetes.io/allowedProfileNames</span>: <span style=color:#ae81ff>runtime/default</span>
+    <span style=color:#f92672>apparmor.security.beta.kubernetes.io/defaultProfileName</span>: <span style=color:#ae81ff>runtime/default</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>privileged</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#f92672>volumes</span>:
+  - <span style=color:#ae81ff>configMap</span>
+  - <span style=color:#ae81ff>secret</span>
+  - <span style=color:#ae81ff>emptyDir</span>
+  - <span style=color:#ae81ff>hostPath</span>
+  <span style=color:#f92672>allowedHostPaths</span>:
+  - <span style=color:#f92672>pathPrefix</span>: <span style=color:#e6db74>&#34;/etc/cni/net.d&#34;</span>
+  - <span style=color:#f92672>pathPrefix</span>: <span style=color:#e6db74>&#34;/etc/kube-flannel&#34;</span>
+  - <span style=color:#f92672>pathPrefix</span>: <span style=color:#e6db74>&#34;/run/flannel&#34;</span>
+  <span style=color:#f92672>readOnlyRootFilesystem</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#75715e># Users and groups</span>
+  <span style=color:#f92672>runAsUser</span>:
+    <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>RunAsAny</span>
+  <span style=color:#f92672>supplementalGroups</span>:
+    <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>RunAsAny</span>
+  <span style=color:#f92672>fsGroup</span>:
+    <span style=color:#f92672>rule</span>: <span style=color:#ae81ff>RunAsAny</span>
+  <span style=color:#75715e># Privilege Escalation</span>
+  <span style=color:#f92672>allowPrivilegeEscalation</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#f92672>defaultAllowPrivilegeEscalation</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#75715e># Capabilities</span>
+  <span style=color:#f92672>allowedCapabilities</span>: [<span style=color:#e6db74>&#39;NET_ADMIN&#39;</span>, <span style=color:#e6db74>&#39;NET_RAW&#39;</span>]
+  <span style=color:#f92672>defaultAddCapabilities</span>: []
+  <span style=color:#f92672>requiredDropCapabilities</span>: []
+  <span style=color:#75715e># Host namespaces</span>
+  <span style=color:#f92672>hostPID</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#f92672>hostIPC</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#f92672>hostNetwork</span>: <span style=color:#66d9ef>true</span>
+  <span style=color:#f92672>hostPorts</span>:
+  - <span style=color:#f92672>min</span>: <span style=color:#ae81ff>0</span>
+    <span style=color:#f92672>max</span>: <span style=color:#ae81ff>65535</span>
+  <span style=color:#75715e># SELinux</span>
+  <span style=color:#f92672>seLinux</span>:
+    <span style=color:#75715e># SELinux is unused in CaaSP</span>
+    <span style=color:#f92672>rule</span>: <span style=color:#e6db74>&#39;RunAsAny&#39;</span>
+---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+<span style=color:#f92672>rules</span>:
+- <span style=color:#f92672>apiGroups</span>: [<span style=color:#e6db74>&#39;extensions&#39;</span>]
+  <span style=color:#f92672>resources</span>: [<span style=color:#e6db74>&#39;podsecuritypolicies&#39;</span>]
+  <span style=color:#f92672>verbs</span>: [<span style=color:#e6db74>&#39;use&#39;</span>]
+  <span style=color:#f92672>resourceNames</span>: [<span style=color:#e6db74>&#39;psp.flannel.unprivileged&#39;</span>]
+- <span style=color:#f92672>apiGroups</span>:
+  - <span style=color:#e6db74>&#34;&#34;</span>
+  <span style=color:#f92672>resources</span>:
+  - <span style=color:#ae81ff>pods</span>
+  <span style=color:#f92672>verbs</span>:
+  - <span style=color:#ae81ff>get</span>
+- <span style=color:#f92672>apiGroups</span>:
+  - <span style=color:#e6db74>&#34;&#34;</span>
+  <span style=color:#f92672>resources</span>:
+  - <span style=color:#ae81ff>nodes</span>
+  <span style=color:#f92672>verbs</span>:
+  - <span style=color:#ae81ff>list</span>
+  - <span style=color:#ae81ff>watch</span>
+- <span style=color:#f92672>apiGroups</span>:
+  - <span style=color:#e6db74>&#34;&#34;</span>
+  <span style=color:#f92672>resources</span>:
+  - <span style=color:#ae81ff>nodes/status</span>
+  <span style=color:#f92672>verbs</span>:
+  - <span style=color:#ae81ff>patch</span>
+---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+<span style=color:#f92672>subjects</span>:
+- <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ConfigMap</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-flannel-cfg</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>node</span>
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>flannel</span>
+<span style=color:#f92672>data</span>:
+  <span style=color:#f92672>cni-conf.json</span>: |<span style=color:#e6db74>
+</span><span style=color:#e6db74>    {
+</span><span style=color:#e6db74>      &#34;name&#34;: &#34;cbr0&#34;,
+</span><span style=color:#e6db74>      &#34;cniVersion&#34;: &#34;0.3.1&#34;,
+</span><span style=color:#e6db74>      &#34;plugins&#34;: [
+</span><span style=color:#e6db74>        {
+</span><span style=color:#e6db74>          &#34;type&#34;: &#34;flannel&#34;,
+</span><span style=color:#e6db74>          &#34;delegate&#34;: {
+</span><span style=color:#e6db74>            &#34;hairpinMode&#34;: true,
+</span><span style=color:#e6db74>            &#34;isDefaultGateway&#34;: true
+</span><span style=color:#e6db74>          }
+</span><span style=color:#e6db74>        },
+</span><span style=color:#e6db74>        {
+</span><span style=color:#e6db74>          &#34;type&#34;: &#34;portmap&#34;,
+</span><span style=color:#e6db74>          &#34;capabilities&#34;: {
+</span><span style=color:#e6db74>            &#34;portMappings&#34;: true
+</span><span style=color:#e6db74>          }
+</span><span style=color:#e6db74>        }
+</span><span style=color:#e6db74>      ]
+</span><span style=color:#e6db74>    }</span>    
+  <span style=color:#f92672>net-conf.json</span>: |<span style=color:#e6db74>
+</span><span style=color:#e6db74>    {
+</span><span style=color:#e6db74>      &#34;Network&#34;: &#34;10.244.0.0/16&#34;,
+</span><span style=color:#e6db74>      &#34;Backend&#34;: {
+</span><span style=color:#e6db74>        &#34;Type&#34;: &#34;vxlan&#34;
+</span><span style=color:#e6db74>      }
+</span><span style=color:#e6db74>    }</span>    
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>DaemonSet</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-flannel-ds</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>node</span>
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>flannel</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>flannel</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>node</span>
+        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>flannel</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>affinity</span>:
+        <span style=color:#f92672>nodeAffinity</span>:
+          <span style=color:#f92672>requiredDuringSchedulingIgnoredDuringExecution</span>:
+            <span style=color:#f92672>nodeSelectorTerms</span>:
+            - <span style=color:#f92672>matchExpressions</span>:
+              - <span style=color:#f92672>key</span>: <span style=color:#ae81ff>kubernetes.io/os</span>
+                <span style=color:#f92672>operator</span>: <span style=color:#ae81ff>In</span>
+                <span style=color:#f92672>values</span>:
+                - <span style=color:#ae81ff>linux</span>
+      <span style=color:#f92672>hostNetwork</span>: <span style=color:#66d9ef>true</span>
+      <span style=color:#f92672>priorityClassName</span>: <span style=color:#ae81ff>system-node-critical</span>
+      <span style=color:#f92672>tolerations</span>:
+      - <span style=color:#f92672>operator</span>: <span style=color:#ae81ff>Exists</span>
+        <span style=color:#f92672>effect</span>: <span style=color:#ae81ff>NoSchedule</span>
+      <span style=color:#f92672>serviceAccountName</span>: <span style=color:#ae81ff>flannel</span>
+      <span style=color:#f92672>initContainers</span>:
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>install-cni</span>
+        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>quay.io/coreos/flannel:v0.14.0</span>
+        <span style=color:#f92672>command</span>:
+        - <span style=color:#ae81ff>cp</span>
+        <span style=color:#f92672>args</span>:
+        - -<span style=color:#ae81ff>f</span>
+        - <span style=color:#ae81ff>/etc/kube-flannel/cni-conf.json</span>
+        - <span style=color:#ae81ff>/etc/cni/net.d/10-flannel.conflist</span>
+        <span style=color:#f92672>volumeMounts</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cni</span>
+          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/etc/cni/net.d</span>
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel-cfg</span>
+          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/etc/kube-flannel/</span>
+      <span style=color:#f92672>containers</span>:
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-flannel</span>
+        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>quay.io/coreos/flannel:v0.14.0</span>
+        <span style=color:#f92672>command</span>:
+        - <span style=color:#ae81ff>/opt/bin/flanneld</span>
+        <span style=color:#f92672>args</span>:
+        - --<span style=color:#ae81ff>ip-masq</span>
+        - --<span style=color:#ae81ff>kube-subnet-mgr</span>
+        <span style=color:#f92672>resources</span>:
+          <span style=color:#f92672>requests</span>:
+            <span style=color:#f92672>cpu</span>: <span style=color:#e6db74>&#34;100m&#34;</span>
+            <span style=color:#f92672>memory</span>: <span style=color:#e6db74>&#34;50Mi&#34;</span>
+          <span style=color:#f92672>limits</span>:
+            <span style=color:#f92672>cpu</span>: <span style=color:#e6db74>&#34;100m&#34;</span>
+            <span style=color:#f92672>memory</span>: <span style=color:#e6db74>&#34;50Mi&#34;</span>
+        <span style=color:#f92672>securityContext</span>:
+          <span style=color:#f92672>privileged</span>: <span style=color:#66d9ef>false</span>
+          <span style=color:#f92672>capabilities</span>:
+            <span style=color:#f92672>add</span>: [<span style=color:#e6db74>&#34;NET_ADMIN&#34;</span>, <span style=color:#e6db74>&#34;NET_RAW&#34;</span>]
+        <span style=color:#f92672>env</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>POD_NAME</span>
+          <span style=color:#f92672>valueFrom</span>:
+            <span style=color:#f92672>fieldRef</span>:
+              <span style=color:#f92672>fieldPath</span>: <span style=color:#ae81ff>metadata.name</span>
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>POD_NAMESPACE</span>
+          <span style=color:#f92672>valueFrom</span>:
+            <span style=color:#f92672>fieldRef</span>:
+              <span style=color:#f92672>fieldPath</span>: <span style=color:#ae81ff>metadata.namespace</span>
+        <span style=color:#f92672>volumeMounts</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>run</span>
+          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/run/flannel</span>
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel-cfg</span>
+          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/etc/kube-flannel/</span>
+      <span style=color:#f92672>volumes</span>:
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>run</span>
+        <span style=color:#f92672>hostPath</span>:
+          <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/run/flannel</span>
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cni</span>
+        <span style=color:#f92672>hostPath</span>:
+          <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/etc/cni/net.d</span>
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel-cfg</span>
+        <span style=color:#f92672>configMap</span>:
+          <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-flannel-cfg</span>
+</code></pre></div>
+</div>
+<div class="row pl-3 pr-3">
+<div class="col-md-6 share-buttons">
+</div>
+<div class="col-md-6 btn-improve-page">
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/deployment/3007-linux-kubernetes/index.md title=改善此页面 target=_blank rel=noopener>
+<i class="fas fa-code-branch"></i>
+改善此页面
+</a>
+</div>
+</div>
+<hr>
+<div class="row next-prev-navigator">
+<div class="col-md-6 previous-article">
+<a href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程 class="btn btn-outline-info">
+<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
+<div class=next-prev-text>Linux部署ELK流程</div>
+</a>
+</div>
+<div class="col-md-6 next-article">
+<a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法 class="btn btn-outline-info">
+<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
+<div class=next-prev-text>排序算法</div>
+</a>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
+</section>
+<section class=toc-section id=toc-section>
+<div class=toc-holder>
+<h5 class="text-center pl-3">目录</h5>
+<hr>
+<div class=toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#初始化环境>初始化环境</a>
+<ul>
+<li><a href=#防火墙>防火墙</a></li>
+<li><a href=#selinux>SELinux</a></li>
+<li><a href=#swap>Swap</a></li>
+<li><a href=#ulimit>ulimit</a></li>
+</ul>
+</li>
+<li><a href=#ssh免密非必须>SSH免密（非必须）</a></li>
+<li><a href=#iptables>iptables</a></li>
+<li><a href=#安装docker>安装Docker</a></li>
+<li><a href=#安装kubernetes>安装Kubernetes</a></li>
+<li><a href=#初始化master>初始化master</a></li>
+<li><a href=#初始化从节点大坑三>初始化从节点（大坑三）</a></li>
+<li><a href=#参考链接>参考链接</a></li>
+<li><a href=#v0141kube-flannelyml>v0.14.1/kube-flannel.yml</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</div>
+<footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><span>Email: </span> <span>ormissia@outlook.com</span></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/single.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

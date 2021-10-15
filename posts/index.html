@@ -72,6 +72,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
 <li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
 <li><a href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程>Linux部署ELK流程</a></li>
+<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
 </ul>
 </li>
 <li>
@@ -105,6 +106,29 @@ Ormissia's Blog</a>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
 <div class=post-card>
+<a href=/posts/deployment/3007-linux-kubernetes/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/deployment/3007-linux-kubernetes/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Linux部署Kubernetes流程</h5>
+<p class="card-text post-summary">初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
+/.swapfile none swap sw,comment=cloudconfig 0 0 重启之后查看关闭是否成功
+free -m 显示如下内容，swap关闭成功
+total used free shared buff/cache available Mem: 23114 402 22299 32 411 20597 Swap: 0 0 0 ulimit echo "ulimit -n 65535" >> /etc/profile echo "* hard nofile 65535" >> /etc/security/limits.conf 重启之后检查是否配置成功
+ulimit -n SSH免密（非必须） 执行命令，一路回车，即可获得当前节点的公钥
+ssh-keygen -t rsa cat id_rsa.pub iptables 查看br_netfilter模块是否开启
+lsmod | grep br_netfilter 如果没有看到输出则执行命令开启</p>
+</div>
+<div class=card-footer>
+<span class=float-left>October 14, 2021</span>
+<a href=/posts/deployment/3007-linux-kubernetes/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
 <a href=/posts/problems/5003-elasticsearch-start-failed/ class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -128,7 +152,7 @@ Warning: The unit file, source configuration file or drop-ins of elasticsearch.s
 <a href=/posts/deployment/3006-linux-elk/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/deployment/3006-linux-elk/head.png alt="Hero Image">
+<img class=card-img-top src=/posts/deployment/3006-linux-elk/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Linux部署ELK流程</h5>
@@ -350,24 +374,6 @@ package main import ( "encoding/json" "fmt" ) type User struct { ID int `json:"i
 <div class=card-footer>
 <span class=float-left>August 13, 2021</span>
 <a href=/posts/knowledge/2005-go-tag/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/algorithm/4002-algorithm-trie/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/algorithm/4002-algorithm-trie/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>前缀树</h5>
-<p class="card-text post-summary"> 前缀树又称字典树
-Trie的应用 自动补全,例如：在百度搜索的输入框中,输入一个单词的前半部分,能够自动补全出可能的单词结果。 拼写检查，例如：在word中输入一个拼写错误的单词, 能够自动检测出来。 IP路由表，在IP路由表中进行路由匹配时, 要按照最长匹配前缀的原则进行匹配。 T9预测文本，在大多手机输入法中, 都会用9格的那种输入法. 这个输入法能够根据用户在9格上的输入,自动匹配出可能的单词。 填单词游戏，相信大多数人都玩过那种在横竖的格子里填单词的游戏。 </p>
-</div>
-<div class=card-footer>
-<span class=float-left>August 12, 2021</span>
-<a href=/posts/algorithm/4002-algorithm-trie/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
