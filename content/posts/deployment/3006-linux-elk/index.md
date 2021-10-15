@@ -1,7 +1,7 @@
 ---
 title: Linux部署ELK流程
 date: 2021-10-13T15:28:13+08:00
-hero: head.png
+hero: head.svg
 menu:
   sidebar:
     name: Linux部署ELK流程
