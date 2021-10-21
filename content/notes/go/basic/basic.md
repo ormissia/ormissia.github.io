@@ -95,3 +95,16 @@ fmt.Println(slice1)
 ```
 
 {{< /note >}}
+
+
+{{< note title="bit Byte" >}}
+
+`bit`：计算机记忆的最小单位，一个`bit`可以代表0或1
+
+`Byte`：一个`Byte`由`8bits`所组成
+
+1`Byte`=8`Bits`
+
+1`KB`=1024`Bytes`
+
+{{< /note >}}

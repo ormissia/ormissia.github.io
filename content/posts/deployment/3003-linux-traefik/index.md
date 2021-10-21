@@ -253,43 +253,20 @@ ln -s '/usr/lib/systemd/system/traefik.service' '/etc/systemd/system/multi-user.
 
 ```shell
 [Unit]
-Description=Traefik
-Documentation=https://doc.traefik.io/traefik/
-#After=network-online.target
-#AssertFileIsExecutable=/usr/bin/traefik
-#AssertPathExists=/etc/traefik/traefik.toml
+Description=Traefik instance
+Documentation=https://doc.traefik.io
+Wants=network-online.target
 
 [Service]
-# Run traefik as its own user (create new user with: useradd -r -s /bin/false -U -M traefik)
-#User=traefik
-#AmbientCapabilities=CAP_NET_BIND_SERVICE
-
-# configure service behavior
-Type=notify
-#ExecStart=/usr/bin/traefik --configFile=/etc/traefik/traefik.toml
-Restart=always
-WatchdogSec=1s
-
-# lock down system access
-# prohibit any operating system and configuration modification
-#ProtectSystem=strict
-# create separate, new (and empty) /tmp and /var/tmp filesystems
-#PrivateTmp=true
-# make /home directories inaccessible
-#ProtectHome=true
-# turns off access to physical devices (/dev/...)
-#PrivateDevices=true
-# make kernel settings (procfs and sysfs) read-only
-#ProtectKernelTunables=true
-# make cgroups /sys/fs/cgroup read-only
-#ProtectControlGroups=true
-
-# allow writing of acme.json
-#ReadWritePaths=/etc/traefik/acme.json
-# depending on log and entrypoint configuration, you may need to allow writing to other paths, too
-
-# limit number of processes in this unit
-#LimitNPROC=1
+Environment="ACME_DNS_API_BASE=https://auth.acme-dns.io" "ACME_DNS_STORAGE_PATH=/etc/traefik/acme/dns.json"
+# Run traefik as its own user (create new user with: groupadd traefik && useradd -g traefik traefik -s /sbin/nologin)
+# User=traefik
+# Group=traefik
+Type=simple
+Restart=on-failure
+ExecStart=/usr/sbin/traefik-lb
+WatchdogSec=10s
+RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target
