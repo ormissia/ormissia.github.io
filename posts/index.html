@@ -113,13 +113,14 @@ Ormissia's Blog</a>
 </div>
 <div class=card-body>
 <h5 class=card-title>Linux部署Kubernetes流程</h5>
-<p class="card-text post-summary">初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
+<p class="card-text post-summary">此次安装的平台是基于ARM架构的RedHat系Linux系统平台，参照Kubernetes官方文档进行的。
+本文档流程与X86架构的没有区别，官方文档中个别步骤中的命令需要区分所使用的包对应的平台。
+初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
 /.swapfile none swap sw,comment=cloudconfig 0 0 重启之后查看关闭是否成功
 free -m 显示如下内容，swap关闭成功
 total used free shared buff/cache available Mem: 23114 402 22299 32 411 20597 Swap: 0 0 0 ulimit echo "ulimit -n 65535" >> /etc/profile echo "* hard nofile 65535" >> /etc/security/limits.conf 重启之后检查是否配置成功
 ulimit -n SSH免密（非必须） 执行命令，一路回车，即可获得当前节点的公钥
-ssh-keygen -t rsa cat id_rsa.pub iptables 查看br_netfilter模块是否开启
-lsmod | grep br_netfilter 如果没有看到输出则执行命令开启</p>
+ssh-keygen -t rsa cat id_rsa.</p>
 </div>
 <div class=card-footer>
 <span class=float-left>October 14, 2021</span>

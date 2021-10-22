@@ -399,43 +399,20 @@ ln -s <span style=color:#e6db74>&#39;/usr/lib/systemd/system/traefik.service&#39
 <li><code>WatchdogSec</code>：程序检测时间</li>
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#f92672>[</span>Unit<span style=color:#f92672>]</span>
-Description<span style=color:#f92672>=</span>Traefik
-Documentation<span style=color:#f92672>=</span>https://doc.traefik.io/traefik/
-<span style=color:#75715e>#After=network-online.target</span>
-<span style=color:#75715e>#AssertFileIsExecutable=/usr/bin/traefik</span>
-<span style=color:#75715e>#AssertPathExists=/etc/traefik/traefik.toml</span>
+Description<span style=color:#f92672>=</span>Traefik instance
+Documentation<span style=color:#f92672>=</span>https://doc.traefik.io
+Wants<span style=color:#f92672>=</span>network-online.target
 
 <span style=color:#f92672>[</span>Service<span style=color:#f92672>]</span>
-<span style=color:#75715e># Run traefik as its own user (create new user with: useradd -r -s /bin/false -U -M traefik)</span>
-<span style=color:#75715e>#User=traefik</span>
-<span style=color:#75715e>#AmbientCapabilities=CAP_NET_BIND_SERVICE</span>
-
-<span style=color:#75715e># configure service behavior</span>
-Type<span style=color:#f92672>=</span>notify
-<span style=color:#75715e>#ExecStart=/usr/bin/traefik --configFile=/etc/traefik/traefik.toml</span>
-Restart<span style=color:#f92672>=</span>always
-WatchdogSec<span style=color:#f92672>=</span>1s
-
-<span style=color:#75715e># lock down system access</span>
-<span style=color:#75715e># prohibit any operating system and configuration modification</span>
-<span style=color:#75715e>#ProtectSystem=strict</span>
-<span style=color:#75715e># create separate, new (and empty) /tmp and /var/tmp filesystems</span>
-<span style=color:#75715e>#PrivateTmp=true</span>
-<span style=color:#75715e># make /home directories inaccessible</span>
-<span style=color:#75715e>#ProtectHome=true</span>
-<span style=color:#75715e># turns off access to physical devices (/dev/...)</span>
-<span style=color:#75715e>#PrivateDevices=true</span>
-<span style=color:#75715e># make kernel settings (procfs and sysfs) read-only</span>
-<span style=color:#75715e>#ProtectKernelTunables=true</span>
-<span style=color:#75715e># make cgroups /sys/fs/cgroup read-only</span>
-<span style=color:#75715e>#ProtectControlGroups=true</span>
-
-<span style=color:#75715e># allow writing of acme.json</span>
-<span style=color:#75715e>#ReadWritePaths=/etc/traefik/acme.json</span>
-<span style=color:#75715e># depending on log and entrypoint configuration, you may need to allow writing to other paths, too</span>
-
-<span style=color:#75715e># limit number of processes in this unit</span>
-<span style=color:#75715e>#LimitNPROC=1</span>
+Environment<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ACME_DNS_API_BASE=https://auth.acme-dns.io&#34;</span> <span style=color:#e6db74>&#34;ACME_DNS_STORAGE_PATH=/etc/traefik/acme/dns.json&#34;</span>
+<span style=color:#75715e># Run traefik as its own user (create new user with: groupadd traefik &amp;&amp; useradd -g traefik traefik -s /sbin/nologin)</span>
+<span style=color:#75715e># User=traefik</span>
+<span style=color:#75715e># Group=traefik</span>
+Type<span style=color:#f92672>=</span>simple
+Restart<span style=color:#f92672>=</span>on-failure
+ExecStart<span style=color:#f92672>=</span>/usr/sbin/traefik-lb
+WatchdogSec<span style=color:#f92672>=</span>10s
+RestartSec<span style=color:#f92672>=</span>10s
 
 <span style=color:#f92672>[</span>Install<span style=color:#f92672>]</span>
 WantedBy<span style=color:#f92672>=</span>multi-user.target

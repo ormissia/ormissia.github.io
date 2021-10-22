@@ -13,13 +13,14 @@
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="Linux部署Kubernetes流程">
-<meta property="og:description" content="初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
+<meta property="og:description" content="此次安装的平台是基于ARM架构的RedHat系Linux系统平台，参照Kubernetes官方文档进行的。
+本文档流程与X86架构的没有区别，官方文档中个别步骤中的命令需要区分所使用的包对应的平台。
+ 初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
 /.swapfile	none	swap	sw,comment=cloudconfig	0	0 重启之后查看关闭是否成功
 free -m 显示如下内容，swap关闭成功
 total used free shared buff/cache available Mem: 23114 402 22299 32 411 20597 Swap: 0 0 0 ulimit echo &#34;ulimit -n 65535&#34; >> /etc/profile echo &#34;*	hard	nofile	65535&#34; >> /etc/security/limits.conf 重启之后检查是否配置成功
 ulimit -n SSH免密（非必须） 执行命令，一路回车，即可获得当前节点的公钥
-ssh-keygen -t rsa cat id_rsa.pub iptables 查看br_netfilter模块是否开启
-lsmod | grep br_netfilter 如果没有看到输出则执行命令开启">
+ssh-keygen -t rsa cat id_rsa.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/deployment/3007-linux-kubernetes/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-10-14T18:09:43+08:00">
@@ -127,6 +128,10 @@ Ormissia's Blog</a>
 <h1>Linux部署Kubernetes流程</h1>
 </div>
 <div class=post-content id=post-content>
+<blockquote>
+<p>此次安装的平台是基于ARM架构的RedHat系Linux系统平台，参照<a href=https://kubernetes.io/>Kubernetes官方文档</a>进行的。<br>
+本文档流程与X86架构的没有区别，官方文档中个别步骤中的命令需要区分所使用的包对应的平台。</p>
+</blockquote>
 <h2 id=初始化环境>初始化环境</h2>
 <h3 id=防火墙>防火墙</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl stop firewalld.service
@@ -209,6 +214,27 @@ systemctl enable --now kubelet
 <p>使用<code>kubeadm</code>作为集群的初始化工具</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubeadm init --kubernetes-version<span style=color:#f92672>=</span>v1.22.2 --pod-network-cidr<span style=color:#f92672>=</span>10.244.0.0/16
 </code></pre></div><p>成功初始化之后会出现提示，其中有三个需要手动执行，最后一个是需要在从节点上执行（此处有坑）</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown <span style=color:#66d9ef>$(</span>id -u<span style=color:#66d9ef>)</span>:<span style=color:#66d9ef>$(</span>id -g<span style=color:#66d9ef>)</span> $HOME/.kube/config
+
+Alternatively, <span style=color:#66d9ef>if</span> you are the root user, you can run:
+
+  export KUBECONFIG<span style=color:#f92672>=</span>/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run <span style=color:#e6db74>&#34;kubectl apply -f [podnetwork].yaml&#34;</span> with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join --control-plane 10.0.0.105:6443 --token axqrzz.ouonxxxxxxgdvgjz <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>	--discovery-token-ca-cert-hash sha256:3a57ff0d78b1f85xxxxxxxxxxxxxxxxxxxxe0f90f47037a31a33 
+</code></pre></div><p>手动执行</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mkdir -p <span style=color:#75715e>#HOME/.kube</span>
 sudo cp -i /etc/kubernetes/admin.conf <span style=color:#75715e>#HOME/.kube/config</span>
 sudo chown <span style=color:#75715e>#(id -u):#(id -g) #HOME/.kube/config</span>
@@ -251,8 +277,8 @@ Error response from daemon: pull access denied <span style=color:#66d9ef>for</sp
 <p>去<a href=https://github.com/flannel-io/flannel/issues/1482>flannel-io/flannel的issue</a>中看了一下，最新的一条就是这个相同的问题</p>
 <p>好吧，删掉换个旧版本重新来过</p>
 <p>在GitHub的<code>flannel-io/flannel</code>仓库中切到<code>v0.14.1</code>版本中看了一下，没有使用到<code>rancher/flannel-cni-plugin</code>这个镜像</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubctl delete -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-kubctl apply -f https://raw.githubusercontent.com/flannel-io/flannel/release/v0.14.1/Documentation/kube-flannel.yml
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl delete -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/release/v0.14.1/Documentation/kube-flannel.yml
 </code></pre></div><p>这回成功了，重新查看<code>pod</code>和节点状态</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl get pod --all-namespaces
 
@@ -290,16 +316,106 @@ NAME         STATUS   ROLES                  AGE    VERSION
 arm-node-1   Ready    control-plane,master   13h    v1.22.2
 arm-node-2   Ready    &lt;none&gt;                 170m   v1.22.2
 </code></pre></div><p>可以看到从节点成功加入主节点</p>
+<h2 id=安装dashboard>安装Dashboard</h2>
+<h3 id=安装服务>安装服务</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl -n kubernetes-dashboard get secret <span style=color:#66d9ef>$(</span>kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{.secrets[0].name}&#34;</span><span style=color:#66d9ef>)</span> -o go-template<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{.data.token | base64decode}}&#34;</span>
+</code></pre></div><h3 id=创建权限及用户>创建权限及用户</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>admin-user</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kubernetes-dashboard</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>admin-user</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cluster-admin</span>
+<span style=color:#f92672>subjects</span>:
+- <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>admin-user</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kubernetes-dashboard</span>
+</code></pre></div><h3 id=获取token>获取Token</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl -n kubernetes-dashboard get secret <span style=color:#66d9ef>$(</span>kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{.secrets[0].name}&#34;</span><span style=color:#66d9ef>)</span> -o go-template<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{.data.token | base64decode}}&#34;</span>
+</code></pre></div><h2 id=安装metrics-server>安装Metrics Server</h2>
+<ul>
+<li><code>Kubernetes Metrics Server</code>是Cluster的核心监控数据的聚合器，<code>kubeadm</code>默认是不部署的。</li>
+<li><code>Metrics Server</code>供<code>Dashboard</code>等其他组件使用，是一个扩展的<code>APIServer</code>，依赖于<code>API Aggregator</code>。</li>
+<li><code>Metrics API</code>只可以查询当前的度量数据，并不保存历史数据。</li>
+<li><code>Metrics API URI</code>为<code>/apis/metrics.k8s.io/</code>，在<code>k8s.io/metrics</code>下维护。</li>
+<li>必须部署<code>metrics-server</code>才能使用该<code>API</code>，<code>metrics-server</code>通过调用<code>kubelet Summary API</code>获取数据。</li>
+</ul>
+<h3 id=修改api-server>修改API Server</h3>
+<p>检查<code>API Server</code>是否开启了<code>Aggregator Routing</code>：查看<code>API Server</code>是否具有<code>--enable-aggregator-routing=true</code>选项。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ps -ef | grep apiserver | grep routing
+</code></pre></div><p>如果没有输出，直接修改<code>/etc/kubernetes/manifests/kube-apiserver.yaml</code></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>vi /etc/kubernetes/manifests/kube-apiserver.yaml
+</code></pre></div><p>修改每个<code>API Server</code>的<code>kube-apiserver.yaml</code></p>
+<blockquote>
+<p>修改<code>manifests</code>配置后<code>API Server</code>会自动重启生效</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># ...省略</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>containers</span>:
+  - <span style=color:#f92672>command</span>:
+    - <span style=color:#ae81ff>kube-apiserver</span>
+    - --<span style=color:#ae81ff>enable-aggregator-routing=true </span> <span style=color:#75715e># 加入这一行</span>
+<span style=color:#75715e># ...省略</span>
+</code></pre></div><h3 id=部署到k8s>部署到k8s</h3>
+<p>从GitHub上下载的部署文件需要修改一下</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># ...省略</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>strategy</span>:
+    <span style=color:#f92672>rollingUpdate</span>:
+      <span style=color:#f92672>maxUnavailable</span>: <span style=color:#ae81ff>0</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>containers</span>:
+      - <span style=color:#f92672>args</span>:
+        - --<span style=color:#ae81ff>cert-dir=/tmp</span>
+        - --<span style=color:#ae81ff>secure-port=443</span>
+        - --<span style=color:#ae81ff>kubelet-preferred-address-types=InternalIP </span> <span style=color:#75715e># 删掉 ExternalIP,Hostname这两个</span>
+        - --<span style=color:#ae81ff>kubelet-use-node-status-port</span>
+        - --<span style=color:#ae81ff>kubelet-insecure-tls </span> <span style=color:#75715e># 加上该启动参数</span>
+        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>k8s.gcr.io/metrics-server/metrics-server:v0.5.1 </span> <span style=color:#75715e># 镜像版本自己选择</span>
+<span style=color:#75715e># ...省略</span>
+</code></pre></div><p><em>完整部署文件见附录</em></p>
+<h3 id=验证安装工>验证安装工</h3>
+<ol>
+<li>使用命令查看节点负载</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl top nodes
+
+<span style=color:#75715e># 输出</span>
+NAME    CPU<span style=color:#f92672>(</span>cores<span style=color:#f92672>)</span>   CPU%   MEMORY<span style=color:#f92672>(</span>bytes<span style=color:#f92672>)</span>   MEMORY%   
+node1   117m         5%     1959Mi          25%       
+node2   29m          2%     1640Mi          21%       
+node3   43m          4%     1694Mi          22% 
+</code></pre></div><ol start=2>
+<li>到Dashboard查看资源占用情况</li>
+</ol>
+<p><img src=dashboard.png alt=dashboard></p>
 <h2 id=参考链接>参考链接</h2>
 <ul>
 <li><a href=https://kubernetes.io/>k8s官网</a></li>
 <li><a href=https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-linux/#enable-shell-autocompletion>kubectl开启shell自动补全</a></li>
+<li><a href=https://github.com/kubernetes/dashboard>k8s dashboard repository</a></li>
+<li><a href=https://github.com/kubernetes-sigs/metrics-server>k8s metrics-server repository</a></li>
 <li><a href=https://docs.docker.com/>Docker 文档</a></li>
 <li><a href=https://hub.docker.com/>Docker Hub</a></li>
 <li><a href=https://github.com/flannel-io/flannel>flannel GitHub</a></li>
 <li><a href=https://raw.githubusercontent.com/flannel-io/flannel/release/v0.14.1/Documentation/kube-flannel.yml>v0.14.1 kube-flannel.yml</a></li>
 </ul>
-<h2 id=v0141kube-flannelyml>v0.14.1/kube-flannel.yml</h2>
+<h2 id=附录>附录</h2>
+<h3 id=v0141kube-flannelyml>v0.14.1/kube-flannel.yml</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># v0.14.1/kube-flannel.yml</span>
 ---
 <span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>policy/v1beta1</span>
@@ -524,6 +640,202 @@ arm-node-2   Ready    &lt;none&gt;                 170m   v1.22.2
       - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel-cfg</span>
         <span style=color:#f92672>configMap</span>:
           <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-flannel-cfg</span>
+</code></pre></div><h3 id=v051metrics-serveryml>v0.5.1/metrics-server.yml</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># v0.5.1/metrics-server.yml</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>rbac.authorization.k8s.io/aggregate-to-admin</span>: <span style=color:#e6db74>&#34;true&#34;</span>
+    <span style=color:#f92672>rbac.authorization.k8s.io/aggregate-to-edit</span>: <span style=color:#e6db74>&#34;true&#34;</span>
+    <span style=color:#f92672>rbac.authorization.k8s.io/aggregate-to-view</span>: <span style=color:#e6db74>&#34;true&#34;</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:aggregated-metrics-reader</span>
+<span style=color:#f92672>rules</span>:
+  - <span style=color:#f92672>apiGroups</span>:
+      - <span style=color:#ae81ff>metrics.k8s.io</span>
+    <span style=color:#f92672>resources</span>:
+      - <span style=color:#ae81ff>pods</span>
+      - <span style=color:#ae81ff>nodes</span>
+    <span style=color:#f92672>verbs</span>:
+      - <span style=color:#ae81ff>get</span>
+      - <span style=color:#ae81ff>list</span>
+      - <span style=color:#ae81ff>watch</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:metrics-server</span>
+<span style=color:#f92672>rules</span>:
+  - <span style=color:#f92672>apiGroups</span>:
+      - <span style=color:#e6db74>&#34;&#34;</span>
+    <span style=color:#f92672>resources</span>:
+      - <span style=color:#ae81ff>pods</span>
+      - <span style=color:#ae81ff>nodes</span>
+      - <span style=color:#ae81ff>nodes/stats</span>
+      - <span style=color:#ae81ff>namespaces</span>
+      - <span style=color:#ae81ff>configmaps</span>
+    <span style=color:#f92672>verbs</span>:
+      - <span style=color:#ae81ff>get</span>
+      - <span style=color:#ae81ff>list</span>
+      - <span style=color:#ae81ff>watch</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>RoleBinding</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server-auth-reader</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Role</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>extension-apiserver-authentication-reader</span>
+<span style=color:#f92672>subjects</span>:
+  - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server:system:auth-delegator</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:auth-delegator</span>
+<span style=color:#f92672>subjects</span>:
+  - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:metrics-server</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:metrics-server</span>
+<span style=color:#f92672>subjects</span>:
+  - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>https</span>
+      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>443</span>
+      <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+      <span style=color:#f92672>targetPort</span>: <span style=color:#ae81ff>https</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>1</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>strategy</span>:
+    <span style=color:#f92672>rollingUpdate</span>:
+      <span style=color:#f92672>maxUnavailable</span>: <span style=color:#ae81ff>0</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>containers</span>:
+        - <span style=color:#f92672>args</span>:
+            - --<span style=color:#ae81ff>cert-dir=/tmp</span>
+            - --<span style=color:#ae81ff>secure-port=443</span>
+            - --<span style=color:#ae81ff>kubelet-insecure-tls</span>
+            - --<span style=color:#ae81ff>kubelet-preferred-address-types=InternalIP</span>
+            - --<span style=color:#ae81ff>kubelet-use-node-status-port</span>
+            - --<span style=color:#ae81ff>metric-resolution=15s</span>
+          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>k8s.gcr.io/metrics-server/metrics-server:v0.5.1</span>
+          <span style=color:#f92672>imagePullPolicy</span>: <span style=color:#ae81ff>IfNotPresent</span>
+          <span style=color:#f92672>livenessProbe</span>:
+            <span style=color:#f92672>failureThreshold</span>: <span style=color:#ae81ff>3</span>
+            <span style=color:#f92672>httpGet</span>:
+              <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/livez</span>
+              <span style=color:#f92672>port</span>: <span style=color:#ae81ff>https</span>
+              <span style=color:#f92672>scheme</span>: <span style=color:#ae81ff>HTTPS</span>
+            <span style=color:#f92672>periodSeconds</span>: <span style=color:#ae81ff>10</span>
+          <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+          <span style=color:#f92672>ports</span>:
+            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>443</span>
+              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>https</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+          <span style=color:#f92672>readinessProbe</span>:
+            <span style=color:#f92672>failureThreshold</span>: <span style=color:#ae81ff>3</span>
+            <span style=color:#f92672>httpGet</span>:
+              <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/readyz</span>
+              <span style=color:#f92672>port</span>: <span style=color:#ae81ff>https</span>
+              <span style=color:#f92672>scheme</span>: <span style=color:#ae81ff>HTTPS</span>
+            <span style=color:#f92672>initialDelaySeconds</span>: <span style=color:#ae81ff>20</span>
+            <span style=color:#f92672>periodSeconds</span>: <span style=color:#ae81ff>10</span>
+          <span style=color:#f92672>resources</span>:
+            <span style=color:#f92672>requests</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>100m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>200Mi</span>
+          <span style=color:#f92672>securityContext</span>:
+            <span style=color:#f92672>readOnlyRootFilesystem</span>: <span style=color:#66d9ef>true</span>
+            <span style=color:#f92672>runAsNonRoot</span>: <span style=color:#66d9ef>true</span>
+            <span style=color:#f92672>runAsUser</span>: <span style=color:#ae81ff>1000</span>
+          <span style=color:#f92672>volumeMounts</span>:
+            - <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/tmp</span>
+              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>tmp-dir</span>
+      <span style=color:#f92672>nodeSelector</span>:
+        <span style=color:#f92672>kubernetes.io/os</span>: <span style=color:#ae81ff>linux</span>
+      <span style=color:#f92672>priorityClassName</span>: <span style=color:#ae81ff>system-cluster-critical</span>
+      <span style=color:#f92672>serviceAccountName</span>: <span style=color:#ae81ff>metrics-server</span>
+      <span style=color:#f92672>volumes</span>:
+        - <span style=color:#f92672>emptyDir</span>: {}
+          <span style=color:#f92672>name</span>: <span style=color:#ae81ff>tmp-dir</span>
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apiregistration.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>APIService</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>k8s-app</span>: <span style=color:#ae81ff>metrics-server</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>v1beta1.metrics.k8s.io</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>group</span>: <span style=color:#ae81ff>metrics.k8s.io</span>
+  <span style=color:#f92672>groupPriorityMinimum</span>: <span style=color:#ae81ff>100</span>
+  <span style=color:#f92672>insecureSkipTLSVerify</span>: <span style=color:#66d9ef>true</span>
+  <span style=color:#f92672>service</span>:
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>metrics-server</span>
+    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+  <span style=color:#f92672>version</span>: <span style=color:#ae81ff>v1beta1</span>
+  <span style=color:#f92672>versionPriority</span>: <span style=color:#ae81ff>100</span>
 </code></pre></div>
 </div>
 <div class="row pl-3 pr-3">
@@ -578,8 +890,27 @@ arm-node-2   Ready    &lt;none&gt;                 170m   v1.22.2
 <li><a href=#安装kubernetes>安装Kubernetes</a></li>
 <li><a href=#初始化master>初始化master</a></li>
 <li><a href=#初始化从节点大坑三>初始化从节点（大坑三）</a></li>
+<li><a href=#安装dashboard>安装Dashboard</a>
+<ul>
+<li><a href=#安装服务>安装服务</a></li>
+<li><a href=#创建权限及用户>创建权限及用户</a></li>
+<li><a href=#获取token>获取Token</a></li>
+</ul>
+</li>
+<li><a href=#安装metrics-server>安装Metrics Server</a>
+<ul>
+<li><a href=#修改api-server>修改API Server</a></li>
+<li><a href=#部署到k8s>部署到k8s</a></li>
+<li><a href=#验证安装工>验证安装工</a></li>
+</ul>
+</li>
 <li><a href=#参考链接>参考链接</a></li>
+<li><a href=#附录>附录</a>
+<ul>
 <li><a href=#v0141kube-flannelyml>v0.14.1/kube-flannel.yml</a></li>
+<li><a href=#v051metrics-serveryml>v0.5.1/metrics-server.yml</a></li>
+</ul>
+</li>
 </ul>
 </nav>
 </div>
