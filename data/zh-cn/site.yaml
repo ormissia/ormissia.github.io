@@ -9,13 +9,11 @@ description: Ormissia's GitHub Pages Blog. 安红豆的 GitHub Pages 博客
 customMenus:
   - name: GitHub
     url: https://github.com/ormissia
-  - name: ormissia.com
-    url: http://ormissia.com:13880
 
 # Specify OpenGraph Headers
 openGraph:
   title: Ormissia's Blog
   type: website
   description: 安红豆的个人博客
-  image: images/avatar.png
+  image: images/ormissia.png
   url: https://ormissia.github.io

@@ -1,0 +1,97 @@
+# section information
+section:
+  name: 历程
+  id: education
+  template: sections/education.html # Use "sections/education-alt.html for alternate template.
+  enable: true
+  weight: 4
+  showOnNavbar: true
+  # Can optionally hide the title in sections
+  # hideTitle: true
+
+degrees:
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-10
+    institution:
+      name: Elastic
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-6
+    institution:
+      name: Spark
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-5
+    institution:
+      name: Yarn
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-5
+    institution:
+      name: Scala
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-4
+    institution:
+      name: Hbase
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-3
+    institution:
+      name: Hive
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-2
+    institution:
+      name: HDFS
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-10
+    institution:
+      name: Kafka
+  - name: ...
+    icon: fa-server
+    timeframe: 2020-12
+    institution:
+      name: Kubernetes
+  - name: VUE+Element开发个人博客项目前端程序
+    icon: fa-language
+    timeframe: 2020-9
+    institution:
+      name: VUE
+  - name: Go基础语法，GMP模型，GC回收机制。使用Gin+Gorm开发Web后端程序
+    icon: fa-language
+    timeframe: 2020-7
+    institution:
+      name: Golang
+  - name: 了解JVM常见垃圾回收器类型，ParNew+CMS的新生代、老年代垃圾回收机制
+    icon: fa-language
+    timeframe: 2020-4
+    institution:
+      name: JVM
+  - name: Redis数据结构，基于Redis的缓存设计。穿透、击穿、雪崩等问题发生原因及避免方式。
+    icon: fa-database
+    timeframe: 2020-1
+    institution:
+      name: Redis
+  - name: Spring中引入Mybatis连接数据库
+    icon: fa-database
+    timeframe: 2019-6
+    institution:
+      name: MyBatis
+  - name: 学习基于Springboot开发Web后端程序
+    icon: fa-server
+    timeframe: 2019-5
+    institution:
+      name: Springboot
+  - name: MySQL的调优，慢SQL等问题解决
+    icon: fa-database
+    timeframe: 2019-1
+    institution:
+      name: MySQL
+  - name: JAVA基础语法，面向对象设计思想
+    icon: fa-language
+    timeframe: 2018-1
+    institution:
+      name: JAVA
