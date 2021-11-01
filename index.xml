@@ -189,7 +189,15 @@ PCRE安装包下载地址： https://sourceforge.net/projects/pcre/files/pcre/
 groupadd nginx useradd -g nginx nginx -s /sbin/nologin 安装Nginx 下载安装包 Nginx下载地址： http://nginx.org/en/download.html
 没有特殊需求的话，选择Stable version稳定版下载即可
 cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安装包并进入目录 tar -zxvf nginx-1.20.1 cd nginx-1.20.1 编译安装 .</description></item><item><title>HDFS基础知识</title><link>https://ormissia.github.io/posts/knowledge/2007-hadoop-hdfs/</link><pubDate>Fri, 24 Sep 2021 17:22:14 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2007-hadoop-hdfs/</guid><description>//TODO
-Hadoop集群中HDFS节点角色 Master Standy</description></item><item><title>Grafana上监控kubernetes中Pod已用内存不准问题分析</title><link>https://ormissia.github.io/posts/problems/5002-k8s-memory/</link><pubDate>Wed, 22 Sep 2021 19:17:39 +0800</pubDate><guid>https://ormissia.github.io/posts/problems/5002-k8s-memory/</guid><description>结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
+Hadoop集群中HDFS节点角色 Master Standy</description></item><item><title>k8s中通过Headless连接StatefulSet</title><link>https://ormissia.github.io/posts/knowledge/2009-kubernetes-handless-statefullset/</link><pubDate>Fri, 24 Sep 2021 17:22:14 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2009-kubernetes-handless-statefullset/</guid><description>连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
+假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。
+但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。
+实验环境 多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟） 本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
+Server cluster 服务端模拟相关资源在kube-test-1下创建
+StatefulSet 使用traefik/whoami镜像来模拟服务端
+这里使用StatefulSet的方式创建服务端。spec.replicas设为3，此时会自动创建whoami-0、whoami-1以及whoami-2三个Pod。
+apiVersion: apps/v1 kind: StatefulSet metadata: name: whoami labels: app: whoami spec: replicas: 3 selector: matchLabels: app: whoami serviceName: whoami template: metadata: name: whoami labels: app: whoami spec: containers: - name: whoami image: traefik/whoami ports: - containerPort: 80 注意这里的spec.serviceName必须与下面的Service名字相同，否则调用时候pod的subdomain只能使用IP
+$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10.</description></item><item><title>Grafana上监控kubernetes中Pod已用内存不准问题分析</title><link>https://ormissia.github.io/posts/problems/5002-k8s-memory/</link><pubDate>Wed, 22 Sep 2021 19:17:39 +0800</pubDate><guid>https://ormissia.github.io/posts/problems/5002-k8s-memory/</guid><description>结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
 问题现象 近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平， 随着服务运行时间增长，pod的内存占用也随之水涨船高。直到内存占用增长到pod限制的上限附近，内存才出现回收的迹象，并且回收幅度不是特别明显， 但同时又不会出现OOM。
 Golang某个服务内存占用情况 JAVA某个服务内存占用情况 简单分析 记一次线上的内存持续增长问题
 ↑这个是初次遇到这个问题时候的分析，当时以为是代码写的有漏洞，程序发生了内存泄漏。于是祭出了pprof分析了一顿，结果可想而知，当然是没看出有问题。

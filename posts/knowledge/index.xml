@@ -2,7 +2,15 @@
 git clone git://github.com/mobz/elasticsearch-head.git cd elasticsearch-head npm install npm run start 默认端口：9100
 如果集群无法连接，需要修改ES配置文件
 http.cors.enabled: true http.cors.allow-origin: &amp;#34;*&amp;#34; elasticsearch-head也可以以Chrome插件的方式安装</description></item><item><title>HDFS基础知识</title><link>https://ormissia.github.io/posts/knowledge/2007-hadoop-hdfs/</link><pubDate>Fri, 24 Sep 2021 17:22:14 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2007-hadoop-hdfs/</guid><description>//TODO
-Hadoop集群中HDFS节点角色 Master Standy</description></item><item><title>Hadoop生态组件</title><link>https://ormissia.github.io/posts/knowledge/2006-hadoop-env/</link><pubDate>Fri, 17 Sep 2021 11:16:25 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2006-hadoop-env/</guid><description>最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
+Hadoop集群中HDFS节点角色 Master Standy</description></item><item><title>k8s中通过Headless连接StatefulSet</title><link>https://ormissia.github.io/posts/knowledge/2009-kubernetes-handless-statefullset/</link><pubDate>Fri, 24 Sep 2021 17:22:14 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2009-kubernetes-handless-statefullset/</guid><description>连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
+假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。
+但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。
+实验环境 多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟） 本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
+Server cluster 服务端模拟相关资源在kube-test-1下创建
+StatefulSet 使用traefik/whoami镜像来模拟服务端
+这里使用StatefulSet的方式创建服务端。spec.replicas设为3，此时会自动创建whoami-0、whoami-1以及whoami-2三个Pod。
+apiVersion: apps/v1 kind: StatefulSet metadata: name: whoami labels: app: whoami spec: replicas: 3 selector: matchLabels: app: whoami serviceName: whoami template: metadata: name: whoami labels: app: whoami spec: containers: - name: whoami image: traefik/whoami ports: - containerPort: 80 注意这里的spec.serviceName必须与下面的Service名字相同，否则调用时候pod的subdomain只能使用IP
+$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10.</description></item><item><title>Hadoop生态组件</title><link>https://ormissia.github.io/posts/knowledge/2006-hadoop-env/</link><pubDate>Fri, 17 Sep 2021 11:16:25 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2006-hadoop-env/</guid><description>最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
 HDFS（hadoop分布式文件系统） HDFS是hadoop体系中数据存储管理的基础。他是一个高度容错的系统，能检测和应对硬件故障。
 有以下几个角色：
 client：切分文件，访问HDFS，与那么弄得交互，获取文件位置信息，与DataNode交互，读取和写入数据。
