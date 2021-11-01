@@ -1,10 +1,10 @@
 ---
-title: Linux部署Traefik流程
+title: Traefik部署流程
 date: 2021-10-09T20:42:33+08:00
 hero: head.png
 menu:
   sidebar:
-    name: Linux部署Traefik流程
+    name: Traefik部署流程
     identifier: deployment-linux-traefik
     parent: deployment
     weight: 3003
@@ -17,6 +17,8 @@ menu:
 > Developing Traefik, our main goal is to make it simple to use, and we're sure you'll enjoy it.
 > 
 > -- The Traefik Maintainer Team
+
+结尾附Traefik作为`Kubernetes Controller`的部署脚本
 
 ## 程序下载
 
@@ -582,6 +584,178 @@ _acme-challenge.ormissia.com. 600 IN	CNAME	123.auth.acme-dns.io.
 重启Traefik之后，刷新页面，即可以从浏览器中看到证书获取成功。
 
 ![certificate](certificate.png)
+
+## Kubernetes部署脚本
+
+### RBAC
+
+```yaml
+# rbac.yml
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-ingress-controller
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+      - networking.k8s.io
+    resources:
+      - ingresses
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - services
+      - endpoints
+      - ingresses/status
+    verbs:
+      - update
+      - get
+      - list
+      - watch
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-ingress-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: traefik-ingress-controller
+subjects:
+  - kind: ServiceAccount
+    name: traefik-ingress-controller
+    namespace: kube-basic
+```
+
+### Deployment&Service
+
+```yaml
+# traefik.yml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik-ingress-controller
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: traefik
+  labels:
+    app: traefik
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - traefik
+              weight: 100
+      containers:
+        - name: traefik
+          image: traefik
+          ports:
+            - name: web
+              containerPort: 80
+          resources:
+            limits:
+              cpu: 20m
+              memory: 150Mi
+            requests:
+              cpu: 5m
+              memory: 70Mi
+          args:
+            - --entrypoints.web.address=:80
+            - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            - --entrypoints.websecure.address=:443
+            - --providers.kubernetesingress
+            - --providers.kubernetesingress.namespaces=kube-basic,kubernetes-dashboard
+            - --log.level=INFO
+            - --accesslog
+            - --api.insecure=true
+            - --pilot.token=1f36db5d-9f2c-42da-8737-4cf8979de6a4
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+spec:
+  type: NodePort
+  selector:
+    app: traefik
+  ports:
+    - protocol: TCP
+      port: 80
+      name: web
+      targetPort: 80
+      nodePort: 30000
+    - protocol: TCP
+      port: 8080
+      name: admin
+      targetPort: 8080
+      nodePort: 30001
+```
+
+### Ingress
+
+```yaml
+# ingress.yml
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: whoami-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+
+spec:
+  rules:
+    - host: traefik.ormissia.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik
+                port:
+                  number: 8080
+```
+
 
 ## 参考链接
 
