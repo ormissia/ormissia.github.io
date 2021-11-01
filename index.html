@@ -390,6 +390,25 @@ Ormissia's Blog</a>
 <div class=container>
 <div class=row id=recent-post-cards>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
+<a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短" class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5004-kubernetes-dashboard-token/head.svg alt="Card image cap">
+</div>
+<div class=card-body>
+<h5 class=card-title>k8s dashboard token过期时间太短</h5>
+<p class="card-text post-summary"> 问题现象 kubernetes的dashboard登录token过期时间太短，不操作没一会就需要重新登录
+解决办法 修改kubernetes-dashboard的deployment，加入一条arg参数：
+- '--token-ttl=10800' </p>
+</div>
+<div class=card-footer>
+<span class=float-left>November 1, 2021</span>
+<a href=/posts/problems/5004-kubernetes-dashboard-token/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class="col-lg-4 col-md-6 pt-2 post-card">
 <a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -486,25 +505,6 @@ rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新
 <div class=card-footer>
 <span class=float-left>October 9, 2021</span>
 <a href=/posts/deployment/3005-linux-prometheus/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程 class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3004-linux-grafana/head.png alt="Card image cap">
-</div>
-<div class=card-body>
-<h5 class=card-title>Linux部署Grafana流程</h5>
-<p class="card-text post-summary"> Grafana的安装比较简单，打开官网下载页面，选择对应的系统以及需要的版本号，按照指引执行命令即可。
-程序下载 wget https://dl.grafana.com/enterprise/release/grafana-enterprise-8.2.0-1.x86_64.rpm sudo yum install grafana-enterprise-8.2.0-1.x86_64.rpm 启动程序 sudo systemctl daemon-reload sudo systemctl start grafana-server sudo systemctl status grafana-server 验证 Grafana默认端口为:3000，默认用户名密码均为admin，程序启动后即可通过3000端口访问管理页面。
-开机自启 sudo systemctl enable grafana-server 参考连接 Grafana官网 Grafana下载页面 Grafana安装文档 </p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 9, 2021</span>
-<a href=/posts/deployment/3004-linux-grafana/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

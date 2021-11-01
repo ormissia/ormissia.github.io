@@ -89,6 +89,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
 <li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
 <li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
+<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
 </ul>
 </li>
 <li>
@@ -106,6 +107,25 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/problems/5004-kubernetes-dashboard-token/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5004-kubernetes-dashboard-token/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>k8s dashboard token过期时间太短</h5>
+<p class="card-text post-summary">问题现象 kubernetes的dashboard登录token过期时间太短，不操作没一会就需要重新登录
+解决办法 修改kubernetes-dashboard的deployment，加入一条arg参数：
+- '--token-ttl=10800' </p>
+</div>
+<div class=card-footer>
+<span class=float-left>November 1, 2021</span>
+<a href=/posts/problems/5004-kubernetes-dashboard-token/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/problems/5003-elasticsearch-start-failed/ class=post-card-link>
 <div class=card>
