@@ -390,6 +390,31 @@ Ormissia's Blog</a>
 <div class=container>
 <div class=row id=recent-post-cards>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
+<a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2009-kubernetes-handless-statefullset/head.svg alt="Card image cap">
+</div>
+<div class=card-body>
+<h5 class=card-title>k8s中通过Headless连接StatefulSet</h5>
+<p class="card-text post-summary"> 连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
+假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。
+但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。
+实验环境 多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟） 本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
+Server cluster 服务端模拟相关资源在kube-test-1下创建
+StatefulSet 使用traefik/whoami镜像来模拟服务端
+这里使用StatefulSet的方式创建服务端。spec.replicas设为3，此时会自动创建whoami-0、whoami-1以及whoami-2三个Pod。
+apiVersion: apps/v1 kind: StatefulSet metadata: name: whoami labels: app: whoami spec: replicas: 3 selector: matchLabels: app: whoami serviceName: whoami template: metadata: name: whoami labels: app: whoami spec: containers: - name: whoami image: traefik/whoami ports: - containerPort: 80 注意这里的spec.serviceName必须与下面的Service名字相同，否则调用时候pod的subdomain只能使用IP
+$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>November 1, 2021</span>
+<a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class="col-lg-4 col-md-6 pt-2 post-card">
 <a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短" class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -485,25 +510,6 @@ Warning: The unit file, source configuration file or drop-ins of elasticsearch.s
 <div class=card-footer>
 <span class=float-left>October 13, 2021</span>
 <a href=/posts/deployment/3006-linux-elk/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程 class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3005-linux-prometheus/head.png alt="Card image cap">
-</div>
-<div class=card-body>
-<h5 class=card-title>Prometheus部署流程</h5>
-<p class="card-text post-summary"> 程序下载 wget https://github.com/prometheus/prometheus/releases/download/v2.30.3/prometheus-2.30.3.linux-amd64.tar.gz 解压并移动 tar -zxvf prometheus-2.30.3.linux-amd64.tar.gz mv prometheus-2.30.3.linux-amd64 /usr/local/prometheus 添加到系统服务 Unit配置文件 vi /usr/lib/systemd/system/prometheus.service [Unit] Description=Prometheus Documentation=https://prometheus.io [Service] Type=simple ExecStart=/usr/local/prometheus/prometheus \ --config.file=/usr/local/prometheus/prometheus.yml \ --storage.tsdb.path=/usr/local/prometheus/data Restart=on-failure WatchdogSec=10s [Install] WantedBy=multi-user.target 启动程序 sudo systemctl daemon-reload sudo systemctl start prometheus.service sudo systemctl status prometheus.service 开机自启 sudo systemctl enable prometheus.service 简单使用 Prometheus默认端口是9090，程序启动之后从浏览器访问页面。
-输入以下表达式来绘制在自抓取Prometheus中发生的每秒HTTP请求率返回状态代码200的图表：
-rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新加载 curl -X POST http://127.0.0.1:9090/-/reload Kubernetes部署脚本 Deployment&Service apiVersion: apps/v1 kind: Deployment metadata: name: prometheus labels: app: prometheus spec: replicas: 1 strategy: rollingUpdate: maxSurge: 1 maxUnavailable: 1 type: RollingUpdate selector: matchLabels: app: prometheus template: metadata: labels: app: prometheus spec: initContainers: - name: prometheus-data-permission-setup image: busybox command: ["/bin/chmod","-R","777", "/data"] volumeMounts: - name: prometheus-data mountPath: /data containers: - name: prometheus image: prom/prometheus args: - '--storage.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 9, 2021</span>
-<a href=/posts/deployment/3005-linux-prometheus/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

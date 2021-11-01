@@ -109,6 +109,31 @@ Ormissia's Blog</a>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
 <div class=post-card>
+<a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2009-kubernetes-handless-statefullset/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>k8s中通过Headless连接StatefulSet</h5>
+<p class="card-text post-summary">连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
+假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。
+但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。
+实验环境 多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟） 本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
+Server cluster 服务端模拟相关资源在kube-test-1下创建
+StatefulSet 使用traefik/whoami镜像来模拟服务端
+这里使用StatefulSet的方式创建服务端。spec.replicas设为3，此时会自动创建whoami-0、whoami-1以及whoami-2三个Pod。
+apiVersion: apps/v1 kind: StatefulSet metadata: name: whoami labels: app: whoami spec: replicas: 3 selector: matchLabels: app: whoami serviceName: whoami template: metadata: name: whoami labels: app: whoami spec: containers: - name: whoami image: traefik/whoami ports: - containerPort: 80 注意这里的spec.serviceName必须与下面的Service名字相同，否则调用时候pod的subdomain只能使用IP
+$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>November 1, 2021</span>
+<a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
 <a href=/posts/knowledge/2008-elasticstack-es/ class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -142,31 +167,6 @@ Hadoop集群中HDFS节点角色 Master Standy </p>
 <div class=card-footer>
 <span class=float-left>September 24, 2021</span>
 <a href=/posts/knowledge/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2009-kubernetes-handless-statefullset/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>k8s中通过Headless连接StatefulSet</h5>
-<p class="card-text post-summary">连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
-假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。
-但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。
-实验环境 多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟） 本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
-Server cluster 服务端模拟相关资源在kube-test-1下创建
-StatefulSet 使用traefik/whoami镜像来模拟服务端
-这里使用StatefulSet的方式创建服务端。spec.replicas设为3，此时会自动创建whoami-0、whoami-1以及whoami-2三个Pod。
-apiVersion: apps/v1 kind: StatefulSet metadata: name: whoami labels: app: whoami spec: replicas: 3 selector: matchLabels: app: whoami serviceName: whoami template: metadata: name: whoami labels: app: whoami spec: containers: - name: whoami image: traefik/whoami ports: - containerPort: 80 注意这里的spec.serviceName必须与下面的Service名字相同，否则调用时候pod的subdomain只能使用IP
-$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>September 24, 2021</span>
-<a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
