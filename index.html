@@ -390,6 +390,26 @@ Ormissia's Blog</a>
 <div class=container>
 <div class=row id=recent-post-cards>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
+<a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2008-elasticstack-es/head.svg alt="Card image cap">
+</div>
+<div class=card-body>
+<h5 class=card-title>Elasticsearch</h5>
+<p class="card-text post-summary"> 搜索类型 搜索引擎：百度、搜狗、谷歌、必应 垂直领域：各大电商平台、OA系统、站内搜索 商业智能：数据分析、数据挖掘、用户画像 GitHub：千亿+行代码秒查 日志系统：ELK ES特点 搜索、聚合分析、大数据存储 分布式、高性能、高可用、可伸缩、易维护 支持文本搜索、结构化数据、非结构化数据、地理位置搜索等 ES单机部署 同一节点启动不同服务 ./bin/elasticsearch -E path.data=data1 -E path.logs=log1 -E node.name=node1 -E cluster.name=ormissia_test ./bin/elasticsearch -E path.data=data2 -E path.logs=log2 -E node.name=node2 -E cluster.name=ormissia_test http://localhost:9200/ http://localhost:9201/ 不同节点启动同一服务 open ./elasticsearch_node1/bin/elasticsearch open ./elasticsearch_node2/bin/elasticsearch open ./elasticsearch_node3/bin/elasticsearch open ./elasticsearch_node4/bin/elasticsearch open ./elasticsearch_node5/bin/elasticsearch open ./kibana-7.15.1-darwin-x86_64/bin/kibana elasticsearch-head插件 GitHub Repository
+git clone git://github.com/mobz/elasticsearch-head.git cd elasticsearch-head npm install npm run start 默认端口：9100
+如果集群无法连接，需要修改ES配置文件
+http.cors.enabled: true http.cors.allow-origin: "*" elasticsearch-head也可以以Chrome插件的方式安装</p>
+</div>
+<div class=card-footer>
+<span class=float-left>October 19, 2021</span>
+<a href=/posts/knowledge/2008-elasticstack-es/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class="col-lg-4 col-md-6 pt-2 post-card">
 <a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程 class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -485,23 +505,6 @@ rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新
 <div class=card-footer>
 <span class=float-left>October 9, 2021</span>
 <a href=/posts/deployment/3004-linux-grafana/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程 class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3003-linux-traefik/head.png alt="Card image cap">
-</div>
-<div class=card-body>
-<h5 class=card-title>Linux部署Traefik流程</h5>
-<p class="card-text post-summary"> Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience. It receives requests on behalf of your system and finds out which components are responsible for handling them. What sets Traefik apart, besides its many features, is that it automatically discovers the right configuration for your services. The magic happens when Traefik inspects your infrastructure, where it finds relevant information and discovers which service serves which request.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 9, 2021</span>
-<a href=/posts/deployment/3003-linux-traefik/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
