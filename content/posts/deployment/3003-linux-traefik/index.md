@@ -18,7 +18,7 @@ menu:
 > 
 > -- The Traefik Maintainer Team
 
-结尾附Traefik作为`Kubernetes Controller`的部署脚本
+*结尾附Traefik作为`Kubernetes Controller`的部署脚本*
 
 ## 程序下载
 
