@@ -1,6 +1,6 @@
 ---
 title: k8s中通过Headless连接StatefulSet
-date: 2021-09-24T17:22:14+08:00
+date: 2021-11-01T16:59:32+08:00
 hero: head.svg
 menu:
   sidebar:
