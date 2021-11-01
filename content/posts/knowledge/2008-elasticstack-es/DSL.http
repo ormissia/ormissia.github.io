@@ -1,0 +1,363 @@
+DELETE product
+
+GET product/_mapping
+
+PUT /product/_doc/1
+{
+    "name" : "xiaomi phone",
+    "desc" :  "shouji zhong de zhandouji",
+    "date": "2021-06-01",
+    "price" :  3999,
+    "tags": [ "xingjiabi", "fashao", "buka" ]
+}
+
+PUT /product/_doc/2
+{
+    "name" : "xiaomi nfc phone",
+    "desc" :  "zhichi quangongneng nfc,shouji zhong de jianjiji",
+    "date": "2021-06-02",
+    "price" :  4999,
+    "tags": [ "xingjiabi", "fashao", "gongjiaoka" ]
+}
+PUT /product/_doc/3
+{
+    "name" : "nfc phone",
+    "desc" :  "shouji zhong de hongzhaji",
+    "date": "2021-06-03",
+    "price" :  2999,
+    "tags": [ "xingjiabi", "fashao", "menjinka" ]
+}
+PUT /product/_doc/4
+{
+    "name" : "xiaomi erji",
+    "desc" :  "erji zhong de huangmenji",
+    "date": "2021-04-15",
+    "price" :  999,
+    "tags": [ "low", "bufangshui", "yinzhicha" ]
+}
+PUT /product/_doc/5
+{
+  "name": "hongmi erji",
+  "desc": "erji zhong de kendeji 2021-06-01",
+  "date": "2021-04-16",
+  "price": 399,
+  "tags": [
+    "lowbee",
+    "xuhangduan",
+    "zhiliangx"
+  ]
+}
+
+GET product/_search?q=date:2021-06-01
+
+GET product/_search?q=2021-06-01
+
+GET product/_search
+{
+  "query": {
+    "match": {
+      "name": "xiaomi nfc phone"
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "xiaomi zhandouji de",
+      "fields": ["name","desc"]
+    }
+  }
+}
+
+
+GET product/_mapping
+GET product/_search
+{
+  "query": {
+    "match_phrase": {
+      "name": "xiaomi phone"
+    }
+  }
+}
+
+GET _analyze
+{
+  "analyzer": "standard",
+  "text": "xiaomi nfc phone"
+}
+
+GET product/_mapping
+GET product/_search
+{
+  "query": {
+    "term": {
+      "name.keyword": "xiaomi phone"
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "terms": {
+      "tags": [
+        "xiaomi",
+        "buka"
+      ]
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "range": {
+      "price": {
+        "gte": 10,
+        "lte": 1000
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "range": {
+      "date": {
+        "gte": "2021-06-02",
+        "lte": "now-1d"
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "term": {
+      "name.keyword": "nfc phone"
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "name": "phone"
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "name": "phone"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# bool query
+GET product/_search
+{
+  "_source": false,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "name": "xiaomi phone"
+          }
+        },
+        {
+          "match_phrase": {
+            "desc": "shouji zhong"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET product/_search
+{
+  "_source": false,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "name": "xiaomi phone"
+          }
+        },
+        {
+          "match_phrase": {
+            "desc": "shouji zhong"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET product/_search
+{
+  "_source": false,
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+            "name": "xiaomi phone"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match_phrase": {
+            "name": "xiaomi nfc"
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "lte": 500
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "name": "xiaomi"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "range": {
+            "price": {
+              "lte": 1000
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET product/_search
+{
+  "_source": false,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "price": {
+              "lte": 10000
+            }
+          }
+        }
+      ],
+      "should": [
+        {
+          "match_phrase": {
+            "name": "nfc phone"
+          }
+        },
+        {
+          "match": {
+            "name": "erji"
+          }
+        }
+      ],
+      "minimum_should_match": 1
+    }
+  }
+}
+
+GET product/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "price": {
+              "lte": 10000
+            }
+          }
+        }
+      ],
+      "should": [
+        {
+          "match_phrase": {
+            "name": "nfc phone"
+          }
+        },
+        {
+          "match": {
+            "name": "erji"
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {
+                "range": {
+                  "price": {
+                    "gte": 900,
+                    "lte": 3000
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    ,
+    "minimum_should_match": 2
+    }
+  }
+}

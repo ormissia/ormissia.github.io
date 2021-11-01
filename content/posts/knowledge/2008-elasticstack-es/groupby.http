@@ -1,0 +1,675 @@
+# 聚合查询
+DELETE product
+## 数据
+PUT product
+{
+  "mappings" : {
+      "properties" : {
+        "createtime" : {
+          "type" : "date"
+        },
+        "date" : {
+          "type" : "date"
+        },
+        "desc" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          },
+          "analyzer":"ik_max_word"
+        },
+        "lv" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "name" : {
+          "type" : "text",
+          "analyzer":"ik_max_word",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "price" : {
+          "type" : "long"
+        },
+        "tags" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+        "type" : {
+          "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        }
+      }
+    }
+}
+PUT /product/_doc/1
+{
+    "name" : "小米手机",
+    "desc" :  "手机中的战斗机",
+    "price" :  3999,
+    "lv":"旗舰机",
+    "type":"手机",
+    "createtime":"2020-10-01T08:00:00Z",
+    "tags": [ "性价比", "发烧", "不卡顿" ]
+}
+PUT /product/_doc/2
+{
+    "name" : "小米NFC手机",
+    "desc" :  "支持全功能NFC，手机中的滑翔机",
+    "price" :  4999,
+        "lv":"旗舰机",
+    "type":"手机",
+    "createtime":"2020-05-21T08:00:00Z",
+    "tags": [ "性价比", "发烧", "公交卡" ]
+}
+PUT /product/_doc/3
+{
+    "name" : "NFC手机",
+    "desc" :  "手机中的轰炸机",
+    "price" :  2999,
+        "lv":"高端机",
+    "type":"手机",
+    "createtime":"2020-06-20",
+    "tags": [ "性价比", "快充", "门禁卡" ]
+}
+PUT /product/_doc/4
+{
+    "name" : "小米耳机",
+    "desc" :  "耳机中的黄焖鸡",
+    "price" :  999,
+        "lv":"百元机",
+    "type":"耳机",
+    "createtime":"2020-06-23",
+    "tags": [ "降噪", "防水", "蓝牙" ]
+}
+PUT /product/_doc/5
+{
+    "name" : "红米耳机",
+    "desc" :  "耳机中的肯德基",
+    "price" :  399,
+    "type":"耳机",
+        "lv":"百元机",
+    "createtime":"2020-07-20",
+    "tags": [ "防火", "低音炮", "听声辨位" ]
+}
+PUT /product/_doc/6
+{
+    "name" : "小米手机10",
+    "desc" :  "充电贼快掉电更快，超级无敌望远镜，高刷电竞屏",
+    "price" :  "5999",
+        "lv":"旗舰机",
+    "type":"手机",
+    "createtime":"2020-07-27",
+    "tags": [ "120HZ刷新率", "120W快充", "120倍变焦" ]
+}
+PUT /product/_doc/7
+{
+    "name" : "挨炮 SE2",
+    "desc" :  "除了CPU，一无是处",
+    "price" :  "3299",
+        "lv":"旗舰机",
+    "type":"手机",
+    "createtime":"2020-07-21",
+    "tags": [ "割韭菜", "割韭菜", "割新韭菜" ]
+}
+PUT /product/_doc/8
+{
+    "name" : "XS Max",
+    "desc" :  "听说要出新款12手机了，终于可以换掉手中的4S了",
+    "price" :  4399,
+        "lv":"旗舰机",
+    "type":"手机",
+    "createtime":"2020-08-19",
+    "tags": [ "5V1A", "4G全网通", "大" ]
+}
+PUT /product/_doc/9
+{
+    "name" : "小米电视",
+    "desc" :  "70寸性价比只选，不要一万八，要不要八千八，只要两千九百九十八",
+    "price" :  2998,
+        "lv":"高端机",
+    "type":"耳机",
+    "createtime":"2020-08-16",
+    "tags": [ "巨馍", "家庭影院", "游戏" ]
+}
+PUT /product/_doc/10
+{
+    "name" : "红米电视",
+    "desc" :  "我比上边那个更划算，我也2998，我也70寸，但是我更好看",
+    "price" :  2999,
+    "type":"电视",
+        "lv":"高端机",
+    "createtime":"2020-08-28",
+    "tags": [ "大片", "蓝光8K", "超薄" ]
+}
+PUT /product/_doc/11
+{
+  "name": "红米电视",
+  "desc": "我比上边那个更划算，我也2998，我也70寸，但是我更好看",
+  "price": 2998,
+  "type": "电视",
+  "lv": "高端机",
+  "createtime": "2020-08-28",
+  "tags": [
+    "大片",
+    "蓝光8K",
+    "超薄"
+  ]
+}
+
+
+GET product/_search
+{
+  "size": 20
+}
+
+GET product/_search
+{
+  "aggs": {
+    "my_agg1": {
+      "avg": {
+        "field": "{field}"
+      }
+    },
+    "my_agg2": {
+      "avg": {
+        "field": "{field}"
+      }
+    }
+  }
+}
+
+# 桶聚合
+# 统计不同标签的商品数量
+## doc_value和field_data（不建议使用field_data）
+## 基于磁盘   基于内存
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "aggs_tag":{
+      "terms": {
+        "field": "tags.keyword",
+        "size": 30,
+        "order": {
+          "_count": "asc"
+        }
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "aggs_tag":{
+      "terms": {
+        "field": "tags.keyword"
+      }
+    }
+  }
+}
+
+POST product/_mapping
+{
+  "properties":{
+    "tags":{
+      "type":"text",
+      "fielddata":true
+    }
+  }
+}
+
+GET product/_mapping
+
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "aggs_tag":{
+      "terms": {
+        "field": "tags"
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "aggs_tag": {
+      "terms": {
+        "field": "name.keyword"
+      }
+    }
+  }
+}
+
+# 指标聚合
+## 最贵、最便宜和平均价格三个指标
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "max_price": {
+      "max": {
+        "field": "price"
+      }
+    },
+    "min_price": {
+      "min": {
+        "field": "price"
+      }
+    },
+    "avg_price":{
+      "avg": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "max_stats": {
+      "stats": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+## 按照name去重的数量
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "name_count": {
+      "cardinality": {
+        "field": "name"
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "name_count": {
+      "cardinality": {
+        "field": "name.keyword"
+      }
+    }
+  }
+}
+
+# 管道聚合 二次聚合
+## 统计平均加个最低的商品分类
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "type_bucket": {
+      "terms": {
+        "field": "type.keyword"
+      },
+      "aggs": {
+        "price_bucket": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    },
+    "my_bucket":{
+      "min_bucket": {
+        "buckets_path": "type_bucket>price_bucket"
+      }
+    }
+  }
+}
+
+# 嵌套聚合
+## 统计不同类型商品中不同级别的数量
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "type_lv_agg": {
+      "terms": {
+        "field": "type.keyword"
+      },
+      "aggs": {
+        "lv_agg": {
+          "terms": {
+            "field": "lv.keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+## 按照lv分桶，输出每个桶的具体价格信息
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "lv_price_agg": {
+      "terms": {
+        "field": "lv.keyword"
+      },
+      "aggs": {
+        "price_agg": {
+          "stats": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+
+## 统计不同类型商品不同档次的价格信息和标签信息
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "type_lv_agg": {
+      "terms": {
+        "field": "type.keyword"
+      },
+      "aggs": {
+        "lv": {
+          "terms": {
+            "field": "lv.keyword"
+          },
+          "aggs": {
+            "price": {
+              "stats": {
+                "field": "price"
+              }
+            },
+            "tags_buckets": {
+              "terms": {
+                "field": "tags.keyword"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+## 统计每个商品类型中不同档次的商品中平均价格最低的档次
+GET product/_search
+{
+  "size": 0,
+  "aggs": {
+    "type_bucket": {
+      "terms": {
+        "field": "type.keyword"
+      },
+      "aggs": {
+        "lv_bucket": {
+          "terms": {
+            "field": "lv.keyword"
+          },
+          "aggs": {
+            "price_avg": {
+              "avg": {
+                "field": "price"
+              }
+            }
+          }
+        },
+        "my_bucket": {
+          "min_bucket": {
+            "buckets_path": "lv_bucket>price_avg"
+          }
+        }
+      }
+    }
+  }
+}
+
+# 基于查询结果的聚合
+GET product/_search
+{
+  "size": 10,
+  "query": {
+    "range": {
+      "price": {
+        "gte": 5000
+      }
+    }
+  },
+  "aggs": {
+    "tags_bucket": {
+      "terms": {
+        "field": "tags.keyword",
+        "size": 10
+      }
+    }
+  }
+}
+
+# 基于filter结果的聚合
+GET product/_search
+{
+  "size": 10,
+  "query": {
+    "constant_score": {
+      "filter": {
+        "range": {
+          "price": {
+            "gte": 5000
+          }
+        }
+      },
+      "boost": 1.2
+    }
+  },
+  "aggs": {
+    "tags_bucket": {
+      "terms": {
+        "field": "tags.keyword",
+        "size": 10
+      }
+    }
+  }
+}
+
+GET product/_search
+{
+  "size": 10,
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "price": {
+            "gte": 5000
+          }
+        }
+      }
+    }
+  },
+  "aggs": {
+    "tags_bucket": {
+      "terms": {
+        "field": "tags.keyword",
+        "size": 10
+      }
+    }
+  }
+}
+
+
+# 基于聚合的查询
+GET product/_search
+{
+  "size": 10,
+  "aggs": {
+    "tags_bucket": {
+      "terms": {
+        "field": "tags.keyword",
+        "size": 10
+      }
+    }
+  },
+  "post_filter": {
+    "term": {
+      "tags.keyword": "性价比"
+    }
+  }
+}
+
+# 取消查询条件
+GET product/_search
+{
+  "size": 0,
+  "query": {
+    "range": {
+      "price": {
+        "gte": 3000
+      }
+    }
+  },
+  "aggs": {
+    "all_max_price": {
+      "global": {},
+      "aggs": {
+        "max_price": {
+          "max": {
+            "field": "price"
+          }
+        }
+      }
+    },
+    "avg_price": {
+      "avg": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+# 聚合排序
+GET product/_search?size=0
+{
+  "aggs": {
+    "tags_aggs": {
+      "terms": {
+        "field": "tags.keyword",
+        "size": 30,
+        "order": {
+          "_key": "asc"
+        }
+      }
+    }
+  }
+}
+
+# 多级聚合
+GET product/_search?size=0
+{
+  "aggs": {
+    "first_sort": {
+      "terms": {
+        "field": "type.keyword",
+        "order": {
+          "_count": "desc"
+        }
+      },
+      "aggs": {
+        "second_sort": {
+          "terms": {
+            "field": "lv.keyword",
+            "order": {
+              "_count": "asc"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+GET product/_search?size=0
+{
+  "aggs": {
+    "type_avg_price": {
+      "terms": {
+        "field": "type.keyword",
+        "order": {
+          "agg_stats>stats_agg.min": "asc"
+        }
+      },
+      "aggs": {
+        "agg_stats": {
+          "filter": {
+            "terms": {
+              "type.keyword": [
+                "耳机",
+                "手机",
+                "电视"
+              ]
+            }
+          },
+          "aggs": {
+            "stats_agg": {
+              "stats": {
+                "field": "price"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+##
+
+
+
+
+
+
+
+
+
+
+
+
+

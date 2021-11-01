@@ -1,0 +1,312 @@
+GET _analyze
+{
+  "text": "Mr. Ma is an excellent teacher",
+  "analyzer": "english"
+}
+
+GET _analyze
+{
+  "text": "Mr. Ma is an excellent teacher",
+  "analyzer": "pattern"
+}
+
+GET _analyze
+{
+  "text": "Mr. Ma is an excellent teacher",
+  "analyzer": "standard"
+}
+
+# character filter
+## HTML Strip Character Filter
+### <p>I&apos;m so <a>happy</a>!</p>
+DELETE test_index
+PUT test_index
+{
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "my_char_filter": {
+          "type": "html_strip",
+          "escaped_tags": [
+            "a"
+          ]
+        }
+      },
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "char_filter": "my_char_filter"
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "<p>I&apos;m so <a>happy</a>!</p>"
+}
+
+## Mapping Character Fileter
+DELETE test_index
+PUT test_index
+{
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "my_char_filter": {
+          "type": "mapping",
+          "mappings":[
+            "滚 => *",
+            "垃圾 => **"
+            ]
+        }
+      },
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "char_filter": "my_char_filter"
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "滚！你就是个垃圾"
+}
+## Pattern Replace Character Filter
+# 15633334444
+DELETE test_index
+PUT test_index
+{
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "my_char_filter": {
+          "type": "pattern_replace",
+          "pattern":"(\\d{3})\\d{4}(\\d{4})",
+          "replacement":"$1****$2"
+        }
+      },
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "char_filter": "my_char_filter"
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "手机号是：15633334444"
+}
+
+# token filter
+DELETE test_index
+PUT /test_index
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "my_synonyms": {
+          "type": "synonym_graph",
+          "synonyms_path": "analysis/synonym.txt"
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "whitespace",
+          "filter": [
+            "my_synonyms"
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+GET test_index/_analyze
+{
+  "analyzer": "my_synonyms",
+  "text": ["好看 哈哈哈 笔记本"]
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "whitespace",
+  "text": ["好看 哈哈哈 笔记本"]
+}
+
+DELETE test_index
+PUT /test_index
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "my_synonyms": {
+          "type": "synonym",
+          "synonyms": ["赵,钱,孙,李=>姓氏","周=>ss"]
+        }
+      },
+      "analyzer": {
+        "my_synonyms": {
+          "tokenizer": "whitespace",
+          "filter": [
+            "my_synonyms"
+          ]
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "my_synonyms",
+  "text": ["赵","钱","孙","李","周","吴"]
+}
+
+## 大小写
+GET test_index/_analyze
+{
+  "tokenizer": "standard",
+  "filter": ["lowercase"],
+  "text": ["AS DSFGDSA FEWD  DS HG"]
+}
+
+GET test_index/_analyze
+{
+  "tokenizer": "standard",
+  "filter": {
+    "type": "condition",
+    "filter": "uppercase",
+    "script": {
+      "source": "token.getTerm().length() < 5"
+    }
+  },
+  "text": [
+    "sadfasd sdaf a sdffdsa ew"
+  ]
+}
+
+## 停用词
+DELETE test_index
+PUT /test_index
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+         "type":"standard",
+         "stopwords":"_english_"
+        }
+      }
+    }
+  }
+}
+
+PUT /test_index
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+         "type":"standard",
+         "stopwords":["i want is"]
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": ["I want to make and the make is an"]
+}
+
+# tokenizer 分词器
+
+GET test_index/_analyze
+{
+  "tokenizer": "standard",
+  "text": ["I want to make and the make is an"]
+}
+
+## 自定义分词器
+DELETE test_index
+PUT test_index
+{
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "my_char_filter": {
+          "type": "mapping",
+          "mappings": [
+            "& => and",
+            "| => or"
+          ]
+        },
+        "html_strip_char_strip": {
+          "type": "html_strip",
+          "escaped_tags": [
+            "a"
+          ]
+        }
+      },
+      "filter": {
+        "my_stopwrods": {
+          "type": "stop",
+          "stopwords": [
+            "is",
+            "in",
+            "or",
+            "a"
+          ]
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "pattern",
+          "pattern": "[ ,.:!?]"
+        }
+      },
+      "analyzer": {
+        "my_analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "my_char_filter",
+            "html_strip_char_strip"
+          ],
+          "filter": "my_stopwrods",
+          "tokenizer": "my_tokenizer"
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": [
+    "this is unsaf!e ha.ha & make | <a> safe</a> a and in <p>hah</p>"
+  ]
+}
+
+GET test_index/_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": [
+    "欸啊"
+  ]
+}
+
