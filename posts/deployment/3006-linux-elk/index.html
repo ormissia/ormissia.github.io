@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Linux部署ELK流程</title>
+<title>ELK部署流程</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,14 +12,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Linux部署ELK流程">
-<meta property="og:description" content="Logstash Elasticsearch 开启试用 https://www.elastic.co/guide/en/elasticsearch/reference/current/start-trial.html
-{ &#34;license&#34; : { &#34;status&#34; : &#34;active&#34;, &#34;uid&#34; : &#34;f9cd2e30-450e-4d54-a928-18d8f135c665&#34;, &#34;type&#34; : &#34;trial&#34;, &#34;issue_date&#34; : &#34;2021-10-14T05:20:55.621Z&#34;, &#34;issue_date_in_millis&#34; : 1634188855621, &#34;expiry_date&#34; : &#34;2021-11-13T05:20:55.621Z&#34;, &#34;expiry_date_in_millis&#34; : 1636780855621, &#34;max_nodes&#34; : 1000, &#34;issued_to&#34; : &#34;elasticsearch&#34;, &#34;issuer&#34; : &#34;elasticsearch&#34;, &#34;start_date_in_millis&#34; : -1 } } https://www.elastic.co/cn/subscriptions">
+<meta property="og:title" content="ELK部署流程">
+<meta property="og:description" content="Elasticsearch Deployment&Service apiVersion: apps/v1 kind: StatefulSet metadata: labels: app: elasticsearch role: master name: elasticsearch-master spec: replicas: 3 revisionHistoryLimit: 10 selector: matchLabels: app: elasticsearch role: master serviceName: es-master template: metadata: labels: app: elasticsearch role: master spec: serviceAccountName: elasticsearch-admin affinity: podAntiAffinity: requiredDuringSchedulingIgnoredDuringExecution: - topologyKey: kubernetes.io/hostname labelSelector: matchExpressions: - key: role operator: In values: - master containers: - name: elasticsearch-master image: elasticsearch:7.14.2 lifecycle: postStart: exec: command: [ &#34;/bin/bash&#34;, &#34;-c&#34;, &#34;sysctl -w vm.max_map_count=262144; ulimit -l unlimited; chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data;&#34; ] ports: - containerPort: 9200 protocol: TCP - containerPort: 9300 protocol: TCP resources: limits: cpu: 100m memory: 1Gi requests: cpu: 10m memory: 512Mi env: - name: MY_POD_NAME valueFrom: fieldRef: fieldPath: metadata.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/deployment/3006-linux-elk/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-10-13T15:28:13+08:00">
 <meta property="article:modified_time" content="2021-10-13T15:28:13+08:00">
-<meta name=description content="Linux部署ELK流程">
+<meta name=description content="ELK部署流程">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/single.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -74,10 +73,10 @@ Ormissia's Blog</a>
 <ul class=active>
 <li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
 <li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
-<li><a class=active href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程>Linux部署ELK流程</a></li>
+<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
+<li><a class=active href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
 <li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
 </ul>
 </li>
@@ -121,29 +120,448 @@ Ormissia's Blog</a>
 <p>October 13, 2021</p>
 </div>
 <div class=title>
-<h1>Linux部署ELK流程</h1>
+<h1>ELK部署流程</h1>
 </div>
 <div class=post-content id=post-content>
-<h2 id=logstash>Logstash</h2>
 <h2 id=elasticsearch>Elasticsearch</h2>
-<h3 id=开启试用>开启试用</h3>
-<p><a href=https://www.elastic.co/guide/en/elasticsearch/reference/current/start-trial.html>https://www.elastic.co/guide/en/elasticsearch/reference/current/start-trial.html</a></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
-  <span style=color:#f92672>&#34;license&#34;</span> : {
-    <span style=color:#f92672>&#34;status&#34;</span> : <span style=color:#e6db74>&#34;active&#34;</span>,
-    <span style=color:#f92672>&#34;uid&#34;</span> : <span style=color:#e6db74>&#34;f9cd2e30-450e-4d54-a928-18d8f135c665&#34;</span>,
-    <span style=color:#f92672>&#34;type&#34;</span> : <span style=color:#e6db74>&#34;trial&#34;</span>,
-    <span style=color:#f92672>&#34;issue_date&#34;</span> : <span style=color:#e6db74>&#34;2021-10-14T05:20:55.621Z&#34;</span>,
-    <span style=color:#f92672>&#34;issue_date_in_millis&#34;</span> : <span style=color:#ae81ff>1634188855621</span>,
-    <span style=color:#f92672>&#34;expiry_date&#34;</span> : <span style=color:#e6db74>&#34;2021-11-13T05:20:55.621Z&#34;</span>,
-    <span style=color:#f92672>&#34;expiry_date_in_millis&#34;</span> : <span style=color:#ae81ff>1636780855621</span>,
-    <span style=color:#f92672>&#34;max_nodes&#34;</span> : <span style=color:#ae81ff>1000</span>,
-    <span style=color:#f92672>&#34;issued_to&#34;</span> : <span style=color:#e6db74>&#34;elasticsearch&#34;</span>,
-    <span style=color:#f92672>&#34;issuer&#34;</span> : <span style=color:#e6db74>&#34;elasticsearch&#34;</span>,
-    <span style=color:#f92672>&#34;start_date_in_millis&#34;</span> : <span style=color:#ae81ff>-1</span>
-  }
-}
-</code></pre></div><p><a href=https://www.elastic.co/cn/subscriptions>https://www.elastic.co/cn/subscriptions</a></p>
+<h3 id=deploymentservice>Deployment&Service</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>StatefulSet</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+    <span style=color:#f92672>role</span>: <span style=color:#ae81ff>master</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-master</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
+  <span style=color:#f92672>revisionHistoryLimit</span>: <span style=color:#ae81ff>10</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+      <span style=color:#f92672>role</span>: <span style=color:#ae81ff>master</span>
+  <span style=color:#f92672>serviceName</span>: <span style=color:#ae81ff>es-master</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+        <span style=color:#f92672>role</span>: <span style=color:#ae81ff>master</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>serviceAccountName</span>: <span style=color:#ae81ff>elasticsearch-admin</span>
+      <span style=color:#f92672>affinity</span>:
+        <span style=color:#f92672>podAntiAffinity</span>:
+          <span style=color:#f92672>requiredDuringSchedulingIgnoredDuringExecution</span>:
+            - <span style=color:#f92672>topologyKey</span>: <span style=color:#ae81ff>kubernetes.io/hostname</span>
+              <span style=color:#f92672>labelSelector</span>:
+                <span style=color:#f92672>matchExpressions</span>:
+                  - <span style=color:#f92672>key</span>: <span style=color:#ae81ff>role</span>
+                    <span style=color:#f92672>operator</span>: <span style=color:#ae81ff>In</span>
+                    <span style=color:#f92672>values</span>:
+                      - <span style=color:#ae81ff>master</span>
+      <span style=color:#f92672>containers</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-master</span>
+          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>elasticsearch:7.14.2</span>
+          <span style=color:#f92672>lifecycle</span>:
+            <span style=color:#f92672>postStart</span>:
+              <span style=color:#f92672>exec</span>:
+                <span style=color:#f92672>command</span>: [ <span style=color:#e6db74>&#34;/bin/bash&#34;</span>, <span style=color:#e6db74>&#34;-c&#34;</span>, <span style=color:#e6db74>&#34;sysctl -w vm.max_map_count=262144; ulimit -l unlimited; chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data;&#34;</span> ]
+          <span style=color:#f92672>ports</span>:
+            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>9200</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>9300</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+          <span style=color:#f92672>resources</span>:
+            <span style=color:#f92672>limits</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>100m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>1Gi</span>
+            <span style=color:#f92672>requests</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>10m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>512Mi</span>
+          <span style=color:#f92672>env</span>:
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>MY_POD_NAME</span>
+              <span style=color:#f92672>valueFrom</span>:
+                <span style=color:#f92672>fieldRef</span>:
+                  <span style=color:#f92672>fieldPath</span>: <span style=color:#ae81ff>metadata.name</span>
+                  <span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>path.data</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>/usr/share/elasticsearch/data/${MY_POD_NAME}</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cluster.name</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>elasticsearch-k8s-cluster</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>discovery.seed_hosts</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>elasticsearch-discovery</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>node.master</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;true&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>node.data</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;false&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>node.ingest</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;false&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>ES_JAVA_OPTS</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;-Xms512m -Xmx512m&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cluster.initial_master_nodes</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2</span>
+<span style=color:#75715e>#            - name: xpack.security.enabled</span>
+<span style=color:#75715e>#              value: &#34;true&#34;</span>
+<span style=color:#75715e>#            - name: xpack.security.transport.ssl.enabled</span>
+<span style=color:#75715e>#              value: &#34;true&#34;</span>
+          <span style=color:#f92672>securityContext</span>:
+            <span style=color:#f92672>privileged</span>: <span style=color:#66d9ef>true</span>
+          <span style=color:#f92672>volumeMounts</span>:
+            - <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/usr/share/elasticsearch/data</span>
+              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-master-pvc</span>
+            - <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/usr/share/elasticsearch/plugins</span>
+              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+      <span style=color:#f92672>volumes</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-master-pvc</span>
+          <span style=color:#f92672>persistentVolumeClaim</span>:
+            <span style=color:#f92672>claimName</span>: <span style=color:#ae81ff>es-master-pvc</span>
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+          <span style=color:#f92672>persistentVolumeClaim</span>:
+            <span style=color:#f92672>claimName</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-discovery</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#f92672>port</span>: <span style=color:#ae81ff>9300</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>StatefulSet</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+    <span style=color:#f92672>role</span>: <span style=color:#ae81ff>data</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-data</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>4</span>
+  <span style=color:#f92672>revisionHistoryLimit</span>: <span style=color:#ae81ff>10</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+      <span style=color:#f92672>role</span>: <span style=color:#ae81ff>data</span>
+  <span style=color:#f92672>serviceName</span>: <span style=color:#ae81ff>es-data</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+        <span style=color:#f92672>role</span>: <span style=color:#ae81ff>data</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>serviceAccountName</span>: <span style=color:#ae81ff>elasticsearch-admin</span>
+      <span style=color:#f92672>affinity</span>:
+        <span style=color:#f92672>podAntiAffinity</span>:
+          <span style=color:#f92672>preferredDuringSchedulingIgnoredDuringExecution</span>:
+            - <span style=color:#f92672>podAffinityTerm</span>:
+                <span style=color:#f92672>topologyKey</span>: <span style=color:#ae81ff>kubernetes.io/hostname</span>
+                <span style=color:#f92672>labelSelector</span>:
+                  <span style=color:#f92672>matchExpressions</span>:
+                    - <span style=color:#f92672>key</span>: <span style=color:#ae81ff>role</span>
+                      <span style=color:#f92672>operator</span>: <span style=color:#ae81ff>In</span>
+                      <span style=color:#f92672>values</span>:
+                        - <span style=color:#ae81ff>data</span>
+              <span style=color:#f92672>weight</span>: <span style=color:#ae81ff>100</span>
+      <span style=color:#f92672>containers</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-data</span>
+          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>elasticsearch:7.14.2</span>
+          <span style=color:#f92672>lifecycle</span>:
+            <span style=color:#f92672>postStart</span>:
+              <span style=color:#f92672>exec</span>:
+                <span style=color:#f92672>command</span>: [ <span style=color:#e6db74>&#34;/bin/bash&#34;</span>, <span style=color:#e6db74>&#34;-c&#34;</span>, <span style=color:#e6db74>&#34;sysctl -w vm.max_map_count=262144; ulimit -l unlimited; chown -R elasticsearch:elasticsearch /usr/share/elasticsearch;&#34;</span> ]
+          <span style=color:#f92672>ports</span>:
+            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>9200</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>9300</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+          <span style=color:#f92672>resources</span>:
+            <span style=color:#f92672>limits</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>100m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>1Gi</span>
+            <span style=color:#f92672>requests</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>10m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>512Mi</span>
+          <span style=color:#f92672>env</span>:
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>MY_POD_NAME</span>
+              <span style=color:#f92672>valueFrom</span>:
+                <span style=color:#f92672>fieldRef</span>:
+                  <span style=color:#f92672>fieldPath</span>: <span style=color:#ae81ff>metadata.name</span>
+                  <span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>path.data</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>/usr/share/elasticsearch/data/${MY_POD_NAME}</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cluster.name</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>elasticsearch-k8s-cluster</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>discovery.seed_hosts</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>elasticsearch-discovery</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>node.master</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;false&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>node.data</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;true&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>ES_JAVA_OPTS</span>
+              <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;-Xms300m -Xmx300m&#34;</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cluster.initial_master_nodes</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>elasticsearch-master-0,elasticsearch-master-1,elasticsearch-master-2</span>
+<span style=color:#75715e>#            - name: xpack.security.enabled</span>
+<span style=color:#75715e>#              value: &#34;true&#34;</span>
+<span style=color:#75715e>#            - name: xpack.security.transport.ssl.enabled</span>
+<span style=color:#75715e>#              value: &#34;true&#34;</span>
+          <span style=color:#f92672>securityContext</span>:
+            <span style=color:#f92672>privileged</span>: <span style=color:#66d9ef>true</span>
+          <span style=color:#f92672>volumeMounts</span>:
+            - <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/usr/share/elasticsearch/data</span>
+              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-data-pvc</span>
+            - <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/usr/share/elasticsearch/plugins</span>
+              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+      <span style=color:#f92672>volumes</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-data-pvc</span>
+          <span style=color:#f92672>persistentVolumeClaim</span>:
+            <span style=color:#f92672>claimName</span>: <span style=color:#ae81ff>es-data-pvc</span>
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+          <span style=color:#f92672>persistentVolumeClaim</span>:
+            <span style=color:#f92672>claimName</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>type</span>: <span style=color:#ae81ff>ClusterIP</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#f92672>port</span>: <span style=color:#ae81ff>9200</span>
+      <span style=color:#f92672>targetPort</span>: <span style=color:#ae81ff>9200</span>
+      <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>http</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>elasticsearch</span>
+    <span style=color:#f92672>role</span>: <span style=color:#ae81ff>data</span>
+</code></pre></div><h3 id=rbac>RBAC</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-admin</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticearch-admin</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cluster-admin</span>
+<span style=color:#f92672>subjects</span>:
+  - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-admin</span>
+    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-elastic</span>
+</code></pre></div><h3 id=pvpvc>PV&PVC</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolume</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-master-pv</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>capacity</span>:
+    <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>512Mi</span>
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>persistentVolumeReclaimPolicy</span>: <span style=color:#ae81ff>Retain</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>es-master-pv</span>
+  <span style=color:#f92672>nfs</span>:
+    <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/data/nfs/kubernetes/elastic/elasticsearch/master</span>
+    <span style=color:#f92672>server</span>: <span style=color:#ae81ff>node1</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolumeClaim</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-master-pvc</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>resources</span>:
+    <span style=color:#f92672>requests</span>:
+      <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>512Mi</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>es-master-pv</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolume</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-data-pv</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>capacity</span>:
+    <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>5Gi</span>
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>persistentVolumeReclaimPolicy</span>: <span style=color:#ae81ff>Retain</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>es-data-pv</span>
+  <span style=color:#f92672>nfs</span>:
+    <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/data/nfs/kubernetes/elastic/elasticsearch/data</span>
+    <span style=color:#f92672>server</span>: <span style=color:#ae81ff>node1</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolumeClaim</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-data-pvc</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>resources</span>:
+    <span style=color:#f92672>requests</span>:
+      <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>5Gi</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>es-data-pv</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolume</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-plugins-pv</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>capacity</span>:
+    <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>512Mi</span>
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>persistentVolumeReclaimPolicy</span>: <span style=color:#ae81ff>Retain</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>es-plugins-pv</span>
+  <span style=color:#f92672>nfs</span>:
+    <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/data/nfs/kubernetes/elastic/elasticsearch/plugins</span>
+    <span style=color:#f92672>server</span>: <span style=color:#ae81ff>node1</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolumeClaim</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>es-plugins-pvc</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>resources</span>:
+    <span style=color:#f92672>requests</span>:
+      <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>512Mi</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>es-plugins-pv</span>
+</code></pre></div><h3 id=ingress>Ingress</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Ingress</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch-ingress</span>
+  <span style=color:#f92672>annotations</span>:
+    <span style=color:#f92672>traefik.ingress.kubernetes.io/router.entrypoints</span>: <span style=color:#ae81ff>web</span>
+
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>rules</span>:
+    - <span style=color:#f92672>host</span>: <span style=color:#ae81ff>elasticsearch.ormissia.com</span>
+      <span style=color:#f92672>http</span>:
+        <span style=color:#f92672>paths</span>:
+          - <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/</span>
+            <span style=color:#f92672>pathType</span>: <span style=color:#ae81ff>Prefix</span>
+            <span style=color:#f92672>backend</span>:
+              <span style=color:#f92672>service</span>:
+                <span style=color:#f92672>name</span>: <span style=color:#ae81ff>elasticsearch</span>
+                <span style=color:#f92672>port</span>:
+                  <span style=color:#f92672>number</span>: <span style=color:#ae81ff>9200</span>
+</code></pre></div><h2 id=kibana>Kibana</h2>
+<h3 id=deploymentservice-1>Deployment&Service</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>kibana</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>1</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>kibana</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>kibana</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>containers</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana</span>
+          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>kibana:7.14.2</span>
+          <span style=color:#f92672>ports</span>:
+            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>5601</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+          <span style=color:#f92672>resources</span>:
+            <span style=color:#f92672>limits</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>100m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>600Gi</span>
+            <span style=color:#f92672>requests</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>10m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>400Mi</span>
+          <span style=color:#f92672>env</span>:
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>ELASTICSEARCH_URL</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>http://elasticsearch:9200</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>I18N_LOCALE</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>zh-CN</span>
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>SERVER_PUBLICBASEURL</span>
+              <span style=color:#f92672>value</span>: <span style=color:#ae81ff>https://kibana.ormissia.com</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>type</span>: <span style=color:#ae81ff>ClusterIP</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#f92672>port</span>: <span style=color:#ae81ff>5601</span>
+      <span style=color:#f92672>targetPort</span>: <span style=color:#ae81ff>5601</span>
+      <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>kibana</span>
+</code></pre></div><h3 id=pvpvc-1>PV&PVC</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolume</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana-pv</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>capacity</span>:
+    <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>512Mi</span>
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>persistentVolumeReclaimPolicy</span>: <span style=color:#ae81ff>Retain</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>kibana-pv</span>
+  <span style=color:#f92672>nfs</span>:
+    <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/data/nfs/kubernetes/elastic/kibana</span>
+    <span style=color:#f92672>server</span>: <span style=color:#ae81ff>node1</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>PersistentVolumeClaim</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana-pvc</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>accessModes</span>:
+    - <span style=color:#ae81ff>ReadWriteMany</span>
+  <span style=color:#f92672>resources</span>:
+    <span style=color:#f92672>requests</span>:
+      <span style=color:#f92672>storage</span>: <span style=color:#ae81ff>512Mi</span>
+  <span style=color:#f92672>storageClassName</span>: <span style=color:#ae81ff>kibana-pv</span>
+</code></pre></div><h3 id=ingress-1>Ingress</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Ingress</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana-ingress</span>
+  <span style=color:#f92672>annotations</span>:
+    <span style=color:#f92672>traefik.ingress.kubernetes.io/router.entrypoints</span>: <span style=color:#ae81ff>web</span>
+
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>rules</span>:
+    - <span style=color:#f92672>host</span>: <span style=color:#ae81ff>kibana.ormissia.com</span>
+      <span style=color:#f92672>http</span>:
+        <span style=color:#f92672>paths</span>:
+          - <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/</span>
+            <span style=color:#f92672>pathType</span>: <span style=color:#ae81ff>Prefix</span>
+            <span style=color:#f92672>backend</span>:
+              <span style=color:#f92672>service</span>:
+                <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kibana</span>
+                <span style=color:#f92672>port</span>:
+                  <span style=color:#f92672>number</span>: <span style=color:#ae81ff>5601</span>
+</code></pre></div>
 </div>
 <div class="row pl-3 pr-3">
 <div class="col-md-6 share-buttons">
@@ -158,9 +576,9 @@ Ormissia's Blog</a>
 <hr>
 <div class="row next-prev-navigator">
 <div class="col-md-6 previous-article">
-<a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程 class="btn btn-outline-info">
+<a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程 class="btn btn-outline-info">
 <div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
-<div class=next-prev-text>Linux部署Prometheus流程</div>
+<div class=next-prev-text>Prometheus部署流程</div>
 </a>
 </div>
 <div class="col-md-6 next-article">
@@ -183,10 +601,19 @@ Ormissia's Blog</a>
 <div class=toc>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#logstash>Logstash</a></li>
 <li><a href=#elasticsearch>Elasticsearch</a>
 <ul>
-<li><a href=#开启试用>开启试用</a></li>
+<li><a href=#deploymentservice>Deployment&Service</a></li>
+<li><a href=#rbac>RBAC</a></li>
+<li><a href=#pvpvc>PV&PVC</a></li>
+<li><a href=#ingress>Ingress</a></li>
+</ul>
+</li>
+<li><a href=#kibana>Kibana</a>
+<ul>
+<li><a href=#deploymentservice-1>Deployment&Service</a></li>
+<li><a href=#pvpvc-1>PV&PVC</a></li>
+<li><a href=#ingress-1>Ingress</a></li>
 </ul>
 </li>
 </ul>

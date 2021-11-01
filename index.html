@@ -473,15 +473,14 @@ Warning: The unit file, source configuration file or drop-ins of elasticsearch.s
 </a>
 </div>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程 class=post-card-link>
+<a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程 class=post-card-link>
 <div class=card>
 <div class=card-head>
 <img class=card-img-top src=/posts/deployment/3006-linux-elk/head.svg alt="Card image cap">
 </div>
 <div class=card-body>
-<h5 class=card-title>Linux部署ELK流程</h5>
-<p class="card-text post-summary"> Logstash Elasticsearch 开启试用 https://www.elastic.co/guide/en/elasticsearch/reference/current/start-trial.html
-{ "license" : { "status" : "active", "uid" : "f9cd2e30-450e-4d54-a928-18d8f135c665", "type" : "trial", "issue_date" : "2021-10-14T05:20:55.621Z", "issue_date_in_millis" : 1634188855621, "expiry_date" : "2021-11-13T05:20:55.621Z", "expiry_date_in_millis" : 1636780855621, "max_nodes" : 1000, "issued_to" : "elasticsearch", "issuer" : "elasticsearch", "start_date_in_millis" : -1 } } https://www.elastic.co/cn/subscriptions</p>
+<h5 class=card-title>ELK部署流程</h5>
+<p class="card-text post-summary"> Elasticsearch Deployment&Service apiVersion: apps/v1 kind: StatefulSet metadata: labels: app: elasticsearch role: master name: elasticsearch-master spec: replicas: 3 revisionHistoryLimit: 10 selector: matchLabels: app: elasticsearch role: master serviceName: es-master template: metadata: labels: app: elasticsearch role: master spec: serviceAccountName: elasticsearch-admin affinity: podAntiAffinity: requiredDuringSchedulingIgnoredDuringExecution: - topologyKey: kubernetes.io/hostname labelSelector: matchExpressions: - key: role operator: In values: - master containers: - name: elasticsearch-master image: elasticsearch:7.14.2 lifecycle: postStart: exec: command: [ "/bin/bash", "-c", "sysctl -w vm.max_map_count=262144; ulimit -l unlimited; chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data;" ] ports: - containerPort: 9200 protocol: TCP - containerPort: 9300 protocol: TCP resources: limits: cpu: 100m memory: 1Gi requests: cpu: 10m memory: 512Mi env: - name: MY_POD_NAME valueFrom: fieldRef: fieldPath: metadata.</p>
 </div>
 <div class=card-footer>
 <span class=float-left>October 13, 2021</span>
@@ -491,16 +490,16 @@ Warning: The unit file, source configuration file or drop-ins of elasticsearch.s
 </a>
 </div>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程 class=post-card-link>
+<a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程 class=post-card-link>
 <div class=card>
 <div class=card-head>
 <img class=card-img-top src=/posts/deployment/3005-linux-prometheus/head.png alt="Card image cap">
 </div>
 <div class=card-body>
-<h5 class=card-title>Linux部署Prometheus流程</h5>
+<h5 class=card-title>Prometheus部署流程</h5>
 <p class="card-text post-summary"> 程序下载 wget https://github.com/prometheus/prometheus/releases/download/v2.30.3/prometheus-2.30.3.linux-amd64.tar.gz 解压并移动 tar -zxvf prometheus-2.30.3.linux-amd64.tar.gz mv prometheus-2.30.3.linux-amd64 /usr/local/prometheus 添加到系统服务 Unit配置文件 vi /usr/lib/systemd/system/prometheus.service [Unit] Description=Prometheus Documentation=https://prometheus.io [Service] Type=simple ExecStart=/usr/local/prometheus/prometheus \ --config.file=/usr/local/prometheus/prometheus.yml \ --storage.tsdb.path=/usr/local/prometheus/data Restart=on-failure WatchdogSec=10s [Install] WantedBy=multi-user.target 启动程序 sudo systemctl daemon-reload sudo systemctl start prometheus.service sudo systemctl status prometheus.service 开机自启 sudo systemctl enable prometheus.service 简单使用 Prometheus默认端口是9090，程序启动之后从浏览器访问页面。
 输入以下表达式来绘制在自抓取Prometheus中发生的每秒HTTP请求率返回状态代码200的图表：
-rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新加载 curl -X POST http://127.0.0.1:9090/-/reload 参考链接 Prometheus官网 Prometheus下载页面 Prometheus文档</p>
+rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新加载 curl -X POST http://127.0.0.1:9090/-/reload Kubernetes部署脚本 Deployment&Service apiVersion: apps/v1 kind: Deployment metadata: name: prometheus labels: app: prometheus spec: replicas: 1 strategy: rollingUpdate: maxSurge: 1 maxUnavailable: 1 type: RollingUpdate selector: matchLabels: app: prometheus template: metadata: labels: app: prometheus spec: initContainers: - name: prometheus-data-permission-setup image: busybox command: ["/bin/chmod","-R","777", "/data"] volumeMounts: - name: prometheus-data mountPath: /data containers: - name: prometheus image: prom/prometheus args: - '--storage.</p>
 </div>
 <div class=card-footer>
 <span class=float-left>October 9, 2021</span>

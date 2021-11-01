@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Linux部署Traefik流程</title>
+<title>Traefik部署流程</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,13 +12,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Linux部署Traefik流程">
+<meta property="og:title" content="Traefik部署流程">
 <meta property="og:description" content="Traefik is an open-source Edge Router that makes publishing your services a fun and easy experience. It receives requests on behalf of your system and finds out which components are responsible for handling them. What sets Traefik apart, besides its many features, is that it automatically discovers the right configuration for your services. The magic happens when Traefik inspects your infrastructure, where it finds relevant information and discovers which service serves which request.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/deployment/3003-linux-traefik/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-10-09T20:42:33+08:00">
 <meta property="article:modified_time" content="2021-10-09T20:42:33+08:00">
-<meta name=description content="Linux部署Traefik流程">
+<meta name=description content="Traefik部署流程">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/single.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -73,10 +73,10 @@ Ormissia's Blog</a>
 <ul class=active>
 <li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
 <li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a class=active href=/posts/deployment/3003-linux-traefik/ title=Linux部署Traefik流程>Linux部署Traefik流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程>Linux部署Grafana流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Linux部署Prometheus流程>Linux部署Prometheus流程</a></li>
-<li><a href=/posts/deployment/3006-linux-elk/ title=Linux部署ELK流程>Linux部署ELK流程</a></li>
+<li><a class=active href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
 <li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
 </ul>
 </li>
@@ -120,7 +120,7 @@ Ormissia's Blog</a>
 <p>October 9, 2021</p>
 </div>
 <div class=title>
-<h1>Linux部署Traefik流程</h1>
+<h1>Traefik部署流程</h1>
 </div>
 <div class=post-content id=post-content>
 <blockquote>
@@ -131,6 +131,7 @@ With Traefik, there is no need to maintain and synchronize a separate configurat
 Developing Traefik, our main goal is to make it simple to use, and we&rsquo;re sure you&rsquo;ll enjoy it.</p>
 <p>&ndash; The Traefik Maintainer Team</p>
 </blockquote>
+<p>结尾附Traefik作为<code>Kubernetes Controller</code>的部署脚本</p>
 <h2 id=程序下载>程序下载</h2>
 <p>由于Traefik是由Golang语言所编写，程序是二进制包的形式。直接到Traefik在GitHub仓库的releases中下载即可。</p>
 <p>我使用的是基于x86的64位Linux系统，所以在这里选择的是linux_amd64版本的包</p>
@@ -641,7 +642,165 @@ _acme-challenge.ormissia.com. <span style=color:#ae81ff>600</span> IN	CNAME	123.
 </code></pre></div><p>即代表解析成功。</p>
 <p>重启Traefik之后，刷新页面，即可以从浏览器中看到证书获取成功。</p>
 <p><img src=certificate.png alt=certificate></p>
-<h2 id=参考链接>参考链接</h2>
+<h2 id=kubernetes部署脚本>Kubernetes部署脚本</h2>
+<h3 id=rbac>RBAC</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># rbac.yml</span>
+---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik-ingress-controller</span>
+<span style=color:#f92672>rules</span>:
+  - <span style=color:#f92672>apiGroups</span>:
+      - <span style=color:#e6db74>&#34;&#34;</span>
+    <span style=color:#f92672>resources</span>:
+      - <span style=color:#ae81ff>services</span>
+      - <span style=color:#ae81ff>endpoints</span>
+      - <span style=color:#ae81ff>secrets</span>
+    <span style=color:#f92672>verbs</span>:
+      - <span style=color:#ae81ff>get</span>
+      - <span style=color:#ae81ff>list</span>
+      - <span style=color:#ae81ff>watch</span>
+  - <span style=color:#f92672>apiGroups</span>:
+      - <span style=color:#ae81ff>extensions</span>
+      - <span style=color:#ae81ff>networking.k8s.io</span>
+    <span style=color:#f92672>resources</span>:
+      - <span style=color:#ae81ff>ingresses</span>
+      - <span style=color:#ae81ff>ingressclasses</span>
+    <span style=color:#f92672>verbs</span>:
+      - <span style=color:#ae81ff>get</span>
+      - <span style=color:#ae81ff>list</span>
+      - <span style=color:#ae81ff>watch</span>
+  - <span style=color:#f92672>apiGroups</span>:
+      - <span style=color:#ae81ff>extensions</span>
+    <span style=color:#f92672>resources</span>:
+      - <span style=color:#ae81ff>services</span>
+      - <span style=color:#ae81ff>endpoints</span>
+      - <span style=color:#ae81ff>ingresses/status</span>
+    <span style=color:#f92672>verbs</span>:
+      - <span style=color:#ae81ff>update</span>
+      - <span style=color:#ae81ff>get</span>
+      - <span style=color:#ae81ff>list</span>
+      - <span style=color:#ae81ff>watch</span>
+
+---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik-ingress-controller</span>
+<span style=color:#f92672>roleRef</span>:
+  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik-ingress-controller</span>
+<span style=color:#f92672>subjects</span>:
+  - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik-ingress-controller</span>
+    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-basic</span>
+</code></pre></div><h3 id=deploymentservice>Deployment&Service</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># traefik.yml</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik-ingress-controller</span>
+
+---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik</span>
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>traefik</span>
+
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>traefik</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>traefik</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>serviceAccountName</span>: <span style=color:#ae81ff>traefik-ingress-controller</span>
+      <span style=color:#f92672>affinity</span>:
+        <span style=color:#f92672>podAntiAffinity</span>:
+          <span style=color:#f92672>preferredDuringSchedulingIgnoredDuringExecution</span>:
+            - <span style=color:#f92672>podAffinityTerm</span>:
+                <span style=color:#f92672>topologyKey</span>: <span style=color:#ae81ff>kubernetes.io/hostname</span>
+                <span style=color:#f92672>labelSelector</span>:
+                  <span style=color:#f92672>matchExpressions</span>:
+                    - <span style=color:#f92672>key</span>: <span style=color:#ae81ff>app</span>
+                      <span style=color:#f92672>operator</span>: <span style=color:#ae81ff>In</span>
+                      <span style=color:#f92672>values</span>:
+                        - <span style=color:#ae81ff>traefik</span>
+              <span style=color:#f92672>weight</span>: <span style=color:#ae81ff>100</span>
+      <span style=color:#f92672>containers</span>:
+        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik</span>
+          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>traefik</span>
+          <span style=color:#f92672>ports</span>:
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>web</span>
+              <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
+          <span style=color:#f92672>resources</span>:
+            <span style=color:#f92672>limits</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>20m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>150Mi</span>
+            <span style=color:#f92672>requests</span>:
+              <span style=color:#f92672>cpu</span>: <span style=color:#ae81ff>5m</span>
+              <span style=color:#f92672>memory</span>: <span style=color:#ae81ff>70Mi</span>
+          <span style=color:#f92672>args</span>:
+            - --<span style=color:#ae81ff>entrypoints.web.address=:80</span>
+            - --<span style=color:#ae81ff>entrypoints.web.http.redirections.entryPoint.to=websecure</span>
+            - --<span style=color:#ae81ff>entrypoints.web.http.redirections.entryPoint.scheme=https</span>
+            - --<span style=color:#ae81ff>entrypoints.websecure.address=:443</span>
+            - --<span style=color:#ae81ff>providers.kubernetesingress</span>
+            - --<span style=color:#ae81ff>providers.kubernetesingress.namespaces=kube-basic,kubernetes-dashboard</span>
+            - --<span style=color:#ae81ff>log.level=INFO</span>
+            - --<span style=color:#ae81ff>accesslog</span>
+            - --<span style=color:#ae81ff>api.insecure=true</span>
+            - --<span style=color:#ae81ff>pilot.token=1f36db5d-9f2c-42da-8737-4cf8979de6a4</span>
+
+---
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>type</span>: <span style=color:#ae81ff>NodePort</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>traefik</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>80</span>
+      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>web</span>
+      <span style=color:#f92672>targetPort</span>: <span style=color:#ae81ff>80</span>
+      <span style=color:#f92672>nodePort</span>: <span style=color:#ae81ff>30000</span>
+    - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>admin</span>
+      <span style=color:#f92672>targetPort</span>: <span style=color:#ae81ff>8080</span>
+      <span style=color:#f92672>nodePort</span>: <span style=color:#ae81ff>30001</span>
+</code></pre></div><h3 id=ingress>Ingress</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#75715e># ingress.yml</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Ingress</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami-ingress</span>
+  <span style=color:#f92672>annotations</span>:
+    <span style=color:#f92672>traefik.ingress.kubernetes.io/router.entrypoints</span>: <span style=color:#ae81ff>web</span>
+
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>rules</span>:
+    - <span style=color:#f92672>host</span>: <span style=color:#ae81ff>traefik.ormissia.com</span>
+      <span style=color:#f92672>http</span>:
+        <span style=color:#f92672>paths</span>:
+          - <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/</span>
+            <span style=color:#f92672>pathType</span>: <span style=color:#ae81ff>Prefix</span>
+            <span style=color:#f92672>backend</span>:
+              <span style=color:#f92672>service</span>:
+                <span style=color:#f92672>name</span>: <span style=color:#ae81ff>traefik</span>
+                <span style=color:#f92672>port</span>:
+                  <span style=color:#f92672>number</span>: <span style=color:#ae81ff>8080</span>
+</code></pre></div><h2 id=参考链接>参考链接</h2>
 <ul>
 <li><a href=https://github.com/traefik/traefik>Traefik源码仓库</a></li>
 <li><a href=https://traefik.io>Traefik官网</a></li>
@@ -669,9 +828,9 @@ _acme-challenge.ormissia.com. <span style=color:#ae81ff>600</span> IN	CNAME	123.
 </a>
 </div>
 <div class="col-md-6 next-article">
-<a href=/posts/deployment/3004-linux-grafana/ title=Linux部署Grafana流程 class="btn btn-outline-info">
+<a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程 class="btn btn-outline-info">
 <div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
-<div class=next-prev-text>Linux部署Grafana流程</div>
+<div class=next-prev-text>Grafana部署流程</div>
 </a>
 </div>
 </div>
@@ -744,6 +903,13 @@ _acme-challenge.ormissia.com. <span style=color:#ae81ff>600</span> IN	CNAME	123.
 </ul>
 </li>
 <li><a href=#添加cname解析>添加CNAME解析</a></li>
+</ul>
+</li>
+<li><a href=#kubernetes部署脚本>Kubernetes部署脚本</a>
+<ul>
+<li><a href=#rbac>RBAC</a></li>
+<li><a href=#deploymentservice>Deployment&Service</a></li>
+<li><a href=#ingress>Ingress</a></li>
 </ul>
 </li>
 <li><a href=#参考链接>参考链接</a></li>
