@@ -390,6 +390,27 @@ Ormissia's Blog</a>
 <div class=container>
 <div class=row id=recent-post-cards>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
+<a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源 class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5005-docker-image-source/head.svg alt="Card image cap">
+</div>
+<div class=card-body>
+<h5 class=card-title>修改Docker镜像源</h5>
+<p class="card-text post-summary"> 问题现象 国内某些网络环境下，会出现docker pull无法拉取镜像的情况
+解决办法 修改Docker镜像源
+新建或修改
+vi /etc/docker/daemon.json { "registry-mirrors": [ "http://hub-mirror.c.163.com" ] } 最后重启Docker
+systemctl restart docker.service </p>
+</div>
+<div class=card-footer>
+<span class=float-left>November 4, 2021</span>
+<a href=/posts/problems/5005-docker-image-source/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class="col-lg-4 col-md-6 pt-2 post-card">
 <a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -493,23 +514,6 @@ Warning: The unit file, source configuration file or drop-ins of elasticsearch.s
 <div class=card-footer>
 <span class=float-left>October 14, 2021</span>
 <a href=/posts/problems/5003-elasticsearch-start-failed/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程 class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3006-linux-elk/head.svg alt="Card image cap">
-</div>
-<div class=card-body>
-<h5 class=card-title>ELK部署流程</h5>
-<p class="card-text post-summary"> Elasticsearch Deployment&Service apiVersion: apps/v1 kind: StatefulSet metadata: labels: app: elasticsearch role: master name: elasticsearch-master spec: replicas: 3 revisionHistoryLimit: 10 selector: matchLabels: app: elasticsearch role: master serviceName: es-master template: metadata: labels: app: elasticsearch role: master spec: serviceAccountName: elasticsearch-admin affinity: podAntiAffinity: requiredDuringSchedulingIgnoredDuringExecution: - topologyKey: kubernetes.io/hostname labelSelector: matchExpressions: - key: role operator: In values: - master containers: - name: elasticsearch-master image: elasticsearch:7.14.2 lifecycle: postStart: exec: command: [ "/bin/bash", "-c", "sysctl -w vm.max_map_count=262144; ulimit -l unlimited; chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data;" ] ports: - containerPort: 9200 protocol: TCP - containerPort: 9300 protocol: TCP resources: limits: cpu: 100m memory: 1Gi requests: cpu: 10m memory: 512Mi env: - name: MY_POD_NAME valueFrom: fieldRef: fieldPath: metadata.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 13, 2021</span>
-<a href=/posts/deployment/3006-linux-elk/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
