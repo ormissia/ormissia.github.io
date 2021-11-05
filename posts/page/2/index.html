@@ -63,6 +63,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
 <li><a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
 <li><a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+<li><a href=/posts/knowledge/2010-kubernetes-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
 </ul>
 </li>
 <li>
@@ -109,6 +110,24 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/knowledge/2007-hadoop-hdfs/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2007-hadoop-hdfs/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>HDFS基础知识</h5>
+<p class="card-text post-summary">//TODO
+Hadoop集群中HDFS节点角色 Master Standy </p>
+</div>
+<div class=card-footer>
+<span class=float-left>September 24, 2021</span>
+<a href=/posts/knowledge/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/problems/5002-k8s-memory/ class=post-card-link>
 <div class=card>
@@ -373,25 +392,6 @@ func NewStuffClient(conn Connection) StuffClient { return &stuffClient{ conn: co
 </div>
 </a>
 </div>
-<div class=post-card>
-<a href=/posts/unclassified/6001-markdown/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/unclassified/6001-markdown/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Markdown Samples</h5>
-<p class="card-text post-summary">This is a sample post intended to test the followings:
-A different post author. Table of contents. Markdown content rendering. Math rendering. Emoji rendering. Markdown Syntax Rendering Headings The following HTML &lt;h1>—&lt;h6> elements represent six levels of section headings. &lt;h1> is the highest section level while &lt;h6> is the lowest.
-H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur?</p>
-</div>
-<div class=card-footer>
-<span class=float-left>June 8, 2020</span>
-<a href=/posts/unclassified/6001-markdown/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
 </div>
 <div class=paginator>
 <ul class="pagination pagination-default">
@@ -407,11 +407,14 @@ H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo. Aqu
 <li class="page-item active">
 <a href=# aria-current=page aria-label="Page 2" class=page-link role=button>2</a>
 </li>
-<li class="page-item disabled">
-<a href=# aria-disabled=true aria-label=Next class=page-link role=button tabindex=-1><span aria-hidden=true>&#187;</span></a>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label="Page 3" class=page-link role=button>3</a>
 </li>
-<li class="page-item disabled">
-<a href=# aria-disabled=true aria-label=Last class=page-link role=button tabindex=-1><span aria-hidden=true>&#187;&#187;</span></a>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
 </li>
 </ul>
 </div>

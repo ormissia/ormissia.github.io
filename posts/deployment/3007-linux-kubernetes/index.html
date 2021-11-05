@@ -74,6 +74,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
 <li><a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
 <li><a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+<li><a href=/posts/knowledge/2010-kubernetes-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
 </ul>
 </li>
 <li>
@@ -267,7 +268,7 @@ kube-system   kube-scheduler-arm-node-1            1/1     Running   <span style
 </code></pre></div><p>可以看到两个<code>coredns</code>的<code>pod</code>处于<code>Pending</code>状态，这是由于缺少网络组件<br>
 这里我们选择安装<code>flannel</code></p>
 <p>大坑二</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubctl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 </code></pre></div><p>执行这条命令之后查看pod状态会出现<code>ErrImagePull</code>的提示<br>
 原因是<code>rancher/flannel-cni-plugin:v1.2</code>的镜像拉取不到<br>
 到网上查了一番，看好多是相同的报错，但是因为<code>quay.io/coreos/flannel</code>的镜像拉不到，于是我手动拉了一下<code>rancher/flannel-cni-plugin</code>这个镜像</p>
