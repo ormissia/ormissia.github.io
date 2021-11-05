@@ -256,7 +256,7 @@ kube-system   kube-scheduler-arm-node-1            1/1     Running   2 (126m ago
 大坑二
 
 ```shell
-kubctl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 ```
 
 执行这条命令之后查看pod状态会出现`ErrImagePull`的提示  
