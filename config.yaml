@@ -76,8 +76,10 @@ params:
     # Enable comment feature. There, should be only one of them.
     comment:
       enable: true
-      disqus:
-        shortName: ormissia-github-io-posts
+      utteranc:
+        repo: ormissia/ormissia.github.io
+        issueTerm: title
+        theme: github-light
 
   # specify whether you want to show Table of Contents in reading page
   enableTOC: true
