@@ -612,8 +612,8 @@ VSZ: 500K + 2500K + 200K <span style=color:#f92672>=</span> 3200K
 <h5 class=note-title><span>shell</span></h5>
 <div class=card>
 <div class=card-body><p>在hbase的shell中scan时指定列</p>
-<p>scan &lsquo;table_name&rsquo;,{STARTROW=>&lsquo;start_row&rsquo;,ENDROW=>&lsquo;end_row&rsquo;,LIMIT=>100,COLUMNS=>[&lsquo;info:type&rsquo;]}</p>
-<p><code>COLUMNS=>['info:type']</code>中参数为数组，可以指定列簇名和列名</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>scan <span style=color:#e6db74>&#39;table_name&#39;</span>,<span style=color:#f92672>{</span>STARTROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;start_row&#39;</span>,ENDROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;end_row&#39;</span>,LIMIT<span style=color:#f92672>=</span>&gt;100,COLUMNS<span style=color:#f92672>=</span>&gt;<span style=color:#f92672>[</span><span style=color:#e6db74>&#39;info:type&#39;</span><span style=color:#f92672>]}</span>
+</code></pre></div><p><code>COLUMNS=>['info:type']</code>中参数为数组，可以指定列簇名和列名</p>
 </div>
 </div>
 </div>
