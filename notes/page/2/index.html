@@ -150,6 +150,17 @@ Ormissia's Blog</a>
 </li>
 </ul>
 </li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/hbase/>Hbase</a>
+<ul>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/notes/hbase/shell/>Shell</a>
+<ul>
+<li><a href=/notes/hbase/shell/basic/ title=Basic>Basic</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </div>
 </ul>
 </div>
@@ -592,6 +603,17 @@ VSZ: 500K + 2500K + 200K <span style=color:#f92672>=</span> 3200K
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>PSS: 400K + <span style=color:#f92672>(</span>1000K/2<span style=color:#f92672>)</span> + 100K <span style=color:#f92672>=</span> 400K + 500K + 100K <span style=color:#f92672>=</span> 1000K
 </code></pre></div><p>一个进程中的多个线程共享同样的地址空间。所以一个进程中的多个线程的RSS，VSZ，PSS是完全相同的。linux下可以使用ps或者top命令查看这些信息。</p>
 <p><a href=https://stackoverflow.com/a/21049737>英文原文</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>shell</span></h5>
+<div class=card>
+<div class=card-body><p>在hbase的shell中scan时指定列</p>
+<p>scan &lsquo;table_name&rsquo;,{STARTROW=>&lsquo;start_row&rsquo;,ENDROW=>&lsquo;end_row&rsquo;,LIMIT=>100,COLUMNS=>[&lsquo;info:type&rsquo;]}</p>
+<p><code>COLUMNS=>['info:type']</code>中参数为数组，可以指定列簇名和列名</p>
 </div>
 </div>
 </div>
