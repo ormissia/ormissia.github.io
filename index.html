@@ -390,6 +390,31 @@ Ormissia's Blog</a>
 <div class=container>
 <div class=row id=recent-post-cards>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
+<a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置 class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5006-mysql-brew-conf/head.svg alt="Card image cap">
+</div>
+<div class=card-body>
+<h5 class=card-title>修改Mac上brew安装的MySQL配置</h5>
+<p class="card-text post-summary"> 一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
+在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
+设置sql_model 关闭ONLY_FULL_GROUP_BY模式
+在sql命令行中查询sql_mode配置
+select @@sql_mode; mysql> select @@sql_mode; +-----------------------------------------------------------------------------------------------------------------------+ | @@sql_mode | +-----------------------------------------------------------------------------------------------------------------------+ | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | +-----------------------------------------------------------------------------------------------------------------------+ 1 row in set (0.00 sec) 去掉第一项后得到：
+STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
+# ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
+mysql.server restart </p>
+</div>
+<div class=card-footer>
+<span class=float-left>December 20, 2021</span>
+<a href=/posts/problems/5006-mysql-brew-conf/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class="col-lg-4 col-md-6 pt-2 post-card">
 <a href=/posts/knowledge/2010-kubernetes-index/ title=Kubernetes文档索引 class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -487,30 +512,6 @@ http.cors.enabled: true http.cors.allow-origin: "*" elasticsearch-head也可以�
 <div class=card-footer>
 <span class=float-left>October 19, 2021</span>
 <a href=/posts/knowledge/2008-elasticstack-es/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程 class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3007-linux-kubernetes/head.svg alt="Card image cap">
-</div>
-<div class=card-body>
-<h5 class=card-title>Linux部署Kubernetes流程</h5>
-<p class="card-text post-summary"> 此次安装的平台是基于ARM架构的RedHat系Linux系统平台，参照Kubernetes官方文档进行的。
-本文档流程与X86架构的没有区别，官方文档中个别步骤中的命令需要区分所使用的包对应的平台。
-初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
-/.swapfile none swap sw,comment=cloudconfig 0 0 重启之后查看关闭是否成功
-free -m 显示如下内容，swap关闭成功
-total used free shared buff/cache available Mem: 23114 402 22299 32 411 20597 Swap: 0 0 0 ulimit echo "ulimit -n 65535" >> /etc/profile echo "* hard nofile 65535" >> /etc/security/limits.conf 重启之后检查是否配置成功
-ulimit -n SSH免密（非必须） 执行命令，一路回车，即可获得当前节点的公钥
-ssh-keygen -t rsa cat id_rsa.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 14, 2021</span>
-<a href=/posts/deployment/3007-linux-kubernetes/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

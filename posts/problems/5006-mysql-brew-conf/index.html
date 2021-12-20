@@ -1,0 +1,270 @@
+<!doctype html><html>
+<head>
+<title>修改Mac上brew安装的MySQL配置</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="修改Mac上brew安装的MySQL配置">
+<meta property="og:description" content=" 一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
+ 在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
+设置sql_model  关闭ONLY_FULL_GROUP_BY模式
+ 在sql命令行中查询sql_mode配置
+select @@sql_mode; mysql> select @@sql_mode; +-----------------------------------------------------------------------------------------------------------------------+ | @@sql_mode | +-----------------------------------------------------------------------------------------------------------------------+ | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | +-----------------------------------------------------------------------------------------------------------------------+ 1 row in set (0.00 sec) 去掉第一项后得到：
+STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
+# ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
+mysql.server restart ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/posts/problems/5006-mysql-brew-conf/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-12-20T09:18:43+08:00">
+<meta property="article:modified_time" content="2021-12-20T09:18:43+08:00">
+<meta name=description content="修改Mac上brew安装的MySQL配置">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/single.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=Search data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+<li><a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
+<li><a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+<li><a href=/posts/knowledge/2010-kubernetes-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
+<ul>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
+<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
+<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/problems/>疑难杂症</a>
+<ul class=active>
+<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
+<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
+<li><a class=active href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class=content>
+<div class="container p-0 read-area">
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/problems/5006-mysql-brew-conf/head.svg)>
+</div>
+<div class=page-content>
+<div class="author-profile ml-auto align-self-lg-center">
+<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
+<h5 class=author-name>Ormissia</h5>
+<p>December 20, 2021</p>
+</div>
+<div class=title>
+<h1>修改Mac上brew安装的MySQL配置</h1>
+</div>
+<div class=post-content id=post-content>
+<blockquote>
+<p>一般MySQL 8.x安装完在<code>select</code>语句中使用<code>group by</code>时会报错，需要在<code>my.cnf</code>中配置设置<code>sql_model</code>参数。在Linux中，这个文件通常位于<code>/etc</code>目录下，而在Mac上，却不在这里。</p>
+</blockquote>
+<p>在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置</p>
+<h4 id=设置sql_model>设置sql_model</h4>
+<blockquote>
+<p>关闭ONLY_FULL_GROUP_BY模式</p>
+</blockquote>
+<p>在sql命令行中查询<code>sql_mode</code>配置</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>select</span> <span style=color:#f92672>@@</span>sql_mode;
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql>mysql<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>select</span> <span style=color:#f92672>@@</span>sql_mode;
+<span style=color:#f92672>+</span><span style=color:#75715e>-----------------------------------------------------------------------------------------------------------------------+
+</span><span style=color:#75715e></span><span style=color:#f92672>|</span> <span style=color:#f92672>@@</span>sql_mode                                                                                                            <span style=color:#f92672>|</span>
+<span style=color:#f92672>+</span><span style=color:#75715e>-----------------------------------------------------------------------------------------------------------------------+
+</span><span style=color:#75715e></span><span style=color:#f92672>|</span> ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION <span style=color:#f92672>|</span>
+<span style=color:#f92672>+</span><span style=color:#75715e>-----------------------------------------------------------------------------------------------------------------------+
+</span><span style=color:#75715e></span><span style=color:#ae81ff>1</span> <span style=color:#66d9ef>row</span> <span style=color:#66d9ef>in</span> <span style=color:#66d9ef>set</span> (<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>00</span> sec)
+</code></pre></div><p>去掉第一项后得到：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql>STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+</code></pre></div><p>使用<code>mysql --help</code>命令获取<code>my.cnf</code>配置文件所在位置</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># ...</span>
+Default options are read from the following files in the given order:
+/etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf
+The following groups are read: mysql client
+<span style=color:#75715e># ...</span>
+</code></pre></div><p>我安装的MySQL在<code>/opt/homebrew/etc/my.cnf</code>目录下，添加一行：</p>
+<pre><code>sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+</code></pre><p>重启MySQL，问题解决</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mysql.server restart
+</code></pre></div>
+</div>
+<div class="row pl-3 pr-3">
+<div class="col-md-6 share-buttons">
+<strong>分享:</strong>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fproblems%2f5006-mysql-brew-conf%2f&title=%e4%bf%ae%e6%94%b9Mac%e4%b8%8abrew%e5%ae%89%e8%a3%85%e7%9a%84MySQL%e9%85%8d%e7%bd%ae" target=_blank>
+<i class="fab fa-reddit"></i>
+</a>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fproblems%2f5006-mysql-brew-conf%2f&title=%e4%bf%ae%e6%94%b9Mac%e4%b8%8abrew%e5%ae%89%e8%a3%85%e7%9a%84MySQL%e9%85%8d%e7%bd%ae" target=_blank>
+<i class="fab fa-linkedin"></i>
+</a>
+<a class="btn btn-sm email-btn" href="mailto:?subject=%e4%bf%ae%e6%94%b9Mac%e4%b8%8abrew%e5%ae%89%e8%a3%85%e7%9a%84MySQL%e9%85%8d%e7%bd%ae&body=https%3a%2f%2formissia.github.io%2fposts%2fproblems%2f5006-mysql-brew-conf%2f" target=_blank>
+<i class="fas fa-envelope-open-text"></i>
+</a>
+</div>
+<div class="col-md-6 btn-improve-page">
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/problems/5006-mysql-brew-conf/index.md title=改善此页面 target=_blank rel=noopener>
+<i class="fas fa-code-branch"></i>
+改善此页面
+</a>
+</div>
+</div>
+<hr>
+<div class="row next-prev-navigator">
+</div>
+<hr>
+<div id=utteranc_thread></div>
+<div id=comments class=comments>
+<div id=comments-container></div>
+</div>
+<script type=text/javascript>(function(){var a=document.createElement('script');a.type='text/javascript',a.async=!0,a.setAttribute('repo','ormissia/ormissia.github.io'),a.setAttribute('issue-term','title'),a.setAttribute('theme','github-light'),a.crossorigin='anonymous',a.src='https://utteranc.es/client.js',document.getElementById('comments-container').appendChild(a)})()</script>
+</div>
+</div>
+</div>
+<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
+</section>
+<section class=toc-section id=toc-section>
+<div class=toc-holder>
+<h5 class="text-center pl-3">目录</h5>
+<hr>
+<div class=toc>
+<nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href=#设置sql_model>设置sql_model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</div>
+<footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
+<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
+</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/single.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

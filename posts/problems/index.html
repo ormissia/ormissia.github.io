@@ -111,6 +111,31 @@ Ormissia's Blog</a>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
 <div class=post-card>
+<a href=/posts/problems/5006-mysql-brew-conf/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5006-mysql-brew-conf/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>修改Mac上brew安装的MySQL配置</h5>
+<p class="card-text post-summary"> 一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
+在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
+设置sql_model 关闭ONLY_FULL_GROUP_BY模式
+在sql命令行中查询sql_mode配置
+select @@sql_mode; mysql> select @@sql_mode; +-----------------------------------------------------------------------------------------------------------------------+ | @@sql_mode | +-----------------------------------------------------------------------------------------------------------------------+ | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | +-----------------------------------------------------------------------------------------------------------------------+ 1 row in set (0.00 sec) 去掉第一项后得到：
+STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
+# ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
+mysql.server restart </p>
+</div>
+<div class=card-footer>
+<span class=float-left>December 20, 2021</span>
+<a href=/posts/problems/5006-mysql-brew-conf/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
 <a href=/posts/problems/5005-docker-image-source/ class=post-card-link>
 <div class=card>
 <div class=card-head>

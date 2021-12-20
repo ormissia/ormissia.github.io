@@ -111,6 +111,31 @@ Ormissia's Blog</a>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
 <div class=post-card>
+<a href=/posts/problems/5006-mysql-brew-conf/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5006-mysql-brew-conf/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>修改Mac上brew安装的MySQL配置</h5>
+<p class="card-text post-summary"> 一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
+在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
+设置sql_model 关闭ONLY_FULL_GROUP_BY模式
+在sql命令行中查询sql_mode配置
+select @@sql_mode; mysql> select @@sql_mode; +-----------------------------------------------------------------------------------------------------------------------+ | @@sql_mode | +-----------------------------------------------------------------------------------------------------------------------+ | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | +-----------------------------------------------------------------------------------------------------------------------+ 1 row in set (0.00 sec) 去掉第一项后得到：
+STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
+# ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
+mysql.server restart </p>
+</div>
+<div class=card-footer>
+<span class=float-left>December 20, 2021</span>
+<a href=/posts/problems/5006-mysql-brew-conf/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
 <a href=/posts/knowledge/2010-kubernetes-index/ class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -324,30 +349,6 @@ rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新
 <div class=card-footer>
 <span class=float-left>October 9, 2021</span>
 <a href=/posts/deployment/3003-linux-traefik/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/deployment/3002-linux-nginx/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3002-linux-nginx/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Linux部署Nginx流程</h5>
-<p class="card-text post-summary">安装依赖 编译工具及库文件 yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel 安装PCRE PCRE作用是让Nginx支持Rewrite功能
-PCRE安装包下载地址： https://sourceforge.net/projects/pcre/files/pcre/
-选择对应版本下载即可
-下载PCRE安装包 cd /usr/local/src/ wget http://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.gz 解压安装包并进入目录 tar -zxvf pcre-8.45.tar.gz cd pcre-8.45 编译安装 ./configure make && make install 验证安装 pcre-config --version 可能遇到的问题 安装完成之后有可能找不到命令，查看编译安装时的默认安装目录，将其添加到Linux环境变量PATH即可
-创建管理Nginx的用户和组 创建nginx运行用户nginx并加入到nginx组，不允许nginx用户直接登录系统
-groupadd nginx useradd -g nginx nginx -s /sbin/nologin 安装Nginx 下载安装包 Nginx下载地址： http://nginx.org/en/download.html
-没有特殊需求的话，选择Stable version稳定版下载即可
-cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安装包并进入目录 tar -zxvf nginx-1.20.1 cd nginx-1.20.1 编译安装 .</p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 8, 2021</span>
-<a href=/posts/deployment/3002-linux-nginx/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
