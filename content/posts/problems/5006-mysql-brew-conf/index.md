@@ -5,7 +5,7 @@ hero: head.svg
 menu:
   sidebar:
     name: 修改Mac上brew安装的MySQL配置
-    identifier: problems-docker-image-source
+    identifier: problems-mysql-brew-conf
     parent: problems
     weight: 5006
 ---
