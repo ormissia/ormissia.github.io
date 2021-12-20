@@ -14,7 +14,7 @@ menu:
 
 在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
 
-#### 设置sql_model
+## 设置sql_model
 
 >  关闭ONLY_FULL_GROUP_BY模式
 
@@ -60,4 +60,10 @@ sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_
 
 ```shell
 mysql.server restart
+```
+
+## 设置开机启动
+
+```shell
+cp /opt/homebrew/Cellar/mysql/8.0.27/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents
 ```
