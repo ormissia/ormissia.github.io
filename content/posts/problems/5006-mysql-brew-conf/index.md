@@ -67,3 +67,7 @@ mysql.server restart
 ```shell
 cp /opt/homebrew/Cellar/mysql/8.0.27/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents
 ```
+
+```shell
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+```
