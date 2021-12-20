@@ -405,7 +405,7 @@ select @@sql_mode; mysql> select @@sql_mode; +----------------------------------
 STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
 # ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
 sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
-mysql.server restart </p>
+mysql.server restart 设置开机启动 cp /opt/homebrew/Cellar/mysql/8.0.27/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents </p>
 </div>
 <div class=card-footer>
 <span class=float-left>December 20, 2021</span>
