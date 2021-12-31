@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Hbase Notes</title>
+<title>Basic</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,10 +12,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Hbase Notes">
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/notes/hbase/">
+<meta property="og:title" content="Basic">
+<meta property="og:description" content="shell 查询消费者组
+kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --list kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --describe --group group_name 删除消费者组
+kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --delete --group group_name 查看topic消息数量
+kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server bigdata7:9092 --topic topic_name --time -1     ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/notes/kafka/shell/basic/"><meta property="article:section" content="notes">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/notes.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -151,8 +154,8 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-minus-circle"></i><a class=active href=/notes/hbase/>Hbase</a>
-<ul class=active>
+<i class="fas fa-plus-circle"></i><a href=/notes/hbase/>Hbase</a>
+<ul>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/notes/hbase/shell/>Shell</a>
 <ul>
@@ -162,12 +165,12 @@ Ormissia's Blog</a>
 </ul>
 </li>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/kafka/>Kafka</a>
-<ul>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/kafka/>Kafka</a>
+<ul class=active>
 <li>
-<i class="fas fa-plus-circle"></i><a href=/notes/kafka/shell/>Shell</a>
-<ul>
-<li><a href=/notes/kafka/shell/basic/ title=Basic>Basic</a></li>
+<i class="fas fa-minus-circle"></i><a class=active href=/notes/kafka/shell/>Shell</a>
+<ul class=active>
+<li><a class=active href=/notes/kafka/shell/basic/ title=Basic>Basic</a></li>
 </ul>
 </li>
 </ul>
@@ -185,15 +188,17 @@ Ormissia's Blog</a>
 <div class=item>
 <h5 class=note-title><span>shell</span></h5>
 <div class=card>
-<div class=card-body><p>在hbase的shell中scan时指定列</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>scan <span style=color:#e6db74>&#39;table_name&#39;</span>,<span style=color:#f92672>{</span>STARTROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;start_row&#39;</span>,ENDROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;end_row&#39;</span>,LIMIT<span style=color:#f92672>=</span>&gt;100,COLUMNS<span style=color:#f92672>=</span>&gt;<span style=color:#f92672>[</span><span style=color:#e6db74>&#39;info:type&#39;</span><span style=color:#f92672>]}</span>
-</code></pre></div><p><code>COLUMNS=>['info:type']</code>中参数为数组，可以指定列簇名和列名</p>
+<div class=card-body><p>查询消费者组</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --list
+kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --describe --group group_name
+</code></pre></div><p>删除消费者组</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --delete --group group_name
+</code></pre></div><p>查看<code>topic</code>消息数量</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server bigdata7:9092 --topic topic_name --time -1
+</code></pre></div></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class=paginator>
 </div>
 </div>
 </section>
