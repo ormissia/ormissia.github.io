@@ -78,6 +78,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
 <li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
 <li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
+<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
 </ul>
 </li>
 <li>
@@ -113,6 +114,27 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/deployment/3008-linux-redis/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/deployment/3008-linux-redis/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Redis默认配置文件修改</h5>
+<p class="card-text post-summary">与MySQL类似，Redis安装完也不能直接使用，默认的配置文件有几处需要修改
+使用yum安装的Redis默认配置文件路径：/etc/redis.conf
+允许访问地址 # bind 127.0.0.1 将只限本地访问的配置注释掉
+修改保护模式 protected-mode no 将保护模式修改为no
+启用守护进程 daemonize yes 将守护进程设置为yes</p>
+</div>
+<div class=card-footer>
+<span class=float-left>January 13, 2022</span>
+<a href=/posts/deployment/3008-linux-redis/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/knowledge/2012-io-network/ class=post-card-link>
 <div class=card>
@@ -335,25 +357,6 @@ Warning: The unit file, source configuration file or drop-ins of elasticsearch.s
 <div class=card-footer>
 <span class=float-left>October 13, 2021</span>
 <a href=/posts/deployment/3006-linux-elk/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/deployment/3005-linux-prometheus/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/deployment/3005-linux-prometheus/head.png alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Prometheus部署流程</h5>
-<p class="card-text post-summary">程序下载 wget https://github.com/prometheus/prometheus/releases/download/v2.30.3/prometheus-2.30.3.linux-amd64.tar.gz 解压并移动 tar -zxvf prometheus-2.30.3.linux-amd64.tar.gz mv prometheus-2.30.3.linux-amd64 /usr/local/prometheus 添加到系统服务 Unit配置文件 vi /usr/lib/systemd/system/prometheus.service [Unit] Description=Prometheus Documentation=https://prometheus.io [Service] Type=simple ExecStart=/usr/local/prometheus/prometheus \ --config.file=/usr/local/prometheus/prometheus.yml \ --storage.tsdb.path=/usr/local/prometheus/data Restart=on-failure WatchdogSec=10s [Install] WantedBy=multi-user.target 启动程序 sudo systemctl daemon-reload sudo systemctl start prometheus.service sudo systemctl status prometheus.service 开机自启 sudo systemctl enable prometheus.service 简单使用 Prometheus默认端口是9090，程序启动之后从浏览器访问页面。
-输入以下表达式来绘制在自抓取Prometheus中发生的每秒HTTP请求率返回状态代码200的图表：
-rate(promhttp_metric_handler_requests_total{code="200"}[1m]) 配置文件 重新加载 curl -X POST http://127.0.0.1:9090/-/reload Kubernetes部署脚本 Deployment&Service apiVersion: apps/v1 kind: Deployment metadata: name: prometheus labels: app: prometheus spec: replicas: 1 strategy: rollingUpdate: maxSurge: 1 maxUnavailable: 1 type: RollingUpdate selector: matchLabels: app: prometheus template: metadata: labels: app: prometheus spec: initContainers: - name: prometheus-data-permission-setup image: busybox command: ["/bin/chmod","-R","777", "/data"] volumeMounts: - name: prometheus-data mountPath: /data containers: - name: prometheus image: prom/prometheus args: - '--storage.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>October 9, 2021</span>
-<a href=/posts/deployment/3005-linux-prometheus/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Jan 2022 14:33:48 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 13 Jan 2022 15:37:06 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
 1Byte true/false uint8
 1Byte 0-255 uint16
 2Byte 0-65535 uint32
@@ -166,7 +166,11 @@ Initial setup Search depends on additional output content type of JSON in config
 No content shown here is rendered, all content is based in the template layouts/page/search.html
 Setting a very low sitemap priority will tell search engines this is not important content.
 This implementation uses Fusejs, jquery and mark.js
-Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>网络IO演进历程</title><link>https://ormissia.github.io/posts/knowledge/2012-io-network/</link><pubDate>Sat, 01 Jan 2022 14:33:48 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2012-io-network/</guid><description>作为
+Initial setup Search depends on additional output content type of JSON in config.toml ``` [outputs] home = [&amp;ldquo;HTML&amp;rdquo;, &amp;ldquo;JSON&amp;rdquo;] ```</description></item><item><title>Redis默认配置文件修改</title><link>https://ormissia.github.io/posts/deployment/3008-linux-redis/</link><pubDate>Thu, 13 Jan 2022 15:37:06 +0800</pubDate><guid>https://ormissia.github.io/posts/deployment/3008-linux-redis/</guid><description>与MySQL类似，Redis安装完也不能直接使用，默认的配置文件有几处需要修改
+使用yum安装的Redis默认配置文件路径：/etc/redis.conf
+允许访问地址 # bind 127.0.0.1 将只限本地访问的配置注释掉
+修改保护模式 protected-mode no 将保护模式修改为no
+启用守护进程 daemonize yes 将守护进程设置为yes</description></item><item><title>网络IO演进历程</title><link>https://ormissia.github.io/posts/knowledge/2012-io-network/</link><pubDate>Sat, 01 Jan 2022 14:33:48 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2012-io-network/</guid><description>作为
 网络IO演进模型 阻塞IO BIO(Blocking IO) 非阻塞IO NIO(Nonblocking IO) IO多路复用第一版 select/poll/epoll 异步IO AIO(Async IO) BIO 阻塞 IO，顾名思义当用户发生了系统调用后，如果数据未从网卡到达内核态，内核态数据未准备好，此时会一直阻塞。直到数据就绪，然后从内核态拷贝到用户态再返回。
 BIO缺点，能支持的并发连接数比较少： 一台服务器能分配的线程数是有限的 大量线程频繁切换上下文会影响性能 核心矛盾：一个client分配一个线程是因为处理客户端读写是阻塞式的，为避免该阻塞影响接受后续新的client的连接，所以将阻塞逻辑交由单独的线程处理。
 NIO 非阻塞 IO：见名知意，就是在第一阶段(网卡-内核态)数据未到达时不等待，然后直接返回。因此非阻塞 IO 需要不断的用户发起请求，轮询内核。
