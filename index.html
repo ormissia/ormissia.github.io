@@ -11,7 +11,8 @@
 <link rel=stylesheet href=/css/navigators/navbar.css>
 <link rel=stylesheet href=/css/plyr.css>
 <link rel=stylesheet href=/css/flag-icon.min.css>
-<link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600" rel=stylesheet>
+<link rel=stylesheet href=/css/katex.min.css>
+<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="Ormissia's Blog">
@@ -56,8 +57,10 @@ Ormissia's Blog</a>
 <li class=nav-item>
 <a class=nav-link href=#education>历程</a>
 </li>
-<li class=nav-item>
-<a class=nav-link href=#projects>项目</a>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>更多的</a>
+<div class=dropdown-menu aria-labelledby=navbarDropdown>
+</div>
 </li>
 <div class=dropdown-divider id=top-navbar-divider></div>
 <li class=nav-item>
@@ -1131,6 +1134,8 @@ Toha
 <script type=text/javascript src=/js/navbar.js></script>
 <script type=text/javascript src=/js/plyr.js></script>
 <script type=text/javascript src=/js/main.js></script>
+<script type=text/javascript defer src=/js/katex.min.js></script>
+<script type=text/javascript defer src=/js/auto-render.min.js onload=renderMathInElement(document.body)></script>
 <script src=/js/itype.min.js></script>
 <script src=/js/github-button.js></script>
 <script src=/js/home.js></script>
