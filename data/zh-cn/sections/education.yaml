@@ -14,6 +14,11 @@ degrees:
     icon: fa-server
     timeframe: 2021-10
     institution:
+      name: Flink
+  - name: ...
+    icon: fa-server
+    timeframe: 2021-8
+    institution:
       name: Elastic
   - name: ...
     icon: fa-server
