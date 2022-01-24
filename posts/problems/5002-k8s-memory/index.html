@@ -339,9 +339,9 @@ total_active_file 34824192 Bytes = 33.2M</p>
 其他部分<code>file cache</code>是可以回收使用的，<code>Buffers</code>也是可以回收利用的，所以Pod容器所在cgroup实际使用的内存计算公式可以转化为
 (因<code>memory.stat</code>未导出<code>SReclaimable</code>，这里忽略<code>SReclaimable</code>)：</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>real_used <span style=color:#f92672>=</span> memory.usage_in_bytes – <span style=color:#f92672>(</span>Cached- Shmem - mlock_file + Buffers <span style=color:#f92672>)</span>  
-          <span style=color:#f92672>=</span> memory.usage_in_bytes – memory.stat .<span style=color:#f92672>(</span> total_inactive_file + total_active_file <span style=color:#f92672>)</span>
+          <span style=color:#f92672>=</span> memory.usage_in_bytes – memory.stat.total_active_file
 </code></pre></div><p>因此cadvisor中<code>container_memory_working_set_bytes</code>字段在计算实际已使用内存时应该改为：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>real_used <span style=color:#f92672>=</span> memory.usage_in_bytes – memory.stat.total_inactive_file - memory.stat.total_active_file
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>real_used <span style=color:#f92672>=</span> memory.usage_in_bytes – memory.stat.total_active_file
 </code></pre></div><h2 id=但是>但是</h2>
 <p>过程中去<a href=https://github.com/kubernetes/kubernetes>kubernetes</a> 的<a href=https://github.com/kubernetes/kubernetes/issues>issue</a>
 中逛了一圈，发现了几个相关问题的讨论：</p>
