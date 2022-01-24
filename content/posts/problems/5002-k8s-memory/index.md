@@ -264,13 +264,13 @@ total_active_file 34824192 Bytes = 33.2M
 
 ```shell
 real_used = memory.usage_in_bytes – (Cached- Shmem - mlock_file + Buffers )  
-          = memory.usage_in_bytes – memory.stat .( total_inactive_file + total_active_file )
+          = memory.usage_in_bytes – memory.stat.total_active_file
 ```
 
 因此cadvisor中`container_memory_working_set_bytes`字段在计算实际已使用内存时应该改为：
 
 ```shell
-real_used = memory.usage_in_bytes – memory.stat.total_inactive_file - memory.stat.total_active_file
+real_used = memory.usage_in_bytes – memory.stat.total_active_file
 ```
 
 ## 但是
