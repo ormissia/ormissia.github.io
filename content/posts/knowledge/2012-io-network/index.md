@@ -84,4 +84,5 @@ epoll高效的本质在于：
 
 - [Chapter 6. I/O Multiplexing: The select and poll Functions](https://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06.html)
 - [epoll(7) — Linux manual page](https://man7.org/linux/man-pages/man7/epoll.7.html)
+- [The C10K problem](http://www.kegel.com/c10k.html)
 
