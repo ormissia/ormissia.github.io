@@ -316,6 +316,60 @@ Ormissia's Blog</a>
 </div>
 <div class=note-card>
 <div class=item>
+<h5 class=note-title><span>时间的加减法</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>	<span style=color:#75715e>// Add 时间相加
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>now</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>()
+	<span style=color:#75715e>// ParseDuration parses a duration string.
+</span><span style=color:#75715e></span>	<span style=color:#75715e>// A duration string is a possibly signed sequence of decimal numbers,
+</span><span style=color:#75715e></span>	<span style=color:#75715e>// each with optional fraction and a unit suffix,
+</span><span style=color:#75715e></span>	<span style=color:#75715e>// such as &#34;300ms&#34;, &#34;-1.5h&#34; or &#34;2h45m&#34;.
+</span><span style=color:#75715e></span>	<span style=color:#75715e>//  Valid time units are &#34;ns&#34;, &#34;us&#34; (or &#34;µs&#34;), &#34;ms&#34;, &#34;s&#34;, &#34;m&#34;, &#34;h&#34;.
+</span><span style=color:#75715e></span>	<span style=color:#75715e>// 10分钟前
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>m</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseDuration</span>(<span style=color:#e6db74>&#34;-1m&#34;</span>)
+	<span style=color:#a6e22e>m1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>m</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>m1</span>)
+
+	<span style=color:#75715e>// 8个小时前
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>h</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseDuration</span>(<span style=color:#e6db74>&#34;-1h&#34;</span>)
+	<span style=color:#a6e22e>h1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>8</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>h</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>h1</span>)
+
+	<span style=color:#75715e>// 一天前
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>d</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseDuration</span>(<span style=color:#e6db74>&#34;-24h&#34;</span>)
+	<span style=color:#a6e22e>d1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>d</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>d1</span>)
+
+	<span style=color:#75715e>// 10分钟后
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>mm</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseDuration</span>(<span style=color:#e6db74>&#34;1m&#34;</span>)
+	<span style=color:#a6e22e>mm1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>mm</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>mm1</span>)
+
+	<span style=color:#75715e>// 8小时后
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>hh</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseDuration</span>(<span style=color:#e6db74>&#34;1h&#34;</span>)
+	<span style=color:#a6e22e>hh1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>hh</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>hh1</span>)
+
+	<span style=color:#75715e>// 一天后
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>dd</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>ParseDuration</span>(<span style=color:#e6db74>&#34;24h&#34;</span>)
+	<span style=color:#a6e22e>dd1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>dd</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>dd1</span>)
+
+	<span style=color:#75715e>// Sub 计算两个时间差
+</span><span style=color:#75715e></span>	<span style=color:#a6e22e>subM</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Sub</span>(<span style=color:#a6e22e>m1</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>subM</span>.<span style=color:#a6e22e>Minutes</span>(), <span style=color:#e6db74>&#34;分钟&#34;</span>)
+
+	<span style=color:#a6e22e>sumH</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Sub</span>(<span style=color:#a6e22e>h1</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>sumH</span>.<span style=color:#a6e22e>Hours</span>(), <span style=color:#e6db74>&#34;小时&#34;</span>)
+
+	<span style=color:#a6e22e>sumD</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Sub</span>(<span style=color:#a6e22e>d1</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%v 天\n&#34;</span>, <span style=color:#a6e22e>sumD</span>.<span style=color:#a6e22e>Hours</span>()<span style=color:#f92672>/</span><span style=color:#ae81ff>24</span>)
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
 <h5 class=note-title><span>go get 下载指定版本</span></h5>
 <div class=card>
 <div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go get github.com/ormissia/go-opv@v0.0.2
