@@ -21,10 +21,18 @@ buttons:
 
 # your projects
 projects:
-  - name: go-rabbitmq
+  - name: eve-situation-awareness
     logo: /images/sections/projects/go.png
     role: Owner
     timeline: "Maybe 5 days"
+    repo: https://github.com/ormissia/eve-situation-awareness # If your project is a public repo on GitHub, then provide this link. it will show star count.
+    #url: ""  # If your project is not a public repo but it has a website or any external details url then provide it here. don't provide "repo" and "url" simultaneously.
+    summary: 对EVE Online游戏中产生的击杀记录数据进行汇总，建立一个游戏中星系、角色、公司、联盟的态势感知系统。
+    tags: [ "golang", "scala", "react", "flink", "kafka", "kubernetes", "elasticsearch" ]
+  - name: go-rabbitmq
+    logo: /images/sections/projects/go.png
+    role: Owner
+    timeline: "Dec 2020"
     repo: https://github.com/ormissia/go-rabbitmq # If your project is a public repo on GitHub, then provide this link. it will show star count.
     #url: ""  # If your project is not a public repo but it has a website or any external details url then provide it here. don't provide "repo" and "url" simultaneously.
     summary: 对[RabbitMQ Go API](https://github.com/streadway/amqp)的二次封装，根据自己实际需求简化了创建连接时所需要设置的参数。
@@ -33,7 +41,7 @@ projects:
   - name: go-gin-blog
     logo: /images/sections/projects/go.png
     role: Owner
-    timeline: "Dec 2020 - Present"
+    timeline: "Dec 2020"
     repo: https://github.com/ormissia/go-gin-blog
     #url: ""
     summary: 我的博客后端`Go`语言版（之前时Java版，已不再维护），也是我第一个真正意义上的`Golang`项目。使用`Docker镜像` → `Jenkins`的部署方式
@@ -42,7 +50,7 @@ projects:
   - name: vue-element-blog
     logo: /images/sections/projects/go.png
     role: Owner
-    timeline: "Sep 2020 - Present"
+    timeline: "Sep 2020"
     repo: https://github.com/ormissia/vue-element-blog
     summary: 我的博客前端项目，使用`VUE`开发，并且使用`Element UI`作为UI框架，通过这个项目，我理解到了前后端分离的概念，也学习了各种在工作中可能遇不到的问题。这个项目依然采用`Jenkins`自动打包成静态文件部署到`Nginx`服务器上。
     tags: [ "vue","element-ui","echarts","axios","word-cloud" ]
