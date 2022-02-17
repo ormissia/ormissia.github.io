@@ -27,7 +27,7 @@ projects:
     timeline: "Maybe 5 days"
     repo: https://github.com/ormissia/eve-situation-awareness # If your project is a public repo on GitHub, then provide this link. it will show star count.
     #url: ""  # If your project is not a public repo but it has a website or any external details url then provide it here. don't provide "repo" and "url" simultaneously.
-    summary: 对EVE Online游戏中产生的击杀记录数据进行汇总，建立一个游戏中星系、角色、公司、联盟的态势感知系统。
+    summary: 对[EVE Online](https://www.eveonline.com/)游戏中产生的[击杀记录](https://zkillboard.com/)数据进行汇总，建立一个游戏中星系、角色、公司、联盟的态势感知系统。数据处理部分使用`Flink`实时处理，Web端部分采用`Kubernetes`平台部署
     tags: [ "golang", "scala", "react", "flink", "kafka", "kubernetes", "elasticsearch" ]
   - name: go-rabbitmq
     logo: /images/sections/projects/go.png
@@ -44,7 +44,7 @@ projects:
     timeline: "Dec 2020"
     repo: https://github.com/ormissia/go-gin-blog
     #url: ""
-    summary: 我的博客后端`Go`语言版（之前时Java版，已不再维护），也是我第一个真正意义上的`Golang`项目。使用`Docker镜像` → `Jenkins`的部署方式
+    summary: （这垃圾玩意早不维护了）我的博客后端`Go`语言版（之前时Java版，已不再维护），也是我第一个真正意义上的`Golang`项目。使用`Docker镜像` → `Jenkins`的部署方式
     tags: [ "go-web","gin","gorm","dockerfile","ci-cd" ]
 
   - name: vue-element-blog
@@ -52,7 +52,7 @@ projects:
     role: Owner
     timeline: "Sep 2020"
     repo: https://github.com/ormissia/vue-element-blog
-    summary: 我的博客前端项目，使用`VUE`开发，并且使用`Element UI`作为UI框架，通过这个项目，我理解到了前后端分离的概念，也学习了各种在工作中可能遇不到的问题。这个项目依然采用`Jenkins`自动打包成静态文件部署到`Nginx`服务器上。
+    summary: （这垃圾玩意早不维护了）我的博客前端项目，使用`VUE`开发，并且使用`Element UI`作为UI框架，通过这个项目，我理解到了前后端分离的概念，也学习了各种在工作中可能遇不到的问题。这个项目依然采用`Jenkins`自动打包成静态文件部署到`Nginx`服务器上。
     tags: [ "vue","element-ui","echarts","axios","word-cloud" ]
 
   - name: EggUselessSimulator
