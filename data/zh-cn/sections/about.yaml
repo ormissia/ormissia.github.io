@@ -8,7 +8,7 @@ section:
   template: sections/about.html
 
 # your designation
-designation: 一个发际线好像还不是很危险的程序猿 🧓 → 👴
+designation: 后端开发
 
 # your company information
 #company:
@@ -19,7 +19,7 @@ designation: 一个发际线好像还不是很危险的程序猿 🧓 → 👴
 # resume: "files/resume.pdf"
 
 # a summary about you
-summary: '情丝截，不愿回忆伤心切，伤心切，心如蛇蝎心似碎屑。梦魇打出同心结，心中血泪不停泄，不停泄，酒池之外，枯风残月。'
+summary: '主要从事后端开发，同时也熟悉一些数据处理的工作。'
 
 # your social links
 # give as many as you want. use font-awesome for the icons.
@@ -43,34 +43,25 @@ badges:
 # 后端开发，大数据开发，算法，微服务，CI/CD，项目管理
 
   - type: soft-skill-indicator
-    name: Golang
+    name: Learing
     percentage: 95
     color: sky
 
   - type: soft-skill-indicator
-    name: Java
-    percentage: 80
-    color: yellow
-
-  - type: soft-skill-indicator
-    name: Linux
-    percentage: 70
+    name: Team Work
+    percentage: 85
     color: green
 
   - type: soft-skill-indicator
-    name: Microservice
-    percentage: 80
+    name: Hard Working
+    percentage: 90
     color: pink
 
-  - type: soft-skill-indicator
-    name: Algorithm
-    percentage: 60
-    color: blue
-
-  - type: soft-skill-indicator
-    name: CI/CD
-    percentage: 80
-    color: orange
+#    color: orange
+#    color: green
+#    color: pink
+#    color: blue
+#    color: yellow
 
 # you can also provide color code instead of the color name
 # - type: soft-skill-indicator
