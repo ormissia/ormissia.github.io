@@ -129,7 +129,7 @@ Ormissia's Blog</a>
 <div class="author-profile ml-auto align-self-lg-center">
 <img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
 <h5 class=author-name>Ormissia</h5>
-<p>:date_full</p>
+<p>Monday, November 1, 2021</p>
 </div>
 <div class=title>
 <h1>k8s dashboard token过期时间太短</h1>
@@ -140,7 +140,7 @@ Ormissia's Blog</a>
 <p><img src=login.png alt=login></p>
 <h2 id=解决办法>解决办法</h2>
 <p>修改<code>kubernetes-dashboard</code>的<code>deployment</code>，加入一条<code>arg</code>参数：</p>
-<pre><code>- '--token-ttl=10800'
+<pre tabindex=0><code>- '--token-ttl=10800'
 </code></pre><p><img src=deployment.png alt=deployment></p>
 </div>
 <div class="row pl-3 pr-3">

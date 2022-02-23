@@ -135,7 +135,7 @@ Ormissia's Blog</a>
 <div class="author-profile ml-auto align-self-lg-center">
 <img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
 <h5 class=author-name>Ormissia</h5>
-<p>:date_full</p>
+<p>Monday, December 20, 2021</p>
 </div>
 <div class=title>
 <h1>修改Mac上brew安装的MySQL配置</h1>
@@ -167,7 +167,7 @@ Default options are read from the following files in the given order:
 The following groups are read: mysql client
 <span style=color:#75715e># ...</span>
 </code></pre></div><p>我安装的MySQL在<code>/opt/homebrew/etc/my.cnf</code>目录下，添加一行：</p>
-<pre><code>sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+<pre tabindex=0><code>sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
 </code></pre><p>重启MySQL，问题解决</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>mysql.server restart
 </code></pre></div><h2 id=设置开机启动>设置开机启动</h2>

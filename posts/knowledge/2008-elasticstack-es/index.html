@@ -130,7 +130,7 @@ Ormissia's Blog</a>
 <div class="author-profile ml-auto align-self-lg-center">
 <img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
 <h5 class=author-name>Ormissia</h5>
-<p>:date_full</p>
+<p>Tuesday, October 19, 2021</p>
 </div>
 <div class=title>
 <h1>Elasticsearch</h1>
@@ -195,14 +195,14 @@ npm run start
 <ol>
 <li><code>_cat/health</code></li>
 </ol>
-<pre><code>GET _cat/health?v
+<pre tabindex=0><code>GET _cat/health?v
 </code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
 <span style=color:#ae81ff>1634624559</span> 06:22:39  elasticsearch green           <span style=color:#ae81ff>5</span>         <span style=color:#ae81ff>5</span>     <span style=color:#ae81ff>24</span>  <span style=color:#ae81ff>12</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>        <span style=color:#ae81ff>0</span>             <span style=color:#ae81ff>0</span>                  -                100.0%
 格林尼治时间           集群名称        集群状态     节点数   数据节点 分片 Primary                   准备执行任务数   最大任务等待时间           当前活动分片百分比
 </code></pre></div><ol start=2>
 <li><code>_cluster/health</code></li>
 </ol>
-<pre><code>GET _cluster/health
+<pre tabindex=0><code>GET _cluster/health
 </code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
   <span style=color:#f92672>&#34;cluster_name&#34;</span> : <span style=color:#e6db74>&#34;elasticsearch&#34;</span>,
   <span style=color:#f92672>&#34;status&#34;</span> : <span style=color:#e6db74>&#34;green&#34;</span>,
@@ -296,13 +296,13 @@ freezeTail 尾部冻结</p>
 </blockquote>
 <h3 id=创建索引>创建索引</h3>
 <p>创建<code>test</code>索引</p>
-<pre><code>PUT /test
+<pre tabindex=0><code>PUT /test
 </code></pre><h3 id=查询索引>查询索引</h3>
 <p>查询<code>test</code>索引</p>
-<pre><code>GET /test
+<pre tabindex=0><code>GET /test
 </code></pre><h3 id=添加一条文档>添加一条文档</h3>
 <p>创建索引为<code>1</code>的一条文档</p>
-<pre><code>PUT /test/_doc/1
+<pre tabindex=0><code>PUT /test/_doc/1
 {
   &quot;name&quot;: &quot;xiaoming&quot;,
   &quot;age&quot;: 123,
@@ -313,10 +313,10 @@ freezeTail 尾部冻结</p>
 }
 </code></pre><h3 id=查询文档>查询文档</h3>
 <p>根据索引查询文档</p>
-<pre><code>GET /test/_doc/1
+<pre tabindex=0><code>GET /test/_doc/1
 </code></pre><h3 id=修改文档>修改文档</h3>
 <p>根据索引修改文档</p>
-<pre><code>POST /test/_update/1
+<pre tabindex=0><code>POST /test/_update/1
 {
   &quot;doc&quot;: {
     &quot;age&quot;: 222
@@ -333,7 +333,7 @@ freezeTail 尾部冻结</p>
 <li><code>Explicit mapping</code>：显式映射</li>
 </ul>
 <h3 id=查看mapping>查看Mapping</h3>
-<pre><code>GET /index/_mapping
+<pre tabindex=0><code>GET /index/_mapping
 </code></pre><h3 id=数据类型>数据类型</h3>
 <ol>
 <li><strong>基础类型</strong>
@@ -431,7 +431,7 @@ freezeTail 尾部冻结</p>
 <p>除了上述字段类型之外，其他类型都必须显式映射，也就是必须手工指定，因为其他类型ES无法自动识别。</p>
 </blockquote>
 <h3 id=explicit-mapping显式映射>Explicit mapping显式映射</h3>
-<pre><code>PUT /my-index-000001
+<pre tabindex=0><code>PUT /my-index-000001
 {
   &quot;mappings&quot;: {
     &quot;properties&quot;: {
@@ -464,7 +464,7 @@ freezeTail 尾部冻结</p>
 <li><strong>fielddata</strong>：查询时内存数据结构，在首次用当前字段聚合、排序或者在脚本中使用时，需要字段为fielddata数据结构，并且创建倒排索引保存到堆中。</li>
 <li><strong>fields</strong>：给field创建多字段，用于不同目的（全文检索或者聚合分析排序）</li>
 <li>format：格式化
-<pre><code>  &quot;date&quot;: {
+<pre tabindex=0><code>  &quot;date&quot;: {
      &quot;type&quot;:  &quot;date&quot;,
      &quot;format&quot;: &quot;yyyy-MM-dd&quot;
    }
@@ -485,7 +485,7 @@ freezeTail 尾部冻结</p>
 相关度评分为搜索结果的排序依据，默认情况下评分越高，则结果越靠前。</p>
 <h3 id=元数据_source>元数据<code>_source</code></h3>
 <p>禁用_source</p>
-<pre><code>GET product/_search
+<pre tabindex=0><code>GET product/_search
 {
   &quot;_source&quot;: false, 
   &quot;query&quot;: {
@@ -511,7 +511,7 @@ freezeTail 尾部冻结</p>
 <li><code>Excluding</code>：结果中不要返回哪些field，不返回的field不代表不能通过该字段进行检索，因为元数据不存在不代表索引不存在</li>
 </ul>
 <p><em>在<code>mapping</code>中定义过滤：支持通配符，但是这种方式不推荐，因为<code>mapping</code>不可变</em></p>
-<pre><code>GET product/_search
+<pre tabindex=0><code>GET product/_search
 {
   &quot;_source&quot;: [&quot;owner.name&quot;,&quot;owner.sex&quot;], 
   &quot;query&quot;: {
@@ -521,16 +521,16 @@ freezeTail 尾部冻结</p>
 </code></pre><p>常用过滤规则</p>
 <ul>
 <li>
-<pre><code>&quot;_source&quot;: &quot;false&quot;,
+<pre tabindex=0><code>&quot;_source&quot;: &quot;false&quot;,
 </code></pre></li>
 <li>
-<pre><code>&quot;_source&quot;: &quot;obj.*&quot;,
+<pre tabindex=0><code>&quot;_source&quot;: &quot;obj.*&quot;,
 </code></pre></li>
 <li>
-<pre><code>&quot;_source&quot;: [ &quot;obj1.\*&quot;, &quot;obj2.\*&quot; ],
+<pre tabindex=0><code>&quot;_source&quot;: [ &quot;obj1.\*&quot;, &quot;obj2.\*&quot; ],
 </code></pre></li>
 <li>
-<pre><code>&quot;_source&quot;: {
+<pre tabindex=0><code>&quot;_source&quot;: {
           &quot;includes&quot;: [ &quot;obj1.\*&quot;, &quot;obj2.\*&quot; ],
           &quot;excludes&quot;: [ &quot;*.description&quot; ]
         }
@@ -545,14 +545,14 @@ freezeTail 尾部冻结</p>
 <li>_all搜索（相当于在所有有索引的字段中检索）：<code>GET /product/_search?q=2021-06-01</code></li>
 </ul>
 <h3 id=全文检索-fulltext-query>全文检索-Fulltext query</h3>
-<pre><code>GET index/_search
+<pre tabindex=0><code>GET index/_search
 {
   &quot;query&quot;: {
     ***
   }
 }
 </code></pre><p>示例</p>
-<pre><code>GET product/_search
+<pre tabindex=0><code>GET product/_search
 {
   &quot;query&quot;: {
     &quot;match&quot;: {
@@ -582,7 +582,7 @@ freezeTail 尾部冻结</p>
 </ul>
 </li>
 </ul>
-<pre><code># term
+<pre tabindex=0><code># term
 GET product/_search
 {
   &quot;query&quot;: {
@@ -610,7 +610,7 @@ GET product/_search
   }
 }
 </code></pre><p><code>terms</code>：匹配和搜索词项列表中任意项匹配的结果（数据中的<code>tags</code>字段只要有任意一项就可以查到）</p>
-<pre><code>GET product/_search
+<pre tabindex=0><code>GET product/_search
 {
   &quot;query&quot;: {
     &quot;terms&quot;: {
@@ -620,7 +620,7 @@ GET product/_search
   }
 }
 </code></pre><p><code>range</code>：范围查找</p>
-<pre><code>GET /_search
+<pre tabindex=0><code>GET /_search
 {
   &quot;query&quot;: {
     &quot;range&quot;: {
@@ -658,7 +658,7 @@ GET product/_search
 <blockquote>
 <p>query和filter的主要区别在：filter是结果导向的而query是过程导向。query倾向于“当前文档和查询的语句的相关度”而filter倾向于“当前文档和查询的条件是不是相符”。即在查询过程中，query是要对查询的每个结果计算相关性得分的，而filter不会。另外filter有相应的缓存机制，可以提高查询效率。</p>
 </blockquote>
-<pre><code>GET product/_search
+<pre tabindex=0><code>GET product/_search
 {
   &quot;query&quot;: {
     &quot;constant_score&quot;: {
@@ -685,7 +685,7 @@ GET product/_search
 <h2 id=分词器>分词器</h2>
 <h3 id=normalization-文档规范化提高召回率>normalization 文档规范化,提高召回率</h3>
 <p>拼写错误、形容词、单复数、动词、大小写、分词、称谓等转换成标准词汇</p>
-<pre><code>GET _analyze
+<pre tabindex=0><code>GET _analyze
 {
   &quot;text&quot;: &quot;Mr. Ma is an excellent teacher&quot;,
   &quot;analyzer&quot;: &quot;pattern&quot;
@@ -695,7 +695,7 @@ GET product/_search
 <p>分词之前的预处理，过滤无用字符</p>
 </blockquote>
 <h4 id=html-strip>HTML Strip</h4>
-<pre><code>PUT test_index
+<pre tabindex=0><code>PUT test_index
 {
   &quot;settings&quot;: {
     &quot;analysis&quot;: {
@@ -723,7 +723,7 @@ GET test_index/_analyze
   &quot;text&quot;: &quot;&lt;p&gt;I&amp;apos;m so &lt;a&gt;happy&lt;/a&gt;!&lt;/p&gt;&quot;
 }
 </code></pre><h4 id=mapping-1>Mapping</h4>
-<pre><code>PUT test_index
+<pre tabindex=0><code>PUT test_index
 {
   &quot;settings&quot;: {
     &quot;analysis&quot;: {
@@ -752,7 +752,7 @@ GET test_index/_analyze
   &quot;text&quot;: &quot;滚！你就是个垃圾&quot;
 }
 </code></pre><h4 id=pattern-replace>Pattern Replace</h4>
-<pre><code>PUT test_index
+<pre tabindex=0><code>PUT test_index
 {
   &quot;settings&quot;: {
     &quot;analysis&quot;: {
@@ -801,7 +801,7 @@ GET test_index/_analyze
 <p>下载对应版本，解压后放到ES的<code>plugins</code>文件夹下面</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>es-root/plugins/ <span style=color:#f92672>&amp;&amp;</span> mkdir ik
 </code></pre></div><p>重启ES</p>
-<pre><code>GET test_index/_analyze
+<pre tabindex=0><code>GET test_index/_analyze
 {
   &quot;analyzer&quot;: &quot;ik_max_word&quot;,
   &quot;text&quot;: [

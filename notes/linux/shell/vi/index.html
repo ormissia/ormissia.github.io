@@ -194,34 +194,34 @@ Ormissia's Blog</a>
 <h5 class=note-title><span>命令</span></h5>
 <div class=card>
 <div class=card-body><p>显示行号</p>
-<pre><code>:set number
+<pre tabindex=0><code>:set number
 </code></pre></div>
 </div>
 <div class=card>
 <div class=card-body><p>在<code>vi</code>中执行shell命令</p>
-<pre><code>:!ls-l
+<pre tabindex=0><code>:!ls-l
 </code></pre></div>
 </div>
 <div class=card>
 <div class=card-body><p>将<code>shell</code>命令的结果插入到当前行的下一行</p>
-<pre><code>:r !date  //读取系统时间并插入到当前行的下一行
+<pre tabindex=0><code>:r !date  //读取系统时间并插入到当前行的下一行
 </code></pre></div>
 </div>
 <div class=card>
 <div class=card-body><p>将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容</p>
-<pre><code>:62,72 !sort  //将62行到72行的内容进行排序
+<pre tabindex=0><code>:62,72 !sort  //将62行到72行的内容进行排序
 </code></pre><p>当前光标所在行，除可以指定行号外，也可以用<code>.</code>表示</p>
-<pre><code>:. !tr [a-z] [A-Z]  //将当前行的小写转为大写
+<pre tabindex=0><code>:. !tr [a-z] [A-Z]  //将当前行的小写转为大写
 </code></pre></div>
 </div>
 <div class=card>
 <div class=card-body><p>将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容</p>
-<pre><code>:62,72 w !sort  //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域
+<pre tabindex=0><code>:62,72 w !sort  //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域
 </code></pre></div>
 </div>
 <div class=card>
 <div class=card-body><p>将某一行作为<code>shell</code>命令执行</p>
-<pre><code>:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容
+<pre tabindex=0><code>:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容
 </code></pre></div>
 </div>
 </div>

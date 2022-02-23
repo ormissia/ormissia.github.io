@@ -187,7 +187,7 @@ Ormissia's Blog</a>
 <h5 class=note-title><span>函数</span></h5>
 <div class=card>
 <div class=card-body><p>函数参数为<code>val</code>类型，且可以给出默认值</p>
-<pre><code>def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
+<pre tabindex=0><code>def test(a: Int, b: Int = 1, c: Int = 2): Unit = {
   println(s&quot;$a $b $c&quot;)
 }
   
@@ -202,7 +202,7 @@ test(1, c = 4)  //1 1 4
 <h5 class=note-title><span>匿名函数</span></h5>
 <div class=card>
 <div class=card-body><p>函数是带有参数的表达式。</p>
-<pre><code>(x: Int) =&gt; x + 1
+<pre tabindex=0><code>(x: Int) =&gt; x + 1
 </code></pre></div>
 </div>
 </div>
@@ -213,7 +213,7 @@ test(1, c = 4)  //1 1 4
 <div class=card>
 <div class=card-body><p>方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。</p>
 <p>方法由<code>def</code>关键字定义。<code>def</code>后面跟着一个名字、参数列表、返回类型和方法体。</p>
-<pre><code>def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
+<pre tabindex=0><code>def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier
 println(addThenMultiply(1, 2)(3)) // 9
 </code></pre></div>
 </div>
@@ -223,7 +223,7 @@ println(addThenMultiply(1, 2)(3)) // 9
 <div class=item>
 <h5 class=note-title><span>字符串拼接</span></h5>
 <div class=card>
-<div class=card-body><pre><code>val a = 1
+<div class=card-body><pre tabindex=0><code>val a = 1
 val b = 2
 val c = s&quot;$a+$b=${a + b}&quot;
 </code></pre></div>
@@ -235,7 +235,7 @@ val c = s&quot;$a+$b=${a + b}&quot;
 <h5 class=note-title><span>对象</span></h5>
 <div class=card>
 <div class=card-body><p>约等于<code>static</code>单例对象</p>
-<pre><code>object TestObj {
+<pre tabindex=0><code>object TestObj {
   def main(args: Array[String]): Unit = {
     val a = 1
     val b = 2
@@ -257,7 +257,7 @@ val c = s&quot;$a+$b=${a + b}&quot;
 <li>类名构造器中的参数就是类的成员属性，默认是<code>val</code>类型，且是<code>private</code></li>
 <li>只有在类名构造器中的参数可以设置成<code>var</code>，其他方法函数中的参数都是<code>val</code>类型的，且不允许设置成<code>var</code>类型</li>
 </ul>
-<pre><code>class Greeter(prefix: String, var suffix: String) {
+<pre tabindex=0><code>class Greeter(prefix: String, var suffix: String) {
   var name = &quot;name&quot;
 
   def greet(name: String): Unit =
@@ -289,7 +289,7 @@ val c = s&quot;$a+$b=${a + b}&quot;
 <h5 class=note-title><span>偏应用函数</span></h5>
 <div class=card>
 <div class=card-body><p>类似于重新封装一下函数</p>
-<pre><code>def log(date: Date, logType: String, msg: String): Unit = {
+<pre tabindex=0><code>def log(date: Date, logType: String, msg: String): Unit = {
   println(s&quot;$date\t$logType\t$msg&quot;)
 }
 
@@ -303,7 +303,7 @@ info(new Date, &quot;this is a info msg&quot;)  //Thu Jul 22 23:14:04 CST 2021	i
 <div class=item>
 <h5 class=note-title><span>可变长度参数以及foreach</span></h5>
 <div class=card>
-<div class=card-body><pre><code>def foreachTest(a: Int*): Unit = {
+<div class=card-body><pre tabindex=0><code>def foreachTest(a: Int*): Unit = {
   //for (i &lt;- a) {
   //  print(i)
   //}
@@ -326,7 +326,7 @@ foreachTest(1, 2, 3, 4, 5)  //12345
 <h5 class=note-title><span>高阶函数</span></h5>
 <div class=card>
 <div class=card-body><p>函数作为参数</p>
-<pre><code>def computer(a: Int, b: Int, f: (Int, Int) =&gt; Int): Unit = {
+<pre tabindex=0><code>def computer(a: Int, b: Int, f: (Int, Int) =&gt; Int): Unit = {
   val res = f(a, b)
   println(res)
 }
@@ -337,7 +337,7 @@ computer(1, 2, _ + _)                       //3
 </div>
 <div class=card>
 <div class=card-body><p>函数作为返回值</p>
-<pre><code>def factory(i: String): (Int, Int) =&gt; Int = {
+<pre tabindex=0><code>def factory(i: String): (Int, Int) =&gt; Int = {
   def plus(x: Int, y: Int): Int = {
     x + y
   }
@@ -360,7 +360,7 @@ computer(1,2,plus)  //3
 <h5 class=note-title><span>柯里化</span></h5>
 <div class=card>
 <div class=card-body><p>多个参数列表</p>
-<pre><code>def testFunc(a:Int*)(b:Int*)(c:String*): Unit ={
+<pre tabindex=0><code>def testFunc(a:Int*)(b:Int*)(c:String*): Unit ={
   a.foreach(print)
   b.foreach(print)
   c.foreach(print)
@@ -378,7 +378,7 @@ testFunc(1,2,3)(2,3,4)(&quot;3&quot;,&quot;4&quot;,&quot;5&quot;) //123234345
 <div class=card-body><p>数组
 <code>scala</code>中泛型是<code>[]</code>，数组用<code>()</code></p>
 <p><code>val</code>约等于<code>final</code>，不可变描述的是<code>val</code>指定的引用（字面值、地址）</p>
-<pre><code>val arr1 = Array[Int](1, 2, 3)
+<pre tabindex=0><code>val arr1 = Array[Int](1, 2, 3)
 arr1(1) = 99
 println(arr1(1))  //99
 
@@ -387,7 +387,7 @@ println(arr1(1))  //99
 </div>
 <div class=card>
 <div class=card-body><p>遍历</p>
-<pre><code>
+<pre tabindex=0><code>
 for (elem &lt;- arr1) {}
 //foreach需要函数接收元素
 arr1.foreach(println)
@@ -400,7 +400,7 @@ arr1.foreach(println)
 <h5 class=note-title><span>链表</span></h5>
 <div class=card>
 <div class=card-body><p><code>scala</code>中<code>collections</code>中有两个包：<code>immutable,mutable</code>，默认是不可变的<code>immutable</code></p>
-<pre><code>val list1 = List(1, 2, 3, 4)
+<pre tabindex=0><code>val list1 = List(1, 2, 3, 4)
 
 //++ += ++: :++
 val list2 = new ListBuffer[Int]
@@ -410,7 +410,7 @@ list2.+=(3)
 </code></pre></div>
 </div>
 <div class=card>
-<div class=card-body><pre><code>val list1 = List(1, 2, 3, 4)
+<div class=card-body><pre tabindex=0><code>val list1 = List(1, 2, 3, 4)
 val list2 = list1.map(_ * 2)
 list2.foreach(print) //2468
 </code></pre></div>
@@ -423,12 +423,12 @@ list2.foreach(print) //2468
 <div class=card>
 <div class=card-body><p><code>Set</code></p>
 <p>不可变的</p>
-<pre><code>val set1 = Set(1, 2, 3, 4, 1, 2)  //1 2 3 4
+<pre tabindex=0><code>val set1 = Set(1, 2, 3, 4, 1, 2)  //1 2 3 4
 </code></pre></div>
 </div>
 <div class=card>
 <div class=card-body><p>可变的</p>
-<pre><code>val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
+<pre tabindex=0><code>val set2 = mutable.Set(1, 2, 3, 4, 1, 2)
 set2.add(1)
 set2.add(5) //1 2 3 4 5
 </code></pre></div>
@@ -440,7 +440,7 @@ set2.add(5) //1 2 3 4 5
 <h5 class=note-title><span>Map</span></h5>
 <div class=card>
 <div class=card-body><p><code>Map</code></p>
-<pre><code>val map1 = Map((&quot;a&quot;, 1), &quot;b&quot; -&gt; 2, (&quot;c&quot;, 3), (&quot;a&quot;, 4))
+<pre tabindex=0><code>val map1 = Map((&quot;a&quot;, 1), &quot;b&quot; -&gt; 2, (&quot;c&quot;, 3), (&quot;a&quot;, 4))
 
 map1.foreach(print) //(a,4)(b,2)(c,3)
 println(map1.get(&quot;a&quot;)) //Some(4)
@@ -454,7 +454,7 @@ keys.foreach(println)
 </div>
 <div class=card>
 <div class=card-body><p>遍历</p>
-<pre><code>for (m &lt;- map1) {
+<pre tabindex=0><code>for (m &lt;- map1) {
   print(s&quot;$m&quot;)
 }
 for (k &lt;- keys) {
@@ -464,7 +464,7 @@ for (k &lt;- keys) {
 </div>
 <div class=card>
 <div class=card-body><p>可变的</p>
-<pre><code>val map2 = mutable.Map((&quot;a&quot;, 1), &quot;b&quot; -&gt; 2, (&quot;c&quot;, 3), (&quot;a&quot;, 4))
+<pre tabindex=0><code>val map2 = mutable.Map((&quot;a&quot;, 1), &quot;b&quot; -&gt; 2, (&quot;c&quot;, 3), (&quot;a&quot;, 4))
 map2.put(&quot;a&quot;, 5)
 </code></pre></div>
 </div>
