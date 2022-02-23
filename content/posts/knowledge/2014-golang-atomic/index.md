@@ -10,3 +10,7 @@ menu:
     weight: 2014
 ---
 
+
+## 参考链接
+
+- [Golang五种原子性操作的用法详解](https://zhuanlan.zhihu.com/p/412666957)
