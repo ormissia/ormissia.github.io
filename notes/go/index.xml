@@ -1,1 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go Notes on Ormissia's Blog</title><link>https://ormissia.github.io/notes/go/</link><description>Recent content in Go Notes on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://ormissia.github.io/notes/go/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go Notes on Ormissia's Blog</title><link>https://ormissia.github.io/notes/go/</link><description>Recent content in Go Notes on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://ormissia.github.io/notes/go/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
+1Byte true/false uint8
+1Byte 0-255 uint16
+2Byte 0-65535 uint32
+4Byte 0-4294967295 uint64
+8Byte 0-18446744073709551615 int8
+1Byte -128-127 int16
+2Byte -32768-32767 int32
+4Byte -2147483648-2147483647 int64
+6Byte -9223372036854775808-9223372036854775807 byte
+1Byte 类似 uint8 rune
+4Byte 类似 int32 uint
+4Byte / 8Byte 32 或 64 位 int
+4Byte / 8Byte 与 uint 一样大小 float32
+4Byte float64
+8Byte string
+1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型） 切片拼接 slice1 := []int{0, 1, 2, 3} slice2 := []int{3, 4, 5} slice1 = append(slice1, slice2.</description></item><item><title>time</title><link>https://ormissia.github.io/notes/go/advance/time/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/time/</guid><description>时间转换 字符串转时间
+time.Parse() 时间转字符串
+time.Format() 时间转时间戳
+Time.Unix() 时间戳转时间
+time.Unix() 计时 朴素方法
+startTime := time.Now() //do something time.Sleep(time.Second) duration := time.Since(startTime) fmt.Printf(&amp;#34;经过时间：%v\n&amp;#34;, duration) //经过时间：1.005046959s 简洁方法
+// TimeCost 耗时统计函数 func TimeCost(start time.Time) { duration := time.Since(start) fmt.Printf(&amp;#34;经过时间：%v\n&amp;#34;, duration) } defer TimeCost(time.Now()) //do something time.Sleep(time.Second) //经过时间：1.005054375s 优雅方法
+// TimeCost 耗时统计函数 func TimeCost() func() { start := time.Now() return func() { duration := time.Since(start) fmt.</description></item><item><title>go mod</title><link>https://ormissia.github.io/notes/go/advance/gomod/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/gomod/</guid><description>go get 下载指定版本 go get github.com/ormissia/go-opv@v0.0.2</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/go/algorithm/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/algorithm/basic/</guid><description>异或 异或运算法则：无进位相加 异或运算性质： 0 ^ N = N N ^ N = 0 满足交换律和结合律 a := 0b1100 b := 0b1001 fmt.Printf(&amp;#34;%b&amp;#34;,a^b) //101 简单应用：不申请额外内存交换两个变量的值
+a := 0b1100 b := 0b1001 a = a ^ b b = a ^ b //b = (a ^ b) ^ b = a a = a ^ b //a = (a ^ b) ^ a = b fmt.Printf(&amp;#34;a:%b,b:%b&amp;#34;, a, b) //a:1001,b:1100 堆 堆的实质是一棵完全二叉树</description></item></channel></rss>
