@@ -55,20 +55,59 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
 <ul>
-<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-<li><a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-<li><a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-<li><a href=/posts/knowledge/2010-kubernetes-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
+<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
+<ul>
+<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
+<ul>
+<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
+<ul>
+<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
+<ul>
+<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
+<ul>
+<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
+<ul>
+<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题>Redis缓存三种问题</a></li>
+</ul>
+</li>
 <li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-<li><a href=/posts/knowledge/2012-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-<li><a href=/posts/knowledge/2013-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2014-golang-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
 </ul>
 </li>
 <li>
@@ -118,6 +157,24 @@ Ormissia's Blog</a>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
 <div class=post-card>
+<a href=/posts/algorithm/4002-algorithm-trie/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/algorithm/4002-algorithm-trie/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>前缀树</h5>
+<p class="card-text post-summary"> 前缀树又称字典树
+Trie的应用 自动补全,例如：在百度搜索的输入框中,输入一个单词的前半部分,能够自动补全出可能的单词结果。 拼写检查，例如：在word中输入一个拼写错误的单词, 能够自动检测出来。 IP路由表，在IP路由表中进行路由匹配时, 要按照最长匹配前缀的原则进行匹配。 T9预测文本，在大多手机输入法中, 都会用9格的那种输入法. 这个输入法能够根据用户在9格上的输入,自动匹配出可能的单词。 填单词游戏，相信大多数人都玩过那种在横竖的格子里填单词的游戏。 </p>
+</div>
+<div class=card-footer>
+<span class=float-left>August 12, 2021</span>
+<a href=/posts/algorithm/4002-algorithm-trie/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class=post-card>
 <a href=/posts/algorithm/4001-algorithm-sort/ class=post-card-link>
 <div class=card>
 <div class=card-head>
@@ -137,10 +194,10 @@ Ormissia's Blog</a>
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2004-go-pprof/ class=post-card-link>
+<a href=/posts/knowledge/2001-go/004-pprof/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2004-go-pprof/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2001-go/004-pprof/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Golang性能分析工具-pprof</h5>
@@ -151,16 +208,16 @@ PProf是用于可视化和分析性能分析数据的工具，PProf以profile.pr
 </div>
 <div class=card-footer>
 <span class=float-left>August 5, 2021</span>
-<a href=/posts/knowledge/2004-go-pprof/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2001-go/004-pprof/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2003-go-reflect/ class=post-card-link>
+<a href=/posts/knowledge/2001-go/003-reflect/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2003-go-reflect/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2001-go/003-reflect/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Golang反射</h5>
@@ -176,16 +233,16 @@ package main import ( "fmt" "reflect" ) func main() { author := "ormissia" fmt.<
 </div>
 <div class=card-footer>
 <span class=float-left>August 3, 2021</span>
-<a href=/posts/knowledge/2003-go-reflect/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2001-go/003-reflect/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2002-go-param-verify/ class=post-card-link>
+<a href=/posts/knowledge/2001-go/002-param-verify/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2002-go-param-verify/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2001-go/002-param-verify/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Golang 实体参数校验</h5>
@@ -198,16 +255,16 @@ func Export(c *gin.Context) { //删除开头 //... var param map[string]string e
 </div>
 <div class=card-footer>
 <span class=float-left>July 27, 2021</span>
-<a href=/posts/knowledge/2002-go-param-verify/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2001-go/002-param-verify/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2001-go-partten-1/ class=post-card-link>
+<a href=/posts/knowledge/2001-go/001-partten-1/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2001-go-partten-1/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2001-go/001-partten-1/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Go 惯用模式：函数选项模式</h5>
@@ -223,7 +280,7 @@ func NewStuffClient(conn Connection) StuffClient { return &stuffClient{ conn: co
 </div>
 <div class=card-footer>
 <span class=float-left>July 22, 2021</span>
-<a href=/posts/knowledge/2001-go-partten-1/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2001-go/001-partten-1/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

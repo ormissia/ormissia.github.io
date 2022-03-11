@@ -55,20 +55,59 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
 <ul>
-<li><a href=/posts/knowledge/2001-go-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2002-go-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2003-go-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2004-go-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2005-go-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2006-hadoop-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-<li><a href=/posts/knowledge/2008-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-<li><a href=/posts/knowledge/2009-kubernetes-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-<li><a href=/posts/knowledge/2010-kubernetes-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
+<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
+<ul>
+<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
+<ul>
+<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
+<ul>
+<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
+<ul>
+<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
+<ul>
+<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
+<ul>
+<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题>Redis缓存三种问题</a></li>
+</ul>
+</li>
 <li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-<li><a href=/posts/knowledge/2012-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-<li><a href=/posts/knowledge/2013-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2014-golang-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
 </ul>
 </li>
 <li>
@@ -117,6 +156,30 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/deployment/3007-linux-kubernetes/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/deployment/3007-linux-kubernetes/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Linux部署Kubernetes流程</h5>
+<p class="card-text post-summary">此次安装的平台是基于ARM架构的RedHat系Linux系统平台，参照Kubernetes官方文档进行的。
+本文档流程与X86架构的没有区别，官方文档中个别步骤中的命令需要区分所使用的包对应的平台。
+初始化环境 防火墙 systemctl stop firewalld.service systemctl disable firewalld.service SELinux vi /etc/selinux/config SELINUX=disabled Swap vi /etc/fstab 注释掉swap这一行
+/.swapfile none swap sw,comment=cloudconfig 0 0 重启之后查看关闭是否成功
+free -m 显示如下内容，swap关闭成功
+total used free shared buff/cache available Mem: 23114 402 22299 32 411 20597 Swap: 0 0 0 ulimit echo "ulimit -n 65535" >> /etc/profile echo "* hard nofile 65535" >> /etc/security/limits.conf 重启之后检查是否配置成功
+ulimit -n SSH免密（非必须） 执行命令，一路回车，即可获得当前节点的公钥
+ssh-keygen -t rsa cat id_rsa.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>October 14, 2021</span>
+<a href=/posts/deployment/3007-linux-kubernetes/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/problems/5003-elasticsearch-start-failed/ class=post-card-link>
 <div class=card>
@@ -234,10 +297,10 @@ cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安�
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2007-hadoop-hdfs/ class=post-card-link>
+<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2007-hadoop-hdfs/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>HDFS基础知识</h5>
@@ -246,7 +309,7 @@ Hadoop集群中HDFS节点角色 Master Standy </p>
 </div>
 <div class=card-footer>
 <span class=float-left>September 24, 2021</span>
-<a href=/posts/knowledge/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
@@ -278,10 +341,10 @@ func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... 
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2006-hadoop-env/ class=post-card-link>
+<a href=/posts/knowledge/2006-hadoop/001-env/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2006-hadoop-env/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2006-hadoop/001-env/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Hadoop生态组件</h5>
@@ -309,7 +372,7 @@ flume（日志收集工具） cloudera开源的日志收集系统，具有分布
 </div>
 <div class=card-footer>
 <span class=float-left>September 17, 2021</span>
-<a href=/posts/knowledge/2006-hadoop-env/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2006-hadoop/001-env/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
@@ -345,10 +408,10 @@ flume（日志收集工具） cloudera开源的日志收集系统，具有分布
 </a>
 </div>
 <div class=post-card>
-<a href=/posts/knowledge/2005-go-tag/ class=post-card-link>
+<a href=/posts/knowledge/2001-go/005-tag/ class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2005-go-tag/head.svg alt="Hero Image">
+<img class=card-img-top src=/posts/knowledge/2001-go/005-tag/head.svg alt="Hero Image">
 </div>
 <div class=card-body>
 <h5 class=card-title>Golang struct tag浅析与自定义tag实践</h5>
@@ -361,25 +424,7 @@ package main import ( "encoding/json" "fmt" ) type User struct { ID int `json:"i
 </div>
 <div class=card-footer>
 <span class=float-left>August 13, 2021</span>
-<a href=/posts/knowledge/2005-go-tag/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/algorithm/4002-algorithm-trie/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/algorithm/4002-algorithm-trie/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>前缀树</h5>
-<p class="card-text post-summary"> 前缀树又称字典树
-Trie的应用 自动补全,例如：在百度搜索的输入框中,输入一个单词的前半部分,能够自动补全出可能的单词结果。 拼写检查，例如：在word中输入一个拼写错误的单词, 能够自动检测出来。 IP路由表，在IP路由表中进行路由匹配时, 要按照最长匹配前缀的原则进行匹配。 T9预测文本，在大多手机输入法中, 都会用9格的那种输入法. 这个输入法能够根据用户在9格上的输入,自动匹配出可能的单词。 填单词游戏，相信大多数人都玩过那种在横竖的格子里填单词的游戏。 </p>
-</div>
-<div class=card-footer>
-<span class=float-left>August 12, 2021</span>
-<a href=/posts/algorithm/4002-algorithm-trie/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2001-go/005-tag/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

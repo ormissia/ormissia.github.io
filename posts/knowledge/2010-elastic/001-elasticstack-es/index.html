@@ -1,0 +1,1134 @@
+<!doctype html><html>
+<head>
+<title>Elasticsearch</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link rel=stylesheet href=/css/katex.min.css>
+<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Elasticsearch">
+<meta property="og:description" content="搜索类型  搜索引擎：百度、搜狗、谷歌、必应 垂直领域：各大电商平台、OA系统、站内搜索 商业智能：数据分析、数据挖掘、用户画像 GitHub：千亿+行代码秒查 日志系统：ELK  ES特点  搜索、聚合分析、大数据存储 分布式、高性能、高可用、可伸缩、易维护 支持文本搜索、结构化数据、非结构化数据、地理位置搜索等  ES单机部署 同一节点启动不同服务 ./bin/elasticsearch -E path.data=data1 -E path.logs=log1 -E node.name=node1 -E cluster.name=ormissia_test ./bin/elasticsearch -E path.data=data2 -E path.logs=log2 -E node.name=node2 -E cluster.name=ormissia_test http://localhost:9200/ http://localhost:9201/ 不同节点启动同一服务 open ./elasticsearch_node1/bin/elasticsearch open ./elasticsearch_node2/bin/elasticsearch open ./elasticsearch_node3/bin/elasticsearch open ./elasticsearch_node4/bin/elasticsearch open ./elasticsearch_node5/bin/elasticsearch open ./kibana-7.15.1-darwin-x86_64/bin/kibana elasticsearch-head插件 GitHub Repository
+git clone git://github.com/mobz/elasticsearch-head.git cd elasticsearch-head npm install npm run start 默认端口：9100
+ 如果集群无法连接，需要修改ES配置文件
+ http.cors.enabled: true http.cors.allow-origin: &#34;*&#34;  elasticsearch-head也可以以Chrome插件的方式安装">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2010-elastic/001-elasticstack-es/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-10-19T10:26:53+08:00">
+<meta property="article:modified_time" content="2021-10-19T10:26:53+08:00">
+<meta name=description content="Elasticsearch">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
+<link rel=stylesheet href=/css/layouts/single.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=搜索 data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
+<ul class=active>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
+<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
+<ul>
+<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
+<ul>
+<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2010-elastic/>Elastic</a>
+<ul class=active>
+<li><a class=active href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
+<ul>
+<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
+<ul>
+<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
+<ul>
+<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题>Redis缓存三种问题</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
+<ul>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
+<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
+<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
+<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
+<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
+<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
+<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class=content>
+<div class="container p-0 read-area">
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/knowledge/2010-elastic/001-elasticstack-es/head.svg)>
+</div>
+<div class=page-content>
+<div class="author-profile ml-auto align-self-lg-center">
+<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
+<h5 class=author-name>Ormissia</h5>
+<p>Tuesday, October 19, 2021</p>
+</div>
+<div class=title>
+<h1>Elasticsearch</h1>
+</div>
+<div class=post-content id=post-content>
+<h2 id=搜索类型>搜索类型</h2>
+<ul>
+<li>搜索引擎：百度、搜狗、谷歌、必应</li>
+<li>垂直领域：各大电商平台、OA系统、站内搜索</li>
+<li>商业智能：数据分析、数据挖掘、用户画像</li>
+<li>GitHub：千亿+行代码秒查</li>
+<li>日志系统：ELK</li>
+</ul>
+<h2 id=es特点>ES特点</h2>
+<ul>
+<li>搜索、聚合分析、大数据存储</li>
+<li>分布式、高性能、高可用、可伸缩、易维护</li>
+<li>支持文本搜索、结构化数据、非结构化数据、地理位置搜索等</li>
+</ul>
+<h2 id=es单机部署>ES单机部署</h2>
+<h3 id=同一节点启动不同服务>同一节点启动不同服务</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>./bin/elasticsearch -E path.data<span style=color:#f92672>=</span>data1 -E path.logs<span style=color:#f92672>=</span>log1 -E node.name<span style=color:#f92672>=</span>node1 -E cluster.name<span style=color:#f92672>=</span>ormissia_test
+./bin/elasticsearch -E path.data<span style=color:#f92672>=</span>data2 -E path.logs<span style=color:#f92672>=</span>log2 -E node.name<span style=color:#f92672>=</span>node2 -E cluster.name<span style=color:#f92672>=</span>ormissia_test
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>http://localhost:9200/
+http://localhost:9201/
+</code></pre></div><h3 id=不同节点启动同一服务>不同节点启动同一服务</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>open ./elasticsearch_node1/bin/elasticsearch
+open ./elasticsearch_node2/bin/elasticsearch
+open ./elasticsearch_node3/bin/elasticsearch
+open ./elasticsearch_node4/bin/elasticsearch
+open ./elasticsearch_node5/bin/elasticsearch
+
+open ./kibana-7.15.1-darwin-x86_64/bin/kibana
+</code></pre></div><h2 id=elasticsearch-head插件><code>elasticsearch-head</code>插件</h2>
+<p><a href=https://github.com/mobz/elasticsearch-head>GitHub Repository</a></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git clone git://github.com/mobz/elasticsearch-head.git
+cd elasticsearch-head
+npm install
+npm run start
+</code></pre></div><p>默认端口：9100</p>
+<blockquote>
+<p>如果集群无法连接，需要修改ES配置文件</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>http.cors.enabled</span>: <span style=color:#66d9ef>true</span>
+<span style=color:#f92672>http.cors.allow-origin</span>: <span style=color:#e6db74>&#34;*&#34;</span>
+</code></pre></div><p><img src=elasticsearch-head.png alt=elasticsearch-head></p>
+<blockquote>
+<p><code>elasticsearch-head</code>也可以以Chrome插件的方式安装</p>
+</blockquote>
+<h3 id=集群健康值检查>集群健康值检查</h3>
+<h4 id=健康值状态>健康值状态</h4>
+<ul>
+<li><code>Grenn</code>：所有Primary和Replica均为active，集群健康</li>
+<li><code>Yellow</code>：至少有一个Replica不可用，但是所有Primary均为active，数据仍然是可以保证完整性的</li>
+<li><code>Red</code>：至少有一个Primary为不可用状态，数据不完整，集群不可用</li>
+</ul>
+<blockquote>
+<p><code>Replica</code>是不可以写的</p>
+</blockquote>
+<p><img src=yellow.png alt=yellow></p>
+<h4 id=健康值检查>健康值检查</h4>
+<ol>
+<li><code>_cat/health</code></li>
+</ol>
+<pre tabindex=0><code>GET _cat/health?v
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent
+<span style=color:#ae81ff>1634624559</span> 06:22:39  elasticsearch green           <span style=color:#ae81ff>5</span>         <span style=color:#ae81ff>5</span>     <span style=color:#ae81ff>24</span>  <span style=color:#ae81ff>12</span>    <span style=color:#ae81ff>0</span>    <span style=color:#ae81ff>0</span>        <span style=color:#ae81ff>0</span>             <span style=color:#ae81ff>0</span>                  -                100.0%
+格林尼治时间           集群名称        集群状态     节点数   数据节点 分片 Primary                   准备执行任务数   最大任务等待时间           当前活动分片百分比
+</code></pre></div><ol start=2>
+<li><code>_cluster/health</code></li>
+</ol>
+<pre tabindex=0><code>GET _cluster/health
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;cluster_name&#34;</span> : <span style=color:#e6db74>&#34;elasticsearch&#34;</span>,
+  <span style=color:#f92672>&#34;status&#34;</span> : <span style=color:#e6db74>&#34;green&#34;</span>,
+  <span style=color:#f92672>&#34;timed_out&#34;</span> : <span style=color:#66d9ef>false</span>,
+  <span style=color:#f92672>&#34;number_of_nodes&#34;</span> : <span style=color:#ae81ff>5</span>,
+  <span style=color:#f92672>&#34;number_of_data_nodes&#34;</span> : <span style=color:#ae81ff>5</span>,
+  <span style=color:#f92672>&#34;active_primary_shards&#34;</span> : <span style=color:#ae81ff>12</span>,
+  <span style=color:#f92672>&#34;active_shards&#34;</span> : <span style=color:#ae81ff>24</span>,
+  <span style=color:#f92672>&#34;relocating_shards&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;initializing_shards&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;unassigned_shards&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;delayed_unassigned_shards&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;number_of_pending_tasks&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;number_of_in_flight_fetch&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;task_max_waiting_in_queue_millis&#34;</span> : <span style=color:#ae81ff>0</span>,
+  <span style=color:#f92672>&#34;active_shards_percent_as_number&#34;</span> : <span style=color:#ae81ff>100.0</span>
+}
+</code></pre></div><p>注释</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># &#34;relocating_shards&#34; : 0,     迁移中</span>
+<span style=color:#75715e># &#34;initializing_shards&#34; : 0,   初始化中</span>
+<span style=color:#75715e># &#34;unassigned_shards&#34; : 0,     未分配的</span>
+</code></pre></div><h2 id=搜索引擎>搜索引擎</h2>
+<h3 id=搜索引擎类别>搜索引擎类别</h3>
+<ul>
+<li>全文搜索引擎：自然语言处理（NLP）、爬虫、网页处理、大数据处理，如谷歌、百度、搜狗、必应等</li>
+<li>垂直搜索引擎：有明确目的的搜索行为，如各大电商网站、OA系统、站内搜索、视频网站等</li>
+</ul>
+<h3 id=搜索引擎要求>搜索引擎要求</h3>
+<ul>
+<li>查询速度快
+<ul>
+<li>高效的压缩算法</li>
+<li>快速的编码和解码速度</li>
+</ul>
+</li>
+<li>结果准确
+<ul>
+<li>BM25评分算法（7.0之后）</li>
+<li>TF-IDF</li>
+</ul>
+</li>
+<li>检验结果丰富
+<ul>
+<li>召回率</li>
+</ul>
+</li>
+</ul>
+<h3 id=lucene>Lucene</h3>
+<blockquote>
+<p>以MySQL为例的数据库组成结构</p>
+</blockquote>
+<p><img src=db.png alt=db></p>
+<p>MySQL索引面临大数据检索的问题：</p>
+<ol>
+<li>索引失效</li>
+<li>精准度差</li>
+<li>大数据量下索引性能变低</li>
+</ol>
+<p>Lucene使用倒排索引解决了上述问题</p>
+<h4 id=倒排索引核心算法>倒排索引核心算法</h4>
+<ul>
+<li>倒排索引表的压缩算法
+<ul>
+<li>FOR:Frame Of Reference</li>
+<li>RBM: RoaringBitMap</li>
+</ul>
+</li>
+<li>词项索引的检索原理
+<ul>
+<li>FST: Finit state Transducers</li>
+</ul>
+</li>
+</ul>
+<h5 id=for>FOR</h5>
+<p><img src=FOR.png alt=FOR></p>
+<h5 id=rbm>RBM</h5>
+<p><img src=RBM.png alt=RBM></p>
+<h5 id=fst>FST</h5>
+<p>FSA：有限状态接收机
+FST：有限状态转换机</p>
+<p>FST最重要的功能是实现<code>key</code>到<code>value</code>的映射，相当于<code>HashMap</code>。<br>
+FST的查询比HashMap要慢一点，但FST的内存消耗要比HashMap少很多。<br>
+FST在Lucene中被大量使用，如：倒排索引的存储，同义词词典的存储，搜索关键词建议等</p>
+<p>Node 节点</p>
+<p>Acr 出度
+freezeTail 尾部冻结</p>
+<p>通用最小化算法：BitMap</p>
+<h2 id=es简单的crud>ES简单的CRUD</h2>
+<blockquote>
+<p>示例使用<code>Kibana</code>的<code>Dev Tools</code>操作</p>
+</blockquote>
+<h3 id=创建索引>创建索引</h3>
+<p>创建<code>test</code>索引</p>
+<pre tabindex=0><code>PUT /test
+</code></pre><h3 id=查询索引>查询索引</h3>
+<p>查询<code>test</code>索引</p>
+<pre tabindex=0><code>GET /test
+</code></pre><h3 id=添加一条文档>添加一条文档</h3>
+<p>创建索引为<code>1</code>的一条文档</p>
+<pre tabindex=0><code>PUT /test/_doc/1
+{
+  &quot;name&quot;: &quot;xiaoming&quot;,
+  &quot;age&quot;: 123,
+  &quot;tag&quot;: [
+    &quot;pople&quot;,
+    &quot;student&quot;
+  ]
+}
+</code></pre><h3 id=查询文档>查询文档</h3>
+<p>根据索引查询文档</p>
+<pre tabindex=0><code>GET /test/_doc/1
+</code></pre><h3 id=修改文档>修改文档</h3>
+<p>根据索引修改文档</p>
+<pre tabindex=0><code>POST /test/_update/1
+{
+  &quot;doc&quot;: {
+    &quot;age&quot;: 222
+  }
+}
+</code></pre><h2 id=mapping>Mapping</h2>
+<blockquote>
+<p>定义ES索引中字段类型等信息的映射，映射是定义文档及其包含的字段的存储和索引方式的过程，换句话来说，<code>Mapping</code>相当于传统关系型数据库中的<code>DDL</code>建表语句。<br>
+在Mapping里也包含了一些属性，比如字段名称、类型、字段使用的分词器、是否评分、是否创建索引等属性，并且在ES中一个字段可以有多个类型。</p>
+</blockquote>
+<p>Mapping类型：</p>
+<ul>
+<li><code>Dynamic mapping</code>：动态映射</li>
+<li><code>Explicit mapping</code>：显式映射</li>
+</ul>
+<h3 id=查看mapping>查看Mapping</h3>
+<pre tabindex=0><code>GET /index/_mapping
+</code></pre><h3 id=数据类型>数据类型</h3>
+<ol>
+<li><strong>基础类型</strong>
+<ol>
+<li><strong>数字类型</strong>：<code>long</code>、<code>integer</code>、<code>short</code>、<code>byte</code>、<code>double</code>、<code>float</code>、<code>half_float</code>、<code>scaled_float</code>、<code>unsigned_long</code></li>
+<li><strong>Keywords</strong>：
+<ol>
+<li>Keywords适用于索引结构化的字段，可以用于过滤、排序、聚合。<code>keyword</code>类型的字段只能通过精确值（exact value）搜索到。id应该用<code>keyword</code></li>
+<li>constant_keyword：始终包含相同值的关键字字段</li>
+<li>wildcard：可针对类似<code>grep</code>的通配符查询优化日志行和类似的关键字值</li>
+</ol>
+</li>
+<li><strong>Dates</strong>（时间类型）：包括<a href=https://www.elastic.co/guide/en/elasticsearch/reference/current/date.html><code>Date</code></a>和 <a href=https://www.elastic.co/guide/en/elasticsearch/reference/current/date_nanos.html><code>Date nanoseconds</code></a></li>
+<li><strong>Alias</strong>：为现有字段定义别名</li>
+<li>Binary：二进制</li>
+<li>Range：区间类型，<code>integer_range</code>、<code>float_range</code>、<code>long_range</code>、<code>double_range</code>、<code>date_range</code></li>
+<li><strong>text</strong>：当一个字段是要被全文搜索的，比如Email内容、产品描述，这些字段应该使用text类型。设置text类型以后，字段内容会被分析，在生成倒排索引以前，字符串会被分析器分成一个一个词项。text类型的字段不用于排序，很少用于聚合。（解释一下为啥不会为text创建正排索引：大量堆空间，尤其是在加载高基数text字段时。字段数据一旦加载到堆中，就在该段的生命周期内保持在那里。同样，加载字段数据是一个昂贵的过程，可能导致用户遇到延迟问题。这就是默认情况下禁用字段数据的原因）</li>
+</ol>
+</li>
+<li><strong>对象关系类型</strong>
+<ol>
+<li><strong>Object</strong>：用于单个JSON对象</li>
+<li><strong>Nested</strong>：用于JSON对象数组</li>
+<li>flattened：允许将整个JSON对象索引为单个字段。</li>
+</ol>
+</li>
+<li>结构化类型
+<ol>
+<li><strong>Geopoint</strong>：纬度/经度积分</li>
+<li><strong>Geoshape</strong>：用于多边形等复杂形状</li>
+<li><strong>Point</strong>：笛卡尔坐标点</li>
+<li><strong>Shape</strong>：笛卡尔任意几何图形</li>
+</ol>
+</li>
+<li>特殊类型
+<ol>
+<li><strong>IP</strong>：用于IPv4和IPv6地址</li>
+<li><del><strong>Completion</strong>：提供自动完成建议</del> // TODO</li>
+<li><strong>Token count</strong>：计算字符串中令牌的数量</li>
+<li>&mldr;</li>
+</ol>
+</li>
+<li>Array（数组）：在ES中，数组不需要专用的字段数据类型。默认情况下，任何字段都可以包含零个或多个值，但是，数组中的所有值都必须具有相同的数据类型。</li>
+<li>版本新增
+<ol>
+<li>Date nanoseconds</li>
+<li>&mldr;</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p><strong>除了支持的映射参数之外，无法更改现有字段的映射或字段类型。更改现有字段可能会使已编入索引的数据无效。</strong></p>
+</blockquote>
+<h3 id=dynamic-mapping字段对应关系>Dynamic mapping字段对应关系</h3>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整数</td>
+<td>long</td>
+</tr>
+<tr>
+<td>浮点数</td>
+<td>float</td>
+</tr>
+<tr>
+<td>true/false</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>date</td>
+</tr>
+<tr>
+<td>数组</td>
+<td>取决于数组中的第一个有效值</td>
+</tr>
+<tr>
+<td>对象</td>
+<td>object</td>
+</tr>
+<tr>
+<td>字符串</td>
+<td>如果不是数字和日期类型，那会被映射为text和keyword两个类型</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<blockquote>
+<p>除了上述字段类型之外，其他类型都必须显式映射，也就是必须手工指定，因为其他类型ES无法自动识别。</p>
+</blockquote>
+<h3 id=explicit-mapping显式映射>Explicit mapping显式映射</h3>
+<pre tabindex=0><code>PUT /my-index-000001
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;age&quot;:    { &quot;type&quot;: &quot;integer&quot; },  
+      &quot;email&quot;:  { &quot;type&quot;: &quot;keyword&quot;  }, 
+      &quot;name&quot;:   { &quot;type&quot;: &quot;text&quot;  }
+    }
+  }
+}
+</code></pre><blockquote>
+<p><strong>再次注明：除了支持的映射参数之外，无法更改现有字段的映射或字段类型。更改现有字段可能会使已编入索引的数据无效。</strong></p>
+</blockquote>
+<h3 id=参数>参数</h3>
+<ol>
+<li><strong>index</strong>：是否对创建对当前字段创建倒排索引，默认true，如果不创建索引，该字段不会通过索引被搜索到,但是仍然会在source元数据中展示</li>
+<li><strong>analyzer</strong>：指定分析器，<code>Character filter</code>、<code>Tokenizer</code>、<code>Token filters</code></li>
+<li>boost：对当前字段相关度的评分权重，默认1</li>
+<li>coerce：是否允许强制类型转换 true “1”=> 1 false “1”=&lt; 1</li>
+<li><strong>doc_values</strong>：为了提升排序和聚合效率，默认true，如果确定不需要对字段进行排序或聚合，也不需要通过脚本访问字段值，则可以禁用doc值以节省磁盘空间（不支持text和annotated_text）</li>
+<li>dynamic：控制是否可以动态添加新字段
+<ol>
+<li>true：新检测到的字段将添加到映射中。（默认）</li>
+<li>false：新检测到的字段将被忽略。这些字段将不会被索引，因此将无法搜索，但仍会出现在_source返回的匹配项中。这些字段不会添加到映射中，必须显式添加新字段。</li>
+<li>strict：如果检测到新字段，则会引发异常并拒绝文档。必须将新字段显式添加到映射中</li>
+</ol>
+</li>
+<li><strong>eager_global_ordinals</strong>：用于聚合的字段上，优化聚合性能。</li>
+<li>Frozen indices：冻结索引，有些索引使用率很高，会被保存在内存中，有些使用率特别低，宁愿在使用的时候重新创建，在使用完毕后丢弃数据，Frozen indices的数据命中频率小，不适用于高搜索负载，数据不会被保存在内存中，堆空间占用比普通索引少得多，Frozen indices是只读的，请求可能是秒级或者分钟级。<strong>eager_global_ordinals不适用于Frozen indices</strong></li>
+<li><strong>enable</strong>：是否创建倒排索引，可以对字段操作，也可以对索引操作，如果不创建索引，仍然可以检索并在_source元数据中展示，谨慎使用，该状态无法修改。</li>
+<li><strong>fielddata</strong>：查询时内存数据结构，在首次用当前字段聚合、排序或者在脚本中使用时，需要字段为fielddata数据结构，并且创建倒排索引保存到堆中。</li>
+<li><strong>fields</strong>：给field创建多字段，用于不同目的（全文检索或者聚合分析排序）</li>
+<li>format：格式化
+<pre tabindex=0><code>  &quot;date&quot;: {
+     &quot;type&quot;:  &quot;date&quot;,
+     &quot;format&quot;: &quot;yyyy-MM-dd&quot;
+   }
+</code></pre></li>
+<li><strong>norms</strong>：是否禁用评分（在filter和聚合字段上应该禁用）。</li>
+<li>null_value：为null值设置默认值</li>
+<li>search_analyzer：设置单独的查询时分析器</li>
+<li>store：设置字段是否仅查询</li>
+<li>&mldr;</li>
+</ol>
+<h2 id=query-dsldomain-specific-language>Query DSL(Domain Specific Language)</h2>
+<h3 id=查询上下文>查询上下文</h3>
+<blockquote>
+<p>使用<code>query</code>关键字进行检索，倾向于相关度搜索，需要计算相关度评分。</p>
+</blockquote>
+<h3 id=相关度评分_score>相关度评分<code>_score</code></h3>
+<p>相关度评分用于对搜索结果排序，评分越高则认为其结果和搜索的预期值相关度越高，即越符合搜索预期值。在7.x之前相关度评分默认使用TF/IDF算法计算而来，7.x之后默认为BM25。<br>
+相关度评分为搜索结果的排序依据，默认情况下评分越高，则结果越靠前。</p>
+<h3 id=元数据_source>元数据<code>_source</code></h3>
+<p>禁用_source</p>
+<pre tabindex=0><code>GET product/_search
+{
+  &quot;_source&quot;: false, 
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}
+</code></pre><ul>
+<li>好处：节省存储开销</li>
+<li>坏处：
+<ul>
+<li>不支持update、update_by_query和reindex API。</li>
+<li>不支持高亮。</li>
+<li>不支持reindex、更改mapping分析器和版本升级。</li>
+<li>通过查看索引时使用的原始文档来调试查询或聚合的功能。</li>
+<li>将来有可能自动修复索引损坏。</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结：如果只是为了节省磁盘，可以压缩索引比禁用_source更好。</strong></p>
+<p>数据源过滤器</p>
+<ul>
+<li><code>Including</code>：结果中返回哪些field</li>
+<li><code>Excluding</code>：结果中不要返回哪些field，不返回的field不代表不能通过该字段进行检索，因为元数据不存在不代表索引不存在</li>
+</ul>
+<p><em>在<code>mapping</code>中定义过滤：支持通配符，但是这种方式不推荐，因为<code>mapping</code>不可变</em></p>
+<pre tabindex=0><code>GET product/_search
+{
+  &quot;_source&quot;: [&quot;owner.name&quot;,&quot;owner.sex&quot;], 
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}
+</code></pre><p>常用过滤规则</p>
+<ul>
+<li>
+<pre tabindex=0><code>&quot;_source&quot;: &quot;false&quot;,
+</code></pre></li>
+<li>
+<pre tabindex=0><code>&quot;_source&quot;: &quot;obj.*&quot;,
+</code></pre></li>
+<li>
+<pre tabindex=0><code>&quot;_source&quot;: [ &quot;obj1.\*&quot;, &quot;obj2.\*&quot; ],
+</code></pre></li>
+<li>
+<pre tabindex=0><code>&quot;_source&quot;: {
+          &quot;includes&quot;: [ &quot;obj1.\*&quot;, &quot;obj2.\*&quot; ],
+          &quot;excludes&quot;: [ &quot;*.description&quot; ]
+        }
+</code></pre></li>
+</ul>
+<h3 id=query-string>Query String</h3>
+<ul>
+<li>查询所有：<code>GET /product/_search</code></li>
+<li>带参数：<code>GET /product/_search?q=name:productname</code></li>
+<li>分页：<code>GET /product/_search?from=0&size=2&sort=price:asc</code></li>
+<li>精准匹配：<code>GET /product/_search?q=date:2021-10-21</code></li>
+<li>_all搜索（相当于在所有有索引的字段中检索）：<code>GET /product/_search?q=2021-06-01</code></li>
+</ul>
+<h3 id=全文检索-fulltext-query>全文检索-Fulltext query</h3>
+<pre tabindex=0><code>GET index/_search
+{
+  &quot;query&quot;: {
+    ***
+  }
+}
+</code></pre><p>示例</p>
+<pre tabindex=0><code>GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;name&quot;: &quot;huahua blue cat&quot;
+    }
+  }
+}
+</code></pre><ul>
+<li><code>match</code>：匹配包含某个term的子句</li>
+<li><code>match_all</code>：匹配所有结果的子句</li>
+<li><code>multi_match</code>：多字段条件</li>
+<li><code>match_phrase</code>：短语查询，分词结果必须在被检索字段的分词中都包含，而且顺序必须相同，而且默认必须都是连续的</li>
+</ul>
+<h3 id=精准查询-term-query>精准查询-Term query</h3>
+<p><code>term</code>：匹配和搜索词项完全相等的结果</p>
+<ul>
+<li><code>term</code>和<code>match_phrase</code>区别:
+<ul>
+<li><code>match_phrase</code>会将检索关键词分词,<code>match_phrase</code>的分词结果必须在被检索字段的分词中都包含，而且顺序必须相同，而且默认必须都是连续的</li>
+<li><code>term</code>搜索不会将搜索词分词</li>
+</ul>
+</li>
+<li><code>term</code>和<code>keyword</code>区别
+<ul>
+<li><code>term</code>是对于搜索词不分词,</li>
+<li><code>keyword</code>是字段类型,是对于<code>source data</code>中的字段值不分词</li>
+</ul>
+</li>
+</ul>
+<pre tabindex=0><code># term
+GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {
+      &quot;name&quot;: &quot;xiaomi phone&quot;
+    }
+  }
+}
+#term和match_phrase区别
+GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;match_phrase&quot;: {
+      &quot;name&quot;: &quot;blue cat&quot;
+    }
+  }
+}
+#term和keyword的区别
+GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {
+      &quot;name.keyword&quot;: &quot;blue cat&quot;
+    }
+  }
+}
+</code></pre><p><code>terms</code>：匹配和搜索词项列表中任意项匹配的结果（数据中的<code>tags</code>字段只要有任意一项就可以查到）</p>
+<pre tabindex=0><code>GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;terms&quot;: {
+      &quot;tags&quot;: [ &quot;aaaaaa&quot;, &quot;cat&quot; ],
+      &quot;boost&quot;: 1.0
+    }
+  }
+}
+</code></pre><p><code>range</code>：范围查找</p>
+<pre tabindex=0><code>GET /_search
+{
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;price&quot;: {
+        &quot;gte&quot;: 1000,
+        &quot;lte&quot;: 20000
+      }
+    }
+  }
+}
+GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;date&quot;: {
+        &quot;time_zone&quot;: &quot;+08:00&quot;,
+        &quot;gte&quot;: &quot;2021-10-21&quot;,
+        &quot;lt&quot;: &quot;2021-10-21&quot;
+      }
+    }
+  }
+}
+GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;date&quot;: {
+        &quot;gte&quot;: &quot;now-1d/d&quot;,
+        &quot;lt&quot;: &quot;now/d&quot;
+      }
+    }
+  }
+}
+</code></pre><h3 id=过滤器-filter>过滤器-Filter</h3>
+<blockquote>
+<p>query和filter的主要区别在：filter是结果导向的而query是过程导向。query倾向于“当前文档和查询的语句的相关度”而filter倾向于“当前文档和查询的条件是不是相符”。即在查询过程中，query是要对查询的每个结果计算相关性得分的，而filter不会。另外filter有相应的缓存机制，可以提高查询效率。</p>
+</blockquote>
+<pre tabindex=0><code>GET product/_search
+{
+  &quot;query&quot;: {
+    &quot;constant_score&quot;: {
+      &quot;filter&quot;: {
+        &quot;term&quot;: {
+          &quot;name&quot;: &quot;phone&quot;
+        }
+      },
+      &quot;boost&quot;: 1.2
+    }
+  }
+}
+</code></pre><h3 id=组合查询-bool-query>组合查询-Bool query</h3>
+<blockquote>
+<p>可以组合多个查询条件，bool查询也是采用<code>more_matches_is_better</code>的机制，因此满足must和should子句的文档将会合并起来计算分值</p>
+</blockquote>
+<ul>
+<li><strong>must</strong>：必须满足子句（查询）必须出现在匹配的文档中，并将有助于得分。</li>
+<li><strong>filter</strong>：过滤器，不计算相关度分数，cache子句（查询）必须出现在匹配的文档中。但是不像must查询的分数将被忽略。Filter子句在filter上下文中执行，这意味着计分被忽略，并且子句被考虑用于缓存。</li>
+<li><strong>should</strong>：可能满足，or子句（查询）应出现在匹配的文档中。</li>
+<li><strong>must_not</strong>：必须不满足，不计算相关度分数，not子句（查询）不得出现在匹配的文档中。子句在过滤器上下文中执行，这意味着计分被忽略，并且子句被视为用于缓存。由于忽略计分，因此将返回所有文档的分数。</li>
+</ul>
+<p><strong>minimum_should_match</strong>：参数指定should返回的文档必须匹配的子句的数量或百分比。如果bool查询包含至少一个should子句，而没有must或 filter子句，则默认值为1。否则，默认值为0</p>
+<h2 id=分词器>分词器</h2>
+<h3 id=normalization-文档规范化提高召回率>normalization 文档规范化,提高召回率</h3>
+<p>拼写错误、形容词、单复数、动词、大小写、分词、称谓等转换成标准词汇</p>
+<pre tabindex=0><code>GET _analyze
+{
+  &quot;text&quot;: &quot;Mr. Ma is an excellent teacher&quot;,
+  &quot;analyzer&quot;: &quot;pattern&quot;
+}
+</code></pre><h3 id=character-filter-字符过滤器>character filter 字符过滤器</h3>
+<blockquote>
+<p>分词之前的预处理，过滤无用字符</p>
+</blockquote>
+<h4 id=html-strip>HTML Strip</h4>
+<pre tabindex=0><code>PUT test_index
+{
+  &quot;settings&quot;: {
+    &quot;analysis&quot;: {
+      &quot;char_filter&quot;: {
+        &quot;my_char_filter&quot;: {
+          &quot;type&quot;: &quot;html_strip&quot;,
+          &quot;escaped_tags&quot;: [
+            &quot;a&quot;
+          ]
+        }
+      },
+      &quot;analyzer&quot;: {
+        &quot;my_analyzer&quot;: {
+          &quot;tokenizer&quot;: &quot;keyword&quot;,
+          &quot;char_filter&quot;: &quot;my_char_filter&quot;
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  &quot;analyzer&quot;: &quot;my_analyzer&quot;,
+  &quot;text&quot;: &quot;&lt;p&gt;I&amp;apos;m so &lt;a&gt;happy&lt;/a&gt;!&lt;/p&gt;&quot;
+}
+</code></pre><h4 id=mapping-1>Mapping</h4>
+<pre tabindex=0><code>PUT test_index
+{
+  &quot;settings&quot;: {
+    &quot;analysis&quot;: {
+      &quot;char_filter&quot;: {
+        &quot;my_char_filter&quot;: {
+          &quot;type&quot;: &quot;mapping&quot;,
+          &quot;mappings&quot;:[
+            &quot;滚 =&gt; *&quot;,
+            &quot;垃圾 =&gt; **&quot;
+            ]
+        }
+      },
+      &quot;analyzer&quot;: {
+        &quot;my_analyzer&quot;: {
+          &quot;tokenizer&quot;: &quot;keyword&quot;,
+          &quot;char_filter&quot;: &quot;my_char_filter&quot;
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  &quot;analyzer&quot;: &quot;my_analyzer&quot;,
+  &quot;text&quot;: &quot;滚！你就是个垃圾&quot;
+}
+</code></pre><h4 id=pattern-replace>Pattern Replace</h4>
+<pre tabindex=0><code>PUT test_index
+{
+  &quot;settings&quot;: {
+    &quot;analysis&quot;: {
+      &quot;char_filter&quot;: {
+        &quot;my_char_filter&quot;: {
+          &quot;type&quot;: &quot;pattern_replace&quot;,
+          &quot;pattern&quot;:&quot;(\\d{3})\\d{4}(\\d{4})&quot;,
+          &quot;replacement&quot;:&quot;$1****$2&quot;
+        }
+      },
+      &quot;analyzer&quot;: {
+        &quot;my_analyzer&quot;: {
+          &quot;tokenizer&quot;: &quot;keyword&quot;,
+          &quot;char_filter&quot;: &quot;my_char_filter&quot;
+        }
+      }
+    }
+  }
+}
+
+GET test_index/_analyze
+{
+  &quot;analyzer&quot;: &quot;my_analyzer&quot;,
+  &quot;text&quot;: &quot;手机号是：15633334444&quot;
+}
+</code></pre><h3 id=token-filter-令牌过滤器>token filter 令牌过滤器</h3>
+<blockquote>
+<p>停用词、时态转换、大小写转换、同义词转换、语气词处理等。比如：has=>have him=>he apples=>apple the/oh/a=>干掉</p>
+</blockquote>
+<h3 id=tokenizer-分词器>tokenizer 分词器</h3>
+<p>常见分词器</p>
+<ul>
+<li>standard analyzer：默认分词器，中文支持的不理想，会逐字拆分。</li>
+<li>pattern tokenizer：以正则匹配分隔符，把文本拆分成若干词项。</li>
+<li>simple pattern tokenizer：以正则匹配词项，速度比pattern tokenizer快。</li>
+<li>whitespace analyzer：以空白符分隔</li>
+</ul>
+<p>custom analyzer 自定义分词器</p>
+<ul>
+<li>char_filter：内置或自定义字符过滤器 。</li>
+<li>token filter：内置或自定义token filter 。</li>
+<li>tokenizer：内置或自定义分词器。</li>
+</ul>
+<h3 id=ik分词中文分词器>ik分词（中文分词器）</h3>
+<h4 id=安装>安装</h4>
+<p>下载对应版本，解压后放到ES的<code>plugins</code>文件夹下面</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>es-root/plugins/ <span style=color:#f92672>&amp;&amp;</span> mkdir ik
+</code></pre></div><p>重启ES</p>
+<pre tabindex=0><code>GET test_index/_analyze
+{
+  &quot;analyzer&quot;: &quot;ik_max_word&quot;,
+  &quot;text&quot;: [
+    &quot;我爱中华人民共和国&quot;
+  ]
+}
+</code></pre><h4 id=文件>文件</h4>
+<ul>
+<li><code>IKAnalyzer.cfg.xml</code>：IK分词配置文件</li>
+<li><code>main.dic</code>：主词库</li>
+<li><code>stopword.dic</code>：英文停用词，不会建立在倒排索引中</li>
+<li>特殊词库：
+<ul>
+<li><code>quantifier.dic</code>：特殊词库：计量单位等</li>
+<li><code>suffix.dic</code>：特殊词库：行政单位</li>
+<li><code>surname.dic</code>：特殊词库：百家姓</li>
+<li><code>preposition</code>：特殊词库：语气词</li>
+<li>自定义词库：网络词汇、流行词、自造词等</li>
+</ul>
+</li>
+</ul>
+<h4 id=热更新>热更新</h4>
+<ul>
+<li>远程词库文件
+<ul>
+<li>词库的管理不方便，要操作直接操作磁盘文件，检索页很麻烦</li>
+<li>文件的读写没有专门的优化性能不好</li>
+<li>多一层接口调用和网络传输</li>
+</ul>
+</li>
+<li>ik访问数据库</li>
+</ul>
+<h2 id=聚合查询>聚合查询</h2>
+<blockquote>
+<p>用于进行聚合的字段必须是<code>exact value</code>，分词字段不可进行聚合。
+对于text字段如果需要使用聚合，需要开启<code>fielddata</code>，但是通常不建议，因为<code>fielddata</code>是将聚合使用的数据结构由磁盘（doc_values）变为了堆内存（field_data），大数据的聚合操作很容易导致OOM。</p>
+</blockquote>
+<h3 id=聚合分类>聚合分类</h3>
+<ol>
+<li>分桶聚合<code>Bucket agregations</code>：类比SQL中的group by的作用，主要用于统计不同类型数据的数量</li>
+<li>指标聚合<code>Metrics agregations</code>：主要用于最大值、最小值、平均值、字段之和等指标的统计</li>
+<li>管道聚合<code>Pipeline agregations</code>：用于对聚合的结果进行二次聚合，如要统计绑定数量最多的标签bucket，就是要先按照标签进行分桶，再在分桶的结果上计算最大值。</li>
+</ol>
+<h3 id=桶聚合>桶聚合：</h3>
+<p>场景：用于统计不同种类的文档的数量，可进行嵌套统计。</p>
+<p>函数：terms</p>
+<p>注意：聚合字段必须是<code>exact value</code>，如<code>keyword</code></p>
+<h3 id=指标聚合>指标聚合</h3>
+<p>场景：用于统计某个指标，如最大值、最小值、平均值，可以结合桶聚合一起使用，如按照商品类型分桶，统计每个桶的平均价格。</p>
+<p>函数：平均值：Avg、最大值：Max、最小值：Min、求和：Sum、详细信息：Stats、数量：Value count</p>
+<h3 id=管道聚合>管道聚合</h3>
+<p>场景：用于对聚合查询的二次聚合，如统计平均价格最低的商品分类，即先按照商品分类进行桶聚合，并计算其平均价格，然后对其平均价格计算最小值聚合</p>
+<p>函数：Min bucket：最小桶、Max bucket：最大桶、Avg bucket：桶平均值、Sum bucket：桶求和、Stats bucket：桶信息</p>
+<p>注意：buckets_path为管道聚合的关键字，其值从当前聚合统计的聚合函数开始计算为第一级。比如下面例子中，my_aggs和my_min_bucket同级，my_aggs就是buckets_path值的起始值。</p>
+<h2 id=脚本查询>脚本查询</h2>
+<blockquote>
+<p>Scripting是Elasticsearch支持的一种专门用于复杂场景下支持自定义编程的强大的脚本功能，ES支持多种脚本语言，如painless，其语法类似于Java,也有注释、关键字、类型、变量、函数等，其就要相对于其他脚本高出几倍的性能，并且安全可靠，可以用于内联和存储脚本。</p>
+</blockquote>
+<h3 id=支持的语言>支持的语言</h3>
+<ol>
+<li><code>groovy</code>：ES 1.4.x-5.0的默认脚本语言</li>
+<li><code>painless</code>：Elasticsearch现在的默认脚本语言</li>
+<li><code>expression</code>：每个文档的开销较低：表达式的作用更多，可以非常快速地执行，甚至比编写native脚本还要快，支持javascript语法的子集：单个表达式。缺点：只能访问数字，布尔值，日期和geo_point字段，存储的字段不可用</li>
+<li><code>mustache</code>：脚本模板</li>
+</ol>
+<h2 id=模糊查询>模糊查询</h2>
+<h2 id=搜索推荐>搜索推荐</h2>
+<h2 id=数据建模>数据建模</h2>
+<h2 id=es学习总结>ES学习总结</h2>
+<p>通用最小化算法：BitMap
+倒排索引压缩算法中的RBM算法中用到了Bitmap，在Redis的布隆过滤器中也用到了</p>
+<p>倒排索引的 ，在Linux文件权限中也用到了</p>
+<h2 id=参考链接>参考链接</h2>
+<ul>
+<li><a href=https://www.elastic.co/cn/support/matrix>Elastic stack版本支持</a></li>
+<li><a href=https://github.com/mobz/elasticsearch-head>Elasticsearch Head GitHub Repository</a></li>
+<li><a href=https://github.com/medcl/elasticsearch-analysis-ik>ik分词器</a></li>
+</ul>
+</div>
+<div class="row pl-3 pr-3">
+<div class="col-md-6 share-buttons">
+<strong>分享:</strong>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2010-elastic%2f001-elasticstack-es%2f&title=Elasticsearch" target=_blank>
+<i class="fab fa-reddit"></i>
+</a>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2010-elastic%2f001-elasticstack-es%2f&title=Elasticsearch" target=_blank>
+<i class="fab fa-linkedin"></i>
+</a>
+<a class="btn btn-sm email-btn" href="mailto:?subject=Elasticsearch&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2010-elastic%2f001-elasticstack-es%2f" target=_blank>
+<i class="fas fa-envelope-open-text"></i>
+</a>
+</div>
+<div class="col-md-6 btn-improve-page">
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2010-elastic/001-elasticstack-es/index.md title=改善此页面 target=_blank rel=noopener>
+<i class="fas fa-code-branch"></i>
+改善此页面
+</a>
+</div>
+</div>
+<hr>
+<div class="row next-prev-navigator">
+<div class="col-md-6 previous-article">
+<a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程 class="btn btn-outline-info">
+<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
+<div class=next-prev-text>网络IO演进历程</div>
+</a>
+</div>
+<div class="col-md-6 next-article">
+<a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件 class="btn btn-outline-info">
+<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
+<div class=next-prev-text>Hadoop生态组件</div>
+</a>
+</div>
+</div>
+<hr>
+<div id=utteranc_thread></div>
+<div id=comments class=comments>
+<div id=comments-container></div>
+</div>
+<script type=text/javascript>(function(){var a=document.createElement('script');a.type='text/javascript',a.async=!0,a.setAttribute('repo','ormissia/ormissia.github.io'),a.setAttribute('issue-term','title'),a.setAttribute('theme','github-light'),a.crossorigin='anonymous',a.src='https://utteranc.es/client.js',document.getElementById('comments-container').appendChild(a)})()</script>
+</div>
+</div>
+</div>
+<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
+</section>
+<section class=toc-section id=toc-section>
+<div class=toc-holder>
+<h5 class="text-center pl-3">目录</h5>
+<hr>
+<div class=toc>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#搜索类型>搜索类型</a></li>
+<li><a href=#es特点>ES特点</a></li>
+<li><a href=#es单机部署>ES单机部署</a>
+<ul>
+<li><a href=#同一节点启动不同服务>同一节点启动不同服务</a></li>
+<li><a href=#不同节点启动同一服务>不同节点启动同一服务</a></li>
+</ul>
+</li>
+<li><a href=#elasticsearch-head插件><code>elasticsearch-head</code>插件</a>
+<ul>
+<li><a href=#集群健康值检查>集群健康值检查</a>
+<ul>
+<li><a href=#健康值状态>健康值状态</a></li>
+<li><a href=#健康值检查>健康值检查</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href=#搜索引擎>搜索引擎</a>
+<ul>
+<li><a href=#搜索引擎类别>搜索引擎类别</a></li>
+<li><a href=#搜索引擎要求>搜索引擎要求</a></li>
+<li><a href=#lucene>Lucene</a>
+<ul>
+<li><a href=#倒排索引核心算法>倒排索引核心算法</a>
+<ul>
+<li><a href=#for>FOR</a></li>
+<li><a href=#rbm>RBM</a></li>
+<li><a href=#fst>FST</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href=#es简单的crud>ES简单的CRUD</a>
+<ul>
+<li><a href=#创建索引>创建索引</a></li>
+<li><a href=#查询索引>查询索引</a></li>
+<li><a href=#添加一条文档>添加一条文档</a></li>
+<li><a href=#查询文档>查询文档</a></li>
+<li><a href=#修改文档>修改文档</a></li>
+</ul>
+</li>
+<li><a href=#mapping>Mapping</a>
+<ul>
+<li><a href=#查看mapping>查看Mapping</a></li>
+<li><a href=#数据类型>数据类型</a></li>
+<li><a href=#dynamic-mapping字段对应关系>Dynamic mapping字段对应关系</a></li>
+<li><a href=#explicit-mapping显式映射>Explicit mapping显式映射</a></li>
+<li><a href=#参数>参数</a></li>
+</ul>
+</li>
+<li><a href=#query-dsldomain-specific-language>Query DSL(Domain Specific Language)</a>
+<ul>
+<li><a href=#查询上下文>查询上下文</a></li>
+<li><a href=#相关度评分_score>相关度评分<code>_score</code></a></li>
+<li><a href=#元数据_source>元数据<code>_source</code></a></li>
+<li><a href=#query-string>Query String</a></li>
+<li><a href=#全文检索-fulltext-query>全文检索-Fulltext query</a></li>
+<li><a href=#精准查询-term-query>精准查询-Term query</a></li>
+<li><a href=#过滤器-filter>过滤器-Filter</a></li>
+<li><a href=#组合查询-bool-query>组合查询-Bool query</a></li>
+</ul>
+</li>
+<li><a href=#分词器>分词器</a>
+<ul>
+<li><a href=#normalization-文档规范化提高召回率>normalization 文档规范化,提高召回率</a></li>
+<li><a href=#character-filter-字符过滤器>character filter 字符过滤器</a>
+<ul>
+<li><a href=#html-strip>HTML Strip</a></li>
+<li><a href=#mapping-1>Mapping</a></li>
+<li><a href=#pattern-replace>Pattern Replace</a></li>
+</ul>
+</li>
+<li><a href=#token-filter-令牌过滤器>token filter 令牌过滤器</a></li>
+<li><a href=#tokenizer-分词器>tokenizer 分词器</a></li>
+<li><a href=#ik分词中文分词器>ik分词（中文分词器）</a>
+<ul>
+<li><a href=#安装>安装</a></li>
+<li><a href=#文件>文件</a></li>
+<li><a href=#热更新>热更新</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href=#聚合查询>聚合查询</a>
+<ul>
+<li><a href=#聚合分类>聚合分类</a></li>
+<li><a href=#桶聚合>桶聚合：</a></li>
+<li><a href=#指标聚合>指标聚合</a></li>
+<li><a href=#管道聚合>管道聚合</a></li>
+</ul>
+</li>
+<li><a href=#脚本查询>脚本查询</a>
+<ul>
+<li><a href=#支持的语言>支持的语言</a></li>
+</ul>
+</li>
+<li><a href=#模糊查询>模糊查询</a></li>
+<li><a href=#搜索推荐>搜索推荐</a></li>
+<li><a href=#数据建模>数据建模</a></li>
+<li><a href=#es学习总结>ES学习总结</a></li>
+<li><a href=#参考链接>参考链接</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</section>
+</div>
+<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
+<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
+</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script type=text/javascript defer src=/js/katex.min.js></script>
+<script type=text/javascript defer src=/js/auto-render.min.js onload=renderMathInElement(document.body)></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
+<script src=/js/single.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

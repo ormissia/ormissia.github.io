@@ -1,0 +1,241 @@
+<!doctype html><html>
+<head>
+<title>Network</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link rel=stylesheet href=/css/katex.min.css>
+<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Network">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2004-network/">
+<link rel=stylesheet href=/css/layouts/list.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=搜索 data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
+<ul class=active>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
+<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2004-network/>Network</a>
+<ul class=active>
+<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
+<ul>
+<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
+<ul>
+<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
+<ul>
+<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
+<ul>
+<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
+<ul>
+<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题>Redis缓存三种问题</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
+<ul>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
+<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
+<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
+<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
+<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
+<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
+<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class="content container-fluid" id=content>
+<div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/knowledge/2004-network/001-oauth/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2004-network/001-oauth/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>OAuth 2.0扩展协议PKCE</h5>
+<p class="card-text post-summary">PKCE全称是Proof Key for Code Exchange，在2015年发布，它是OAuth 2.0核心的一个扩展协议，所以可以和现有的授权模式结合使用，比如Authorization Code+PKCE， 这也是最佳实践，PKCE最初是为移动设备应用和本地应用创建的， 主要是为了减少公共客户端的授权码拦截攻击。 在最新的OAuth 2.1规范中，推荐所有客户端都使用PKCE，而不仅仅是公共客户端，并且移除了Implicit隐式和Password模式，那之前使用这两种模式的客户端怎么办? 是的，现在都可以尝试使用Authorization Code+PKCE的授权模式。那PKCE为什么有这种魔力呢? 实际上它的原理是客户端提供一个自创建的证明给授权服务器，授权服务器通过它来验证客户端，把访问令牌(access_token)颁发给真实的客户端而不是伪造的。
+客户端类型 上面说到了PKCE主要是为了减少公共客户端的授权码拦截攻击，那就有必要介绍下两种客户端类型了。
+OAuth 2.0核心规范定义了两种客户端类型， confidential 机密的， 和 public 公开的， 区分这两种类型的方法是， 判断这个客户端是否有能力维护自己的机密性凭据 client_secret。
+confidential
+对于一个普通的web站点来说，虽然用户可以访问到前端页面，但是数据都来自服务器的后端api服务，前端只是获取授权码code，通过code换取access_token这一步是在后端的api完成的，由于是内部的服务器，客户端有能力维护密码或者密钥信息，这种是机密的的客户端。 public
+客户端本身没有能力保存密钥信息，比如桌面软件，手机App，单页面程序(SPA)，因为这些应用是发布出去的，实际上也就没有安全可言，恶意攻击者可以通过反编译等手段查看到客户端的密钥，这种是公开的客户端。 在OAuth 2.0授权码模式（Authorization Code）中，客户端通过授权码code向授权服务器获取访问令牌(access_token)时，同时还需要在请求中携带客户端密钥(client_secret)，授权服务器对其进行验证，保证access_token颁发给了合法的客户端，对于公开的客户端来说，本身就有密钥泄露的风险，所以就不能使用常规OAuth 2.0的授权码模式，于是就针对这种不能使用client_secret的场景，衍生出了Implicit隐式模式，这种模式从一开始就是不安全的。在经过一段时间之后，PKCE扩展协议推出，就是为了解决公开客户端的授权安全问题。
+授权码拦截攻击 上面是OAuth 2.0授权码模式的完整流程，授权码拦截攻击就是图中的C步骤发生的，也就是授权服务器返回给客户端授权码的时候，这么多步骤中为什么C步骤是不安全的呢?在OAuth 2.0核心规范中，要求授权服务器的anthorize endpoint和token endpoint必须使用TLS（安全传输层协议）保护，但是授权服务器携带授权码code返回到客户端的回调地址时，有可能不受TLS的保护，恶意程序就可以在这个过程中拦截授权码code，拿到code之后，接下来就是通过code向授权服务器换取访问令牌access_token，对于机密的客户端来说，请求access_token时需要携带客户端的密钥client_secret，而密钥保存在后端服务器上，所以恶意程序通过拦截拿到授权码code也没有用，而对于公开的客户端（手机App，桌面应用）来说，本身没有能力保护client_secret，因为可以通过反编译等手段，拿到客户端client_secret，也就可以通过授权码code换取access_token，到这一步，恶意应用就可以拿着token请求资源服务器了。
+state参数，在OAuth 2.0核心协议中，通过code换取token步骤中，推荐使用state参数，把请求和响应关联起来，可以防止跨站点请求伪造-CSRF攻击，但是state并不能防止上面的授权码拦截攻击，因为请求和响应并没有被伪造，而是响应的授权码被恶意程序拦截。
+PKCE 协议流程 PKCE协议本身是对OAuth 2.0的扩展，它和之前的授权码流程大体上是一致的。区别在于，在向授权服务器的authorize endpoint请求时，需要额外的code_challenge和code_challenge_method参数，向token endpoint请求时，需要额外的code_verifier参数，最后授权服务器会对这三个参数进行对比验证，通过后颁发令牌。
+原理分析 上面我们说了授权码拦截攻击，它是指在整个授权流程中，只需要拦截到从授权服务器回调给客户端的授权码code，就可以去授权服务器申请令牌了，因为客户端是公开的，就算有密钥client_secret也是形同虚设，恶意程序拿到访问令牌后，就可以光明正大的请求资源服务器了。
+PKCE是怎么做的呢?既然固定的client_secret是不安全的，那就每次请求生成一个随机的密钥（code_verifier），第一次请求到授权服务器的authorize endpoint时，携带code_challenge和code_challenge_method，也就是code_verifier转换后的值和转换方法，然后授权服务器需要把这两个参数缓存起来，第二次请求到token endpoint时，携带生成的随机密钥的原始值(code_verifier)，然后授权服务器使用下面的方法进行验证:
+plain
+code_challenge = code_verifier sha256
+code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier))) 通过后才颁发令牌，那向授权服务器authorize endpoint和token endpoint发起的这两次请求，该如何关联起来呢?</p>
+</div>
+<div class=card-footer>
+<span class=float-left>February 10, 2022</span>
+<a href=/posts/knowledge/2004-network/001-oauth/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class=paginator>
+</div>
+</div>
+</section>
+</div>
+<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
+<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
+</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script type=text/javascript defer src=/js/katex.min.js></script>
+<script type=text/javascript defer src=/js/auto-render.min.js onload=renderMathInElement(document.body)></script>
+<script src=/js/list.js></script>
+</body>
+</html>

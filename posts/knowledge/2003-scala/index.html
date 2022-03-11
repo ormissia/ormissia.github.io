@@ -1,0 +1,211 @@
+<!doctype html><html>
+<head>
+<title>Scala</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=x-ua-compatible content="ie=edge">
+<link rel=stylesheet href=/css/bootstrap.min.css>
+<link rel=stylesheet href=/css/layouts/main.css>
+<link rel=stylesheet href=/css/navigators/navbar.css>
+<link rel=stylesheet href=/css/plyr.css>
+<link rel=stylesheet href=/css/flag-icon.min.css>
+<link rel=stylesheet href=/css/katex.min.css>
+<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css>
+<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
+<meta property="og:title" content="Scala">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2003-scala/">
+<link rel=stylesheet href=/css/layouts/list.css>
+<link rel=stylesheet href=/css/navigators/sidebar.css>
+<link rel=stylesheet href=/css/style.css>
+</head>
+<body data-spy=scroll data-target=#TableOfContents data-offset=80>
+<div class="container-fluid bg-dimmed wrapper">
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+<div class=container>
+<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span>
+</button>
+<a class=navbar-brand href=/>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+Ormissia's Blog</a>
+<button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
+<ul class="navbar-nav ml-auto">
+</ul>
+</div>
+</div>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
+</nav>
+<section class=sidebar-section id=sidebar-section>
+<div class=sidebar-holder>
+<div class=sidebar id=sidebar>
+<form class=mx-auto method=get action=/search>
+<input type=text name=keyword placeholder=搜索 data-search id=search-box>
+</form>
+<div class=sidebar-tree>
+<ul class=tree id=tree>
+<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
+<div class=subtree>
+<li>
+<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
+<ul class=active>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
+<ul>
+<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
+<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
+<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
+<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
+<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
+<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
+<li><a class=active href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
+<ul>
+<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
+<ul>
+<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
+<ul>
+<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
+<ul>
+<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
+<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
+<ul>
+<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
+<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
+<ul>
+<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题>Redis缓存三种问题</a></li>
+</ul>
+</li>
+<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
+<ul>
+<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
+<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
+<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
+<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
+<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
+<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
+<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
+<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
+<ul>
+<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
+<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
+<ul>
+<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
+<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
+<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
+<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
+<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
+<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
+</ul>
+</li>
+<li>
+<i class="fas fa-plus-circle"></i><a href=/posts/unclassified/>未分类</a>
+<ul>
+<li><a href=/posts/unclassified/6001-markdown/ title="Markdown Sample">Markdown Sample</a></li>
+</ul>
+</li>
+</div>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class=content-section id=content-section>
+<div class="content container-fluid" id=content>
+<div class="container-fluid post-card-holder" id=post-card-holder>
+</div>
+<div class=paginator>
+</div>
+</div>
+</section>
+</div>
+<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
+<div class="container pt-5">
+<div class="row text-left">
+<div class="col-md-4 col-sm-12">
+<h5>联系方式:</h5>
+<ul>
+<li><span>QQ: </span> <span>1432050813</span></li>
+<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
+<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
+</a></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class=container>
+<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
+</div>
+<hr>
+<div class=container>
+<div class="row text-left">
+<div class=col-md-4>
+<a id=theme href=https://github.com/hossainemruz/toha target=_blank rel=noopener>
+<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha
+</a>
+</div>
+<div class="col-md-4 text-center">© 2021 Copyright.</div>
+<div class="col-md-4 text-right">
+<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<script type=text/javascript src=/js/popper.min.js></script>
+<script type=text/javascript src=/js/bootstrap.min.js></script>
+<script type=text/javascript src=/js/navbar.js></script>
+<script type=text/javascript src=/js/plyr.js></script>
+<script type=text/javascript src=/js/main.js></script>
+<script type=text/javascript defer src=/js/katex.min.js></script>
+<script type=text/javascript defer src=/js/auto-render.min.js onload=renderMathInElement(document.body)></script>
+<script src=/js/list.js></script>
+</body>
+</html>

@@ -355,10 +355,27 @@ Ormissia's Blog</a>
 <div class=container>
 <div class=row id=recent-post-cards>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/knowledge/2014-golang-atomic/ title=Golang中的原子操作 class=post-card-link>
+<a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题 class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2014-golang-atomic/head.svg alt="Card image cap">
+<img class=card-img-top src=/posts/knowledge/2009-redis/001-cache/head.svg alt="Card image cap">
+</div>
+<div class=card-body>
+<h5 class=card-title>Redis缓存三种问题</h5>
+<p class="card-text post-summary"> </p>
+</div>
+<div class=card-footer>
+<span class=float-left>March 11, 2022</span>
+<a href=/posts/knowledge/2009-redis/001-cache/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
+<div class="col-lg-4 col-md-6 pt-2 post-card">
+<a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作 class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2001-go/006-atomic/head.svg alt="Card image cap">
 </div>
 <div class=card-body>
 <h5 class=card-title>Golang中的原子操作</h5>
@@ -366,16 +383,16 @@ Ormissia's Blog</a>
 </div>
 <div class=card-footer>
 <span class=float-left>February 22, 2022</span>
-<a href=/posts/knowledge/2014-golang-atomic/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2001-go/006-atomic/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
 </div>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/knowledge/2013-oauth/ title="OAuth 2.0扩展协议PKCE" class=post-card-link>
+<a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE" class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2013-oauth/head.svg alt="Card image cap">
+<img class=card-img-top src=/posts/knowledge/2004-network/001-oauth/head.svg alt="Card image cap">
 </div>
 <div class=card-body>
 <h5 class=card-title>OAuth 2.0扩展协议PKCE</h5>
@@ -396,7 +413,7 @@ code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier))) 通过后才颁�
 </div>
 <div class=card-footer>
 <span class=float-left>February 10, 2022</span>
-<a href=/posts/knowledge/2013-oauth/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2004-network/001-oauth/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
@@ -423,10 +440,10 @@ code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier))) 通过后才颁�
 </a>
 </div>
 <div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/knowledge/2012-io-network/ title=网络IO演进历程 class=post-card-link>
+<a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程 class=post-card-link>
 <div class=card>
 <div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2012-io-network/head.svg alt="Card image cap">
+<img class=card-img-top src=/posts/knowledge/2005-operating-system/001-io-network/head.svg alt="Card image cap">
 </div>
 <div class=card-body>
 <h5 class=card-title>网络IO演进历程</h5>
@@ -438,7 +455,7 @@ NIO 非阻塞 IO：见名知意，就是在第一阶段(网卡-内核态)数据�
 </div>
 <div class=card-footer>
 <span class=float-left>January 1, 2022</span>
-<a href=/posts/knowledge/2012-io-network/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
+<a href=/posts/knowledge/2005-operating-system/001-io-network/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
@@ -456,31 +473,6 @@ NIO 非阻塞 IO：见名知意，就是在第一阶段(网卡-内核态)数据�
 <div class=card-footer>
 <span class=float-left>December 23, 2021</span>
 <a href=/posts/knowledge/2011-react-note/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class="col-lg-4 col-md-6 pt-2 post-card">
-<a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置 class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/problems/5006-mysql-brew-conf/head.svg alt="Card image cap">
-</div>
-<div class=card-body>
-<h5 class=card-title>修改Mac上brew安装的MySQL配置</h5>
-<p class="card-text post-summary"> 一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
-在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
-设置sql_model 关闭ONLY_FULL_GROUP_BY模式
-在sql命令行中查询sql_mode配置
-select @@sql_mode; mysql> select @@sql_mode; +-----------------------------------------------------------------------------------------------------------------------+ | @@sql_mode | +-----------------------------------------------------------------------------------------------------------------------+ | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | +-----------------------------------------------------------------------------------------------------------------------+ 1 row in set (0.00 sec) 去掉第一项后得到：
-STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
-# ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
-sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
-mysql.server restart 设置开机启动 cp /opt/homebrew/Cellar/mysql/8.0.27/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents launchctl load -w ~/Library/LaunchAgents/homebrew.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>December 20, 2021</span>
-<a href=/posts/problems/5006-mysql-brew-conf/ title=阅读 class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>
