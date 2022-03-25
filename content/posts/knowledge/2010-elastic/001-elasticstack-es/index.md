@@ -168,7 +168,7 @@ Lucene使用倒排索引解决了上述问题
 #### 倒排索引核心算法
 
 - 倒排索引表的压缩算法
-  - FOR:Frame Of Reference
+  - FOR: Frame Of Reference
   - RBM: RoaringBitMap
 - 词项索引的检索原理
   - FST: Finit state Transducers
