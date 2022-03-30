@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>Redis缓存三种问题</title>
+<title>Redis缓存相关问题</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,8 +12,9 @@
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Redis缓存三种问题">
-<meta property="og:description" content="缓存穿透  针对多个key
+<meta property="og:title" content="Redis缓存相关问题">
+<meta property="og:description" content="缓存一致性 形成原因 数据增删修操作造成的缓存内容与持久层内容的不一致
+解决办法  先更新缓存后更新数据库：更新缓存后程序异常终止或持久化失败导致数据未持久化 先更新数据库后更新缓存：更新数据库后程序异常终止或更新缓存失败导致缓存数据与数据库不一致。解决办法：先更新缓存，后将数据修改操作写入持久化队列，比如Kafka，让下游服务执行持久化操作  缓存穿透  针对多个key
  形成原因 缓存穿透是指查询一个不存在的数据，由于缓存是不命中时，去存储层（如MySQL）查找数据。如果从存储层查不到数据没有写入缓存，这将导致这个不存在的数据每次请求都要到存储层去查询，导致缓存穿透。流量一旦大了之后，容易导致DB宕机，进而影响整个业务。利用不存在的key频繁攻击应用，这就是漏洞。
 解决办法  使用布隆过滤器，如果从DB中没有查到则添加到布隆过滤器中。但由于布隆过滤器中存储的内容是不能修改的，需要注意使用场景。如果当前查询不存在的key以后会出现再实际数据中，使用布隆过滤器会导致改条数据无法查询到。 缓存不存在的key，如果从DB中没有查询到该数据，则将对应的key写入缓存中，并加一个合适的过期时间。value内容写一个不存在的标记，当程序读到该内容后，即知道这条key不存在对应的内容直接返回，不会将流量打入存储层。  缓存雪崩  多个key相同的过期时间
  形成原因 缓存雪崩是指多个key在相同时间过期，导致缓存在某一时刻同时失效。请求全部转发到DB，DB瞬时压力过高宕机导致服务不可用。
@@ -26,7 +27,7 @@
 <meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2009-redis/001-cache/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-03-11T14:04:47+08:00">
 <meta property="article:modified_time" content="2022-03-11T14:04:47+08:00">
-<meta name=description content="Redis缓存三种问题">
+<meta name=description content="Redis缓存相关问题">
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
 <link rel=stylesheet href=/css/layouts/single.css>
 <link rel=stylesheet href=/css/navigators/sidebar.css>
@@ -115,7 +116,7 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2009-redis/>Redis</a>
 <ul class=active>
-<li><a class=active href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存三种问题>Redis缓存三种问题</a></li>
+<li><a class=active href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li>
 </ul>
 </li>
 <li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
@@ -176,16 +177,24 @@ Ormissia's Blog</a>
 <p>Friday, March 11, 2022</p>
 </div>
 <div class=title>
-<h1>Redis缓存三种问题</h1>
+<h1>Redis缓存相关问题</h1>
 </div>
 <div class=post-content id=post-content>
+<h2 id=缓存一致性>缓存一致性</h2>
+<h3 id=形成原因>形成原因</h3>
+<p>数据增删修操作造成的缓存内容与持久层内容的不一致</p>
+<h3 id=解决办法>解决办法</h3>
+<ul>
+<li>先更新缓存后更新数据库：更新缓存后程序异常终止或持久化失败导致数据未持久化</li>
+<li>先更新数据库后更新缓存：更新数据库后程序异常终止或更新缓存失败导致缓存数据与数据库不一致。解决办法：先更新缓存，后将数据修改操作写入持久化队列，比如Kafka，让下游服务执行持久化操作</li>
+</ul>
 <h2 id=缓存穿透>缓存穿透</h2>
 <blockquote>
 <p>针对多个key</p>
 </blockquote>
-<h3 id=形成原因>形成原因</h3>
+<h3 id=形成原因-1>形成原因</h3>
 <p>缓存穿透是指查询一个不存在的数据，由于缓存是不命中时，去存储层（如MySQL）查找数据。如果从存储层查不到数据没有写入缓存，这将导致这个不存在的数据每次请求都要到存储层去查询，导致缓存穿透。流量一旦大了之后，容易导致DB宕机，进而影响整个业务。利用不存在的key频繁攻击应用，这就是漏洞。</p>
-<h3 id=解决办法>解决办法</h3>
+<h3 id=解决办法-1>解决办法</h3>
 <ul>
 <li>使用布隆过滤器，如果从DB中没有查到则添加到布隆过滤器中。但由于布隆过滤器中存储的内容是不能修改的，需要注意使用场景。如果当前查询不存在的<code>key</code>以后会出现再实际数据中，使用布隆过滤器会导致改条数据无法查询到。</li>
 <li>缓存不存在的<code>key</code>，如果从DB中没有查询到该数据，则将对应的<code>key</code>写入缓存中，并加一个合适的过期时间。<code>value</code>内容写一个不存在的标记，当程序读到该内容后，即知道这条<code>key</code>不存在对应的内容直接返回，不会将流量打入存储层。</li>
@@ -194,9 +203,9 @@ Ormissia's Blog</a>
 <blockquote>
 <p>多个key相同的过期时间</p>
 </blockquote>
-<h3 id=形成原因-1>形成原因</h3>
+<h3 id=形成原因-2>形成原因</h3>
 <p>缓存雪崩是指多个key在相同时间过期，导致缓存在某一时刻同时失效。请求全部转发到DB，DB瞬时压力过高宕机导致服务不可用。</p>
-<h3 id=解决办法-1>解决办法</h3>
+<h3 id=解决办法-2>解决办法</h3>
 <ul>
 <li>使用队列，将需要缓存的数据发往一个统一的队列中，依次写缓存。</li>
 <li>随机过期时间，比如一个<code>key</code>需要缓存一小时，则在一小时的基础上随机±5分钟，这样可以一定程度上解决一批<code>key</code>集中过期的问题</li>
@@ -205,10 +214,10 @@ Ormissia's Blog</a>
 <blockquote>
 <p>针对一个key</p>
 </blockquote>
-<h3 id=形成原因-2>形成原因</h3>
+<h3 id=形成原因-3>形成原因</h3>
 <p>某个设置了过期时间的<code>key</code>，在过期后某一时间有大量并发请求进来。而在第一个请求进来，从DB中查完还没来得及写入缓存中时后面的并发请求也进来了，就会造成同一个<code>key</code>并发访问DB，瞬间打垮存储层。</p>
 <p>一般突然出现的热点<code>key</code>容易造成这种问题。</p>
-<h3 id=解决办法-2>解决办法</h3>
+<h3 id=解决办法-3>解决办法</h3>
 <ul>
 <li>使用分布式互斥锁，当一个<code>key</code>在缓存中没有查询到时，先去抢这个<code>key</code>的锁，抢到则去存储层进行查询，没有抢到则去缓存中查询，根据实际情况如果一次没有查找到可以循环查找几次（毕竟查数据库需要耗时）。</li>
 </ul>
@@ -219,13 +228,13 @@ Ormissia's Blog</a>
 <div class="row pl-3 pr-3">
 <div class="col-md-6 share-buttons">
 <strong>分享:</strong>
-<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2009-redis%2f001-cache%2f&title=Redis%e7%bc%93%e5%ad%98%e4%b8%89%e7%a7%8d%e9%97%ae%e9%a2%98" target=_blank>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2009-redis%2f001-cache%2f&title=Redis%e7%bc%93%e5%ad%98%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98" target=_blank>
 <i class="fab fa-reddit"></i>
 </a>
-<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2009-redis%2f001-cache%2f&title=Redis%e7%bc%93%e5%ad%98%e4%b8%89%e7%a7%8d%e9%97%ae%e9%a2%98" target=_blank>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2009-redis%2f001-cache%2f&title=Redis%e7%bc%93%e5%ad%98%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98" target=_blank>
 <i class="fab fa-linkedin"></i>
 </a>
-<a class="btn btn-sm email-btn" href="mailto:?subject=Redis%e7%bc%93%e5%ad%98%e4%b8%89%e7%a7%8d%e9%97%ae%e9%a2%98&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2009-redis%2f001-cache%2f" target=_blank>
+<a class="btn btn-sm email-btn" href="mailto:?subject=Redis%e7%bc%93%e5%ad%98%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2009-redis%2f001-cache%2f" target=_blank>
 <i class="fas fa-envelope-open-text"></i>
 </a>
 </div>
@@ -269,22 +278,28 @@ Ormissia's Blog</a>
 <div class=toc>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#缓存穿透>缓存穿透</a>
+<li><a href=#缓存一致性>缓存一致性</a>
 <ul>
 <li><a href=#形成原因>形成原因</a></li>
 <li><a href=#解决办法>解决办法</a></li>
 </ul>
 </li>
-<li><a href=#缓存雪崩>缓存雪崩</a>
+<li><a href=#缓存穿透>缓存穿透</a>
 <ul>
 <li><a href=#形成原因-1>形成原因</a></li>
 <li><a href=#解决办法-1>解决办法</a></li>
 </ul>
 </li>
-<li><a href=#缓存击穿>缓存击穿</a>
+<li><a href=#缓存雪崩>缓存雪崩</a>
 <ul>
 <li><a href=#形成原因-2>形成原因</a></li>
 <li><a href=#解决办法-2>解决办法</a></li>
+</ul>
+</li>
+<li><a href=#缓存击穿>缓存击穿</a>
+<ul>
+<li><a href=#形成原因-3>形成原因</a></li>
+<li><a href=#解决办法-3>解决办法</a></li>
 </ul>
 </li>
 <li><a href=#其他>其他</a></li>
