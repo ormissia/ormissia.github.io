@@ -64,7 +64,7 @@ Ormissia's Blog</a>
 <i class="fas fa-plus-circle"></i><a href=/notes/go/advance/>Advance</a>
 <ul>
 <li><a href=/notes/go/advance/time/ title=time>time</a></li>
-<li><a href=/notes/go/advance/gomod/ title="go mod">go mod</a></li>
+<li><a href=/notes/go/advance/chan/ title="go mod">go mod</a></li>
 </ul>
 </li>
 <li>
@@ -363,6 +363,62 @@ Ormissia's Blog</a>
 
 	<span style=color:#a6e22e>sumD</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>now</span>.<span style=color:#a6e22e>Sub</span>(<span style=color:#a6e22e>d1</span>)
 	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%v 天\n&#34;</span>, <span style=color:#a6e22e>sumD</span>.<span style=color:#a6e22e>Hours</span>()<span style=color:#f92672>/</span><span style=color:#ae81ff>24</span>)
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
+<h5 class=note-title><span>go chan close</span></h5>
+<div class=card>
+<div class=card-body><p>在<code>go</code>的<code>chan</code>中，<code>chan</code>被关闭后，消费者会继续读取<code>channel</code>中的消息。直到消息被全部读取之后使用<code>i, ok := &lt;-ch</code>得到的<code>ok</code>才会变为false</p>
+<p>下面是测试代码以及运行时控制台打印结果：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>3</span>)
+
+	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>producer</span>(<span style=color:#a6e22e>ch</span>)
+
+	<span style=color:#66d9ef>for</span> {
+		<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>
+		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;consume msg: %d\tok: %v\n&#34;</span>, <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>ok</span>)
+		<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>3</span>)
+	}
+
+}
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>producer</span>(<span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>) {
+	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>10</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+		<span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>i</span>
+		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;produce msg: %d\n&#34;</span>, <span style=color:#a6e22e>i</span>)
+		<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+	}
+	close(<span style=color:#a6e22e>ch</span>)
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;chan closed&#34;</span>)
+}
+</code></pre></div><p>输出结果</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>produce msg: <span style=color:#ae81ff>0</span>
+consume msg: 0	ok: true
+produce msg: <span style=color:#ae81ff>1</span>
+produce msg: <span style=color:#ae81ff>2</span>
+consume msg: 1	ok: true
+produce msg: <span style=color:#ae81ff>3</span>
+produce msg: <span style=color:#ae81ff>4</span>
+consume msg: 2	ok: true
+produce msg: <span style=color:#ae81ff>5</span>
+consume msg: 3	ok: true
+produce msg: <span style=color:#ae81ff>6</span>
+consume msg: 4	ok: true
+produce msg: <span style=color:#ae81ff>7</span>
+consume msg: 5	ok: true
+produce msg: <span style=color:#ae81ff>8</span>
+consume msg: 6	ok: true
+produce msg: <span style=color:#ae81ff>9</span>
+chan closed
+consume msg: 7	ok: true
+consume msg: 8	ok: true
+consume msg: 9	ok: true
+consume msg: 0	ok: false
+consume msg: 0	ok: false
 </code></pre></div></div>
 </div>
 </div>
@@ -893,187 +949,6 @@ a<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ormissia&#34;<
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=color:#66d9ef>SELECT</span> COALESCE(<span style=color:#66d9ef>sum</span>(col_name), <span style=color:#ae81ff>0</span>) <span style=color:#66d9ef>FROM</span> <span style=color:#66d9ef>Table</span>
 </code></pre></div><p>此外还有<code>ISNULL(SQL Server)</code>，<code>NVL(Oracle)</code>以及<code>IFNULL(MySQL)</code>的用法，起到同样的效果</p>
 </div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>快捷键</span></h5>
-<div class=card>
-<div class=card-body><p>回到命令行开头&ndash;<code>Home</code></p>
-<pre tabindex=0><code>Ctrl+a
-</code></pre><p>回到命令行的尾部&ndash;<code>End</code></p>
-<pre tabindex=0><code>Ctrl+e
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>删除光标前边的所有字符</p>
-<pre tabindex=0><code>Ctrl+u
-</code></pre><p>删除光标后边的所有字符</p>
-<pre tabindex=0><code>Ctrl+k
-</code></pre><p>删除光标前的一个单词</p>
-<pre tabindex=0><code>Ctrl+w
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>输入曾经的命令下的某个单词或字母，按照单词的匹配<code>history</code></p>
-<pre tabindex=0><code>Ctrl+r
-</code></pre></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>cat</span></h5>
-<div class=card>
-<div class=card-body><p>在<code>cat</code>输出时候显示行数</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cat -n maim.go
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>wc</span></h5>
-<div class=card>
-<div class=card-body><p>统计文件行、单词、字符数量
-格式：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>usage: wc <span style=color:#f92672>[</span>-clmw<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>file ...<span style=color:#f92672>]</span>
-</code></pre></div><p>统计<code>main.go</code>的行、单词、字符数量</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>wc main.go
-</code></pre></div><p>选项：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>-l 统计行数
--c 统计字符数
--w 统计单词数
--L 统计最长的行的字符数
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>nc</span></h5>
-<div class=card>
-<div class=card-body><p>简单的文件传输工具</p>
-<p>接收方</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nc -l <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &gt; filename
-</code></pre></div><p>发送方</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nc <span style=color:#f92672>[</span>ip<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &lt; filename
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>gzip</span></h5>
-<div class=card>
-<div class=card-body><p>解压<code>*.gz</code>的压缩文件</p>
-<p>与<code>*.tar.gz</code>文件不同，<code>*.gz</code>文件需要用<code>gzip</code>来解压</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>gzip -d filename
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>hostnamectl</span></h5>
-<div class=card>
-<div class=card-body><p>修改<code>hostname</code>，重启也生效</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>hostnamectl set-hostname CentOS
-</code></pre></div><p>查看<code>hostname</code></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>hostname
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>echo</span></h5>
-<div class=card>
-<div class=card-body><p><code>-n</code>：不换行
-<code>-e</code>：支持扩展属性</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 红色显示OK</span>
-echo -e <span style=color:#e6db74>&#34;\033[31mOK\033[0m&#34;</span>
-<span style=color:#75715e># 绿色显示OK</span>
-echo -e <span style=color:#e6db74>&#34;\033[32mOK\033[0m&#34;</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>tr</span></h5>
-<div class=card>
-<div class=card-body><p>删除多余重复字符串</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 删除多余的空格</span>
-echo <span style=color:#e6db74>&#34;a   b   c&#34;</span> | tr -s <span style=color:#e6db74>&#34; &#34;</span>
-<span style=color:#75715e># 输出：a b c</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 删除多余的a</span>
-echo <span style=color:#e6db74>&#34;aaaaacccdetaaadfa   c&#34;</span> | tr -s <span style=color:#e6db74>&#34;a&#34;</span>
-<span style=color:#75715e># 输出：acccdetadfa   c</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>cut</span></h5>
-<div class=card>
-<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 以冒号为分隔，过滤第一列</span>
-cut -d: -f1 /etc/passwd
-<span style=color:#75715e># 输出当前系统下所有用户名</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>date</span></h5>
-<div class=card>
-<div class=card-body><p>查看系统时间</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>date
-<span style=color:#75715e># Tue Oct 12 13:36:24 CST 2021</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>tzselect</span></h5>
-<div class=card>
-<div class=card-body><p>查看时区</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ls -l /etc/localtime
-<span style=color:#75715e># lrwxrwxrwx. 1 root root 33 Oct 12 11:32 /etc/localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai</span>
-</code></pre></div></div>
-</div>
-<div class=card>
-<div class=card-body><p>获取TZ时区</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tzselect
-</code></pre></div><p>输出：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Please identify a location so that time zone rules can be set correctly.
-Please <span style=color:#66d9ef>select</span> a continent, ocean, <span style=color:#e6db74>&#34;coord&#34;</span>, or <span style=color:#e6db74>&#34;TZ&#34;</span>.
- 1<span style=color:#f92672>)</span> Africa
- 2<span style=color:#f92672>)</span> Americas
- 3<span style=color:#f92672>)</span> Antarctica
- 4<span style=color:#f92672>)</span> Asia
- 5<span style=color:#f92672>)</span> Atlantic Ocean
- 6<span style=color:#f92672>)</span> Australia
- 7<span style=color:#f92672>)</span> Europe
- 8<span style=color:#f92672>)</span> Indian Ocean
- 9<span style=color:#f92672>)</span> Pacific Ocean
-10<span style=color:#f92672>)</span> coord - I want to use geographical coordinates.
-11<span style=color:#f92672>)</span> TZ - I want to specify the time zone using the Posix TZ format.
-<span style=color:#75715e>#? </span>
-
-<span style=color:#75715e># 选择数字，依次选择地区、国家、城市，即可得到对应时区</span>
-<span style=color:#75715e># Asia/Shanghai</span>
-</code></pre></div></div>
-</div>
-<div class=card>
-<div class=card-body><p>修改系统时区（所有用户生效）</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>rm -f /etc/localtime
-ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-</code></pre></div></div>
 </div>
 </div>
 </div>
