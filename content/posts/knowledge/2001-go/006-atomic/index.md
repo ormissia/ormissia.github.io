@@ -186,6 +186,8 @@ PASS
 
 ### 原理浅析
 
+参考： [互斥锁跟原子操作的区别-底层实现](https://ormissia.github.io/posts/knowledge/2001-go/006-atomic/#%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0)
+
 ## 参考链接
 
 - [Golang五种原子性操作的用法详解](https://zhuanlan.zhihu.com/p/412666957)
