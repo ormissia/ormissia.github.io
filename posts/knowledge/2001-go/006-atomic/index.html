@@ -305,10 +305,12 @@ pkg: wire/atomic_test
 BenchmarkAtomic
 BenchmarkAtomic-8   	       4	 <span style=color:#ae81ff>359007542</span> ns/op
 PASS
-</code></pre></div><p>三次取平均：<code>(359013958 + 359734514 + 359007542) / 3 = 359252004 ns/op</code></p>
+</code></pre></div><blockquote>
+<p>三次取平均：<code>(359013958 + 359734514 + 359007542) / 3 = 359252004 ns/op</code></p>
+</blockquote>
 <h3 id=测试结果对比>测试结果对比</h3>
-<p>根据测试结果数据使用互斥锁做累加每次循环耗时<code>858182521</code>ns，而使用原子操作做累加每次耗时<code>359252004</code>ns</p>
-<p>这也印证了之前说过的：<code>互斥锁适用于来保护一段逻辑，原子操作适用于于对一个变量的更新保护</code></p>
+<p>根据测试结果数据使用互斥锁做累加每次循环耗时<code>858182521 ns</code>，而使用原子操作做累加每次耗时<code>359252004 ns</code>。</p>
+<p>这也印证了之前说过的：<code>互斥锁适用于来保护一段逻辑，原子操作适用于于对一个变量的更新保护。</code></p>
 <h2 id=参考链接>参考链接</h2>
 <ul>
 <li><a href=https://zhuanlan.zhihu.com/p/412666957>Golang五种原子性操作的用法详解</a></li>
