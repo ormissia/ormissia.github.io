@@ -1,12 +1,12 @@
 ---
-title: go mod
-weight: 122
+title: go chan
+weight: 123
 menu:
     notes:
-        name: go mod
-        identifier: notes-go-advance-gomod
+        name: go chan
+        identifier: notes-go-advance-gochan
         parent: notes-go-advance
-        weight: 122
+        weight: 123
 ---
 
 <!-- go chan -->
