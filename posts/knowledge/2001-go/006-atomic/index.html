@@ -314,6 +314,7 @@ PASS
 <p>根据测试结果数据使用互斥锁做累加每次循环耗时<code>858182521 ns</code>，而使用原子操作做累加每次耗时<code>359252004 ns</code>。</p>
 <p>这也印证了之前说过的：<code>互斥锁适用于来保护一段逻辑，原子操作适用于于对一个变量的更新保护。</code></p>
 <h3 id=原理浅析>原理浅析</h3>
+<p>参考： <a href=https://ormissia.github.io/posts/knowledge/2001-go/006-atomic/#%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0>互斥锁跟原子操作的区别-底层实现</a></p>
 <h2 id=参考链接>参考链接</h2>
 <ul>
 <li><a href=https://zhuanlan.zhihu.com/p/412666957>Golang五种原子性操作的用法详解</a></li>
