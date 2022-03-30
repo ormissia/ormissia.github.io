@@ -170,7 +170,7 @@ func syncAdd(param int64) int64 { var wg sync.WaitGroup lock := sync.Mutex{} for
 func BenchmarkSync(b *testing.B) { for i := 0; i &lt; b.N; i++ { flag := int64(0) res := syncAdd(flag) if res !</p>
 </div>
 <div class=card-footer>
-<span class=float-left>February 22, 2022</span>
+<span class=float-left>March 30, 2022</span>
 <a href=/posts/knowledge/2001-go/006-atomic/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
