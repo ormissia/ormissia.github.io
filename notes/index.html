@@ -64,7 +64,8 @@ Ormissia's Blog</a>
 <i class="fas fa-plus-circle"></i><a href=/notes/go/advance/>Advance</a>
 <ul>
 <li><a href=/notes/go/advance/time/ title=time>time</a></li>
-<li><a href=/notes/go/advance/chan/ title="go mod">go mod</a></li>
+<li><a href=/notes/go/advance/gomod/ title="go mod">go mod</a></li>
+<li><a href=/notes/go/advance/chan/ title="go chan">go chan</a></li>
 </ul>
 </li>
 <li>
@@ -369,6 +370,15 @@ Ormissia's Blog</a>
 </div>
 <div class=note-card>
 <div class=item>
+<h5 class=note-title><span>go get 下载指定版本</span></h5>
+<div class=card>
+<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go get github.com/ormissia/go-opv@v0.0.2
+</code></pre></div></div>
+</div>
+</div>
+</div>
+<div class=note-card>
+<div class=item>
 <h5 class=note-title><span>go chan close</span></h5>
 <div class=card>
 <div class=card-body><p>在<code>go</code>的<code>chan</code>中，<code>chan</code>被关闭后，消费者会继续读取<code>channel</code>中的消息。直到消息被全部读取之后使用<code>i, ok := &lt;-ch</code>得到的<code>ok</code>才会变为false</p>
@@ -419,15 +429,6 @@ consume msg: 8	ok: true
 consume msg: 9	ok: true
 consume msg: 0	ok: false
 consume msg: 0	ok: false
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>go get 下载指定版本</span></h5>
-<div class=card>
-<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>go get github.com/ormissia/go-opv@v0.0.2
 </code></pre></div></div>
 </div>
 </div>

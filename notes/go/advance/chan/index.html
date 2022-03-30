@@ -1,6 +1,6 @@
 <!doctype html><html>
 <head>
-<title>go mod</title>
+<title>go chan</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -12,7 +12,7 @@
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="go mod">
+<meta property="og:title" content="go chan">
 <meta property="og:description" content="go chan close 在go的chan中，chan被关闭后，消费者会继续读取channel中的消息。直到消息被全部读取之后使用i, ok := <-ch得到的ok才会变为false
 下面是测试代码以及运行时控制台打印结果：
 func main() { ch := make(chan int, 3) go producer(ch) for { i, ok := <-ch fmt.Printf(&#34;consume msg: %d\tok: %v\n&#34;, i, ok) time.Sleep(time.Second * 3) } } func producer(ch chan int) { for i := 0; i < 10; i++ { ch <- i fmt.Printf(&#34;produce msg: %d\n&#34;, i) time.Sleep(time.Second) } close(ch) fmt.Println(&#34;chan closed&#34;) } 输出结果
@@ -67,7 +67,8 @@ Ormissia's Blog</a>
 <i class="fas fa-minus-circle"></i><a class=active href=/notes/go/advance/>Advance</a>
 <ul class=active>
 <li><a href=/notes/go/advance/time/ title=time>time</a></li>
-<li><a class=active href=/notes/go/advance/chan/ title="go mod">go mod</a></li>
+<li><a href=/notes/go/advance/gomod/ title="go mod">go mod</a></li>
+<li><a class=active href=/notes/go/advance/chan/ title="go chan">go chan</a></li>
 </ul>
 </li>
 <li>
