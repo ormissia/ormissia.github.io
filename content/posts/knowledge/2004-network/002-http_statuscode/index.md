@@ -4,7 +4,7 @@ date: 2022-03-31T10:31:11+08:00
 hero: head.svg
 menu:
   sidebar:
-    name:HTTP笔记
+    name: HTTP笔记
     identifier: statuscode
     parent: network
     weight: 002
