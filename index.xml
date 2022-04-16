@@ -1,75 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 31 Mar 2022 10:31:11 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
-1Byte true/false uint8
-1Byte 0-255 uint16
-2Byte 0-65535 uint32
-4Byte 0-4294967295 uint64
-8Byte 0-18446744073709551615 int8
-1Byte -128-127 int16
-2Byte -32768-32767 int32
-4Byte -2147483648-2147483647 int64
-6Byte -9223372036854775808-9223372036854775807 byte
-1Byte 类似 uint8 rune
-4Byte 类似 int32 uint
-4Byte / 8Byte 32 或 64 位 int
-4Byte / 8Byte 与 uint 一样大小 float32
-4Byte float64
-8Byte string
-1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型） 切片拼接 slice1 := []int{0, 1, 2, 3} slice2 := []int{3, 4, 5} slice1 = append(slice1, slice2.</description></item><item><title>time</title><link>https://ormissia.github.io/notes/go/advance/time/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/time/</guid><description>时间转换 字符串转时间
-time.Parse() 时间转字符串
-time.Format() 时间转时间戳
-Time.Unix() 时间戳转时间
-time.Unix() 计时 朴素方法
-startTime := time.Now() //do something time.Sleep(time.Second) duration := time.Since(startTime) fmt.Printf(&amp;#34;经过时间：%v\n&amp;#34;, duration) //经过时间：1.005046959s 简洁方法
-// TimeCost 耗时统计函数 func TimeCost(start time.Time) { duration := time.Since(start) fmt.Printf(&amp;#34;经过时间：%v\n&amp;#34;, duration) } defer TimeCost(time.Now()) //do something time.Sleep(time.Second) //经过时间：1.005054375s 优雅方法
-// TimeCost 耗时统计函数 func TimeCost() func() { start := time.Now() return func() { duration := time.Since(start) fmt.</description></item><item><title>go mod</title><link>https://ormissia.github.io/notes/go/advance/gomod/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/gomod/</guid><description>go get 下载指定版本 go get github.com/ormissia/go-opv@v0.0.2</description></item><item><title>go chan</title><link>https://ormissia.github.io/notes/go/advance/chan/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/chan/</guid><description>go chan close 在go的chan中，chan被关闭后，消费者会继续读取channel中的消息。直到消息被全部读取之后使用i, ok := &amp;lt;-ch得到的ok才会变为false
-下面是测试代码以及运行时控制台打印结果：
-func main() { ch := make(chan int, 3) go producer(ch) for { i, ok := &amp;lt;-ch fmt.Printf(&amp;#34;consume msg: %d\tok: %v\n&amp;#34;, i, ok) time.Sleep(time.Second * 3) } } func producer(ch chan int) { for i := 0; i &amp;lt; 10; i++ { ch &amp;lt;- i fmt.Printf(&amp;#34;produce msg: %d\n&amp;#34;, i) time.Sleep(time.Second) } close(ch) fmt.Println(&amp;#34;chan closed&amp;#34;) } 输出结果
-produce msg: 0 consume msg: 0 ok: true produce msg: 1 produce msg: 2 consume msg: 1 ok: true produce msg: 3 produce msg: 4 consume msg: 2 ok: true produce msg: 5 consume msg: 3 ok: true produce msg: 6 consume msg: 4 ok: true produce msg: 7 consume msg: 5 ok: true produce msg: 8 consume msg: 6 ok: true produce msg: 9 chan closed consume msg: 7 ok: true consume msg: 8 ok: true consume msg: 9 ok: true consume msg: 0 ok: false consume msg: 0 ok: false</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/go/algorithm/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/algorithm/basic/</guid><description>异或 异或运算法则：无进位相加 异或运算性质： 0 ^ N = N N ^ N = 0 满足交换律和结合律 a := 0b1100 b := 0b1001 fmt.Printf(&amp;#34;%b&amp;#34;,a^b) //101 简单应用：不申请额外内存交换两个变量的值
-a := 0b1100 b := 0b1001 a = a ^ b b = a ^ b //b = (a ^ b) ^ b = a a = a ^ b //a = (a ^ b) ^ a = b fmt.Printf(&amp;#34;a:%b,b:%b&amp;#34;, a, b) //a:1001,b:1100 堆 堆的实质是一棵完全二叉树</description></item><item><title>Basic Types</title><link>https://ormissia.github.io/notes/java/basic/basic_type/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/java/basic/basic_type/</guid><description>Strings test
-String str = &amp;#34;123&amp;#34;;</description></item><item><title>Basic Types</title><link>https://ormissia.github.io/notes/scala/basic/basic_type/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/scala/basic/basic_type/</guid><description>函数 函数参数为val类型，且可以给出默认值
-def test(a: Int, b: Int = 1, c: Int = 2): Unit = { println(s&amp;quot;$a $b $c&amp;quot;) } test(1, 2) //1 2 2 test(1, c = 4) //1 1 4 匿名函数 函数是带有参数的表达式。
-(x: Int) =&amp;gt; x + 1 方法 方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。
-方法由def关键字定义。def后面跟着一个名字、参数列表、返回类型和方法体。
-def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier println(addThenMultiply(1, 2)(3)) // 9 字符串拼接 val a = 1 val b = 2 val c = s&amp;quot;$a+$b=${a + b}&amp;quot; 对象 约等于static单例对象</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/python/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/python/basic/basic/</guid><description>函数 在 python 中，类型属于对象，变量是没有类型的：
-a=[1,2,3] a=&amp;#34;ormissia&amp;#34; 以上代码中，[1,2,3]是List类型，&amp;quot;ormissia&amp;quot;是String类型，而变量a是没有类型，他仅仅是一个对象的引用（一个指针），可以是指向List类型对象，也可以是指向String类型对象。
-可更改(mutable)与不可更改(immutable)对象 在python中，strings，tuples和numbers是不可更改的对象，而list，dict等则是可以修改的对象。
-不可变类型：变量赋值a=5后再赋值a=10，这里实际是新生成一个int值对象10，再让a指向它，而5被丢弃，不是改变a的值，相当于新生成了a。
-可变类型：变量赋值la = [1,2,3,4]后再赋值la[2] = 5则是将list la的第三个元素值更改，本身la没有动，只是其内部的一部分值被修改了。
-python函数的参数传递： 不可变类型：类似C++的值传递，如整数、字符串、元组。如fun(a)，传递的只是a的值，没有影响a对象本身。如果在fun(a)内部修改a的值，则是新生成一个a的对象。
-可变类型：类似C++的引用传递，如列表，字典。如fun(la)，则是将la真正的传过去，修改后fun外部的la也会受影响
-python中一切都是对象，严格意义我们不能说值传递还是引用传递，我们应该说传不可变对象和传可变对象。</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/js/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/js/basic/basic/</guid><description>函数</description></item><item><title>SQL DML</title><link>https://ormissia.github.io/notes/sql/dml/dml/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/sql/dml/dml/</guid><description>按年月日分组聚合 group by date_format(field_name, format); 根据format字符串格式化date值。下列修饰符可以被用在format字符串中：
-%M 月名字(January……December) %W 星期名字(Sunday……Saturday) %D 有英语前缀的月份的日期(1st, 2nd, 3rd, 等等。） %Y 年, 数字, 4 位 %y 年, 数字, 2 位 %a 缩写的星期名字(Sun……Sat) %d 月份中的天数, 数字(00……31) %e 月份中的天数, 数字(0……31) %m 月, 数字(01……12) %c 月, 数字(1……12) %b 缩写的月份名字(Jan……Dec) %j 一年中的天数(001……366) %H 小时(00……23) %k 小时(0……23) %h 小时(01……12) %I 小时(01……12) %l 小时(1……12) %i 分钟, 数字(00……59) %r 时间,12 小时(hh:mm:ss [AP]M) %T 时间,24 小时(hh:mm:ss) %S 秒(00……59) %s 秒(00……59) %p AM或PM %w 一个星期中的天数(0=Sunday ……6=Saturday ） %U 星期(0……52), 这里星期天是星期的第一天 %u 星期(0……52), 这里星期一是星期的第一天 %% 一个文字“%” count统计不重复个数 select count(distinct (field_name)) from table_name sum结果为null时置为0 SQL中使用sum统计总数时:sum(col_name)，如果某列不符合sum的条件（比如某列中含有NULL元素，或者不是数值类型，或者没有符合where条件的行），那么会返回NULL 有的时候不希望sum的结果为NULL，可以做如下的处理：</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/linux/shell/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/basic/</guid><description>快捷键 回到命令行开头&amp;ndash;Home
-Ctrl+a 回到命令行的尾部&amp;ndash;End
-Ctrl+e 删除光标前边的所有字符
-Ctrl+u 删除光标后边的所有字符
-Ctrl+k 删除光标前的一个单词
-Ctrl+w 输入曾经的命令下的某个单词或字母，按照单词的匹配history
-Ctrl+r cat 在cat输出时候显示行数
-cat -n maim.go wc 统计文件行、单词、字符数量 格式：
-usage: wc [-clmw] [file ...] 统计main.go的行、单词、字符数量
-wc main.go 选项：
--l 统计行数 -c 统计字符数 -w 统计单词数 -L 统计最长的行的字符数 nc 简单的文件传输工具
-接收方
-nc -l [port] &amp;gt; filename 发送方
-nc [ip] [port] &amp;lt; filename gzip 解压*.</description></item><item><title>Advance</title><link>https://ormissia.github.io/notes/linux/shell/advance/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/advance/</guid><description>xargs xargs是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。 格式:
-somecommand | xargs [-item] [command] 选项：
--a file 从文件中读入作为 stdin -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。 -p 当每次执行一个argument的时候询问一次用户。 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。 -t 表示先打印命令，然后再执行。 -i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 {}，可以用 {} 代替。 -r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。 -s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。 -L num 从标准输入一次读取 num 行送给 command 命令。 -l 同 -L。 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。 -x exit的意思，主要是配合-s使用。。 top Linux top命令VIRT,RES,SHR,DATA的含义:
-VIRT:virtual memory usage虚拟内存 进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等 假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量 RES:resident memory usage常驻内存 进程当前使用的内存大小，但不包括swap out 包含其他进程的共享 如果申请100m的内存，实际使用10m，它只增长10m，与VIRT相反 关于库占用内存的情况，它只统计加载的库文件所占内存大小 SHR:shared memory共享内存 除了自身进程的共享内存，也包括其他进程的共享内存 虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小 计算某个进程所占的物理内存大小公式：RES – SHR swap out后，它将会降下来 top运行中可以通过top的内部命令对进程的显示方式进行控制。内部命令如下：</description></item><item><title>vi</title><link>https://ormissia.github.io/notes/linux/shell/vi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/vi/</guid><description>命令 显示行号
-:set number 在vi中执行shell命令
-:!ls-l 将shell命令的结果插入到当前行的下一行
-:r !date //读取系统时间并插入到当前行的下一行 将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容
-:62,72 !sort //将62行到72行的内容进行排序 当前光标所在行，除可以指定行号外，也可以用.表示
-:. !tr [a-z] [A-Z] //将当前行的小写转为大写 将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容
-:62,72 w !sort //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域 将某一行作为shell命令执行
-:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容</description></item><item><title>Script</title><link>https://ormissia.github.io/notes/linux/shell/script/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/script/</guid><description>脚本执行方式 需要可执行权限 相对路径执行 绝对路径执行 不需要可执行权限 sh 脚本文件名 source 脚本文件名 // 不会启动子进程，通过pstree查看进程树 定义变量 定义变量：变量名=变量值 取消变量：unset 变量名 注意事项： =两边不能有空格 不能使用关键字做变量名，如：ls、cd等 如果变量名已存在，则会覆盖之前的变量值 变量名称由字母、数字、下划线组成，不能以数字开头 变量类型 环境变量：变量名通常大写，由操作系统维护 位置变量：shell内置变量，存储脚本执行时的参数 使用$n表示，n为数字序列号：$1、$2、&amp;hellip;、${10}、${11}、&amp;hellip; 预定义变量：shell内置变量，可以直接调用但是不能赋值或修改' $0：存储所在的进程或脚本名 $$：当前进程的PID号 $?：命令执行后的返回状态，0-正常，其他-异常 $#：已加载的位置变量的个数 $*：所有位置变量的值 自定义变量：用户自主设置 多种引号的区别 双引号：允许扩展，以$引用其他变量 单引号：禁用扩展，将$视为普通字符 反引号：将命令执行的输出作为变量值，$()与反引号等效 变量的作用范围 局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用 全局变量：在当前Shell以及子Shell中均有效（export a=1：定义全局变量a） read标准输入取值 read从键盘读入变量值完成赋值</description></item><item><title>Memory</title><link>https://ormissia.github.io/notes/linux/system/system/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/system/system/</guid><description>内存 一般来说内存占用大小有如下规律：VSS &amp;gt;= RSS &amp;gt;= PSS &amp;gt;= USS
-VSS - Virtual Set Size 虚拟耗用内存（包含共享库占用的内存） RSS - Resident Set Size 实际使用物理内存（包含共享库占用的内存） PSS - Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存） USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存） RSS / VSZ
-RSS是Resident Set Size（常驻内存大小）的缩写，用于表示进程使用了多少内存（RAM中的物理内存）， RSS不包含已经被换出的内存。RSS包含了它所链接的动态库并且被加载到物理内存中的内存。RSS还包含栈内存和堆内存。 VSZ是Virtual Memory Size（虚拟内存大小）的缩写。它包含了进程所能访问的所有内存，包含了被换出的内存， 被分配但是还没有被使用的内存，以及动态库中的内存。 假设进程A的二进制文件是500K，并且链接了一个2500K的动态库，堆和栈共使用了200K，其中100K在内存中（剩下的被换出或者不再被使用）， 一共加载了动态库中的1000K内容以及二进制文件中的400K内容至内存中，那么：
-RSS: 400K + 1000K + 100K = 1500K VSZ: 500K + 2500K + 200K = 3200K 由于部分内存是共享的，被多个进程使用，所以如果将所有进程的RSS值加起来可能会大于系统的内存总量。
-申请过的内存如果程序没有实际使用，则可能不显示在RSS里。比如说一个程序，预先申请了一大批内存， 过了一段时间才使用，你会发现RSS会增长而VSZ保持不变。</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/hbase/shell/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/hbase/shell/basic/</guid><description>shell 在hbase的shell中scan时指定列
-scan &amp;#39;table_name&amp;#39;,{STARTROW=&amp;gt;&amp;#39;start_row&amp;#39;,ENDROW=&amp;gt;&amp;#39;end_row&amp;#39;,LIMIT=&amp;gt;100,COLUMNS=&amp;gt;[&amp;#39;info:type&amp;#39;]} COLUMNS=&amp;gt;['info:type']中参数为数组，可以指定列簇名和列名</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/kafka/shell/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/kafka/shell/basic/</guid><description>shell 查询消费者组
-kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --list kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --describe --group group_name 删除消费者组
-kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --delete --group group_name 查看topic消息数量
-kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server bigdata7:9092 --topic topic_name --time -1</description></item><item><title>HTTP笔记</title><link>https://ormissia.github.io/posts/knowledge/2004-network/002-http_statuscode/</link><pubDate>Thu, 31 Mar 2022 10:31:11 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2004-network/002-http_statuscode/</guid><description>http协议（超文本传输协议） 是客户端和服务器端两者通信共同遵循的一些规则。主要内容是定义了客户端如何向服务器请求资源，服务器如何响应客户端请求。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 31 Mar 2022 10:31:11 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>HTTP笔记</title><link>https://ormissia.github.io/posts/knowledge/2004-network/002-http_statuscode/</link><pubDate>Thu, 31 Mar 2022 10:31:11 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2004-network/002-http_statuscode/</guid><description>http协议（超文本传输协议） 是客户端和服务器端两者通信共同遵循的一些规则。主要内容是定义了客户端如何向服务器请求资源，服务器如何响应客户端请求。
 请求中的POST与GET方法的区别
 get是从服务器上获取数据，post是向服务器传送数据。 在客户端，Get方式在通过URL提交数据，数据在URL中可以看到；POST方式，数据放置在HTML HEADER内提交。 对于get方式，服务器端用Request.QueryString获取变量的值，对于post方式，服务器端用Request.Form获取提交的数据。 GET方式提交的数据最多只能有1024字节，而POST则没有此限制。 安全性问题。正如在（1）中提到，使用 GET 的时候，参数会显示在地址栏上，而 Post 不会。所以，如果这些数据是中文数据而且是非敏感数据，那么使用 GET；如果用户输入的数据不是中文字符而且包含敏感数据，那么还是使用 post为好。 HTTP 1.0 HTTP 1.0规定浏览器与服务器只保持短暂的连接，浏览器的每次请求都需要与服务器建立一个TCP连接，服务器完成请求处理后立即断开TCP连接
 当一个网页文件中包含了很多图像的地址的时候，那就需要很多次的HTTP请求和响应，每次请求和响应都需要一个单独的连接，每次连接只是传输一个文档和图像，上一次和下一次请求完全分离。即使图像文件都很小，但是客户端和服务器端每次建立和关闭连接却是一个相对比较费时的过程，并且会严重影响客户机和服务器的性能。当一个网页文件中包含JS文件，CSS文件等内容时，也会出现类似上述的情况。
@@ -241,4 +170,75 @@ func NewStuffClient(conn Connection) StuffClient { return &amp;amp;stuffClient{ 
 本地代码→GitHub 这一步是通过git commit-git push或是直接使用IDE将代码托管到GitHub上。 在这一步的同时需要编写Dockerfile文件，用来指定Docker镜像打包时的各种参数
 # Go程序编译之后会得到一个可执行的二进制文件，其实在最终的镜像中是不需要go编译器的，也就是说我们只需要一个运行最终二进制文件的容器即可。# 作为别名为&amp;#34;builder&amp;#34;的编译镜像，下面会用到FROMgolang AS builder# 为镜像设置必要的环境变量ENV GO111MODULE=on \ CGO_ENABLED=0 \ GOOS=linux \ GOARCH=amd64 \ GOPROXY=https://goproxy.cn# 设置工作目录：/buildWORKDIR/build# 复制项目中的 go.mod 和 go.sum文件并下载依赖信息COPY go.mod .COPY go.sum .RUN go mod download# 将代码复制到容器中COPY 2021-03-04T18:02:29 .# 将代码编译成二进制可执行文件appRUN go build -o go-blog-app .#################### 接下来创建一个小镜像###################FROMscratch# 设置程序运行时必要的环境变量，包括监听端口、数据库配置等等ENV SERVER_PORT=8085 \ DATASOURCE_DRIVERNAME=mysql \ DATASOURCE_HOST=192.168.13.110 \ DATASOURCE_PORT=3306 \ DATASOURCE_DATABASE=blog \ DATASOURCE_USERNAME=root \ DATASOURCE_PASSWORD=5KvA82*Ziq \ DATASOURCE_CHARSET=utf8mb4# 从builder镜像中把/dist/app 拷贝到当前目录COPY --from=builder /build/go-blog-app /# 声明服务端口EXPOSE8085# 启动容器时运行的命令ENTRYPOINT [&amp;#34;/go-blog-app&amp;#34;]GitHub→Docker Hub 这一步是将GitHub上的代码打包成Docker镜像并将镜像托管到Docker Hub上，我在这里使用的是使用Docker Hub来自动打包Docker镜像。也有另一种方式是GitHub通过设置好的Webhooks来通知Jenkins等CI/CD工具来拉取代码在自己的服务器上打包Docker镜像再上传到Docker Hub或是其他Docker镜像管理工具上，由于自己的这个项目代码更新比较慢，可以容忍提交代码之后有较长的时间来更新到线上环境中，所以就采用了Docker官方的打包功能。</description></item><item><title>Markdown Samples</title><link>https://ormissia.github.io/posts/unclassified/6001-markdown/</link><pubDate>Mon, 08 Jun 2020 08:06:25 +0600</pubDate><guid>https://ormissia.github.io/posts/unclassified/6001-markdown/</guid><description>This is a sample post intended to test the followings:
 A different post author. Table of contents. Markdown content rendering. Math rendering. Emoji rendering. Markdown Syntax Rendering Headings The following HTML &amp;lt;h1&amp;gt;—&amp;lt;h6&amp;gt; elements represent six levels of section headings. &amp;lt;h1&amp;gt; is the highest section level while &amp;lt;h6&amp;gt; is the lowest.
-H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur?</description></item></channel></rss>
+H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur?</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/go/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/basic/basic/</guid><description>基础类型内存宽度以及表示范围 bool
+1Byte true/false uint8
+1Byte 0-255 uint16
+2Byte 0-65535 uint32
+4Byte 0-4294967295 uint64
+8Byte 0-18446744073709551615 int8
+1Byte -128-127 int16
+2Byte -32768-32767 int32
+4Byte -2147483648-2147483647 int64
+6Byte -9223372036854775808-9223372036854775807 byte
+1Byte 类似 uint8 rune
+4Byte 类似 int32 uint
+4Byte / 8Byte 32 或 64 位 int
+4Byte / 8Byte 与 uint 一样大小 float32
+4Byte float64
+8Byte string
+1Byte （英文） / 2Byte-4Byte（中文，取决于字符编码类型） 切片拼接 slice1 := []int{0, 1, 2, 3} slice2 := []int{3, 4, 5} slice1 = append(slice1, slice2.</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/kafka/shell/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/kafka/shell/basic/</guid><description>shell 查询消费者组
+kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --list kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --describe --group group_name 删除消费者组
+kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --delete --group group_name 查看topic消息数量
+kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server bigdata7:9092 --topic topic_name --time -1</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/hbase/shell/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/hbase/shell/basic/</guid><description>shell 在hbase的shell中scan时指定列
+scan &amp;#39;table_name&amp;#39;,{STARTROW=&amp;gt;&amp;#39;start_row&amp;#39;,ENDROW=&amp;gt;&amp;#39;end_row&amp;#39;,LIMIT=&amp;gt;100,COLUMNS=&amp;gt;[&amp;#39;info:type&amp;#39;]} COLUMNS=&amp;gt;['info:type']中参数为数组，可以指定列簇名和列名</description></item><item><title>Memory</title><link>https://ormissia.github.io/notes/linux/system/system/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/system/system/</guid><description>内存 一般来说内存占用大小有如下规律：VSS &amp;gt;= RSS &amp;gt;= PSS &amp;gt;= USS
+VSS - Virtual Set Size 虚拟耗用内存（包含共享库占用的内存） RSS - Resident Set Size 实际使用物理内存（包含共享库占用的内存） PSS - Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存） USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存） RSS / VSZ
+RSS是Resident Set Size（常驻内存大小）的缩写，用于表示进程使用了多少内存（RAM中的物理内存）， RSS不包含已经被换出的内存。RSS包含了它所链接的动态库并且被加载到物理内存中的内存。RSS还包含栈内存和堆内存。 VSZ是Virtual Memory Size（虚拟内存大小）的缩写。它包含了进程所能访问的所有内存，包含了被换出的内存， 被分配但是还没有被使用的内存，以及动态库中的内存。 假设进程A的二进制文件是500K，并且链接了一个2500K的动态库，堆和栈共使用了200K，其中100K在内存中（剩下的被换出或者不再被使用）， 一共加载了动态库中的1000K内容以及二进制文件中的400K内容至内存中，那么：
+RSS: 400K + 1000K + 100K = 1500K VSZ: 500K + 2500K + 200K = 3200K 由于部分内存是共享的，被多个进程使用，所以如果将所有进程的RSS值加起来可能会大于系统的内存总量。
+申请过的内存如果程序没有实际使用，则可能不显示在RSS里。比如说一个程序，预先申请了一大批内存， 过了一段时间才使用，你会发现RSS会增长而VSZ保持不变。</description></item><item><title>Script</title><link>https://ormissia.github.io/notes/linux/shell/script/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/script/</guid><description>脚本执行方式 需要可执行权限 相对路径执行 绝对路径执行 不需要可执行权限 sh 脚本文件名 source 脚本文件名 // 不会启动子进程，通过pstree查看进程树 定义变量 定义变量：变量名=变量值 取消变量：unset 变量名 注意事项： =两边不能有空格 不能使用关键字做变量名，如：ls、cd等 如果变量名已存在，则会覆盖之前的变量值 变量名称由字母、数字、下划线组成，不能以数字开头 变量类型 环境变量：变量名通常大写，由操作系统维护 位置变量：shell内置变量，存储脚本执行时的参数 使用$n表示，n为数字序列号：$1、$2、&amp;hellip;、${10}、${11}、&amp;hellip; 预定义变量：shell内置变量，可以直接调用但是不能赋值或修改' $0：存储所在的进程或脚本名 $$：当前进程的PID号 $?：命令执行后的返回状态，0-正常，其他-异常 $#：已加载的位置变量的个数 $*：所有位置变量的值 自定义变量：用户自主设置 多种引号的区别 双引号：允许扩展，以$引用其他变量 单引号：禁用扩展，将$视为普通字符 反引号：将命令执行的输出作为变量值，$()与反引号等效 变量的作用范围 局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用 全局变量：在当前Shell以及子Shell中均有效（export a=1：定义全局变量a） read标准输入取值 read从键盘读入变量值完成赋值</description></item><item><title>vi</title><link>https://ormissia.github.io/notes/linux/shell/vi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/vi/</guid><description>命令 显示行号
+:set number 在vi中执行shell命令
+:!ls-l 将shell命令的结果插入到当前行的下一行
+:r !date //读取系统时间并插入到当前行的下一行 将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容
+:62,72 !sort //将62行到72行的内容进行排序 当前光标所在行，除可以指定行号外，也可以用.表示
+:. !tr [a-z] [A-Z] //将当前行的小写转为大写 将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容
+:62,72 w !sort //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域 将某一行作为shell命令执行
+:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容</description></item><item><title>Advance</title><link>https://ormissia.github.io/notes/linux/shell/advance/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/advance/</guid><description>xargs xargs是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。 格式:
+somecommand | xargs [-item] [command] 选项：
+-a file 从文件中读入作为 stdin -e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。 -p 当每次执行一个argument的时候询问一次用户。 -n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。 -t 表示先打印命令，然后再执行。 -i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 {}，可以用 {} 代替。 -r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。 -s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。 -L num 从标准输入一次读取 num 行送给 command 命令。 -l 同 -L。 -d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。 -x exit的意思，主要是配合-s使用。。 top Linux top命令VIRT,RES,SHR,DATA的含义:
+VIRT:virtual memory usage虚拟内存 进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等 假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量 RES:resident memory usage常驻内存 进程当前使用的内存大小，但不包括swap out 包含其他进程的共享 如果申请100m的内存，实际使用10m，它只增长10m，与VIRT相反 关于库占用内存的情况，它只统计加载的库文件所占内存大小 SHR:shared memory共享内存 除了自身进程的共享内存，也包括其他进程的共享内存 虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小 计算某个进程所占的物理内存大小公式：RES – SHR swap out后，它将会降下来 top运行中可以通过top的内部命令对进程的显示方式进行控制。内部命令如下：</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/linux/shell/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/linux/shell/basic/</guid><description>快捷键 回到命令行开头&amp;ndash;Home
+Ctrl+a 回到命令行的尾部&amp;ndash;End
+Ctrl+e 删除光标前边的所有字符
+Ctrl+u 删除光标后边的所有字符
+Ctrl+k 删除光标前的一个单词
+Ctrl+w 输入曾经的命令下的某个单词或字母，按照单词的匹配history
+Ctrl+r cat 在cat输出时候显示行数
+cat -n maim.go wc 统计文件行、单词、字符数量 格式：
+usage: wc [-clmw] [file ...] 统计main.go的行、单词、字符数量
+wc main.go 选项：
+-l 统计行数 -c 统计字符数 -w 统计单词数 -L 统计最长的行的字符数 nc 简单的文件传输工具
+接收方
+nc -l [port] &amp;gt; filename 发送方
+nc [ip] [port] &amp;lt; filename gzip 解压*.</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/js/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/js/basic/basic/</guid><description>函数</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/python/basic/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/python/basic/basic/</guid><description>函数 在 python 中，类型属于对象，变量是没有类型的：
+a=[1,2,3] a=&amp;#34;ormissia&amp;#34; 以上代码中，[1,2,3]是List类型，&amp;quot;ormissia&amp;quot;是String类型，而变量a是没有类型，他仅仅是一个对象的引用（一个指针），可以是指向List类型对象，也可以是指向String类型对象。
+可更改(mutable)与不可更改(immutable)对象 在python中，strings，tuples和numbers是不可更改的对象，而list，dict等则是可以修改的对象。
+不可变类型：变量赋值a=5后再赋值a=10，这里实际是新生成一个int值对象10，再让a指向它，而5被丢弃，不是改变a的值，相当于新生成了a。
+可变类型：变量赋值la = [1,2,3,4]后再赋值la[2] = 5则是将list la的第三个元素值更改，本身la没有动，只是其内部的一部分值被修改了。
+python函数的参数传递： 不可变类型：类似C++的值传递，如整数、字符串、元组。如fun(a)，传递的只是a的值，没有影响a对象本身。如果在fun(a)内部修改a的值，则是新生成一个a的对象。
+可变类型：类似C++的引用传递，如列表，字典。如fun(la)，则是将la真正的传过去，修改后fun外部的la也会受影响
+python中一切都是对象，严格意义我们不能说值传递还是引用传递，我们应该说传不可变对象和传可变对象。</description></item><item><title>Basic Types</title><link>https://ormissia.github.io/notes/scala/basic/basic_type/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/scala/basic/basic_type/</guid><description>函数 函数参数为val类型，且可以给出默认值
+def test(a: Int, b: Int = 1, c: Int = 2): Unit = { println(s&amp;quot;$a $b $c&amp;quot;) } test(1, 2) //1 2 2 test(1, c = 4) //1 1 4 匿名函数 函数是带有参数的表达式。
+(x: Int) =&amp;gt; x + 1 方法 方法的表现和行为和函数非常类似，但是它们之间有一些关键的差别。
+方法由def关键字定义。def后面跟着一个名字、参数列表、返回类型和方法体。
+def addThenMultiply(x: Int, y: Int)(multiplier: Int): Int = (x + y) * multiplier println(addThenMultiply(1, 2)(3)) // 9 字符串拼接 val a = 1 val b = 2 val c = s&amp;quot;$a+$b=${a + b}&amp;quot; 对象 约等于static单例对象</description></item><item><title>Basic Types</title><link>https://ormissia.github.io/notes/java/basic/basic_type/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/java/basic/basic_type/</guid><description>Strings test
+String str = &amp;#34;123&amp;#34;;</description></item><item><title>Basic</title><link>https://ormissia.github.io/notes/go/algorithm/basic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/algorithm/basic/</guid><description>异或 异或运算法则：无进位相加 异或运算性质： 0 ^ N = N N ^ N = 0 满足交换律和结合律 a := 0b1100 b := 0b1001 fmt.Printf(&amp;#34;%b&amp;#34;,a^b) //101 简单应用：不申请额外内存交换两个变量的值
+a := 0b1100 b := 0b1001 a = a ^ b b = a ^ b //b = (a ^ b) ^ b = a a = a ^ b //a = (a ^ b) ^ a = b fmt.Printf(&amp;#34;a:%b,b:%b&amp;#34;, a, b) //a:1001,b:1100 堆 堆的实质是一棵完全二叉树</description></item><item><title>go chan</title><link>https://ormissia.github.io/notes/go/advance/chan/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/chan/</guid><description>go chan close 在go的chan中，chan被关闭后，消费者会继续读取channel中的消息。直到消息被全部读取之后使用i, ok := &amp;lt;-ch得到的ok才会变为false
+下面是测试代码以及运行时控制台打印结果：
+func main() { ch := make(chan int, 3) go producer(ch) for { i, ok := &amp;lt;-ch fmt.Printf(&amp;#34;consume msg: %d\tok: %v\n&amp;#34;, i, ok) time.Sleep(time.Second * 3) } } func producer(ch chan int) { for i := 0; i &amp;lt; 10; i++ { ch &amp;lt;- i fmt.Printf(&amp;#34;produce msg: %d\n&amp;#34;, i) time.Sleep(time.Second) } close(ch) fmt.Println(&amp;#34;chan closed&amp;#34;) } 输出结果
+produce msg: 0 consume msg: 0 ok: true produce msg: 1 produce msg: 2 consume msg: 1 ok: true produce msg: 3 produce msg: 4 consume msg: 2 ok: true produce msg: 5 consume msg: 3 ok: true produce msg: 6 consume msg: 4 ok: true produce msg: 7 consume msg: 5 ok: true produce msg: 8 consume msg: 6 ok: true produce msg: 9 chan closed consume msg: 7 ok: true consume msg: 8 ok: true consume msg: 9 ok: true consume msg: 0 ok: false consume msg: 0 ok: false</description></item><item><title>go mod</title><link>https://ormissia.github.io/notes/go/advance/gomod/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/gomod/</guid><description>go get 下载指定版本 go get github.com/ormissia/go-opv@v0.0.2</description></item><item><title>time</title><link>https://ormissia.github.io/notes/go/advance/time/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/go/advance/time/</guid><description>时间转换 字符串转时间
+time.Parse() 时间转字符串
+time.Format() 时间转时间戳
+Time.Unix() 时间戳转时间
+time.Unix() 计时 朴素方法
+startTime := time.Now() //do something time.Sleep(time.Second) duration := time.Since(startTime) fmt.Printf(&amp;#34;经过时间：%v\n&amp;#34;, duration) //经过时间：1.005046959s 简洁方法
+// TimeCost 耗时统计函数 func TimeCost(start time.Time) { duration := time.Since(start) fmt.Printf(&amp;#34;经过时间：%v\n&amp;#34;, duration) } defer TimeCost(time.Now()) //do something time.Sleep(time.Second) //经过时间：1.005054375s 优雅方法
+// TimeCost 耗时统计函数 func TimeCost() func() { start := time.Now() return func() { duration := time.Since(start) fmt.</description></item><item><title>SQL DML</title><link>https://ormissia.github.io/notes/sql/dml/dml/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ormissia.github.io/notes/sql/dml/dml/</guid><description>按年月日分组聚合 group by date_format(field_name, format); 根据format字符串格式化date值。下列修饰符可以被用在format字符串中：
+%M 月名字(January……December) %W 星期名字(Sunday……Saturday) %D 有英语前缀的月份的日期(1st, 2nd, 3rd, 等等。） %Y 年, 数字, 4 位 %y 年, 数字, 2 位 %a 缩写的星期名字(Sun……Sat) %d 月份中的天数, 数字(00……31) %e 月份中的天数, 数字(0……31) %m 月, 数字(01……12) %c 月, 数字(1……12) %b 缩写的月份名字(Jan……Dec) %j 一年中的天数(001……366) %H 小时(00……23) %k 小时(0……23) %h 小时(01……12) %I 小时(01……12) %l 小时(1……12) %i 分钟, 数字(00……59) %r 时间,12 小时(hh:mm:ss [AP]M) %T 时间,24 小时(hh:mm:ss) %S 秒(00……59) %s 秒(00……59) %p AM或PM %w 一个星期中的天数(0=Sunday ……6=Saturday ） %U 星期(0……52), 这里星期天是星期的第一天 %u 星期(0……52), 这里星期一是星期的第一天 %% 一个文字“%” count统计不重复个数 select count(distinct (field_name)) from table_name sum结果为null时置为0 SQL中使用sum统计总数时:sum(col_name)，如果某列不符合sum的条件（比如某列中含有NULL元素，或者不是数值类型，或者没有符合where条件的行），那么会返回NULL 有的时候不希望sum的结果为NULL，可以做如下的处理：</description></item></channel></rss>
