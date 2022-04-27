@@ -257,7 +257,7 @@ Ormissia's Blog</a>
 		<span style=color:#a6e22e>o</span>.<span style=color:#a6e22e>Timeout</span> = <span style=color:#a6e22e>t</span>
 	}
 }
-</code></pre></div><p>泥土般芬芳, 不是吗？这到底是怎么回事？基本上，我们有一个结构来定义<code>StuffClient</code>的可用选项。另外，现状我们还定义了一个叫做<code>StuffClientOption</code>的东西（次数是单数），它只是接受我们选项的结构体作为参数的函数。我们还定义了另外两个函数 WithRetries 和<code>WithTimeout</code>，它们返回一个闭包，现在就是见证奇迹的时刻了！</p>
+</code></pre></div><p>泥土般芬芳, 不是吗？这到底是怎么回事？基本上，我们有一个结构来定义<code>StuffClient</code>的可用选项。另外，现状我们还定义了一个叫做<code>StuffClientOption</code>的东西（次数是单数），它只是接受我们选项的结构体作为参数的函数。我们还定义了另外两个函数<code>WithRetries</code>和<code>WithTimeout</code>，它们返回一个闭包，现在就是见证奇迹的时刻了！</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>defaultStuffClientOptions</span> = <span style=color:#a6e22e>StuffClientOptions</span>{
     <span style=color:#a6e22e>Retries</span>: <span style=color:#ae81ff>3</span>,
     <span style=color:#a6e22e>Timeout</span>: <span style=color:#ae81ff>2</span>,
