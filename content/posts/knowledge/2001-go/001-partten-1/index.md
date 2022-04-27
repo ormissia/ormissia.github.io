@@ -115,7 +115,7 @@ func WithTimeout(t int) StuffClientOption {
 }
 ```
 
-泥土般芬芳, 不是吗？这到底是怎么回事？基本上，我们有一个结构来定义`StuffClient`的可用选项。另外，现状我们还定义了一个叫做`StuffClientOption`的东西（次数是单数），它只是接受我们选项的结构体作为参数的函数。我们还定义了另外两个函数 WithRetries 和`WithTimeout`，它们返回一个闭包，现在就是见证奇迹的时刻了！
+泥土般芬芳, 不是吗？这到底是怎么回事？基本上，我们有一个结构来定义`StuffClient`的可用选项。另外，现状我们还定义了一个叫做`StuffClientOption`的东西（次数是单数），它只是接受我们选项的结构体作为参数的函数。我们还定义了另外两个函数`WithRetries`和`WithTimeout`，它们返回一个闭包，现在就是见证奇迹的时刻了！
 
 ```go
 var defaultStuffClientOptions = StuffClientOptions{
