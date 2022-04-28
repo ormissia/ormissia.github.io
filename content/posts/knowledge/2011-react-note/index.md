@@ -10,6 +10,12 @@ menu:
     weight: 2011
 ---
 
+---
+
+#javascript #js #react
+
+---
+
 ## 初始化React项目
 
 ```shell

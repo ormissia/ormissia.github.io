@@ -12,8 +12,7 @@ menu:
 
 ---
 
-![Golang](https://img.shields.io/badge/-Golang-blue)
-![设计模式](https://img.shields.io/badge/-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-green)
+#golang
 
 ---
 

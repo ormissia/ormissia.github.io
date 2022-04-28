@@ -13,6 +13,12 @@ menu:
 > 结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
 
 
+---
+
+#kubernetes #k8s #内存分析 #oom #golang #grafana
+
+---
+
 ## 问题现象
 
 近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平，

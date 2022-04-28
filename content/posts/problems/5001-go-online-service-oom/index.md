@@ -12,8 +12,7 @@ menu:
 
 ---
 
-![Golang](https://img.shields.io/badge/-Golang-blue)
-![OOM](https://img.shields.io/badge/-OOM-red)
+#golang #oom #内存分析 #grafana #kubernetes #k8s
 
 ---
 

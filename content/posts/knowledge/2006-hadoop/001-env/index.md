@@ -10,6 +10,12 @@ menu:
     weight: 001
 ---
 
+---
+
+#hadoop
+
+---
+
 > 最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
 
 ![hadoop](hadoop.jpg)

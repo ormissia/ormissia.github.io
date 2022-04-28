@@ -10,6 +10,12 @@ menu:
     weight: 001
 ---
 
+---
+
+#elasticsearch #elastic #db #search-engine #lucene
+
+---
+
 ## 搜索类型
 
 - 搜索引擎：百度、搜狗、谷歌、必应

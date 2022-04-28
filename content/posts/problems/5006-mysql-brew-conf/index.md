@@ -10,6 +10,12 @@ menu:
     weight: 5006
 ---
 
+---
+
+#mysql #macos
+
+---
+
 > 一般MySQL 8.x安装完在`select`语句中使用`group by`时会报错，需要在`my.cnf`中配置设置`sql_model`参数。在Linux中，这个文件通常位于`/etc`目录下，而在Mac上，却不在这里。
 
 在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置

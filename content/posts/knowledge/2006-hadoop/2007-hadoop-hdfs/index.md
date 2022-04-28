@@ -10,6 +10,12 @@ menu:
     weight: 002
 ---
 
+---
+
+#hadoop #hdfs
+
+---
+
 ## HDFS架构
 
 - HDFS是一个主从（Master/Slaves）架构

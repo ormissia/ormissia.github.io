@@ -12,9 +12,7 @@ menu:
 
 ---
 
-![Golang](https://img.shields.io/badge/-Golang-blue)
-![pprof](https://img.shields.io/badge/-pprof-green)
-![性能监控](https://img.shields.io/badge/-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7-red)
+#golang #pprof #内存分析
 
 ---
 

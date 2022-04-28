@@ -10,6 +10,8 @@ menu:
     weight: 001
 ---
 
+#redis #cache #db
+
 ## 缓存一致性
 
 ### 形成原因

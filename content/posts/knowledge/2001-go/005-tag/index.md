@@ -12,10 +12,7 @@ menu:
 
 ---
 
-![Golang](https://img.shields.io/badge/-Golang-blue)
-![反射](https://img.shields.io/badge/-%E5%8F%8D%E5%B0%84-orange)
-![reflect](https://img.shields.io/badge/-reflect-red)
-![go-opv](https://img.shields.io/badge/-go--opv-lightgrey)
+#golang #struct-tag #reflect
 
 ---
 

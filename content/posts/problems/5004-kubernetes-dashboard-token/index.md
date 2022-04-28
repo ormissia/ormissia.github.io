@@ -10,6 +10,12 @@ menu:
     weight: 5004
 ---
 
+---
+
+#kubernetes #k8s #token #dashboard
+
+---
+
 ## 问题现象
 
 kubernetes的dashboard登录token过期时间太短，不操作没一会就需要重新登录

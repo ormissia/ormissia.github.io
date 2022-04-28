@@ -10,6 +10,11 @@ menu:
     weight: 001
 ---
 
+---
+
+#kubernetes #k8s
+
+---
 
 - [为系统守护进程预留计算资源](https://kubernetes.io/zh/docs/tasks/administer-cluster/reserve-compute-resources/)
 - [开启服务拓扑](https://kubernetes.io/zh/docs/tasks/administer-cluster/enabling-service-topology/)
