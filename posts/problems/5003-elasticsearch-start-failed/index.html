@@ -13,10 +13,11 @@
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="CentOS安装完ES无法启动">
-<meta property="og:description" content="问题现象 按照ES官网文档介绍的安装步骤，使用yum的方式进行安装。安装完成之后，使用如下命令启动：
+<meta property="og:description" content="#elastic #elasticsearch
+ 问题现象 按照ES官网文档介绍的安装步骤，使用yum的方式进行安装。安装完成之后，使用如下命令启动：
 systemctl start elasticsearch.service 控制台阻塞一会后，显示启动失败，使用如下命令查看状态：
 systemctl status elasticsearch.service 查询状态为：
-Warning: The unit file, source configuration file or drop-ins of elasticsearch.service changed on disk. Run 'systemctl daemon-reload' to reload units. ● elasticsearch.service - Elasticsearch Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; disabled; vendor preset: disabled) Active: failed (Result: timeout) since Thu 2021-10-14 00:42:40 CST; 2min 15s ago Docs: https://www.elastic.co Main PID: 2547 (code=exited, status=143) Oct 14 00:41:22 gateway systemd[1]: Starting Elasticsearch... Oct 14 00:41:29 gateway bash[2547]: [0.">
+Warning: The unit file, source configuration file or drop-ins of elasticsearch.service changed on disk. Run 'systemctl daemon-reload' to reload units. ● elasticsearch.service - Elasticsearch Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; disabled; vendor preset: disabled) Active: failed (Result: timeout) since Thu 2021-10-14 00:42:40 CST; 2min 15s ago Docs: https://www.elastic.co Main PID: 2547 (code=exited, status=143) Oct 14 00:41:22 gateway systemd[1]: Starting Elasticsearch.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/problems/5003-elasticsearch-start-failed/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-10-14T09:41:21+08:00">
@@ -175,6 +176,9 @@ Ormissia's Blog</a>
 <h1>CentOS安装完ES无法启动</h1>
 </div>
 <div class=post-content id=post-content>
+<hr>
+<p>#elastic #elasticsearch</p>
+<hr>
 <h2 id=问题现象>问题现象</h2>
 <p>按照ES官网文档介绍的安装步骤，使用<code>yum</code>的方式进行安装。安装完成之后，使用如下命令启动：</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl start elasticsearch.service

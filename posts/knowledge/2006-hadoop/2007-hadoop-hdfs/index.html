@@ -13,7 +13,8 @@
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="HDFS基础知识">
-<meta property="og:description" content="HDFS架构  HDFS是一个主从（Master/Slaves）架构 由一个NameNode和一些DataNode组成 面向文件包含：文件元数据（metadata）和文件数据（data） NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树 DataNode负责存储文件数据（block块），并提供block的读写 DataNode与NameNode维持心跳，并汇报自己持有的block信息 Client和NameNode交互文件元数据和DataNode交互文件block数据  目录树结构 角色即进程
+<meta property="og:description" content=" #hadoop #hdfs
+ HDFS架构  HDFS是一个主从（Master/Slaves）架构 由一个NameNode和一些DataNode组成 面向文件包含：文件元数据（metadata）和文件数据（data） NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树 DataNode负责存储文件数据（block块），并提供block的读写 DataNode与NameNode维持心跳，并汇报自己持有的block信息 Client和NameNode交互文件元数据和DataNode交互文件block数据  目录树结构 角色即进程
 Hadoop集群中HDFS节点角色 Master Standy ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/"><meta property="article:section" content="posts">
@@ -173,6 +174,9 @@ Ormissia's Blog</a>
 <h1>HDFS基础知识</h1>
 </div>
 <div class=post-content id=post-content>
+<hr>
+<p>#hadoop #hdfs</p>
+<hr>
 <h2 id=hdfs架构>HDFS架构</h2>
 <ul>
 <li>HDFS是一个主从（Master/Slaves）架构</li>

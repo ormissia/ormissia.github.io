@@ -13,10 +13,11 @@
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="Golang性能分析工具-pprof">
-<meta property="og:description" content="pprof is a tool for visualization and analysis of profiling data.
+<meta property="og:description" content="#golang #pprof #内存分析
+  pprof is a tool for visualization and analysis of profiling data.
   pprof reads a collection of profiling samples in profile.proto format and generates reports to visualize and help analyze the data. It can generate both text and graphical reports (through the use of the dot visualization package).
   PProf是用于可视化和分析性能分析数据的工具，PProf以profile.proto读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告）。
- 简介 采集方式  runtime/pprof：采集程序（非Server）的指定区块的运行数据进行分析。 net/http/pprof：基于HTTPServer运行，并且可以采集运行时数据进行分析。 gotest：通过运行测试用例，并指定所需标识来进行采集。  功能  CPUProfiling：CPU分析，按照一定的频率采集所监听的应用程序CPU（含寄存器）的使用情况，可确定应用程序在主动消耗CPU周期时花费时间的位置。 MemoryProfiling：内存分析，在应用程序进行堆分配时记录堆栈跟踪，用于监视当前和历史内存使用情况，以及检查内存泄漏。 BlockProfiling：阻塞分析，记录Goroutine阻塞等待同步（包括定时器通道）的位置，默认不开启，需要调用runtime.SetBlockProfileRate进行设置。 MutexProfiling：互斥锁分析，报告互斥锁的竞争情况，默认不开启，需要调用runtime.SetMutexProfileFraction进行设置。 GoroutineProfiling：Goroutine分析，可以对当前应用程序正在运行的Goroutine进行堆栈跟踪和分析。这项功能在实际排查中会经常用到， 因为很多问题出现时的表象就是Goroutine暴增，而这时候我们要做的事情之一就是查看应用程序中的Goroutine正在做什么事情，因为什么阻塞了， 然后再进行下一步。  简单的例子 注意要在import中引入 _ &#34;net/http/pprof&#34;">
+ 简介 采集方式  runtime/pprof：采集程序（非Server）的指定区块的运行数据进行分析。 net/http/pprof：基于HTTPServer运行，并且可以采集运行时数据进行分析。 gotest：通过运行测试用例，并指定所需标识来进行采集。  功能  CPUProfiling：CPU分析，按照一定的频率采集所监听的应用程序CPU（含寄存器）的使用情况，可确定应用程序在主动消耗CPU周期时花费时间的位置。 MemoryProfiling：内存分析，在应用程序进行堆分配时记录堆栈跟踪，用于监视当前和历史内存使用情况，以及检查内存泄漏。 BlockProfiling：阻塞分析，记录Goroutine阻塞等待同步（包括定时器通道）的位置，默认不开启，需要调用runtime.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2001-go/004-pprof/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-08-05T18:45:47+08:00">
@@ -176,9 +177,7 @@ Ormissia's Blog</a>
 </div>
 <div class=post-content id=post-content>
 <hr>
-<p><img src=https://img.shields.io/badge/-Golang-blue alt=Golang>
-<img src=https://img.shields.io/badge/-pprof-green alt=pprof>
-<img src=https://img.shields.io/badge/-%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7-red alt=性能监控></p>
+<p>#golang #pprof #内存分析</p>
 <hr>
 <blockquote>
 <p>pprof is a tool for visualization and analysis of profiling data.</p>

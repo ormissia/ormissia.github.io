@@ -13,7 +13,8 @@
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="修改Mac上brew安装的MySQL配置">
-<meta property="og:description" content="一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
+<meta property="og:description" content="#mysql #macos
+  一般MySQL 8.x安装完在select语句中使用group by时会报错，需要在my.cnf中配置设置sql_model参数。在Linux中，这个文件通常位于/etc目录下，而在Mac上，却不在这里。
  在Mac本地安装的测试用的MySQL数据库，安装完成之后需要进行如下设置
 设置sql_model  关闭ONLY_FULL_GROUP_BY模式
  在sql命令行中查询sql_mode配置
@@ -21,7 +22,7 @@ select @@sql_mode; mysql> select @@sql_mode; +----------------------------------
 STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 使用mysql --help命令获取my.cnf配置文件所在位置
 # ... Default options are read from the following files in the given order: /etc/my.cnf /etc/mysql/my.cnf /opt/homebrew/etc/my.cnf ~/.my.cnf The following groups are read: mysql client # ... 我安装的MySQL在/opt/homebrew/etc/my.cnf目录下，添加一行：
 sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION 重启MySQL，问题解决
-mysql.server restart 设置开机启动 cp /opt/homebrew/Cellar/mysql/8.0.27/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents launchctl load -w ~/Library/LaunchAgents/homebrew.">
+mysql.server restart 设置开机启动 cp /opt/homebrew/Cellar/mysql/8.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ormissia.github.io/posts/problems/5006-mysql-brew-conf/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2021-12-20T09:18:43+08:00">
@@ -180,6 +181,9 @@ Ormissia's Blog</a>
 <h1>修改Mac上brew安装的MySQL配置</h1>
 </div>
 <div class=post-content id=post-content>
+<hr>
+<p>#mysql #macos</p>
+<hr>
 <blockquote>
 <p>一般MySQL 8.x安装完在<code>select</code>语句中使用<code>group by</code>时会报错，需要在<code>my.cnf</code>中配置设置<code>sql_model</code>参数。在Linux中，这个文件通常位于<code>/etc</code>目录下，而在Mac上，却不在这里。</p>
 </blockquote>

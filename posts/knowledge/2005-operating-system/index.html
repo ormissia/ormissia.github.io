@@ -164,7 +164,8 @@ Ormissia's Blog</a>
 </div>
 <div class=card-body>
 <h5 class=card-title>网络IO演进历程</h5>
-<p class="card-text post-summary">作为
+<p class="card-text post-summary">#IO #bio #nio #多路复用
+作为
 网络IO演进模型 阻塞IO BIO(Blocking IO) 非阻塞IO NIO(Nonblocking IO) IO多路复用第一版 select/poll/epoll 异步IO AIO(Async IO) BIO 阻塞 IO，顾名思义当用户发生了系统调用后，如果数据未从网卡到达内核态，内核态数据未准备好，此时会一直阻塞。直到数据就绪，然后从内核态拷贝到用户态再返回。
 BIO缺点，能支持的并发连接数比较少： 一台服务器能分配的线程数是有限的 大量线程频繁切换上下文会影响性能 核心矛盾：一个client分配一个线程是因为处理客户端读写是阻塞式的，为避免该阻塞影响接受后续新的client的连接，所以将阻塞逻辑交由单独的线程处理。
 NIO 非阻塞 IO：见名知意，就是在第一阶段(网卡-内核态)数据未到达时不等待，然后直接返回。因此非阻塞 IO 需要不断的用户发起请求，轮询内核。

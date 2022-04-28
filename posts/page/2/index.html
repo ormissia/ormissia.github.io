@@ -164,10 +164,9 @@ Ormissia's Blog</a>
 </div>
 <div class=card-body>
 <h5 class=card-title>Elasticsearch</h5>
-<p class="card-text post-summary">搜索类型 搜索引擎：百度、搜狗、谷歌、必应 垂直领域：各大电商平台、OA系统、站内搜索 商业智能：数据分析、数据挖掘、用户画像 GitHub：千亿+行代码秒查 日志系统：ELK ES特点 搜索、聚合分析、大数据存储 分布式、高性能、高可用、可伸缩、易维护 支持文本搜索、结构化数据、非结构化数据、地理位置搜索等 ES单机部署 同一节点启动不同服务 ./bin/elasticsearch -E path.data=data1 -E path.logs=log1 -E node.name=node1 -E cluster.name=ormissia_test ./bin/elasticsearch -E path.data=data2 -E path.logs=log2 -E node.name=node2 -E cluster.name=ormissia_test http://localhost:9200/ http://localhost:9201/ 不同节点启动同一服务 open ./elasticsearch_node1/bin/elasticsearch open ./elasticsearch_node2/bin/elasticsearch open ./elasticsearch_node3/bin/elasticsearch open ./elasticsearch_node4/bin/elasticsearch open ./elasticsearch_node5/bin/elasticsearch open ./kibana-7.15.1-darwin-x86_64/bin/kibana elasticsearch-head插件 GitHub Repository
-git clone git://github.com/mobz/elasticsearch-head.git cd elasticsearch-head npm install npm run start 默认端口：9100
-如果集群无法连接，需要修改ES配置文件
-http.cors.enabled: true http.cors.allow-origin: "*" elasticsearch-head也可以以Chrome插件的方式安装</p>
+<p class="card-text post-summary">#elasticsearch #elastic #db #search-engine #lucene
+搜索类型 搜索引擎：百度、搜狗、谷歌、必应 垂直领域：各大电商平台、OA系统、站内搜索 商业智能：数据分析、数据挖掘、用户画像 GitHub：千亿+行代码秒查 日志系统：ELK ES特点 搜索、聚合分析、大数据存储 分布式、高性能、高可用、可伸缩、易维护 支持文本搜索、结构化数据、非结构化数据、地理位置搜索等 ES单机部署 同一节点启动不同服务 ./bin/elasticsearch -E path.data=data1 -E path.logs=log1 -E node.name=node1 -E cluster.name=ormissia_test ./bin/elasticsearch -E path.data=data2 -E path.logs=log2 -E node.name=node2 -E cluster.name=ormissia_test http://localhost:9200/ http://localhost:9201/ 不同节点启动同一服务 open ./elasticsearch_node1/bin/elasticsearch open ./elasticsearch_node2/bin/elasticsearch open ./elasticsearch_node3/bin/elasticsearch open ./elasticsearch_node4/bin/elasticsearch open ./elasticsearch_node5/bin/elasticsearch open ./kibana-7.15.1-darwin-x86_64/bin/kibana elasticsearch-head插件 GitHub Repository
+git clone git://github.com/mobz/elasticsearch-head.git cd elasticsearch-head npm install npm run start 默认端口：9100</p>
 </div>
 <div class=card-footer>
 <span class=float-left>October 19, 2021</span>
@@ -208,10 +207,11 @@ ssh-keygen -t rsa cat id_rsa.</p>
 </div>
 <div class=card-body>
 <h5 class=card-title>CentOS安装完ES无法启动</h5>
-<p class="card-text post-summary">问题现象 按照ES官网文档介绍的安装步骤，使用yum的方式进行安装。安装完成之后，使用如下命令启动：
+<p class="card-text post-summary">#elastic #elasticsearch
+问题现象 按照ES官网文档介绍的安装步骤，使用yum的方式进行安装。安装完成之后，使用如下命令启动：
 systemctl start elasticsearch.service 控制台阻塞一会后，显示启动失败，使用如下命令查看状态：
 systemctl status elasticsearch.service 查询状态为：
-Warning: The unit file, source configuration file or drop-ins of elasticsearch.service changed on disk. Run 'systemctl daemon-reload' to reload units. ● elasticsearch.service - Elasticsearch Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; disabled; vendor preset: disabled) Active: failed (Result: timeout) since Thu 2021-10-14 00:42:40 CST; 2min 15s ago Docs: https://www.elastic.co Main PID: 2547 (code=exited, status=143) Oct 14 00:41:22 gateway systemd[1]: Starting Elasticsearch... Oct 14 00:41:29 gateway bash[2547]: [0.</p>
+Warning: The unit file, source configuration file or drop-ins of elasticsearch.service changed on disk. Run 'systemctl daemon-reload' to reload units. ● elasticsearch.service - Elasticsearch Loaded: loaded (/usr/lib/systemd/system/elasticsearch.service; disabled; vendor preset: disabled) Active: failed (Result: timeout) since Thu 2021-10-14 00:42:40 CST; 2min 15s ago Docs: https://www.elastic.co Main PID: 2547 (code=exited, status=143) Oct 14 00:41:22 gateway systemd[1]: Starting Elasticsearch.</p>
 </div>
 <div class=card-footer>
 <span class=float-left>October 14, 2021</span>
@@ -324,7 +324,8 @@ cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安�
 </div>
 <div class=card-body>
 <h5 class=card-title>HDFS基础知识</h5>
-<p class="card-text post-summary">HDFS架构 HDFS是一个主从（Master/Slaves）架构 由一个NameNode和一些DataNode组成 面向文件包含：文件元数据（metadata）和文件数据（data） NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树 DataNode负责存储文件数据（block块），并提供block的读写 DataNode与NameNode维持心跳，并汇报自己持有的block信息 Client和NameNode交互文件元数据和DataNode交互文件block数据 目录树结构 角色即进程
+<p class="card-text post-summary"> #hadoop #hdfs
+HDFS架构 HDFS是一个主从（Master/Slaves）架构 由一个NameNode和一些DataNode组成 面向文件包含：文件元数据（metadata）和文件数据（data） NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树 DataNode负责存储文件数据（block块），并提供block的读写 DataNode与NameNode维持心跳，并汇报自己持有的block信息 Client和NameNode交互文件元数据和DataNode交互文件block数据 目录树结构 角色即进程
 Hadoop集群中HDFS节点角色 Master Standy </p>
 </div>
 <div class=card-footer>
@@ -343,6 +344,7 @@ Hadoop集群中HDFS节点角色 Master Standy </p>
 <div class=card-body>
 <h5 class=card-title>Grafana上监控kubernetes中Pod已用内存不准问题分析</h5>
 <p class="card-text post-summary">结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
+#kubernetes #k8s #内存分析 #oom #golang #grafana
 问题现象 近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平， 随着服务运行时间增长，pod的内存占用也随之水涨船高。直到内存占用增长到pod限制的上限附近，内存才出现回收的迹象，并且回收幅度不是特别明显， 但同时又不会出现OOM。
 Golang某个服务内存占用情况 JAVA某个服务内存占用情况 简单分析 记一次线上的内存持续增长问题
 ↑这个是初次遇到这个问题时候的分析，当时以为是代码写的有漏洞，程序发生了内存泄漏。于是祭出了pprof分析了一顿，结果可想而知，当然是没看出有问题。
@@ -351,7 +353,7 @@ Golang某个服务内存占用情况 JAVA某个服务内存占用情况 简单�
 集群监控 普通pod监控采用了常见的Prometheus+Grafana的方案。
 数据源计算方式 监控数据是采集的kubernetes中监控程序cadvisor上报的container_memory_working_set_bytes字段（ 表格参照 ）
 查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes（RSS + Cache）与memory.stat total_inactive_file二者的差值
-func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... inactiveFileKeyName := "total_inactive_file" if cgroups.IsCgroup2UnifiedMode() { inactiveFileKeyName = "inactive_file" } workingSet := ret.Memory.Usage if v, ok := s.MemoryStats.Stats[inactiveFileKeyName]; ok { if workingSet &lt; v { workingSet = 0 } else { workingSet -= v } } ret.</p>
+func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... inactiveFileKeyName := "total_inactive_file" if cgroups.IsCgroup2UnifiedMode() { inactiveFileKeyName = "inactive_file" } workingSet := ret.Memory.Usage if v, ok := s.</p>
 </div>
 <div class=card-footer>
 <span class=float-left>September 22, 2021</span>
@@ -368,7 +370,8 @@ func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... 
 </div>
 <div class=card-body>
 <h5 class=card-title>Hadoop生态组件</h5>
-<p class="card-text post-summary">最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
+<p class="card-text post-summary">#hadoop
+最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
 HDFS（hadoop分布式文件系统） HDFS是hadoop体系中数据存储管理的基础。他是一个高度容错的系统，能检测和应对硬件故障。
 有以下几个角色：
 client：切分文件，访问HDFS，与那么弄得交互，获取文件位置信息，与DataNode交互，读取和写入数据。
@@ -405,7 +408,8 @@ flume（日志收集工具） cloudera开源的日志收集系统，具有分布
 </div>
 <div class=card-body>
 <h5 class=card-title>记一次线上的内存持续增长问题</h5>
-<p class="card-text post-summary">问题现象 前些天从Grafana上看到某一个pod内存涨上去就再没下来（从9/1~9/2之间的一个时间开始），并且看这个趋势涨上去就没有下来的意思。中间有几次pod重新发布 才导致内存恢复到一个比较低的水平，但内存依旧持续上涨。
+<p class="card-text post-summary">#golang #oom #内存分析 #grafana #kubernetes #k8s
+问题现象 前些天从Grafana上看到某一个pod内存涨上去就再没下来（从9/1~9/2之间的一个时间开始），并且看这个趋势涨上去就没有下来的意思。中间有几次pod重新发布 才导致内存恢复到一个比较低的水平，但内存依旧持续上涨。
 初步分析 初步推测大概率与日志有关，此次发版改动了日志输出格式，以及修改了日志没有写入磁盘的问题。
 先把服务稳住 由于清楚问题的大致方向，先将服务中几个打印log比较频繁的位置注释掉，在9/3~9/4之间的一个位置重新发布。从之后的趋势上可以看出，注释掉几个打印日志的 地方之后，内存增长速度明显放缓。
 至此，基本可以确认内存增长与日志相关。
