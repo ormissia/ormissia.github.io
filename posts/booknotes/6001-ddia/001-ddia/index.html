@@ -48,7 +48,7 @@ B： 你好A，我能听到 A： 请问B，你能听到吗？ 这逻辑就变得
 下面举两个类似的栗子：
 例一 在某基础信息管理平台中需要一个模糊搜索的功能，各方面平衡之后采用在应用内存中使用前缀树的方式做缓存。由于应用是多实例的，这时数据的增删改就会在多实例之间存在一个短暂的不一致。">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia-1/"><meta property="article:section" content="posts">
+<meta property="og:url" content="https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia/"><meta property="article:section" content="posts">
 <meta property="article:published_time" content="2022-04-30T13:53:19+08:00">
 <meta property="article:modified_time" content="2022-04-30T13:53:19+08:00">
 <meta name=description content="数据密集型应用系统设计(DDIA)读书笔记">
@@ -185,7 +185,8 @@ Ormissia's Blog</a>
 <li>
 <i class="fas fa-minus-circle"></i><a class=active href=/posts/booknotes/6001-ddia/>DDIA</a>
 <ul class=active>
-<li><a class=active href=/posts/booknotes/6001-ddia/001-ddia-1/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
+<li><a class=active href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
+<li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
 </ul>
 </li>
 </ul>
@@ -199,7 +200,7 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class=content>
 <div class="container p-0 read-area">
-<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia-1/head.svg)>
+<div class="hero-area col-sm-12" id=hero-area style=background-image:url(https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia/head.svg)>
 </div>
 <div class=page-content>
 <div class="author-profile ml-auto align-self-lg-center">
@@ -292,18 +293,18 @@ A： 请问B，你能听到吗？
 <div class="row pl-3 pr-3">
 <div class="col-md-6 share-buttons">
 <strong>分享:</strong>
-<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f001-ddia-1%2f&title=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0" target=_blank>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f001-ddia%2f&title=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0" target=_blank>
 <i class="fab fa-reddit"></i>
 </a>
-<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f001-ddia-1%2f&title=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0" target=_blank>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f001-ddia%2f&title=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0" target=_blank>
 <i class="fab fa-linkedin"></i>
 </a>
-<a class="btn btn-sm email-btn" href="mailto:?subject=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0&body=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f001-ddia-1%2f" target=_blank>
+<a class="btn btn-sm email-btn" href="mailto:?subject=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0&body=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f001-ddia%2f" target=_blank>
 <i class="fas fa-envelope-open-text"></i>
 </a>
 </div>
 <div class="col-md-6 btn-improve-page">
-<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/booknotes/6001-ddia/001-ddia-1/index.md title=改善此页面 target=_blank rel=noopener>
+<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/booknotes/6001-ddia/001-ddia/index.md title=改善此页面 target=_blank rel=noopener>
 <i class="fas fa-code-branch"></i>
 改善此页面
 </a>
@@ -315,6 +316,12 @@ A： 请问B，你能听到吗？
 <a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置 class="btn btn-outline-info">
 <div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
 <div class=next-prev-text>修改Mac上brew安装的MySQL配置</div>
+</a>
+</div>
+<div class="col-md-6 next-article">
+<a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记 class="btn btn-outline-info">
+<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
+<div class=next-prev-text>数据密集型应用系统设计(DDIA)读书笔记</div>
 </a>
 </div>
 </div>

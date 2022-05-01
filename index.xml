@@ -1,4 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 30 Apr 2022 13:53:19 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>数据密集型应用系统设计(DDIA)读书笔记</title><link>https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia-1/</link><pubDate>Sat, 30 Apr 2022 13:53:19 +0800</pubDate><guid>https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia-1/</guid><description>#golang
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 01 May 2022 14:18:44 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>数据密集型应用系统设计(DDIA)读书笔记</title><link>https://ormissia.github.io/posts/booknotes/6001-ddia/002-ddia/</link><pubDate>Sun, 01 May 2022 14:18:44 +0800</pubDate><guid>https://ormissia.github.io/posts/booknotes/6001-ddia/002-ddia/</guid><description>#golang
+上一次我们主要从书中学习了主从架构消息同步相关的内容，而书中后面提到了多主节点复制（如多数据中心等）和无主节点复制（书中提到的Riak、Dynamo等并不了解，我认为最近比较火的一些区块链技术也是一些无主节点复制）。这两种模式在实际中（至少在我的认知范围内中小体量的公司基本不会维护一些多数据中心的场景）并不常见，这里不再过多讨论。
+在一个单独的主从复制架构中，主节点和所有从节点都需要保存全量的数据。在项目初期，如果对未来的数据增量没有一个相对准确的判断，在业务发展一段时间之后应用就会遇到性能瓶颈，同时也有可能面临扩容困难等一系列问题。因此，分片的机制应运而生。
+数据分区与数据复制 分区通常与复制相结合，即每一个分区的复制都是一个完整的主从架构的复制，而每个分区都会在多个节点上拥有相同的（不考虑微观上的延迟）副本，这意味着某条记录属于特定分区，而同样的内容会被保存到不同节点上以提高系统的容错性，这样即使某一个节点失效也不会影响整个集群的运行。
+键-值数据的分区 面对海量的数据如何决定哪一条记录该放在哪个分区上呢？分区的主要目标就是将数据和查询负载均匀地分布在所有节点上。
+而如果分区不均匀，就会出现某些分区节点比其他分区承担了更多的任务，即为数据倾斜。数据倾斜会导致分区效率严重下降以至于丧失了既定的目标。
+避免热点最简单的办法是将数据随机分配到所有节点上。这种方法可以比较均匀地分布数据，但也有一个致命的缺点：如此写入到集群中的数据是无法通过特定key来读取的，因为没有办法知道数据保存在哪个节点上，所以不得不查询所有节点。
+简单的改进方法可以通过key来分配分区，比如a-z的单词根据首字母分配到26个节点上。
+基于关键字区间分区 假如上述根据单纯根据首字母字来分区时没有26个节点，那就需要将某些临近的字母放到同一个分区中，比如ab放到第一个分区，cd放到第二个分区&amp;hellip;&amp;hellip;依次类推，26个字母需要13个节点即可放完。
+但是基于关键字区间的分区也存在缺点，某些访问模式会导致热点。假如使用时间戳作为关键字，每一天的数据写入到一个分区中时，就会使这个分区成为热点。而其他分区始终处于空闲状态。
+为了避免上述问题，可以在时间戳以外加入其他内容，比如数据类型等
+基于关键字哈希值分区 对于上述数据倾斜与热点问题，许多分布式系统采用了基于关键字哈希函数的方式来分区。
+一个好的哈希函数可以处理数据倾斜并使其均匀分布，这样从整体来看可以使数据均匀的分布到所有分区上。
+负载倾斜与热点 如上所述，基于哈希的分区方法可以减轻热点，但依然无法完全避免。一个极端情况是所有读写都是针对同一个key进行的，则最终的请求都会被路由到同一个分区中。比如某个明星又离婚了等等&amp;hellip;
+而最让人困扰的是，数据倾斜的问题不光会出现在这些基础设施（指分布式存储，一些消息中间件等）中，也会出现在我们的应用层中。比如，为了防止数据乱序（有时候乱序的数据会给下游处理带来压力，比如Flink处理乱序数据产生的延迟问题。再者相同key发往不同分区时也会使Flink处理数据时产生大量的Shuffle带来的网络IO压力）从而采用哈希等方法将数据写入kafka的partition中。
+即使采用了哈希分区的方法，如果出现某个热点key产生大量数据，就会造成数据倾斜。严重时将导致Kafka集群中某几个节点（主分片和所有副本所在的节点）磁盘被写满，进而导致整个集群不可用引发生产故障。
+针对这个特特定的场景，由于同一key的数据可以在较长一段时间后忍受分区发生改变，因此可以在几个小时以后改变一次分区选择规则。诚然，这个办法并不能推广到所有数据倾斜问题的解决中。
+分区与二级索引 上面讨论的分区方案都依赖于键值的数据模型（其实我个人认为，多数数据存储莫不如此，即便是回到MySQL也是通过主键查询，要么回表，再要么全表扫描）。键值模型相对简单，即都是通过关键字来访问记录。但是涉及到二级索引，情况就会变得复杂。
+考虑到其复杂性，部分存储并不支持二级索引，如HBase作为一个面向列的存储，为了兼顾大数据量写入和OLAP场景的应用，并不支持二级索引。但是二级索引则是ES等一些全文搜索引擎的根本值所在。
+而二级索引也是需要存储到不同分区中的，目前主要有两种方法来支持二级索引进行分区：
+基于文档的分区 基于此条的分区 基于文档分区的二级索引 基于文档的分区是将所有二级索引在每个分区中都存了一个词条，而每个分区中的二级索引只记录自己分区的数据。
+如果需要通过二级索引查询数据，就需要每一个分区的二级索引，再做统一处理。因此会导致读延迟显著放大。
+基于此条的二级索引分区 基于词条的二级索引分区即与数据分区类似，二级索引的词条被放入所有分区，每个词条只存在于某一个分区（不考虑副本）。
+这种方法对比前者，好处就是读取更为高效，不需要遍历所有分区的二级索引。相反这种方案写入性能相对较低，因为一个文档里面可能涉及到多个二级索引，而二级索引的分区又可能完全不同甚至不在同一节点上，由此势必引入显著的写放大。
+而正因如此，实践中对全局二级索引的更新往往都是异步的。
+参考链接 《数据密集型应用系统设计》</description></item><item><title>数据密集型应用系统设计(DDIA)读书笔记</title><link>https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia/</link><pubDate>Sat, 30 Apr 2022 13:53:19 +0800</pubDate><guid>https://ormissia.github.io/posts/booknotes/6001-ddia/001-ddia/</guid><description>#golang
 通常在生产中存储结构化数据最常用的是MySQL，而MySQL底层存储用的数据结构是B+树。当并发量达到一定程度之后通常会将单点的MySQL拆分成主从架构（在这之前可以加入内存型缓存如Redis等，属于不同层级的解决办法，不在此文讨论范畴）。
 问题产生 在主从架构中主要问题之一有复制滞后。
 这里以MySQL集群为例，主从复制要求所有写请求都经由主节点，而从节点只接收只读的查询请求（这一点在ES/Kafka的多副本分片中也有类似体现，主分片写入，从分片只支持读取）。对于读操作密集的负载（如web），这是一个不错的选择。
