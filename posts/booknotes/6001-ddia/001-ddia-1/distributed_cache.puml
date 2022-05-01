@@ -1,0 +1,54 @@
+@startuml
+
+box Application #lightblue
+collections ServiceCopy_1 as s1
+collections ServiceCopy_2 as s2
+end box
+database DB as db
+queue "Redis Channel" as redis
+
+== 读取数据 ==
+autonumber
+
+s1 -> s1: 服务启动
+s1 -> db: 读取需要加载的数据
+activate db
+deactivate db
+s1 -> s1: 将数据插入对应的应用内存缓存中
+
+== 数据添加/删除 ==
+autonumber
+
+-> s1: 添加/删除数据的请求
+activate s1 #pink
+s1 ->> redis: 向Redis的channel中发送消息
+activate redis
+deactivate redis
+note right: user_info:insert:小明
+s1 -> db: 存储到持久层
+activate db
+deactivate db
+<<-- s1: response
+deactivate s1
+
+par 订阅的主题
+else
+redis -> s1: 收到命令
+note right: user_info:insert:小明
+activate s1
+s1 -> s1: 解析命令，执行应用内存缓存的增加/删除操作
+deactivate s1
+else
+redis -> s2: 收到命令
+note right: user_info:insert:小明
+activate s2
+s2 -> s2: 解析命令，执行应用内存缓存的增加/删除操作
+deactivate s2
+end par
+
+== 命令 ==
+hnote across
+命令格式为三段，第一段为资源类型（哪种配置信息），第二段为操作类型（增删）
+end hnote
+
+@enduml

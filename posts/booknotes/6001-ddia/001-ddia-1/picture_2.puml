@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor 用户1234 as user1
+box database #lightblue
+database 主节点 as db
+database 从节点1 as db1
+database 从节点2 as db2
+end box
+actor 用户2345 as user2
+
+user1 -> db: 修改用户信息
+activate db
+user1 <-- db: SQL执行成功
+deactivate db
+
+par 复制SQL到从节点
+db ->> db1: 复制SQL到从节点1
+
+user2 -> db1: 查询用户信息
+activate db1
+user2 <-- db1: 查询到的用户信息为修改后
+deactivate db1
+
+user2 -> db2: 查询用户信息
+activate db2
+user2 <-- db2: 查询到的用户信息为修改前的
+deactivate db2
+
+
+else
+db ->> db2: 复制SQL到从节点2
+end par
+
+@enduml
