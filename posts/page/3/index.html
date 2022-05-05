@@ -150,6 +150,7 @@ Ormissia's Blog</a>
 <ul>
 <li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
 <li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
+<li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
 </ul>
 </li>
 </ul>
@@ -163,6 +164,33 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/problems/5002-k8s-memory/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/problems/5002-k8s-memory/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Grafana上监控kubernetes中Pod已用内存不准问题分析</h5>
+<p class="card-text post-summary">结合上次Golang服务内存增长的分析，近期线上多个服务出现内存持续增长的问题，就这个现象分析一下Prometheus+Grafana的监控问题
+#kubernetes #k8s #内存分析 #oom #golang #grafana
+问题现象 近期在Grafana上显示生产环境多个服务出现内存持续增长的问题，有Golang的服务，也有JAVA的服务。都是服务重启之后，内存来到一个最低水平， 随着服务运行时间增长，pod的内存占用也随之水涨船高。直到内存占用增长到pod限制的上限附近，内存才出现回收的迹象，并且回收幅度不是特别明显， 但同时又不会出现OOM。
+Golang某个服务内存占用情况 JAVA某个服务内存占用情况 简单分析 记一次线上的内存持续增长问题
+↑这个是初次遇到这个问题时候的分析，当时以为是代码写的有漏洞，程序发生了内存泄漏。于是祭出了pprof分析了一顿，结果可想而知，当然是没看出有问题。
+现在是多个服务都出现类似问题，那这个情况相对也就比较值得重视了。之前那个服务是因为日志写的比较多，造成磁盘IO比较大。同样的， 近期发现的这几个内存持续不断增长的服务也都是日志量比较大的。
+进一步分析 集群日志架构 所有pod中的日志都是写入挂载到/data/log目录的物理机磁盘中，因此所有写日志的操作都会有磁盘IO。日志量越大的pod，磁盘IO相应地也越高。
+集群监控 普通pod监控采用了常见的Prometheus+Grafana的方案。
+数据源计算方式 监控数据是采集的kubernetes中监控程序cadvisor上报的container_memory_working_set_bytes字段（ 表格参照 ）
+查看cadvisor源码中setMemoryStats 可知，container_memory_working_set_bytes字段是cgroup memory.usage_in_bytes（RSS + Cache）与memory.stat total_inactive_file二者的差值
+func setMemoryStats(s *cgroups.Stats, ret *info.ContainerStats) { // ... // ... inactiveFileKeyName := "total_inactive_file" if cgroups.IsCgroup2UnifiedMode() { inactiveFileKeyName = "inactive_file" } workingSet := ret.Memory.Usage if v, ok := s.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>September 22, 2021</span>
+<a href=/posts/problems/5002-k8s-memory/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/knowledge/2006-hadoop/001-env/ class=post-card-link>
 <div class=card>
