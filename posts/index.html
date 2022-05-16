@@ -63,6 +63,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
 <li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
 <li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+<li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
 </ul>
 </li>
 <li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
@@ -164,6 +165,31 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/knowledge/2001-go/007-cacheline/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2001-go/007-cacheline/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>全局变量加锁的优化</h5>
+<p class="card-text post-summary">#golang #cache_line
+开发中不可避免地会遇到需要对全局变量加锁的情况，而一旦并发量高了之后，加锁的变量有可能变成服务的性能瓶颈所在。所以千方百计地寻找优化方法。
+改变锁的类型 如果业务中的全局变量是读多写少的应用场景，我们可以将互斥锁改为读写锁。即读取时对变量加读锁，这样可以支持多个线程并发读取同一个变量。而只有变量需要修改时才加写锁，保证写的时候不会被其他线程读取到错误的值。
+互斥锁：
+func DoWork() { lock.Lock() defer lock.Unlock() // do something... } 读写锁：
+func Read() { lock.RLock() defer lock.RUnlock() // read global variable } func Write() { lock.Lock() defer lock.Unlock() // write global variable } 降低锁住的代码块长度 在Go中，我们常常会利用defer关键字的特性，写出如下的代码：
+func Write() { lock.Lock() defer lock.Unlock() // do something... } 但在实际代码中，如果对全局变量读写前后会有较长时间去做其他工作的情况下，就会造成极大的性能损耗。加锁之后没有立即对全局变量进行读写，或者对全局变量读写完之后没有立即释放锁，都会使其他线程没有办法立即抢到锁，从而拉低了整个系统的并发性能。
+根据这个逻辑，可以将上述代码改成如下格式：
+func Write() { // do something... lock.Lock() // read or write global variable lock.</p>
+</div>
+<div class=card-footer>
+<span class=float-left>May 13, 2022</span>
+<a href=/posts/knowledge/2001-go/007-cacheline/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/booknotes/6001-ddia/003-ddia/ class=post-card-link>
 <div class=card>
@@ -484,24 +510,6 @@ mysql.server restart 设置开机启动 cp /opt/homebrew/Cellar/mysql/8.</p>
 <div class=card-footer>
 <span class=float-left>December 20, 2021</span>
 <a href=/posts/problems/5006-mysql-brew-conf/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2007-kubernetes/001-link-index/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2007-kubernetes/001-link-index/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Kubernetes文档索引</h5>
-<p class="card-text post-summary"> #kubernetes #k8s
-为系统守护进程预留计算资源 开启服务拓扑 Master节点的高可用 Service 的 DNS </p>
-</div>
-<div class=card-footer>
-<span class=float-left>November 4, 2021</span>
-<a href=/posts/knowledge/2007-kubernetes/001-link-index/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

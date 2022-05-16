@@ -63,6 +63,7 @@ Ormissia's Blog</a>
 <li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
 <li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
 <li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
+<li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
 </ul>
 </li>
 <li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
@@ -164,6 +165,24 @@ Ormissia's Blog</a>
 <section class=content-section id=content-section>
 <div class="content container-fluid" id=content>
 <div class="container-fluid post-card-holder" id=post-card-holder>
+<div class=post-card>
+<a href=/posts/knowledge/2007-kubernetes/001-link-index/ class=post-card-link>
+<div class=card>
+<div class=card-head>
+<img class=card-img-top src=/posts/knowledge/2007-kubernetes/001-link-index/head.svg alt="Hero Image">
+</div>
+<div class=card-body>
+<h5 class=card-title>Kubernetes文档索引</h5>
+<p class="card-text post-summary"> #kubernetes #k8s
+为系统守护进程预留计算资源 开启服务拓扑 Master节点的高可用 Service 的 DNS </p>
+</div>
+<div class=card-footer>
+<span class=float-left>November 4, 2021</span>
+<a href=/posts/knowledge/2007-kubernetes/001-link-index/ class="float-right btn btn-outline-info btn-sm">阅读</a>
+</div>
+</div>
+</a>
+</div>
 <div class=post-card>
 <a href=/posts/problems/5005-docker-image-source/ class=post-card-link>
 <div class=card>
@@ -388,25 +407,6 @@ cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安�
 <div class=card-footer>
 <span class=float-left>October 8, 2021</span>
 <a href=/posts/deployment/3002-linux-nginx/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/head.svg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>HDFS基础知识</h5>
-<p class="card-text post-summary"> #hadoop #hdfs
-HDFS架构 HDFS是一个主从（Master/Slaves）架构 由一个NameNode和一些DataNode组成 面向文件包含：文件元数据（metadata）和文件数据（data） NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树 DataNode负责存储文件数据（block块），并提供block的读写 DataNode与NameNode维持心跳，并汇报自己持有的block信息 Client和NameNode交互文件元数据和DataNode交互文件block数据 目录树结构 角色即进程
-Hadoop集群中HDFS节点角色 Master Standy </p>
-</div>
-<div class=card-footer>
-<span class=float-left>September 24, 2021</span>
-<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
 </div>
 </div>
 </a>

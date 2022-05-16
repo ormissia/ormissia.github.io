@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 03 May 2022 15:06:52 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>数据密集型应用系统设计(DDIA)读书笔记</title><link>https://ormissia.github.io/posts/booknotes/6001-ddia/003-ddia/</link><pubDate>Tue, 03 May 2022 15:06:52 +0800</pubDate><guid>https://ormissia.github.io/posts/booknotes/6001-ddia/003-ddia/</guid><description>#golang
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ormissia's Blog</title><link>https://ormissia.github.io/</link><description>Recent content on Ormissia's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 13 May 2022 14:17:33 +0800</lastBuildDate><atom:link href="https://ormissia.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>全局变量加锁的优化</title><link>https://ormissia.github.io/posts/knowledge/2001-go/007-cacheline/</link><pubDate>Fri, 13 May 2022 14:17:33 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2001-go/007-cacheline/</guid><description>#golang #cache_line
+开发中不可避免地会遇到需要对全局变量加锁的情况，而一旦并发量高了之后，加锁的变量有可能变成服务的性能瓶颈所在。所以千方百计地寻找优化方法。
+改变锁的类型 如果业务中的全局变量是读多写少的应用场景，我们可以将互斥锁改为读写锁。即读取时对变量加读锁，这样可以支持多个线程并发读取同一个变量。而只有变量需要修改时才加写锁，保证写的时候不会被其他线程读取到错误的值。
+互斥锁：
+func DoWork() { lock.Lock() defer lock.Unlock() // do something... } 读写锁：
+func Read() { lock.RLock() defer lock.RUnlock() // read global variable } func Write() { lock.Lock() defer lock.Unlock() // write global variable } 降低锁住的代码块长度 在Go中，我们常常会利用defer关键字的特性，写出如下的代码：
+func Write() { lock.Lock() defer lock.Unlock() // do something... } 但在实际代码中，如果对全局变量读写前后会有较长时间去做其他工作的情况下，就会造成极大的性能损耗。加锁之后没有立即对全局变量进行读写，或者对全局变量读写完之后没有立即释放锁，都会使其他线程没有办法立即抢到锁，从而拉低了整个系统的并发性能。
+根据这个逻辑，可以将上述代码改成如下格式：
+func Write() { // do something... lock.Lock() // read or write global variable lock.</description></item><item><title>数据密集型应用系统设计(DDIA)读书笔记</title><link>https://ormissia.github.io/posts/booknotes/6001-ddia/003-ddia/</link><pubDate>Tue, 03 May 2022 15:06:52 +0800</pubDate><guid>https://ormissia.github.io/posts/booknotes/6001-ddia/003-ddia/</guid><description>#golang
 前面几次着重讨论了在分布式系统中出现错误之后该如何处理。虽然长篇累牍谈了很多，但所谈到的情况还是过于乐观，现实则会更加复杂。我们可以根据墨菲定律做一个非常悲观的假定：即所有可能出错的事情最终一定会出错。
 作为开发者，我们的核心任务是构建可靠的系统，即使系统面临各种出错的可能，也需要完成预定的工作（确保满足用户期望）。
 所以，首先我们要充分认识目前所面临的挑战。
