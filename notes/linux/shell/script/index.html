@@ -11,6 +11,7 @@
 <link rel=stylesheet href=/css/flag-icon.min.css>
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
+<link rel=stylesheet href=/css/colortheme/colortheme.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="Script">
 <meta property="og:description" content="脚本执行方式  需要可执行权限  相对路径执行 绝对路径执行   不需要可执行权限  sh 脚本文件名 source 脚本文件名 // 不会启动子进程，通过pstree查看进程树        定义变量  定义变量：变量名=变量值 取消变量：unset 变量名 注意事项：  =两边不能有空格 不能使用关键字做变量名，如：ls、cd等 如果变量名已存在，则会覆盖之前的变量值 变量名称由字母、数字、下划线组成，不能以数字开头        变量类型  环境变量：变量名通常大写，由操作系统维护 位置变量：shell内置变量，存储脚本执行时的参数  使用$n表示，n为数字序列号：$1、$2、&mldr;、${10}、${11}、&mldr;   预定义变量：shell内置变量，可以直接调用但是不能赋值或修改'  $0：存储所在的进程或脚本名 $$：当前进程的PID号 $?：命令执行后的返回状态，0-正常，其他-异常 $#：已加载的位置变量的个数 $*：所有位置变量的值   自定义变量：用户自主设置      多种引号的区别  双引号：允许扩展，以$引用其他变量 单引号：禁用扩展，将$视为普通字符 反引号：将命令执行的输出作为变量值，$()与反引号等效      变量的作用范围  局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用 全局变量：在当前Shell以及子Shell中均有效（export a=1：定义全局变量a）      read标准输入取值 read从键盘读入变量值完成赋值">
@@ -35,6 +36,23 @@ Ormissia's Blog</a>
 </button>
 <div class="collapse navbar-collapse lang-selector" id=top-nav-items>
 <ul class="navbar-nav ml-auto">
+<li class="nav-item dropdown">
+<div id=theme-initialization style=display:none default-theme=system></div>
+<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
+</a>
+<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
+<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
+<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
+</a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
+<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
+</a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
+<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
+</a>
+</div>
+</li>
 </ul>
 </div>
 </div>
@@ -492,6 +510,8 @@ Toha
 <script type=text/javascript src=/js/navbar.js></script>
 <script type=text/javascript src=/js/plyr.js></script>
 <script type=text/javascript src=/js/main.js></script>
+<script type=text/javascript src=/js/darkreader.js></script>
+<script type=text/javascript src=/js/darkmode-darkreader.js></script>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
 <script src=/js/imagesloaded.pkgd.min.js></script>
 <script src=/js/note.js></script>

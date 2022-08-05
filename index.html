@@ -13,6 +13,7 @@
 <link rel=stylesheet href=/css/flag-icon.min.css>
 <link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
 <link rel=stylesheet href=/fontawesome/css/all.min.css>
+<link rel=stylesheet href=/css/colortheme/colortheme.css>
 <link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
 <meta property="og:title" content="Ormissia's Blog">
 <meta property="og:type" content="website">
@@ -57,6 +58,12 @@ Ormissia's Blog</a>
 <li class=nav-item>
 <a class=nav-link href=#projects>项目</a>
 </li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href=# id=navbarDropdown role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>更多的</a>
+<div class=dropdown-menu aria-labelledby=navbarDropdown>
+<a class=dropdown-item href=#achievements>成就</a>
+</div>
+</li>
 <div class=dropdown-divider id=top-navbar-divider></div>
 <li class=nav-item>
 <a class=nav-link id=blog-link href=/posts>博文</a>
@@ -66,6 +73,23 @@ Ormissia's Blog</a>
 </li>
 <li class=nav-item>
 <a class=nav-link href=https://github.com/ormissia>GitHub</a>
+</li>
+<li class="nav-item dropdown">
+<div id=theme-initialization style=display:none default-theme=system></div>
+<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
+<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
+</a>
+<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
+<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
+<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
+</a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
+<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
+</a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
+<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
+</a>
+</div>
 </li>
 </ul>
 </div>
@@ -1204,6 +1228,28 @@ professional
 </div>
 </div>
 </div>
+<div class="container-fluid section-holder d-flex bg-dimmed">
+<div class="container-fluid anchor pb-5 achievements-section">
+<h1 class=text-center>
+<span id=achievements></span>成就</h1>
+<div class=container>
+<div class=row id=gallery>
+</div>
+</div>
+<div class=d-none id=achievements-holder>
+<div class="achievement-entry text-center" style=background-image:url(/images/sections/achievements/ece_hub49030125a61105f65856d2a1e39b4a7_79046_0x300_resize_box_3.png)>
+<i class="fas fa-search-plus" id=enlarge-icon></i>
+<h4 class=title id=achievement-title>Elastic Certified Engineer</h4>
+<div class="caption hidden col-lg-6 text-left" id=caption>
+<h4>Elastic Certified Engineer</h4>
+<p>2022-08-01获得Elastic认证工程师资格</p>
+</div>
+<span style=background-image:url(/images/sections/achievements/ece_hub49030125a61105f65856d2a1e39b4a7_79046_0x300_resize_box_3.png) class=d-none id=SmallImage active=true></span>
+<span style=background-image:url(/images/sections/achievements/ece_hub49030125a61105f65856d2a1e39b4a7_79046_0x1500_resize_box_3.png) class=d-none id=LargeImage></span>
+</div>
+</div>
+</div>
+</div>
 <footer id=footer class="container-fluid text-center align-content-center footer pb-2">
 <div class="container pt-5">
 <div class="row text-left">
@@ -1246,6 +1292,8 @@ Toha
 <script type=text/javascript src=/js/navbar.js></script>
 <script type=text/javascript src=/js/plyr.js></script>
 <script type=text/javascript src=/js/main.js></script>
+<script type=text/javascript src=/js/darkreader.js></script>
+<script type=text/javascript src=/js/darkmode-darkreader.js></script>
 <script src=/js/itype.min.js></script>
 <script src=/js/github-button.js></script>
 <script src=/js/home.js></script>
