@@ -27,6 +27,10 @@ skills:
 
   # 框架
   # 数据库
+  - name: Elastic
+    logo: /images/sections/skills/elastic.svg
+    summary: 通过Elastic认证，熟悉ES常见聚合查询以及搜索推荐。了解常见的分词器，Lucene倒排索引机制以及使用的相关算法。
+
   - name: MySQL
     logo: /images/sections/skills/mysql.svg
     summary: 熟练编写常用SQL语句，熟悉MySQL的调优，能根据业务需求对SQL进行有针对性的优化。
@@ -38,10 +42,6 @@ skills:
   - name: Redis
     logo: /images/sections/skills/redis.svg
     summary: 熟练使用Redis...(施工中)
-
-  - name: Elastic
-    logo: /images/sections/skills/elastic.svg
-    summary: 熟悉ES常见查询以及搜索推荐、数据建模等。了解常见的分词器，Lucene倒排索引机制以及使用的相关算法。
 
   - name: Hadoop
     logo: /images/sections/skills/hadoop.svg
