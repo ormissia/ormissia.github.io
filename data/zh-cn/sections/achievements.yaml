@@ -1,0 +1,15 @@
+# section information
+section:
+  name: 成就
+  id: achievements
+  enable: true
+  weight: 6
+  showOnNavbar: true
+  # Can optionally hide the title in sections
+  # hideTitle: true
+
+# Your achievements achievements
+achievements:
+  - title: Elastic Certified Engineer
+    image: /images/sections/achievements/ece.png
+    summary: 2022-08-01获得Elastic认证工程师资格
