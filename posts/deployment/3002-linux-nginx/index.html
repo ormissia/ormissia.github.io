@@ -1,614 +1,237 @@
-<!doctype html><html>
-<head>
-<title>Linux部署Nginx流程</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<link rel=stylesheet href=/css/bootstrap.min.css>
-<link rel=stylesheet href=/css/layouts/main.css>
-<link rel=stylesheet href=/css/navigators/navbar.css>
-<link rel=stylesheet href=/css/plyr.css>
-<link rel=stylesheet href=/css/flag-icon.min.css>
-<link rel=stylesheet href=/google-fonts/Mulish/mulish.css>
-<link rel=stylesheet href=/fontawesome/css/all.min.css>
-<link rel=stylesheet href=/css/colortheme/colortheme.css>
-<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Linux部署Nginx流程">
-<meta property="og:description" content="安装依赖 编译工具及库文件 yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel 安装PCRE  PCRE作用是让Nginx支持Rewrite功能
- PCRE安装包下载地址： https://sourceforge.net/projects/pcre/files/pcre/
+<!doctype html><html><head><title>Linux部署Nginx流程</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=stylesheet href=/fontawesome/css/all.min.css><link rel=stylesheet href=/css/colortheme/colortheme.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="Linux部署Nginx流程"><meta property="og:description" content="安装依赖 编译工具及库文件 yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel 安装PCRE PCRE作用是让Nginx支持Rewrite功能
+PCRE安装包下载地址： https://sourceforge.net/projects/pcre/files/pcre/
 选择对应版本下载即可
 下载PCRE安装包 cd /usr/local/src/ wget http://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.gz 解压安装包并进入目录 tar -zxvf pcre-8.45.tar.gz cd pcre-8.45 编译安装 ./configure make && make install 验证安装 pcre-config --version 可能遇到的问题 安装完成之后有可能找不到命令，查看编译安装时的默认安装目录，将其添加到Linux环境变量PATH即可
-创建管理Nginx的用户和组  创建nginx运行用户nginx并加入到nginx组，不允许nginx用户直接登录系统
- groupadd nginx useradd -g nginx nginx -s /sbin/nologin 安装Nginx 下载安装包 Nginx下载地址： http://nginx.org/en/download.html
+创建管理Nginx的用户和组 创建nginx运行用户nginx并加入到nginx组，不允许nginx用户直接登录系统
+groupadd nginx useradd -g nginx nginx -s /sbin/nologin 安装Nginx 下载安装包 Nginx下载地址： http://nginx.org/en/download.html
 没有特殊需求的话，选择Stable version稳定版下载即可
-cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安装包并进入目录 tar -zxvf nginx-1.20.1 cd nginx-1.20.1 编译安装 .">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ormissia.github.io/posts/deployment/3002-linux-nginx/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-10-08T14:18:39+08:00">
-<meta property="article:modified_time" content="2021-10-08T14:18:39+08:00">
-<meta name=description content="Linux部署Nginx流程">
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
-<link rel=stylesheet href=/css/layouts/single.css>
-<link rel=stylesheet href=/css/navigators/sidebar.css>
-<link rel=stylesheet href=/css/style.css>
-</head>
-<body data-spy=scroll data-target=#TableOfContents data-offset=80>
-<div class="container-fluid bg-dimmed wrapper">
-<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
-<div class=container>
-<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span>
-</button>
-<a class=navbar-brand href=/>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+cd /usr/local/src/ wget http://nginx.org/download/nginx-1.20.1.tar.gz 解压安装包并进入目录 tar -zxvf nginx-1.20.1 cd nginx-1.20.1 编译安装 ./configure \ --prefix=/usr/local/nginx \ --user=nginx --group=nginx \ --pid-path=/var/run/nginx/nginx."><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/posts/deployment/3002-linux-nginx/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-10-08T14:18:39+08:00"><meta property="article:modified_time" content="2021-10-08T14:18:39+08:00"><meta name=description content="Linux部署Nginx流程"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css><link rel=stylesheet href=/css/layouts/single.css><link rel=stylesheet href=/css/navigators/sidebar.css><link rel=stylesheet href=/css/style.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span></button>
+<a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span>
-</button>
-<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
-<ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-<div id=theme-initialization style=display:none default-theme=system></div>
-<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
-<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
-<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
-<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
-<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
-</a>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
-</nav>
-<section class=sidebar-section id=sidebar-section>
-<div class=sidebar-holder>
-<div class=sidebar id=sidebar>
-<form class=mx-auto method=get action=/search>
-<input type=text name=keyword placeholder=搜索 data-search id=search-box>
-</form>
-<div class=sidebar-tree>
-<ul class=tree id=tree>
-<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
-<div class=subtree>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
-<ul>
-<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
-<li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
-<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
-<ul>
-<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
-<ul>
-<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
-<ul>
-<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
-<ul>
-<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
-<ul>
-<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
-<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
-<ul>
-<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li>
-<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/deployment/>环境部署</a>
-<ul class=active>
-<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
-<li><a class=active href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
-<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
-<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
-<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
-<ul>
-<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
-<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
-<ul>
-<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
-<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
-<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
-<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
-<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
-<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a>
-<ul>
-<li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</div>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class=content-section id=content-section>
-<div class=content>
-<div class="container p-0 read-area">
-<div class="hero-area col-sm-12" id=hero-area style=background-image:url(/images/default-hero.jpg)>
-</div>
-<div class=page-content>
-<div class="author-profile ml-auto align-self-lg-center">
-<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
-<h5 class=author-name>Ormissia</h5>
-<p>Friday, October 8, 2021</p>
-</div>
-<div class=title>
-<h1>Linux部署Nginx流程</h1>
-</div>
-<div class=post-content id=post-content>
-<h2 id=安装依赖>安装依赖</h2>
-<h3 id=编译工具及库文件>编译工具及库文件</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel
-</code></pre></div><h3 id=安装pcre>安装PCRE</h3>
-<blockquote>
-<p><code>PCRE</code>作用是让<code>Nginx</code>支持<code>Rewrite</code>功能</p>
-</blockquote>
-<p><code>PCRE</code>安装包下载地址：
-<a href=https://sourceforge.net/projects/pcre/files/pcre/>https://sourceforge.net/projects/pcre/files/pcre/</a></p>
-<p>选择对应版本下载即可</p>
-<h4 id=下载pcre安装包>下载PCRE安装包</h4>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /usr/local/src/
-wget http://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.gz
-</code></pre></div><h4 id=解压安装包并进入目录>解压安装包并进入目录</h4>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tar -zxvf pcre-8.45.tar.gz
-cd pcre-8.45
-</code></pre></div><h4 id=编译安装>编译安装</h4>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>./configure
-make <span style=color:#f92672>&amp;&amp;</span> make install
-</code></pre></div><h4 id=验证安装>验证安装</h4>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>pcre-config --version
-</code></pre></div><h4 id=可能遇到的问题>可能遇到的问题</h4>
-<p>安装完成之后有可能找不到命令，查看编译安装时的默认安装目录，将其添加到<code>Linux</code>环境变量<code>PATH</code>即可</p>
-<h2 id=创建管理nginx的用户和组>创建管理Nginx的用户和组</h2>
-<blockquote>
-<p>创建<code>nginx</code>运行用户<code>nginx</code>并加入到<code>nginx</code>组，不允许<code>nginx</code>用户直接登录系统</p>
-</blockquote>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>groupadd nginx
-useradd -g nginx nginx -s /sbin/nologin
-</code></pre></div><h2 id=安装nginx>安装Nginx</h2>
-<h3 id=下载安装包>下载安装包</h3>
-<p><code>Nginx</code>下载地址：
-<a href=http://nginx.org/en/download.html>http://nginx.org/en/download.html</a></p>
-<p>没有特殊需求的话，选择<code>Stable version</code>稳定版下载即可</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /usr/local/src/
-wget http://nginx.org/download/nginx-1.20.1.tar.gz
-</code></pre></div><h3 id=解压安装包并进入目录-1>解压安装包并进入目录</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tar -zxvf nginx-1.20.1
-cd nginx-1.20.1
-</code></pre></div><h3 id=编译安装-1>编译安装</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>./configure <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--prefix<span style=color:#f92672>=</span>/usr/local/nginx <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--user<span style=color:#f92672>=</span>nginx --group<span style=color:#f92672>=</span>nginx <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--pid-path<span style=color:#f92672>=</span>/var/run/nginx/nginx.pid <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--lock-path<span style=color:#f92672>=</span>/var/lock/nginx.lock <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--error-log-path<span style=color:#f92672>=</span>/var/log/nginx/error.log <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--http-log-path<span style=color:#f92672>=</span>/var/log/nginx/access.log <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--with-http_gzip_static_module <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--http-client-body-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/client <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--http-proxy-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/proxy <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--http-fastcgi-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/fastcgi <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--http-uwsgi-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/uwsgi <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--http-scgi-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/scgi <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--with-http_stub_status_module <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--with-http_ssl_module <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>--with-http_realip_module
-
-make <span style=color:#f92672>&amp;&amp;</span> make install
-</code></pre></div><h2 id=优化nginx程序的执行路径>优化Nginx程序的执行路径</h2>
-<p>添加软连接到环境变量<code>PATH</code>目录下</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ln -s /usr/local/nginx/sbin/nginx /usr/local/sbin/
-</code></pre></div><p>添加软连接之后即可直接使用<code>nginx</code>命令启动操作<code>Nginx</code></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nginx
-nginx -s reload <span style=color:#75715e>#重启（修改配置文件后重新加载等）</span>
-nginx -s quit   <span style=color:#75715e>#退出（处理完所有请求后结束进程）</span>
-nginx -s stop   <span style=color:#75715e>#停止（直接结束进程）</span>
-</code></pre></div><h2 id=测试安装>测试安装</h2>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nginx -t
-</code></pre></div><p>如果报错，一般是缺少配置路径中的文件夹，使用<code>mkdir -p</code>创建即可</p>
-<p>修改之后，正常的提示为：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
-nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful
-</code></pre></div><h2 id=配置开机启动>配置开机启动</h2>
-<h3 id=创建启动脚本>创建启动脚本</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>vi /etc/init.d/nginx
-</code></pre></div><p>脚本内容：</p>
-<blockquote>
-<p>我这里是修改过的，也可以去官网复制。<a href=https://www.nginx.com/resources/wiki/start/topics/examples/redhatnginxinit/>官网脚本连接</a></p>
-</blockquote>
-<p>要注意从官网直接复制的需要修改几处地方，否则运行报错。</p>
-<ol>
-<li>nginx变量的值要改成nginx程序的实际安装路径</li>
-<li>NGINX_CONF_FILE变量的值要改成nginx配置文件的路径</li>
-<li>lockfile变量的值要改成实际的lockfile文件路径</li>
-</ol>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e>#!/bin/sh
-</span><span style=color:#75715e></span><span style=color:#75715e>#</span>
-<span style=color:#75715e># nginx - this script starts and stops the nginx daemon</span>
-<span style=color:#75715e>#</span>
-<span style=color:#75715e># chkconfig:   - 85 15</span>
-<span style=color:#75715e># description:  NGINX is an HTTP(S) server, HTTP(S) reverse \</span>
-<span style=color:#75715e>#               proxy and IMAP/POP3 proxy server</span>
-<span style=color:#75715e># processname: nginx</span>
-<span style=color:#75715e># config:      /etc/nginx/nginx.conf</span>
-<span style=color:#75715e># config:      /etc/sysconfig/nginx</span>
-<span style=color:#75715e># pidfile:     /var/run/nginx.pid</span>
-
-<span style=color:#75715e># Source function library.</span>
-. /etc/rc.d/init.d/functions
-
-<span style=color:#75715e># Source networking configuration.</span>
-. /etc/sysconfig/network
-
-<span style=color:#75715e># Check that networking is up.</span>
-<span style=color:#f92672>[</span> <span style=color:#e6db74>&#34;</span>$NETWORKING<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;no&#34;</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> exit <span style=color:#ae81ff>0</span>
-
-nginx<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/usr/local/nginx/sbin/nginx&#34;</span>
-prog<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>basename $nginx<span style=color:#66d9ef>)</span>
-
-NGINX_CONF_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/usr/local/nginx/conf/nginx.conf&#34;</span>
-
-<span style=color:#f92672>[</span> -f /etc/sysconfig/nginx <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> . /etc/sysconfig/nginx
-
-lockfile<span style=color:#f92672>=</span>/var/lock/nginx.lock
-
-make_dirs<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-   <span style=color:#75715e># make required directories</span>
-   user<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>$nginx -V 2&gt;&amp;<span style=color:#ae81ff>1</span> | grep <span style=color:#e6db74>&#34;configure arguments:.*--user=&#34;</span> | sed <span style=color:#e6db74>&#39;s/[^*]*--user=\([^ ]*\).*/\1/g&#39;</span> -<span style=color:#e6db74>`</span>
-   <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> -n <span style=color:#e6db74>&#34;</span>$user<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-      <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> -z <span style=color:#e6db74>&#34;`grep </span>$user<span style=color:#e6db74> /etc/passwd`&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-         useradd -M -s /bin/nologin $user
-      <span style=color:#66d9ef>fi</span>
-      options<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>$nginx -V 2&gt;&amp;<span style=color:#ae81ff>1</span> | grep <span style=color:#e6db74>&#39;configure arguments:&#39;</span><span style=color:#e6db74>`</span>
-      <span style=color:#66d9ef>for</span> opt in $options; <span style=color:#66d9ef>do</span>
-          <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> <span style=color:#e6db74>`</span>echo $opt | grep <span style=color:#e6db74>&#39;.*-temp-path&#39;</span><span style=color:#e6db74>`</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-              value<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>echo $opt | cut -d <span style=color:#e6db74>&#34;=&#34;</span> -f 2<span style=color:#e6db74>`</span>
-              <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> ! -d <span style=color:#e6db74>&#34;</span>$value<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
-                  <span style=color:#75715e># echo &#34;creating&#34; $value</span>
-                  mkdir -p $value <span style=color:#f92672>&amp;&amp;</span> chown -R $user $value
-              <span style=color:#66d9ef>fi</span>
-          <span style=color:#66d9ef>fi</span>
-       <span style=color:#66d9ef>done</span>
-    <span style=color:#66d9ef>fi</span>
-<span style=color:#f92672>}</span>
-
-start<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    <span style=color:#f92672>[</span> -x $nginx <span style=color:#f92672>]</span> <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>5</span>
-    <span style=color:#f92672>[</span> -f $NGINX_CONF_FILE <span style=color:#f92672>]</span> <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>6</span>
-    make_dirs
-    echo -n $<span style=color:#e6db74>&#34;Starting </span>$prog<span style=color:#e6db74>: &#34;</span>
-    daemon $nginx -c $NGINX_CONF_FILE
-    retval<span style=color:#f92672>=</span>$?
-    echo
-    <span style=color:#f92672>[</span> $retval -eq <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> touch $lockfile
-    <span style=color:#66d9ef>return</span> $retval
-<span style=color:#f92672>}</span>
-
-stop<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    echo -n $<span style=color:#e6db74>&#34;Stopping </span>$prog<span style=color:#e6db74>: &#34;</span>
-    killproc $prog -QUIT
-    retval<span style=color:#f92672>=</span>$?
-    echo
-    <span style=color:#f92672>[</span> $retval -eq <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> rm -f $lockfile
-    <span style=color:#66d9ef>return</span> $retval
-<span style=color:#f92672>}</span>
-
-restart<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    configtest <span style=color:#f92672>||</span> <span style=color:#66d9ef>return</span> $?
-    stop
-    sleep <span style=color:#ae81ff>1</span>
-    start
-<span style=color:#f92672>}</span>
-
-reload<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    configtest <span style=color:#f92672>||</span> <span style=color:#66d9ef>return</span> $?
-    echo -n $<span style=color:#e6db74>&#34;Reloading </span>$prog<span style=color:#e6db74>: &#34;</span>
-    killproc $prog -HUP
-    retval<span style=color:#f92672>=</span>$?
-    echo
-<span style=color:#f92672>}</span>
-
-force_reload<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    restart
-<span style=color:#f92672>}</span>
-
-configtest<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-  $nginx -t -c $NGINX_CONF_FILE
-<span style=color:#f92672>}</span>
-
-rh_status<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    status $prog
-<span style=color:#f92672>}</span>
-
-rh_status_q<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
-    rh_status &gt;/dev/null 2&gt;&amp;<span style=color:#ae81ff>1</span>
-<span style=color:#f92672>}</span>
-
-<span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> in
-    start<span style=color:#f92672>)</span>
-        rh_status_q <span style=color:#f92672>&amp;&amp;</span> exit <span style=color:#ae81ff>0</span>
-        $1
-        ;;
-    stop<span style=color:#f92672>)</span>
-        rh_status_q <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>0</span>
-        $1
-        ;;
-    restart|configtest<span style=color:#f92672>)</span>
-        $1
-        ;;
-    reload<span style=color:#f92672>)</span>
-        rh_status_q <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>7</span>
-        $1
-        ;;
-    force-reload<span style=color:#f92672>)</span>
-        force_reload
-        ;;
-    status<span style=color:#f92672>)</span>
-        rh_status
-        ;;
-    condrestart|try-restart<span style=color:#f92672>)</span>
-        rh_status_q <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>0</span>
-            ;;
-    *<span style=color:#f92672>)</span>
-        echo $<span style=color:#e6db74>&#34;Usage: </span>$0<span style=color:#e6db74> {start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest}&#34;</span>
-        exit <span style=color:#ae81ff>2</span>
-<span style=color:#66d9ef>esac</span>
-</code></pre></div><h3 id=修改脚本权限>修改脚本权限</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cd /etc/init.d/
-chmod <span style=color:#ae81ff>755</span> nginx 
-</code></pre></div><blockquote>
-<p>这个脚本可用来直接操作Nginx，直接执行脚本会提示需要输入</p>
-</blockquote>
-<h3 id=将nginx加入到系统服务中>将Nginx加入到系统服务中</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>chkconfig --add nginx
-</code></pre></div><h3 id=设为开机启动>设为开机启动</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>chkconfig nginx on
-</code></pre></div><blockquote>
-<p>重启系统后生效</p>
-</blockquote>
-<p>重启后，即可使用<code>systemctl</code>命令管理<code>nginx</code>服务</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>systemctl status nginx.service
-systemctl start nginx.service
-systemctl stop nginx.service
-</code></pre></div><h3 id=可能遇到的问题-1>可能遇到的问题</h3>
-<p>如果使用 命令查看<code>nginx</code>服务状态时的提示：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>● nginx.service - SYSV: NGINX is an HTTP<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span> server, HTTP<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span> reverse proxy and IMAP/POP3 proxy server
-   Loaded: loaded <span style=color:#f92672>(</span>/etc/rc.d/init.d/nginx; generated<span style=color:#f92672>)</span>
-   Active: inactive <span style=color:#f92672>(</span>dead<span style=color:#f92672>)</span>
-     Docs: man:systemd-sysv-generator<span style=color:#f92672>(</span>8<span style=color:#f92672>)</span>
-</code></pre></div><p>是因为系统安装了<code>httpd</code>，卸载即可</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>yum remove httpd -y
-</code></pre></div><h2 id=验证安装-1>验证安装</h2>
-<p>执行</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>curl 127.0.0.1
-</code></pre></div><p>从返回结果中可以看到，成功拿到<code>Nginx</code>的默认页面了，安装成功<br>
-也可以在外网通过服务IP访问，需要注意Linux防火墙、云服务器出站入站规则等限制</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-&lt;style&gt;
-    body <span style=color:#f92672>{</span>
-        width: 35em;
-        margin: <span style=color:#ae81ff>0</span> auto;
-        font-family: Tahoma, Verdana, Arial, sans-serif;
-    <span style=color:#f92672>}</span>
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
-&lt;p&gt;If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.&lt;/p&gt;
-
-&lt;p&gt;For online documentation and support please refer to
-&lt;a href<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
-Commercial support is available at
-&lt;a href<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Thank you <span style=color:#66d9ef>for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre></div>
-</div>
-<div class="row pl-3 pr-3">
-<div class="col-md-6 share-buttons">
-<strong>分享:</strong>
-<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fdeployment%2f3002-linux-nginx%2f&title=Linux%e9%83%a8%e7%bd%b2Nginx%e6%b5%81%e7%a8%8b" target=_blank>
-<i class="fab fa-reddit"></i>
-</a>
-<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fdeployment%2f3002-linux-nginx%2f&title=Linux%e9%83%a8%e7%bd%b2Nginx%e6%b5%81%e7%a8%8b" target=_blank>
-<i class="fab fa-linkedin"></i>
-</a>
-<a class="btn btn-sm email-btn" href="mailto:?subject=Linux%e9%83%a8%e7%bd%b2Nginx%e6%b5%81%e7%a8%8b&body=https%3a%2f%2formissia.github.io%2fposts%2fdeployment%2f3002-linux-nginx%2f" target=_blank>
-<i class="fas fa-envelope-open-text"></i>
-</a>
-</div>
-<div class="col-md-6 btn-improve-page">
-<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/deployment/3002-linux-nginx/index.md title=改善此页面 target=_blank rel=noopener>
-<i class="fas fa-code-branch"></i>
-改善此页面
-</a>
-</div>
-</div>
-<hr>
-<div class="row next-prev-navigator">
-<div class="col-md-6 previous-article">
-<a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程 class="btn btn-outline-info">
-<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
-<div class=next-prev-text>我的博客后端Docker镜像打包自动部署流程</div>
-</a>
-</div>
-<div class="col-md-6 next-article">
-<a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程 class="btn btn-outline-info">
-<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
-<div class=next-prev-text>Traefik部署流程</div>
-</a>
-</div>
-</div>
-<hr>
-<div id=utteranc_thread></div>
-<div id=comments class=comments>
-<div id=comments-container></div>
-</div>
-<script type=text/javascript>(function(){var a=document.createElement('script');a.type='text/javascript',a.async=!0,a.setAttribute('repo','ormissia/ormissia.github.io'),a.setAttribute('issue-term','title'),a.setAttribute('theme','github-light'),a.crossorigin='anonymous',a.src='https://utteranc.es/client.js',document.getElementById('comments-container').appendChild(a)})()</script>
-</div>
-</div>
-</div>
-<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
-</section>
-<section class=toc-section id=toc-section>
-<div class=toc-holder>
-<h5 class="text-center pl-3">目录</h5>
-<hr>
-<div class=toc>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#安装依赖>安装依赖</a>
-<ul>
-<li><a href=#编译工具及库文件>编译工具及库文件</a></li>
-<li><a href=#安装pcre>安装PCRE</a>
-<ul>
-<li><a href=#下载pcre安装包>下载PCRE安装包</a></li>
-<li><a href=#解压安装包并进入目录>解压安装包并进入目录</a></li>
-<li><a href=#编译安装>编译安装</a></li>
-<li><a href=#验证安装>验证安装</a></li>
-<li><a href=#可能遇到的问题>可能遇到的问题</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href=#创建管理nginx的用户和组>创建管理Nginx的用户和组</a></li>
-<li><a href=#安装nginx>安装Nginx</a>
-<ul>
-<li><a href=#下载安装包>下载安装包</a></li>
-<li><a href=#解压安装包并进入目录-1>解压安装包并进入目录</a></li>
-<li><a href=#编译安装-1>编译安装</a></li>
-</ul>
-</li>
-<li><a href=#优化nginx程序的执行路径>优化Nginx程序的执行路径</a></li>
-<li><a href=#测试安装>测试安装</a></li>
-<li><a href=#配置开机启动>配置开机启动</a>
-<ul>
-<li><a href=#创建启动脚本>创建启动脚本</a></li>
-<li><a href=#修改脚本权限>修改脚本权限</a></li>
-<li><a href=#将nginx加入到系统服务中>将Nginx加入到系统服务中</a></li>
-<li><a href=#设为开机启动>设为开机启动</a></li>
-<li><a href=#可能遇到的问题-1>可能遇到的问题</a></li>
-</ul>
-</li>
-<li><a href=#验证安装-1>验证安装</a></li>
-</ul>
-</nav>
-</div>
-</div>
-</section>
-</div>
-<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
-<div class="container pt-5">
-<div class="row text-left">
-<div class="col-md-4 col-sm-12">
-<h5>联系方式:</h5>
-<ul>
-<li><span>QQ: </span> <span>1432050813</span></li>
-<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
-<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
-</a></li>
-</ul>
-</div>
-</div>
-</div>
-<hr>
-<div class=container>
-<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
-</div>
-<hr>
-<div class=container>
-<div class="row text-left">
-<div class=col-md-4>
-<a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener>
-<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
-Toha
-</a>
-</div>
-<div class="col-md-4 text-center">© 2021 Copyright.</div>
-<div class="col-md-4 text-right">
-<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
-</a>
-</div>
-</div>
-</div>
-</footer>
-<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"><li class="nav-item dropdown"><div id=theme-initialization style=display:none default-theme=system></div><a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20></a><div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector><a class="dropdown-item nav-link" href=# onclick=enableLightTheme()><img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()><img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()><img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20></a></div></li></ul></div></div><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=搜索 data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/posts data-filter=all>博文</a></li><div class=subtree><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/>知识积累</a><ul><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a><ul><li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li><li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li><li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li><li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li><li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li><li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li><li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li></ul></li><li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li><li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a><ul><li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li><li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a><ul><li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a><ul><li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a><ul><li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li><li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a><ul><li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li><li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li></ul></li><li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a><ul><li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li></ul></li><li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li><li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li></ul></li><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/deployment/>环境部署</a><ul class=active><li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li><li><a class=active href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li><li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li><li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li><li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li><li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li><li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li><li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a><ul><li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li><li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a><ul><li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li><li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li><li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li><li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li><li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li><li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a><ul><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a><ul><li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class=content><div class="container p-0 read-area"><div class="hero-area col-sm-12" id=hero-area style=background-image:url(/images/default-hero.jpg)></div><div class=page-content><div class="author-profile ml-auto align-self-lg-center"><img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image"><h5 class=author-name>Ormissia</h5><p>Friday, October 8, 2021</p></div><div class=title><h1>Linux部署Nginx流程</h1></div><div class=post-content id=post-content><h2 id=安装依赖>安装依赖</h2><h3 id=编译工具及库文件>编译工具及库文件</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel
+</span></span></code></pre></div><h3 id=安装pcre>安装PCRE</h3><blockquote><p><code>PCRE</code>作用是让<code>Nginx</code>支持<code>Rewrite</code>功能</p></blockquote><p><code>PCRE</code>安装包下载地址：
+<a href=https://sourceforge.net/projects/pcre/files/pcre/>https://sourceforge.net/projects/pcre/files/pcre/</a></p><p>选择对应版本下载即可</p><h4 id=下载pcre安装包>下载PCRE安装包</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cd /usr/local/src/
+</span></span><span style=display:flex><span>wget http://downloads.sourceforge.net/project/pcre/pcre/8.45/pcre-8.45.tar.gz
+</span></span></code></pre></div><h4 id=解压安装包并进入目录>解压安装包并进入目录</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>tar -zxvf pcre-8.45.tar.gz
+</span></span><span style=display:flex><span>cd pcre-8.45
+</span></span></code></pre></div><h4 id=编译安装>编译安装</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>./configure
+</span></span><span style=display:flex><span>make <span style=color:#f92672>&amp;&amp;</span> make install
+</span></span></code></pre></div><h4 id=验证安装>验证安装</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>pcre-config --version
+</span></span></code></pre></div><h4 id=可能遇到的问题>可能遇到的问题</h4><p>安装完成之后有可能找不到命令，查看编译安装时的默认安装目录，将其添加到<code>Linux</code>环境变量<code>PATH</code>即可</p><h2 id=创建管理nginx的用户和组>创建管理Nginx的用户和组</h2><blockquote><p>创建<code>nginx</code>运行用户<code>nginx</code>并加入到<code>nginx</code>组，不允许<code>nginx</code>用户直接登录系统</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>groupadd nginx
+</span></span><span style=display:flex><span>useradd -g nginx nginx -s /sbin/nologin
+</span></span></code></pre></div><h2 id=安装nginx>安装Nginx</h2><h3 id=下载安装包>下载安装包</h3><p><code>Nginx</code>下载地址：
+<a href=http://nginx.org/en/download.html>http://nginx.org/en/download.html</a></p><p>没有特殊需求的话，选择<code>Stable version</code>稳定版下载即可</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cd /usr/local/src/
+</span></span><span style=display:flex><span>wget http://nginx.org/download/nginx-1.20.1.tar.gz
+</span></span></code></pre></div><h3 id=解压安装包并进入目录-1>解压安装包并进入目录</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>tar -zxvf nginx-1.20.1
+</span></span><span style=display:flex><span>cd nginx-1.20.1
+</span></span></code></pre></div><h3 id=编译安装-1>编译安装</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>./configure <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--prefix<span style=color:#f92672>=</span>/usr/local/nginx <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--user<span style=color:#f92672>=</span>nginx --group<span style=color:#f92672>=</span>nginx <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--pid-path<span style=color:#f92672>=</span>/var/run/nginx/nginx.pid <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--lock-path<span style=color:#f92672>=</span>/var/lock/nginx.lock <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--error-log-path<span style=color:#f92672>=</span>/var/log/nginx/error.log <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--http-log-path<span style=color:#f92672>=</span>/var/log/nginx/access.log <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_gzip_static_module <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--http-client-body-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/client <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--http-proxy-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/proxy <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--http-fastcgi-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/fastcgi <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--http-uwsgi-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/uwsgi <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--http-scgi-temp-path<span style=color:#f92672>=</span>/var/temp/nginx/scgi <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_stub_status_module <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_ssl_module <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_realip_module
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>make <span style=color:#f92672>&amp;&amp;</span> make install
+</span></span></code></pre></div><h2 id=优化nginx程序的执行路径>优化Nginx程序的执行路径</h2><p>添加软连接到环境变量<code>PATH</code>目录下</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>ln -s /usr/local/nginx/sbin/nginx /usr/local/sbin/
+</span></span></code></pre></div><p>添加软连接之后即可直接使用<code>nginx</code>命令启动操作<code>Nginx</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>nginx
+</span></span><span style=display:flex><span>nginx -s reload <span style=color:#75715e>#重启（修改配置文件后重新加载等）</span>
+</span></span><span style=display:flex><span>nginx -s quit   <span style=color:#75715e>#退出（处理完所有请求后结束进程）</span>
+</span></span><span style=display:flex><span>nginx -s stop   <span style=color:#75715e>#停止（直接结束进程）</span>
+</span></span></code></pre></div><h2 id=测试安装>测试安装</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>nginx -t
+</span></span></code></pre></div><p>如果报错，一般是缺少配置路径中的文件夹，使用<code>mkdir -p</code>创建即可</p><p>修改之后，正常的提示为：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
+</span></span><span style=display:flex><span>nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful
+</span></span></code></pre></div><h2 id=配置开机启动>配置开机启动</h2><h3 id=创建启动脚本>创建启动脚本</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>vi /etc/init.d/nginx
+</span></span></code></pre></div><p>脚本内容：</p><blockquote><p>我这里是修改过的，也可以去官网复制。<a href=https://www.nginx.com/resources/wiki/start/topics/examples/redhatnginxinit/>官网脚本连接</a></p></blockquote><p>要注意从官网直接复制的需要修改几处地方，否则运行报错。</p><ol><li>nginx变量的值要改成nginx程序的实际安装路径</li><li>NGINX_CONF_FILE变量的值要改成nginx配置文件的路径</li><li>lockfile变量的值要改成实际的lockfile文件路径</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e>#!/bin/sh
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># nginx - this script starts and stops the nginx daemon</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># chkconfig:   - 85 15</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># description:  NGINX is an HTTP(S) server, HTTP(S) reverse \</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#               proxy and IMAP/POP3 proxy server</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># processname: nginx</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># config:      /etc/nginx/nginx.conf</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># config:      /etc/sysconfig/nginx</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># pidfile:     /var/run/nginx.pid</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Source function library.</span>
+</span></span><span style=display:flex><span>. /etc/rc.d/init.d/functions
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Source networking configuration.</span>
+</span></span><span style=display:flex><span>. /etc/sysconfig/network
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Check that networking is up.</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span> <span style=color:#e6db74>&#34;</span>$NETWORKING<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;no&#34;</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> exit <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>nginx<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/usr/local/nginx/sbin/nginx&#34;</span>
+</span></span><span style=display:flex><span>prog<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>basename $nginx<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>NGINX_CONF_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/usr/local/nginx/conf/nginx.conf&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span> -f /etc/sysconfig/nginx <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> . /etc/sysconfig/nginx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>lockfile<span style=color:#f92672>=</span>/var/lock/nginx.lock
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>make_dirs<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>   <span style=color:#75715e># make required directories</span>
+</span></span><span style=display:flex><span>   user<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>$nginx -V 2&gt;&amp;<span style=color:#ae81ff>1</span> | grep <span style=color:#e6db74>&#34;configure arguments:.*--user=&#34;</span> | sed <span style=color:#e6db74>&#39;s/[^*]*--user=\([^ ]*\).*/\1/g&#39;</span> -<span style=color:#e6db74>`</span>
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> -n <span style=color:#e6db74>&#34;</span>$user<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> -z <span style=color:#e6db74>&#34;`grep </span>$user<span style=color:#e6db74> /etc/passwd`&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>         useradd -M -s /bin/nologin $user
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>      options<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>$nginx -V 2&gt;&amp;<span style=color:#ae81ff>1</span> | grep <span style=color:#e6db74>&#39;configure arguments:&#39;</span><span style=color:#e6db74>`</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>for</span> opt in $options; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> <span style=color:#e6db74>`</span>echo $opt | grep <span style=color:#e6db74>&#39;.*-temp-path&#39;</span><span style=color:#e6db74>`</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>              value<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>echo $opt | cut -d <span style=color:#e6db74>&#34;=&#34;</span> -f 2<span style=color:#e6db74>`</span>
+</span></span><span style=display:flex><span>              <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> ! -d <span style=color:#e6db74>&#34;</span>$value<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>                  <span style=color:#75715e># echo &#34;creating&#34; $value</span>
+</span></span><span style=display:flex><span>                  mkdir -p $value <span style=color:#f92672>&amp;&amp;</span> chown -R $user $value
+</span></span><span style=display:flex><span>              <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>       <span style=color:#66d9ef>done</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>start<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[</span> -x $nginx <span style=color:#f92672>]</span> <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[</span> -f $NGINX_CONF_FILE <span style=color:#f92672>]</span> <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>6</span>
+</span></span><span style=display:flex><span>    make_dirs
+</span></span><span style=display:flex><span>    echo -n $<span style=color:#e6db74>&#34;Starting </span>$prog<span style=color:#e6db74>: &#34;</span>
+</span></span><span style=display:flex><span>    daemon $nginx -c $NGINX_CONF_FILE
+</span></span><span style=display:flex><span>    retval<span style=color:#f92672>=</span>$?
+</span></span><span style=display:flex><span>    echo
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[</span> $retval -eq <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> touch $lockfile
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> $retval
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>stop<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    echo -n $<span style=color:#e6db74>&#34;Stopping </span>$prog<span style=color:#e6db74>: &#34;</span>
+</span></span><span style=display:flex><span>    killproc $prog -QUIT
+</span></span><span style=display:flex><span>    retval<span style=color:#f92672>=</span>$?
+</span></span><span style=display:flex><span>    echo
+</span></span><span style=display:flex><span>    <span style=color:#f92672>[</span> $retval -eq <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span> <span style=color:#f92672>&amp;&amp;</span> rm -f $lockfile
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> $retval
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>restart<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    configtest <span style=color:#f92672>||</span> <span style=color:#66d9ef>return</span> $?
+</span></span><span style=display:flex><span>    stop
+</span></span><span style=display:flex><span>    sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    start
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>reload<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    configtest <span style=color:#f92672>||</span> <span style=color:#66d9ef>return</span> $?
+</span></span><span style=display:flex><span>    echo -n $<span style=color:#e6db74>&#34;Reloading </span>$prog<span style=color:#e6db74>: &#34;</span>
+</span></span><span style=display:flex><span>    killproc $prog -HUP
+</span></span><span style=display:flex><span>    retval<span style=color:#f92672>=</span>$?
+</span></span><span style=display:flex><span>    echo
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>force_reload<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    restart
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>configtest<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  $nginx -t -c $NGINX_CONF_FILE
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>rh_status<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    status $prog
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>rh_status_q<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    rh_status &gt;/dev/null 2&gt;&amp;<span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;</span>$1<span style=color:#e6db74>&#34;</span> in
+</span></span><span style=display:flex><span>    start<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        rh_status_q <span style=color:#f92672>&amp;&amp;</span> exit <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>        $1
+</span></span><span style=display:flex><span>        ;;
+</span></span><span style=display:flex><span>    stop<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        rh_status_q <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>        $1
+</span></span><span style=display:flex><span>        ;;
+</span></span><span style=display:flex><span>    restart|configtest<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        $1
+</span></span><span style=display:flex><span>        ;;
+</span></span><span style=display:flex><span>    reload<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        rh_status_q <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>7</span>
+</span></span><span style=display:flex><span>        $1
+</span></span><span style=display:flex><span>        ;;
+</span></span><span style=display:flex><span>    force-reload<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        force_reload
+</span></span><span style=display:flex><span>        ;;
+</span></span><span style=display:flex><span>    status<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        rh_status
+</span></span><span style=display:flex><span>        ;;
+</span></span><span style=display:flex><span>    condrestart|try-restart<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        rh_status_q <span style=color:#f92672>||</span> exit <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>            ;;
+</span></span><span style=display:flex><span>    *<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        echo $<span style=color:#e6db74>&#34;Usage: </span>$0<span style=color:#e6db74> {start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest}&#34;</span>
+</span></span><span style=display:flex><span>        exit <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>esac</span>
+</span></span></code></pre></div><h3 id=修改脚本权限>修改脚本权限</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cd /etc/init.d/
+</span></span><span style=display:flex><span>chmod <span style=color:#ae81ff>755</span> nginx 
+</span></span></code></pre></div><blockquote><p>这个脚本可用来直接操作Nginx，直接执行脚本会提示需要输入</p></blockquote><h3 id=将nginx加入到系统服务中>将Nginx加入到系统服务中</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>chkconfig --add nginx
+</span></span></code></pre></div><h3 id=设为开机启动>设为开机启动</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>chkconfig nginx on
+</span></span></code></pre></div><blockquote><p>重启系统后生效</p></blockquote><p>重启后，即可使用<code>systemctl</code>命令管理<code>nginx</code>服务</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>systemctl status nginx.service
+</span></span><span style=display:flex><span>systemctl start nginx.service
+</span></span><span style=display:flex><span>systemctl stop nginx.service
+</span></span></code></pre></div><h3 id=可能遇到的问题-1>可能遇到的问题</h3><p>如果使用 命令查看<code>nginx</code>服务状态时的提示：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>● nginx.service - SYSV: NGINX is an HTTP<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span> server, HTTP<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span> reverse proxy and IMAP/POP3 proxy server
+</span></span><span style=display:flex><span>   Loaded: loaded <span style=color:#f92672>(</span>/etc/rc.d/init.d/nginx; generated<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>   Active: inactive <span style=color:#f92672>(</span>dead<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>     Docs: man:systemd-sysv-generator<span style=color:#f92672>(</span>8<span style=color:#f92672>)</span>
+</span></span></code></pre></div><p>是因为系统安装了<code>httpd</code>，卸载即可</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>yum remove httpd -y
+</span></span></code></pre></div><h2 id=验证安装-1>验证安装</h2><p>执行</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>curl 127.0.0.1
+</span></span></code></pre></div><p>从返回结果中可以看到，成功拿到<code>Nginx</code>的默认页面了，安装成功<br>也可以在外网通过服务IP访问，需要注意Linux防火墙、云服务器出站入站规则等限制</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>&lt;!DOCTYPE html&gt;
+</span></span><span style=display:flex><span>&lt;html&gt;
+</span></span><span style=display:flex><span>&lt;head&gt;
+</span></span><span style=display:flex><span>&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+</span></span><span style=display:flex><span>&lt;style&gt;
+</span></span><span style=display:flex><span>    body <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>        width: 35em;
+</span></span><span style=display:flex><span>        margin: <span style=color:#ae81ff>0</span> auto;
+</span></span><span style=display:flex><span>        font-family: Tahoma, Verdana, Arial, sans-serif;
+</span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>&lt;/style&gt;
+</span></span><span style=display:flex><span>&lt;/head&gt;
+</span></span><span style=display:flex><span>&lt;body&gt;
+</span></span><span style=display:flex><span>&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+</span></span><span style=display:flex><span>&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+</span></span><span style=display:flex><span>working. Further configuration is required.&lt;/p&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;p&gt;For online documentation and support please refer to
+</span></span><span style=display:flex><span>&lt;a href<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+</span></span><span style=display:flex><span>Commercial support is available at
+</span></span><span style=display:flex><span>&lt;a href<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;p&gt;&lt;em&gt;Thank you <span style=color:#66d9ef>for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
+</span></span><span style=display:flex><span>&lt;/body&gt;
+</span></span><span style=display:flex><span>&lt;/html&gt;
+</span></span></code></pre></div></div><div class="row pl-3 pr-3"><div class="col-md-6 share-buttons"><strong>分享:</strong>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fdeployment%2f3002-linux-nginx%2f&title=Linux%e9%83%a8%e7%bd%b2Nginx%e6%b5%81%e7%a8%8b" target=_blank><i class="fab fa-reddit"></i></a>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fdeployment%2f3002-linux-nginx%2f&title=Linux%e9%83%a8%e7%bd%b2Nginx%e6%b5%81%e7%a8%8b" target=_blank><i class="fab fa-linkedin"></i></a>
+<a class="btn btn-sm email-btn" href="mailto:?subject=Linux%e9%83%a8%e7%bd%b2Nginx%e6%b5%81%e7%a8%8b&body=https%3a%2f%2formissia.github.io%2fposts%2fdeployment%2f3002-linux-nginx%2f" target=_blank><i class="fas fa-envelope-open-text"></i></a></div><div class="col-md-6 btn-improve-page"><a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/deployment/3002-linux-nginx/index.md title=改善此页面 target=_blank rel=noopener><i class="fas fa-code-branch"></i>
+改善此页面</a></div></div><hr><div class="row next-prev-navigator"><div class="col-md-6 previous-article"><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程 class="btn btn-outline-info"><div><i class="fas fa-chevron-circle-left"></i> 上一篇</div><div class=next-prev-text>我的博客后端Docker镜像打包自动部署流程</div></a></div><div class="col-md-6 next-article"><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程 class="btn btn-outline-info"><div>下一篇 <i class="fas fa-chevron-circle-right"></i></div><div class=next-prev-text>Traefik部署流程</div></a></div></div><hr><div id=utteranc_thread></div><div id=comments class=comments><div id=comments-container></div></div><script type=text/javascript>(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.setAttribute("repo","ormissia/ormissia.github.io"),e.setAttribute("issue-term","title"),e.setAttribute("theme","github-light"),e.crossorigin="anonymous",e.src="https://utteranc.es/client.js",document.getElementById("comments-container").appendChild(e)})()</script></div></div></div><a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a></section><section class=toc-section id=toc-section><div class=toc-holder><h5 class="text-center pl-3">目录</h5><hr><div class=toc><nav id=TableOfContents><ul><li><a href=#安装依赖>安装依赖</a><ul><li><a href=#编译工具及库文件>编译工具及库文件</a></li><li><a href=#安装pcre>安装PCRE</a><ul><li><a href=#下载pcre安装包>下载PCRE安装包</a></li><li><a href=#解压安装包并进入目录>解压安装包并进入目录</a></li><li><a href=#编译安装>编译安装</a></li><li><a href=#验证安装>验证安装</a></li><li><a href=#可能遇到的问题>可能遇到的问题</a></li></ul></li></ul></li><li><a href=#创建管理nginx的用户和组>创建管理Nginx的用户和组</a></li><li><a href=#安装nginx>安装Nginx</a><ul><li><a href=#下载安装包>下载安装包</a></li><li><a href=#解压安装包并进入目录-1>解压安装包并进入目录</a></li><li><a href=#编译安装-1>编译安装</a></li></ul></li><li><a href=#优化nginx程序的执行路径>优化Nginx程序的执行路径</a></li><li><a href=#测试安装>测试安装</a></li><li><a href=#配置开机启动>配置开机启动</a><ul><li><a href=#创建启动脚本>创建启动脚本</a></li><li><a href=#修改脚本权限>修改脚本权限</a></li><li><a href=#将nginx加入到系统服务中>将Nginx加入到系统服务中</a></li><li><a href=#设为开机启动>设为开机启动</a></li><li><a href=#可能遇到的问题-1>可能遇到的问题</a></li></ul></li><li><a href=#验证安装-1>验证安装</a></li></ul></nav></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
 <script type=text/javascript src=/js/popper.min.js></script>
 <script type=text/javascript src=/js/bootstrap.min.js></script>
 <script type=text/javascript src=/js/navbar.js></script>
@@ -618,6 +241,4 @@ Toha
 <script type=text/javascript src=/js/darkmode-darkreader.js></script>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
 <script src=/js/single.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-</body>
-</html>
+<script>hljs.initHighlightingOnLoad()</script></body></html>

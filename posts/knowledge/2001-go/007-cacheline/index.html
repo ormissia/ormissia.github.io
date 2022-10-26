@@ -1,562 +1,152 @@
-<!doctype html><html>
-<head>
-<title>全局变量加锁的优化</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<link rel=stylesheet href=/css/bootstrap.min.css>
-<link rel=stylesheet href=/css/layouts/main.css>
-<link rel=stylesheet href=/css/navigators/navbar.css>
-<link rel=stylesheet href=/css/plyr.css>
-<link rel=stylesheet href=/css/flag-icon.min.css>
-<link rel=stylesheet href=/google-fonts/Mulish/mulish.css>
-<link rel=stylesheet href=/fontawesome/css/all.min.css>
-<link rel=stylesheet href=/css/colortheme/colortheme.css>
-<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="全局变量加锁的优化">
-<meta property="og:description" content="#golang #cache_line
-  开发中不可避免地会遇到需要对全局变量加锁的情况，而一旦并发量高了之后，加锁的变量有可能变成服务的性能瓶颈所在。所以千方百计地寻找优化方法。
- 改变锁的类型 如果业务中的全局变量是读多写少的应用场景，我们可以将互斥锁改为读写锁。即读取时对变量加读锁，这样可以支持多个线程并发读取同一个变量。而只有变量需要修改时才加写锁，保证写的时候不会被其他线程读取到错误的值。
+<!doctype html><html><head><title>全局变量加锁的优化</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=stylesheet href=/fontawesome/css/all.min.css><link rel=stylesheet href=/css/colortheme/colortheme.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="全局变量加锁的优化"><meta property="og:description" content="#golang #cache_line
+开发中不可避免地会遇到需要对全局变量加锁的情况，而一旦并发量高了之后，加锁的变量有可能变成服务的性能瓶颈所在。所以千方百计地寻找优化方法。
+改变锁的类型 如果业务中的全局变量是读多写少的应用场景，我们可以将互斥锁改为读写锁。即读取时对变量加读锁，这样可以支持多个线程并发读取同一个变量。而只有变量需要修改时才加写锁，保证写的时候不会被其他线程读取到错误的值。
 互斥锁：
 func DoWork() { lock.Lock() defer lock.Unlock() // do something... } 读写锁：
 func Read() { lock.RLock() defer lock.RUnlock() // read global variable } func Write() { lock.Lock() defer lock.Unlock() // write global variable } 降低锁住的代码块长度 在Go中，我们常常会利用defer关键字的特性，写出如下的代码：
 func Write() { lock.Lock() defer lock.Unlock() // do something... } 但在实际代码中，如果对全局变量读写前后会有较长时间去做其他工作的情况下，就会造成极大的性能损耗。加锁之后没有立即对全局变量进行读写，或者对全局变量读写完之后没有立即释放锁，都会使其他线程没有办法立即抢到锁，从而拉低了整个系统的并发性能。
 根据这个逻辑，可以将上述代码改成如下格式：
-func Write() { // do something...  lock.Lock() // read or write global variable 	lock.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2001-go/007-cacheline/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2022-05-13T14:17:33+08:00">
-<meta property="article:modified_time" content="2022-05-13T14:17:33+08:00">
-<meta name=description content="全局变量加锁的优化">
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
-<link rel=stylesheet href=/css/layouts/single.css>
-<link rel=stylesheet href=/css/navigators/sidebar.css>
-<link rel=stylesheet href=/css/style.css>
-</head>
-<body data-spy=scroll data-target=#TableOfContents data-offset=80>
-<div class="container-fluid bg-dimmed wrapper">
-<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
-<div class=container>
-<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span>
-</button>
-<a class=navbar-brand href=/>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+func Write() { // do something... lock.Lock() // read or write global variable lock.Unlock() // do something."><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2001-go/007-cacheline/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-05-13T14:17:33+08:00"><meta property="article:modified_time" content="2022-05-13T14:17:33+08:00"><meta name=description content="全局变量加锁的优化"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css><link rel=stylesheet href=/css/layouts/single.css><link rel=stylesheet href=/css/navigators/sidebar.css><link rel=stylesheet href=/css/style.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span></button>
+<a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span>
-</button>
-<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
-<ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-<div id=theme-initialization style=display:none default-theme=system></div>
-<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
-<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
-<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
-<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
-<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
-</a>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
-</nav>
-<section class=sidebar-section id=sidebar-section>
-<div class=sidebar-holder>
-<div class=sidebar id=sidebar>
-<form class=mx-auto method=get action=/search>
-<input type=text name=keyword placeholder=搜索 data-search id=search-box>
-</form>
-<div class=sidebar-tree>
-<ul class=tree id=tree>
-<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
-<div class=subtree>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
-<ul class=active>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2001-go/>Go</a>
-<ul class=active>
-<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
-<li><a class=active href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
-<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
-<ul>
-<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
-<ul>
-<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
-<ul>
-<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
-<ul>
-<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
-<ul>
-<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
-<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
-<ul>
-<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li>
-<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
-<ul>
-<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
-<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
-<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
-<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
-<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
-<ul>
-<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
-<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
-<ul>
-<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
-<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
-<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
-<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
-<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
-<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a>
-<ul>
-<li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</div>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class=content-section id=content-section>
-<div class=content>
-<div class="container p-0 read-area">
-<div class="hero-area col-sm-12" id=hero-area style=background-image:url(/images/default-hero.jpg)>
-</div>
-<div class=page-content>
-<div class="author-profile ml-auto align-self-lg-center">
-<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
-<h5 class=author-name>Ormissia</h5>
-<p>Friday, May 13, 2022</p>
-</div>
-<div class=title>
-<h1>全局变量加锁的优化</h1>
-</div>
-<div class=post-content id=post-content>
-<hr>
-<p>#golang #cache_line</p>
-<hr>
-<blockquote>
-<p>开发中不可避免地会遇到需要对全局变量加锁的情况，而一旦并发量高了之后，加锁的变量有可能变成服务的性能瓶颈所在。所以千方百计地寻找优化方法。</p>
-</blockquote>
-<h2 id=改变锁的类型>改变锁的类型</h2>
-<p>如果业务中的全局变量是读多写少的应用场景，我们可以将互斥锁改为读写锁。即读取时对变量加读锁，这样可以支持多个线程并发读取同一个变量。而只有变量需要修改时才加写锁，保证写的时候不会被其他线程读取到错误的值。</p>
-<p>互斥锁：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>DoWork</span>() {
-	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
-	<span style=color:#75715e>// do something...
-</span><span style=color:#75715e></span>}
-</code></pre></div><p>读写锁：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Read</span>() {
-	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>RLock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>RUnlock</span>()
-	<span style=color:#75715e>// read global variable
-</span><span style=color:#75715e></span>}
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Write</span>() {
-	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
-	<span style=color:#75715e>// write global variable
-</span><span style=color:#75715e></span>}
-</code></pre></div><h2 id=降低锁住的代码块长度>降低锁住的代码块长度</h2>
-<p>在<code>Go</code>中，我们常常会利用<code>defer</code>关键字的特性，写出如下的代码：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Write</span>() {
-	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
-	<span style=color:#75715e>// do something...
-</span><span style=color:#75715e></span>}
-</code></pre></div><p>但在实际代码中，如果对全局变量读写前后会有较长时间去做其他工作的情况下，就会造成极大的性能损耗。加锁之后没有立即对全局变量进行读写，或者对全局变量读写完之后没有立即释放锁，都会使其他线程没有办法立即抢到锁，从而拉低了整个系统的并发性能。</p>
-<p>根据这个逻辑，可以将上述代码改成如下格式：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Write</span>() {
-	<span style=color:#75715e>// do something...
-</span><span style=color:#75715e></span>
-	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
-	<span style=color:#75715e>// read or write global variable
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
-
-	<span style=color:#75715e>// do something...
-</span><span style=color:#75715e></span>}
-</code></pre></div><p>但至此，也还是简单的从代码执行流程上进行了一个简单的优化。</p>
-<h2 id=对数据切片>对数据切片</h2>
-<p>除了修改锁的类型以及修改&rsquo;锁住&rsquo;的代码块长度，我们还可以通过一些其他方式降低锁的粒度。</p>
-<p>假设我们的全局变量是一个<code>map</code>，我们可以对<code>key</code>做一个哈希后取模的操作，将原来一个<code>map</code>的数据分开写到多个<code>map</code>中。这样同一个大集合中的数据便支持了同时对多个数据进行写入而互不影响。</p>
-<blockquote>
-<p>取模是为了将key分到不同数据分片上，而取模之前的哈希操作是为了将不同的<code>key</code>均分到所有数据分片上。诚然，热点<code>key</code>（同一个<code>key</code>）还是会到同一个数据分片上。</p>
-</blockquote>
-<p>我们可以参考(Prometheus源码)[https://github.com/prometheus/prometheus/blob/6e3a0efe40918f72edfc89bc150bc0ece1a8c46f/tsdb/head.go#L1333] 中的写法，写出如下简化版代码：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;sync&#34;</span>
-
-<span style=color:#66d9ef>const</span> (
-	<span style=color:#a6e22e>defaultStripSize</span> = <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>16</span>
-	<span style=color:#a6e22e>defaultStripMask</span> = <span style=color:#a6e22e>defaultStripSize</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>
-)
-
-<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>stripLock</span> <span style=color:#66d9ef>struct</span> {
-	<span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>RWMutex</span>
-	<span style=color:#a6e22e>_</span> [<span style=color:#ae81ff>40</span>]<span style=color:#66d9ef>byte</span>
-}
-
-<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>StripMap</span> <span style=color:#66d9ef>struct</span> {
-	<span style=color:#a6e22e>locks</span>   []<span style=color:#a6e22e>stripLock</span>
-	<span style=color:#a6e22e>buckets</span> []<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>uint64</span>]<span style=color:#66d9ef>interface</span>{}
-}
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>DefaultStripMap</span>() <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span> {
-	<span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>StripMap</span>{
-		<span style=color:#a6e22e>locks</span>:   make([]<span style=color:#a6e22e>stripLock</span>, <span style=color:#a6e22e>defaultStripSize</span>),
-		<span style=color:#a6e22e>buckets</span>: make([]<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>uint64</span>]<span style=color:#66d9ef>interface</span>{}, <span style=color:#a6e22e>defaultStripSize</span>),
-	}
-
-	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span> {
-		<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>i</span>] = make(<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>uint64</span>]<span style=color:#66d9ef>interface</span>{})
-	}
-
-	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
-}
-
-<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span>) <span style=color:#a6e22e>Set</span>(<span style=color:#a6e22e>key</span> <span style=color:#66d9ef>uint64</span>, <span style=color:#a6e22e>value</span> <span style=color:#66d9ef>interface</span>{}) {
-	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RLock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RUnlock</span>()
-
-	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>][<span style=color:#a6e22e>key</span>] = <span style=color:#a6e22e>value</span>
-}
-
-<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span>) <span style=color:#a6e22e>Get</span>(<span style=color:#a6e22e>key</span> <span style=color:#66d9ef>uint64</span>) (<span style=color:#66d9ef>interface</span>{}, <span style=color:#66d9ef>bool</span>) {
-	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RLock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RUnlock</span>()
-
-	<span style=color:#a6e22e>v</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>][<span style=color:#a6e22e>key</span>]
-	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>v</span>, <span style=color:#a6e22e>ok</span>
-}
-
-<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span>) <span style=color:#a6e22e>Remove</span>(<span style=color:#a6e22e>key</span> <span style=color:#66d9ef>uint64</span>) {
-	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>Lock</span>()
-	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>Unlock</span>()
-
-	delete(<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>], <span style=color:#a6e22e>key</span>)
-}
-</code></pre></div><p>在这个例子中只是简单的对<code>key</code>做了一个取模的操作，并没有进行哈希。如果实际业务中需要，可以采取先哈希再取模的操作。</p>
-<p>在上述示例代码中，有两个点可以值得我们学习，下面进行逐一分析</p>
-<h3 id=使用位运算代替取模操作>使用位运算代替取模操作</h3>
-<blockquote>
-<p><code>a % b = a & (b-1)</code>当且仅当<code>b = 2^n</code>时成立</p>
-</blockquote>
-<p><code>b = 2 ^ n</code>可以写为<code>b = 1 &lt;&lt; n</code>即1左移n位。</p>
-<p>因而<code>b / a</code>即为b在二进制下向右移动n位，<code>b % a</code>就是a中被右移走的低n位。</p>
-<p><code>b - 1</code>即为<code>1 &lt;&lt; n - 1</code>，二进制表示下即为n个1。</p>
-<p>举个栗子：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>假设n <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>
-b <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span> ^ 10 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#e6db74>&lt;&lt; 10 = 10</span> <span style=color:#ae81ff>000</span> <span style=color:#ae81ff>000</span> 000<span style=color:#f92672>(</span>二进制<span style=color:#f92672>)</span>
-b - 1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span> ^ <span style=color:#ae81ff>10</span> - 1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#e6db74>&lt;&lt; 10 - 1</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#ae81ff>111</span> <span style=color:#ae81ff>111</span> 111<span style=color:#f92672>(</span>二进制<span style=color:#f92672>)</span>
-b - <span style=color:#ae81ff>1</span> 的二进制表示即为n个1
-</code></pre></div><p>因此<code>key</code>对<code>defaultStripSize</code>做取模操作即可写为<code>key&(defaultStripSize - 1)</code></p>
-<h3 id=cache-line>Cache Line</h3>
-<p>在上面的示例代码中如果不了解的话可以看到一个很奇怪的结构：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>stripLock</span> <span style=color:#66d9ef>struct</span> {
-	<span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>RWMutex</span>
-	<span style=color:#a6e22e>_</span> [<span style=color:#ae81ff>40</span>]<span style=color:#66d9ef>byte</span>
-}
-</code></pre></div><p>其中的<code>_ [40]byte</code>第一次看到的时候觉得十分的困惑，<del>这样写不是白白浪费内存么</del>。后来发现这个写法的作用是为了提高性能而采取的措施。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>stripLock</span> <span style=color:#66d9ef>struct</span> {
-		<span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>RWMutex</span>
-		<span style=color:#a6e22e>_</span> [<span style=color:#ae81ff>40</span>]<span style=color:#66d9ef>byte</span>
-	}
-<span style=color:#a6e22e>sl</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>stripLock</span>{}
-<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Sizeof</span>(<span style=color:#a6e22e>sl</span>))
-</code></pre></div><p>这段代码输出为：<code>64</code></p>
-<h4 id=名词解析>名词解析</h4>
-<p>接下来我们大概了解一下CPU中缓存工作的机制：</p>
-<p>CPU中缓存的最小单元是<code>cache line</code>，现在的处理器中的<code>cache line</code>通常都是64byte。因此当CPU从内存中读取数据时会读取该变量周围所有的东西。</p>
-<p><img src=img_1.png alt="load to cache"></p>
-<blockquote>
-<p>也就是说core1要读取变量a的时候会将a临近的b一起加载到缓存中来。</p>
-</blockquote>
-<p>如果同一个变量位于不同核心的<code>cache</code>中时，就会产生一些问题。</p>
-<p><img src=img_2.png alt="two core cache"></p>
-<p>core1将变量a修改</p>
-<p><img src=img_3.png alt="one core update cache"></p>
-<p>core2读取变量b，这时即使b没有发生改变，也会因为在同一个<code>cache line</code>中其他值的改变而导致<code>cache line</code>丢失。所以core2会重新从内存中加载<code>cache line</code>中所有的变量。</p>
-<p><img src=img_4.png alt="another core reload cache"></p>
-<blockquote>
-<p>这就是所谓的<code>假共享</code>：一个核心的更新会导致其他核心也更新缓存。</p>
-</blockquote>
-<p>所以我们应尽量避免由于一个核心的修改导致其他核心重新从内存中读取数据，因为从内存中读取数据的效率要远远低于从缓存中读取数据。</p>
-<p>解决这个问题的办法通常是缓存填充：在变量之间填充一些无意义的变量，这将迫使一个变量单独一个核心的缓存行。这样当其他核心更新变量时，不会使该核心从内存中重新加载数据。</p>
-<h4 id=验证>验证</h4>
-<p><a href=https://github.com/genchilu/concurrencyPractice/tree/master/golang/pad>这是一个Go写的benchmark</a></p>
-<p>这里有个小小的花絮，由于我用的电脑是M1的CPU，而M1是基于<code>ARM</code>的架构。因此在这里呈现出了跟预期相反的测试结果：</p>
-<blockquote>
-<p>问题原因是有些处理器比如<code>ARM</code>、<code>RISC-V</code>不允许未对齐的内存访问，不会产生跨<code>cache line</code>的原子访问，所以不会产生<code>split lock</code>，而 X86 是支持的。</p>
-<p>而我在同事的X86电脑上得出的测试结果则是跟预期相符的。</p>
-</blockquote>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>❯ go test -v -bench<span style=color:#f92672>=</span>. -benchmem -count<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>
-
-goos: darwinv -bench<span style=color:#f92672>=</span>. -benchmem -count<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>
-goarch: arm64
-pkg: awesomeProject
-BenchmarkNoPad
-BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09975 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09889 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09750 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09979 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09916 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkPad
-BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1105 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1095 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1098 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1095 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1090 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
-PASS
-ok      awesomeProject  10.660s
-</code></pre></div><h2 id=延伸>延伸</h2>
-<blockquote>
-<p>当我看到上文提到的缓存填充时，第一感觉跟内存对齐有点类似，这里就重新总结一下。</p>
-</blockquote>
-<h3 id=内存对齐>内存对齐</h3>
-<p><code>Go</code>中数据类型占用内存空间大小可以参考：<a href=https://ormissia.github.io/notes/go/basic/basic/>链接</a></p>
-<h4 id=对齐系数>对齐系数</h4>
-<p>在了解如何对齐之前,我们需要了解"对齐系数"这个概念,unsafe 标准库提供了<code>Alignof</code>方法,可以返回一个类型的对齐系数一般来说,对齐系数在我们常用的平台的系数如下:</p>
-<ul>
-<li>32 位：4</li>
-<li>64 位：8</li>
-</ul>
-<h4 id=对齐规则>对齐规则</h4>
-<p>在了解完大小和对齐系数以后,我们就可以利用对齐规则对结构体进行内存对齐:</p>
-<ul>
-<li>结构体的成员变量，第一个成员变量的偏移量为0。往后的每个成员变量的对齐值必须为编译器默认对齐长度（#pragma pack(n)）或当前成员变量类型的长度（unsafe.Sizeof），取最小值作为当前类型的对齐值。其偏移量必须为对齐值的整数倍</li>
-<li>结构体本身，对齐值必须为编译器默认对齐长度（#pragma pack(n)）或结构体的所有成员变量类型中的最大长度，取最大数的最小整数倍作为对齐值</li>
-<li>结合以上两点，可得知若编译器默认对齐长度（#pragma pack(n)）超过结构体内成员变量的类型最大长度时，默认对齐长度是没有任何意义的.</li>
-</ul>
-<blockquote>
-<p>其中#pragma pack(n)的取值就是我们前面介绍的操作系统一般情况下的取值，即32位为4，64位为8.</p>
-</blockquote>
-<h4 id=举个栗子>举个栗子</h4>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Ex</span> <span style=color:#66d9ef>struct</span> {
-	<span style=color:#a6e22e>a</span> <span style=color:#66d9ef>bool</span>
-	<span style=color:#a6e22e>d</span> <span style=color:#66d9ef>int32</span>
-	<span style=color:#a6e22e>c</span> <span style=color:#66d9ef>int8</span>
-	<span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int64</span>
-	<span style=color:#a6e22e>e</span> <span style=color:#66d9ef>byte</span>
-}
-<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Sizeof</span>(<span style=color:#a6e22e>Ex</span>{}))
-</code></pre></div><p>以上代码输出结果为：<code>32</code></p>
-<p>根据对齐规则可知，内存布局如下：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>axxx|bbbb|cxxx|xxxx|dddd|dddd|e…
-</code></pre></div><p>但是由于整个结构体也需要对齐，可以得出，最终的内存布局为：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>axxx|bbbb|cxxx|xxxx|dddd|dddd|exxx|xxxx
-</code></pre></div><h3 id=对比>对比</h3>
-<ul>
-<li><code>cache line</code>是为了解决不同变量之在多个CPU核心之间共享的问题</li>
-<li><code>内存对齐</code>是为了解决同一个结构体内部访问效率等问题</li>
-</ul>
-<h2 id=参考链接>参考链接</h2>
-<ul>
-<li><a href=https://github.com/prometheus/prometheus/blob/6e3a0efe40918f72edfc89bc150bc0ece1a8c46f/tsdb/head.go#L1333>prometheus源码示例</a></li>
-<li><a href=https://medium.com/@genchilu/whats-false-sharing-and-how-to-solve-it-using-golang-as-example-ef978a305e10>What’s false sharing and how to solve it (using Golang as example)</a></li>
-<li><a href=https://www.xwxwgo.com/post/2019/07/09/golang%E5%92%8Cfalse-sharing/>Golang和假共享(false sharing)</a></li>
-<li><a href=https://www.wangt.cc/2021/11/golang-%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E5%92%8C%E4%BC%AA%E5%85%B1%E4%BA%ABfalse-sharing/>Golang 内存对齐和伪共享False Sharing</a></li>
-<li><a href=https://www.shouxicto.com/article/3984.html>深入剖析 split locks，i++ 可能导致的灾难</a></li>
-</ul>
-</div>
-<div class="row pl-3 pr-3">
-<div class="col-md-6 share-buttons">
-<strong>分享:</strong>
-<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2001-go%2f007-cacheline%2f&title=%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%8a%a0%e9%94%81%e7%9a%84%e4%bc%98%e5%8c%96" target=_blank>
-<i class="fab fa-reddit"></i>
-</a>
-<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2001-go%2f007-cacheline%2f&title=%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%8a%a0%e9%94%81%e7%9a%84%e4%bc%98%e5%8c%96" target=_blank>
-<i class="fab fa-linkedin"></i>
-</a>
-<a class="btn btn-sm email-btn" href="mailto:?subject=%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%8a%a0%e9%94%81%e7%9a%84%e4%bc%98%e5%8c%96&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2001-go%2f007-cacheline%2f" target=_blank>
-<i class="fas fa-envelope-open-text"></i>
-</a>
-</div>
-<div class="col-md-6 btn-improve-page">
-<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2001-go/007-cacheline/index.md title=改善此页面 target=_blank rel=noopener>
-<i class="fas fa-code-branch"></i>
-改善此页面
-</a>
-</div>
-</div>
-<hr>
-<div class="row next-prev-navigator">
-<div class="col-md-6 previous-article">
-<a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作 class="btn btn-outline-info">
-<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
-<div class=next-prev-text>Golang中的原子操作</div>
-</a>
-</div>
-<div class="col-md-6 next-article">
-<a href=/posts/knowledge/2002-rust/ title=Rust class="btn btn-outline-info">
-<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
-<div class=next-prev-text>Rust</div>
-</a>
-</div>
-</div>
-<hr>
-<div id=utteranc_thread></div>
-<div id=comments class=comments>
-<div id=comments-container></div>
-</div>
-<script type=text/javascript>(function(){var a=document.createElement('script');a.type='text/javascript',a.async=!0,a.setAttribute('repo','ormissia/ormissia.github.io'),a.setAttribute('issue-term','title'),a.setAttribute('theme','github-light'),a.crossorigin='anonymous',a.src='https://utteranc.es/client.js',document.getElementById('comments-container').appendChild(a)})()</script>
-</div>
-</div>
-</div>
-<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
-</section>
-<section class=toc-section id=toc-section>
-<div class=toc-holder>
-<h5 class="text-center pl-3">目录</h5>
-<hr>
-<div class=toc>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#改变锁的类型>改变锁的类型</a></li>
-<li><a href=#降低锁住的代码块长度>降低锁住的代码块长度</a></li>
-<li><a href=#对数据切片>对数据切片</a>
-<ul>
-<li><a href=#使用位运算代替取模操作>使用位运算代替取模操作</a></li>
-<li><a href=#cache-line>Cache Line</a>
-<ul>
-<li><a href=#名词解析>名词解析</a></li>
-<li><a href=#验证>验证</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href=#延伸>延伸</a>
-<ul>
-<li><a href=#内存对齐>内存对齐</a>
-<ul>
-<li><a href=#对齐系数>对齐系数</a></li>
-<li><a href=#对齐规则>对齐规则</a></li>
-<li><a href=#举个栗子>举个栗子</a></li>
-</ul>
-</li>
-<li><a href=#对比>对比</a></li>
-</ul>
-</li>
-<li><a href=#参考链接>参考链接</a></li>
-</ul>
-</nav>
-</div>
-</div>
-</section>
-</div>
-<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
-<div class="container pt-5">
-<div class="row text-left">
-<div class="col-md-4 col-sm-12">
-<h5>联系方式:</h5>
-<ul>
-<li><span>QQ: </span> <span>1432050813</span></li>
-<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
-<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
-</a></li>
-</ul>
-</div>
-</div>
-</div>
-<hr>
-<div class=container>
-<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
-</div>
-<hr>
-<div class=container>
-<div class="row text-left">
-<div class=col-md-4>
-<a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener>
-<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
-Toha
-</a>
-</div>
-<div class="col-md-4 text-center">© 2021 Copyright.</div>
-<div class="col-md-4 text-right">
-<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
-</a>
-</div>
-</div>
-</div>
-</footer>
-<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"><li class="nav-item dropdown"><div id=theme-initialization style=display:none default-theme=system></div><a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20></a><div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector><a class="dropdown-item nav-link" href=# onclick=enableLightTheme()><img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()><img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()><img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20></a></div></li></ul></div></div><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=搜索 data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/posts data-filter=all>博文</a></li><div class=subtree><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a><ul class=active><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2001-go/>Go</a><ul class=active><li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li><li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li><li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li><li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li><li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li><li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li><li><a class=active href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li></ul></li><li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li><li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a><ul><li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li><li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a><ul><li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a><ul><li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a><ul><li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li><li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a><ul><li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li><li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li></ul></li><li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a><ul><li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li></ul></li><li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li><li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a><ul><li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li><li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li><li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li><li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li><li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li><li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li><li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li><li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a><ul><li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li><li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a><ul><li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li><li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li><li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li><li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li><li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li><li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a><ul><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a><ul><li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class=content><div class="container p-0 read-area"><div class="hero-area col-sm-12" id=hero-area style=background-image:url(/images/default-hero.jpg)></div><div class=page-content><div class="author-profile ml-auto align-self-lg-center"><img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image"><h5 class=author-name>Ormissia</h5><p>Friday, May 13, 2022</p></div><div class=title><h1>全局变量加锁的优化</h1></div><div class=post-content id=post-content><hr><p>#golang #cache_line</p><hr><blockquote><p>开发中不可避免地会遇到需要对全局变量加锁的情况，而一旦并发量高了之后，加锁的变量有可能变成服务的性能瓶颈所在。所以千方百计地寻找优化方法。</p></blockquote><h2 id=改变锁的类型>改变锁的类型</h2><p>如果业务中的全局变量是读多写少的应用场景，我们可以将互斥锁改为读写锁。即读取时对变量加读锁，这样可以支持多个线程并发读取同一个变量。而只有变量需要修改时才加写锁，保证写的时候不会被其他线程读取到错误的值。</p><p>互斥锁：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>DoWork</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// do something...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><p>读写锁：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Read</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>RLock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>RUnlock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// read global variable
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Write</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// write global variable
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><h2 id=降低锁住的代码块长度>降低锁住的代码块长度</h2><p>在<code>Go</code>中，我们常常会利用<code>defer</code>关键字的特性，写出如下的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Write</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// do something...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><p>但在实际代码中，如果对全局变量读写前后会有较长时间去做其他工作的情况下，就会造成极大的性能损耗。加锁之后没有立即对全局变量进行读写，或者对全局变量读写完之后没有立即释放锁，都会使其他线程没有办法立即抢到锁，从而拉低了整个系统的并发性能。</p><p>根据这个逻辑，可以将上述代码改成如下格式：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Write</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// do something...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// read or write global variable
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>lock</span>.<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// do something...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><p>但至此，也还是简单的从代码执行流程上进行了一个简单的优化。</p><h2 id=对数据切片>对数据切片</h2><p>除了修改锁的类型以及修改&rsquo;锁住&rsquo;的代码块长度，我们还可以通过一些其他方式降低锁的粒度。</p><p>假设我们的全局变量是一个<code>map</code>，我们可以对<code>key</code>做一个哈希后取模的操作，将原来一个<code>map</code>的数据分开写到多个<code>map</code>中。这样同一个大集合中的数据便支持了同时对多个数据进行写入而互不影响。</p><blockquote><p>取模是为了将key分到不同数据分片上，而取模之前的哈希操作是为了将不同的<code>key</code>均分到所有数据分片上。诚然，热点<code>key</code>（同一个<code>key</code>）还是会到同一个数据分片上。</p></blockquote><p>我们可以参考(Prometheus源码)[https://github.com/prometheus/prometheus/blob/6e3a0efe40918f72edfc89bc150bc0ece1a8c46f/tsdb/head.go#L1333] 中的写法，写出如下简化版代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;sync&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> (
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>defaultStripSize</span> = <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>16</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>defaultStripMask</span> = <span style=color:#a6e22e>defaultStripSize</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>stripLock</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>RWMutex</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span> [<span style=color:#ae81ff>40</span>]<span style=color:#66d9ef>byte</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>StripMap</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>locks</span>   []<span style=color:#a6e22e>stripLock</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>buckets</span> []<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>uint64</span>]<span style=color:#66d9ef>interface</span>{}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>DefaultStripMap</span>() <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>StripMap</span>{
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>locks</span>:   make([]<span style=color:#a6e22e>stripLock</span>, <span style=color:#a6e22e>defaultStripSize</span>),
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>buckets</span>: make([]<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>uint64</span>]<span style=color:#66d9ef>interface</span>{}, <span style=color:#a6e22e>defaultStripSize</span>),
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>i</span>] = make(<span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>uint64</span>]<span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span>) <span style=color:#a6e22e>Set</span>(<span style=color:#a6e22e>key</span> <span style=color:#66d9ef>uint64</span>, <span style=color:#a6e22e>value</span> <span style=color:#66d9ef>interface</span>{}) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RLock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RUnlock</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>][<span style=color:#a6e22e>key</span>] = <span style=color:#a6e22e>value</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span>) <span style=color:#a6e22e>Get</span>(<span style=color:#a6e22e>key</span> <span style=color:#66d9ef>uint64</span>) (<span style=color:#66d9ef>interface</span>{}, <span style=color:#66d9ef>bool</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RLock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>RUnlock</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>v</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>][<span style=color:#a6e22e>key</span>]
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>v</span>, <span style=color:#a6e22e>ok</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>StripMap</span>) <span style=color:#a6e22e>Remove</span>(<span style=color:#a6e22e>key</span> <span style=color:#66d9ef>uint64</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>locks</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>].<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	delete(<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>buckets</span>[<span style=color:#a6e22e>key</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>defaultStripMask</span>], <span style=color:#a6e22e>key</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在这个例子中只是简单的对<code>key</code>做了一个取模的操作，并没有进行哈希。如果实际业务中需要，可以采取先哈希再取模的操作。</p><p>在上述示例代码中，有两个点可以值得我们学习，下面进行逐一分析</p><h3 id=使用位运算代替取模操作>使用位运算代替取模操作</h3><blockquote><p><code>a % b = a & (b-1)</code>当且仅当<code>b = 2^n</code>时成立</p></blockquote><p><code>b = 2 ^ n</code>可以写为<code>b = 1 &lt;&lt; n</code>即1左移n位。</p><p>因而<code>b / a</code>即为b在二进制下向右移动n位，<code>b % a</code>就是a中被右移走的低n位。</p><p><code>b - 1</code>即为<code>1 &lt;&lt; n - 1</code>，二进制表示下即为n个1。</p><p>举个栗子：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>假设n <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>
+</span></span><span style=display:flex><span>b <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span> ^ 10 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#e6db74>&lt;&lt; 10 = 10</span> <span style=color:#ae81ff>000</span> <span style=color:#ae81ff>000</span> 000<span style=color:#f92672>(</span>二进制<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>b - 1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span> ^ <span style=color:#ae81ff>10</span> - 1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#e6db74>&lt;&lt; 10 - 1</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#ae81ff>111</span> <span style=color:#ae81ff>111</span> 111<span style=color:#f92672>(</span>二进制<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>b - <span style=color:#ae81ff>1</span> 的二进制表示即为n个1
+</span></span></code></pre></div><p>因此<code>key</code>对<code>defaultStripSize</code>做取模操作即可写为<code>key&(defaultStripSize - 1)</code></p><h3 id=cache-line>Cache Line</h3><p>在上面的示例代码中如果不了解的话可以看到一个很奇怪的结构：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>stripLock</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>RWMutex</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span> [<span style=color:#ae81ff>40</span>]<span style=color:#66d9ef>byte</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>其中的<code>_ [40]byte</code>第一次看到的时候觉得十分的困惑，<del>这样写不是白白浪费内存么</del>。后来发现这个写法的作用是为了提高性能而采取的措施。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>stripLock</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>RWMutex</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>_</span> [<span style=color:#ae81ff>40</span>]<span style=color:#66d9ef>byte</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>sl</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>stripLock</span>{}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Sizeof</span>(<span style=color:#a6e22e>sl</span>))
+</span></span></code></pre></div><p>这段代码输出为：<code>64</code></p><h4 id=名词解析>名词解析</h4><p>接下来我们大概了解一下CPU中缓存工作的机制：</p><p>CPU中缓存的最小单元是<code>cache line</code>，现在的处理器中的<code>cache line</code>通常都是64byte。因此当CPU从内存中读取数据时会读取该变量周围所有的东西。</p><p><img src=img_1.png alt="load to cache"></p><blockquote><p>也就是说core1要读取变量a的时候会将a临近的b一起加载到缓存中来。</p></blockquote><p>如果同一个变量位于不同核心的<code>cache</code>中时，就会产生一些问题。</p><p><img src=img_2.png alt="two core cache"></p><p>core1将变量a修改</p><p><img src=img_3.png alt="one core update cache"></p><p>core2读取变量b，这时即使b没有发生改变，也会因为在同一个<code>cache line</code>中其他值的改变而导致<code>cache line</code>丢失。所以core2会重新从内存中加载<code>cache line</code>中所有的变量。</p><p><img src=img_4.png alt="another core reload cache"></p><blockquote><p>这就是所谓的<code>假共享</code>：一个核心的更新会导致其他核心也更新缓存。</p></blockquote><p>所以我们应尽量避免由于一个核心的修改导致其他核心重新从内存中读取数据，因为从内存中读取数据的效率要远远低于从缓存中读取数据。</p><p>解决这个问题的办法通常是缓存填充：在变量之间填充一些无意义的变量，这将迫使一个变量单独一个核心的缓存行。这样当其他核心更新变量时，不会使该核心从内存中重新加载数据。</p><h4 id=验证>验证</h4><p><a href=https://github.com/genchilu/concurrencyPractice/tree/master/golang/pad>这是一个Go写的benchmark</a></p><p>这里有个小小的花絮，由于我用的电脑是M1的CPU，而M1是基于<code>ARM</code>的架构。因此在这里呈现出了跟预期相反的测试结果：</p><blockquote><p>问题原因是有些处理器比如<code>ARM</code>、<code>RISC-V</code>不允许未对齐的内存访问，不会产生跨<code>cache line</code>的原子访问，所以不会产生<code>split lock</code>，而 X86 是支持的。</p><p>而我在同事的X86电脑上得出的测试结果则是跟预期相符的。</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>❯ go test -v -bench<span style=color:#f92672>=</span>. -benchmem -count<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>goos: darwinv -bench<span style=color:#f92672>=</span>. -benchmem -count<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>goarch: arm64
+</span></span><span style=display:flex><span>pkg: awesomeProject
+</span></span><span style=display:flex><span>BenchmarkNoPad
+</span></span><span style=display:flex><span>BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09975 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09889 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09750 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09979 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkNoPad-8        <span style=color:#ae81ff>1000000000</span>               0.09916 ns/op         <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkPad
+</span></span><span style=display:flex><span>BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1105 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1095 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1098 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1095 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>BenchmarkPad-8          <span style=color:#ae81ff>1000000000</span>               0.1090 ns/op          <span style=color:#ae81ff>0</span> B/op          <span style=color:#ae81ff>0</span> allocs/op
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok      awesomeProject  10.660s
+</span></span></code></pre></div><h2 id=延伸>延伸</h2><blockquote><p>当我看到上文提到的缓存填充时，第一感觉跟内存对齐有点类似，这里就重新总结一下。</p></blockquote><h3 id=内存对齐>内存对齐</h3><p><code>Go</code>中数据类型占用内存空间大小可以参考：<a href=https://ormissia.github.io/notes/go/basic/basic/>链接</a></p><h4 id=对齐系数>对齐系数</h4><p>在了解如何对齐之前,我们需要了解"对齐系数"这个概念,unsafe 标准库提供了<code>Alignof</code>方法,可以返回一个类型的对齐系数一般来说,对齐系数在我们常用的平台的系数如下:</p><ul><li>32 位：4</li><li>64 位：8</li></ul><h4 id=对齐规则>对齐规则</h4><p>在了解完大小和对齐系数以后,我们就可以利用对齐规则对结构体进行内存对齐:</p><ul><li>结构体的成员变量，第一个成员变量的偏移量为0。往后的每个成员变量的对齐值必须为编译器默认对齐长度（#pragma pack(n)）或当前成员变量类型的长度（unsafe.Sizeof），取最小值作为当前类型的对齐值。其偏移量必须为对齐值的整数倍</li><li>结构体本身，对齐值必须为编译器默认对齐长度（#pragma pack(n)）或结构体的所有成员变量类型中的最大长度，取最大数的最小整数倍作为对齐值</li><li>结合以上两点，可得知若编译器默认对齐长度（#pragma pack(n)）超过结构体内成员变量的类型最大长度时，默认对齐长度是没有任何意义的.</li></ul><blockquote><p>其中#pragma pack(n)的取值就是我们前面介绍的操作系统一般情况下的取值，即32位为4，64位为8.</p></blockquote><h4 id=举个栗子>举个栗子</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Ex</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>a</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>d</span> <span style=color:#66d9ef>int32</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>c</span> <span style=color:#66d9ef>int8</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>b</span> <span style=color:#66d9ef>int64</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>e</span> <span style=color:#66d9ef>byte</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>unsafe</span>.<span style=color:#a6e22e>Sizeof</span>(<span style=color:#a6e22e>Ex</span>{}))
+</span></span></code></pre></div><p>以上代码输出结果为：<code>32</code></p><p>根据对齐规则可知，内存布局如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>axxx|bbbb|cxxx|xxxx|dddd|dddd|e…
+</span></span></code></pre></div><p>但是由于整个结构体也需要对齐，可以得出，最终的内存布局为：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>axxx|bbbb|cxxx|xxxx|dddd|dddd|exxx|xxxx
+</span></span></code></pre></div><h3 id=对比>对比</h3><ul><li><code>cache line</code>是为了解决不同变量之在多个CPU核心之间共享的问题</li><li><code>内存对齐</code>是为了解决同一个结构体内部访问效率等问题</li></ul><h2 id=参考链接>参考链接</h2><ul><li><a href=https://github.com/prometheus/prometheus/blob/6e3a0efe40918f72edfc89bc150bc0ece1a8c46f/tsdb/head.go#L1333>prometheus源码示例</a></li><li><a href=https://medium.com/@genchilu/whats-false-sharing-and-how-to-solve-it-using-golang-as-example-ef978a305e10>What’s false sharing and how to solve it (using Golang as example)</a></li><li><a href=https://www.xwxwgo.com/post/2019/07/09/golang%E5%92%8Cfalse-sharing/>Golang和假共享(false sharing)</a></li><li><a href=https://www.wangt.cc/2021/11/golang-%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E5%92%8C%E4%BC%AA%E5%85%B1%E4%BA%ABfalse-sharing/>Golang 内存对齐和伪共享False Sharing</a></li><li><a href=https://www.shouxicto.com/article/3984.html>深入剖析 split locks，i++ 可能导致的灾难</a></li></ul></div><div class="row pl-3 pr-3"><div class="col-md-6 share-buttons"><strong>分享:</strong>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2001-go%2f007-cacheline%2f&title=%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%8a%a0%e9%94%81%e7%9a%84%e4%bc%98%e5%8c%96" target=_blank><i class="fab fa-reddit"></i></a>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2001-go%2f007-cacheline%2f&title=%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%8a%a0%e9%94%81%e7%9a%84%e4%bc%98%e5%8c%96" target=_blank><i class="fab fa-linkedin"></i></a>
+<a class="btn btn-sm email-btn" href="mailto:?subject=%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%8a%a0%e9%94%81%e7%9a%84%e4%bc%98%e5%8c%96&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2001-go%2f007-cacheline%2f" target=_blank><i class="fas fa-envelope-open-text"></i></a></div><div class="col-md-6 btn-improve-page"><a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2001-go/007-cacheline/index.md title=改善此页面 target=_blank rel=noopener><i class="fas fa-code-branch"></i>
+改善此页面</a></div></div><hr><div class="row next-prev-navigator"><div class="col-md-6 previous-article"><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作 class="btn btn-outline-info"><div><i class="fas fa-chevron-circle-left"></i> 上一篇</div><div class=next-prev-text>Golang中的原子操作</div></a></div><div class="col-md-6 next-article"><a href=/posts/knowledge/2002-rust/ title=Rust class="btn btn-outline-info"><div>下一篇 <i class="fas fa-chevron-circle-right"></i></div><div class=next-prev-text>Rust</div></a></div></div><hr><div id=utteranc_thread></div><div id=comments class=comments><div id=comments-container></div></div><script type=text/javascript>(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.setAttribute("repo","ormissia/ormissia.github.io"),e.setAttribute("issue-term","title"),e.setAttribute("theme","github-light"),e.crossorigin="anonymous",e.src="https://utteranc.es/client.js",document.getElementById("comments-container").appendChild(e)})()</script></div></div></div><a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a></section><section class=toc-section id=toc-section><div class=toc-holder><h5 class="text-center pl-3">目录</h5><hr><div class=toc><nav id=TableOfContents><ul><li><a href=#改变锁的类型>改变锁的类型</a></li><li><a href=#降低锁住的代码块长度>降低锁住的代码块长度</a></li><li><a href=#对数据切片>对数据切片</a><ul><li><a href=#使用位运算代替取模操作>使用位运算代替取模操作</a></li><li><a href=#cache-line>Cache Line</a><ul><li><a href=#名词解析>名词解析</a></li><li><a href=#验证>验证</a></li></ul></li></ul></li><li><a href=#延伸>延伸</a><ul><li><a href=#内存对齐>内存对齐</a><ul><li><a href=#对齐系数>对齐系数</a></li><li><a href=#对齐规则>对齐规则</a></li><li><a href=#举个栗子>举个栗子</a></li></ul></li><li><a href=#对比>对比</a></li></ul></li><li><a href=#参考链接>参考链接</a></li></ul></nav></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
 <script type=text/javascript src=/js/popper.min.js></script>
 <script type=text/javascript src=/js/bootstrap.min.js></script>
 <script type=text/javascript src=/js/navbar.js></script>
@@ -566,6 +156,4 @@ Toha
 <script type=text/javascript src=/js/darkmode-darkreader.js></script>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
 <script src=/js/single.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-</body>
-</html>
+<script>hljs.initHighlightingOnLoad()</script></body></html>

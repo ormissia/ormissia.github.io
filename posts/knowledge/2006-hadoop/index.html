@@ -1,216 +1,15 @@
-<!doctype html><html>
-<head>
-<title>Hadoop</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<link rel=stylesheet href=/css/bootstrap.min.css>
-<link rel=stylesheet href=/css/layouts/main.css>
-<link rel=stylesheet href=/css/navigators/navbar.css>
-<link rel=stylesheet href=/css/plyr.css>
-<link rel=stylesheet href=/css/flag-icon.min.css>
-<link rel=stylesheet href=/google-fonts/Mulish/mulish.css>
-<link rel=stylesheet href=/fontawesome/css/all.min.css>
-<link rel=stylesheet href=/css/colortheme/colortheme.css>
-<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Hadoop">
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2006-hadoop/">
-<link rel=stylesheet href=/css/layouts/list.css>
-<link rel=stylesheet href=/css/navigators/sidebar.css>
-<link rel=stylesheet href=/css/style.css>
-</head>
-<body data-spy=scroll data-target=#TableOfContents data-offset=80>
-<div class="container-fluid bg-dimmed wrapper">
-<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
-<div class=container>
-<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span>
-</button>
-<a class=navbar-brand href=/>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+<!doctype html><html><head><title>Hadoop</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=stylesheet href=/fontawesome/css/all.min.css><link rel=stylesheet href=/css/colortheme/colortheme.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="Hadoop"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2006-hadoop/"><link rel=stylesheet href=/css/layouts/list.css><link rel=stylesheet href=/css/navigators/sidebar.css><link rel=stylesheet href=/css/style.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span></button>
+<a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span>
-</button>
-<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
-<ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-<div id=theme-initialization style=display:none default-theme=system></div>
-<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
-<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
-<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
-<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
-<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
-</a>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
-</nav>
-<section class=sidebar-section id=sidebar-section>
-<div class=sidebar-holder>
-<div class=sidebar id=sidebar>
-<form class=mx-auto method=get action=/search>
-<input type=text name=keyword placeholder=搜索 data-search id=search-box>
-</form>
-<div class=sidebar-tree>
-<ul class=tree id=tree>
-<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
-<div class=subtree>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
-<ul class=active>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
-<ul>
-<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
-<li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
-<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
-<ul>
-<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
-<ul>
-<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
-<ul>
-<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2006-hadoop/>Hadoop</a>
-<ul class=active>
-<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
-<ul>
-<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
-<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
-<ul>
-<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li>
-<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
-<ul>
-<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
-<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
-<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
-<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
-<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
-<ul>
-<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
-<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
-<ul>
-<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
-<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
-<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
-<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
-<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
-<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a>
-<ul>
-<li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</div>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class=content-section id=content-section>
-<div class="content container-fluid" id=content>
-<div class="container-fluid post-card-holder" id=post-card-holder>
-<div class=post-card>
-<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/images/default-hero.jpg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>HDFS基础知识</h5>
-<p class="card-text post-summary"> #hadoop #hdfs
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"><li class="nav-item dropdown"><div id=theme-initialization style=display:none default-theme=system></div><a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20></a><div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector><a class="dropdown-item nav-link" href=# onclick=enableLightTheme()><img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()><img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()><img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20></a></div></li></ul></div></div><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=搜索 data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/posts data-filter=all>博文</a></li><div class=subtree><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a><ul class=active><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a><ul><li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li><li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li><li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li><li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li><li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li><li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li><li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li></ul></li><li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li><li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a><ul><li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li><li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a><ul><li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a><ul><li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li></ul></li><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2006-hadoop/>Hadoop</a><ul class=active><li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li><li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a><ul><li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li><li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li></ul></li><li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a><ul><li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li></ul></li><li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li><li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a><ul><li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li><li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li><li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li><li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li><li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li><li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li><li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li><li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a><ul><li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li><li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a><ul><li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li><li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li><li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li><li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li><li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li><li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a><ul><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a><ul><li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class="content container-fluid" id=content><div class="container-fluid post-card-holder" id=post-card-holder><div class=post-card><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class=post-card-link><div class=card><div class=card-head><img class=card-img-top src=/images/default-hero.jpg alt="Hero Image"></div><div class=card-body><h5 class=card-title>HDFS基础知识</h5><p class="card-text post-summary">#hadoop #hdfs
 HDFS架构 HDFS是一个主从（Master/Slaves）架构 由一个NameNode和一些DataNode组成 面向文件包含：文件元数据（metadata）和文件数据（data） NameNode负责存储和管理文件元数据，并维护了一个层次型的文件目录树 DataNode负责存储文件数据（block块），并提供block的读写 DataNode与NameNode维持心跳，并汇报自己持有的block信息 Client和NameNode交互文件元数据和DataNode交互文件block数据 目录树结构 角色即进程
-Hadoop集群中HDFS节点角色 Master Standy </p>
-</div>
-<div class=card-footer>
-<span class=float-left>September 24, 2021</span>
-<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2006-hadoop/001-env/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/images/default-hero.jpg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>Hadoop生态组件</h5>
-<p class="card-text post-summary">#hadoop
+Hadoop集群中HDFS节点角色 Master Standy</p></div><div class=card-footer><span class=float-left>September 24, 2021</span>
+<a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ class="float-right btn btn-outline-info btn-sm">阅读</a></div></div></a></div><div class=post-card><a href=/posts/knowledge/2006-hadoop/001-env/ class=post-card-link><div class=card><div class=card-head><img class=card-img-top src=/images/default-hero.jpg alt="Hero Image"></div><div class=card-body><h5 class=card-title>Hadoop生态组件</h5><p class="card-text post-summary">#hadoop
 最近在学习大数据相关的东西，看了HDFS，Hive，HBas，Spark相关的东西，总结一下Hadoop生态中常见的组件。
 HDFS（hadoop分布式文件系统） HDFS是hadoop体系中数据存储管理的基础。他是一个高度容错的系统，能检测和应对硬件故障。
 有以下几个角色：
@@ -231,58 +30,16 @@ sqoop（数据同步工具） sqoop是sql-to-hadoop的缩写，主要用于传�
 pig（基于hadoop的数据流系统） 定义了一种数据流语言-pig latin，将脚本转换为mapreduce任务在hadoop上执行。通常用于离线分析。
 mahout（数据挖掘算法库） mahout的主要目标是创建一些可扩展的机器学习领域经典算法的实现，旨在帮助开发人员更加方便快捷地创建只能应用程序。mahout现在已经包含了聚类，分类， 推荐引擎（协同过滤）和频繁集挖掘等广泛使用的数据挖掘方法。除了算法是，mahout还包含了数据的输入/输出工具，与其他存储系统（如数据库，mongoDB或 Cassandra）集成等数据挖掘支持架构。
 flume（日志收集工具） cloudera开源的日志收集系统，具有分布式，高可靠，高容错，易于定制和扩展的特点。他将数据从产生，传输，处理并写入目标的路径的过程抽象为数据流，在 具体的数据流中，数据源支持在flume中定制数据发送方，从而支持收集各种不同协议数据。
-资源管理器的简单介绍（YARN和mesos） 随着互联网的高速发展，基于数据 密集型应用 的计算框架不断出现，从支持离线处理的mapreduce，到支持在线处理的storm，从迭代式计算框架到 流式处理框 架s4，&mldr;，在大部分互联网公司中，这几种框架可能都会采用，比如对于搜索引擎公司，可能的技术方法如下：网页建索引采用mapreduce框架，自然语言处理/ 数据挖掘采用spark，对性能要求到的数据挖掘算法用mpi等。公司一般将所有的这些框架部署到一个公共的集群中，让它们共享集群的资源，并对资源进行统一使 用，这样便诞生了资源统一管理与调度平台，典型的代表是mesos和yarn。</p>
-</div>
-<div class=card-footer>
-<span class=float-left>September 17, 2021</span>
-<a href=/posts/knowledge/2006-hadoop/001-env/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class=paginator>
-</div>
-</div>
-</section>
-</div>
-<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
-<div class="container pt-5">
-<div class="row text-left">
-<div class="col-md-4 col-sm-12">
-<h5>联系方式:</h5>
-<ul>
-<li><span>QQ: </span> <span>1432050813</span></li>
-<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
-<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
-</a></li>
-</ul>
-</div>
-</div>
-</div>
-<hr>
-<div class=container>
-<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
-</div>
-<hr>
-<div class=container>
-<div class="row text-left">
-<div class=col-md-4>
-<a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener>
-<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
-Toha
-</a>
-</div>
-<div class="col-md-4 text-center">© 2021 Copyright.</div>
-<div class="col-md-4 text-right">
-<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
-</a>
-</div>
-</div>
-</div>
-</footer>
-<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+资源管理器的简单介绍（YARN和mesos） 随着互联网的高速发展，基于数据 密集型应用 的计算框架不断出现，从支持离线处理的mapreduce，到支持在线处理的storm，从迭代式计算框架到 流式处理框 架s4，&mldr;，在大部分互联网公司中，这几种框架可能都会采用，比如对于搜索引擎公司，可能的技术方法如下：网页建索引采用mapreduce框架，自然语言处理/ 数据挖掘采用spark，对性能要求到的数据挖掘算法用mpi等。公司一般将所有的这些框架部署到一个公共的集群中，让它们共享集群的资源，并对资源进行统一使 用，这样便诞生了资源统一管理与调度平台，典型的代表是mesos和yarn。
+其他的一些开源组件： cloudrea impala： 一个开源的查询引擎。与hive相同的元数据，SQL语法，ODBC驱动程序和用户接口，可以直接在HDFS上提供快速，交互式SQL查询。impala不再使用缓慢的 hive+mapreduce批处理，而是通过与商用并行关系数据库中类似的分布式查询引擎。可以直接从HDFS或者Hbase中用select，join和统计函数查询数据，从而 大大降低延迟。
+spark： spark是个开源的数据 分析集群计算框架，最初由加州大学伯克利分校AMPLab，建立于HDFS之上。spark与hadoop一样，用于构建大规模，延迟低的数据分析 应用。spark采用Scala语言实现，使用Scala作为应用框架。
+spark采用基于内存的分布式数据集，优化了迭代式的工作负载以及交互式查询。
+与hadoop不同的是，spark与Scala紧密集成，Scala象管理本地collective对象那样管理分布式数据集。spark支持分布式数据集上的迭代式任务，实际上可 以在hadoop文件系统上与hadoop一起运行（通过YARN,MESOS等实现）。
+storm storm是一个分布式的，容错的计算系统，storm属于流处理平台，多用于实时计算并更新数据库。storm也可被用于“连续计算”，对数据流做连续查询，在计算 时将结果一流的形式输出给用户。他还可被用于“分布式RPC”,以并行的方式运行昂贵的运算。
+kafka kafka是由Apache软件基金会开发的一个开源流处理平台，由Scala和Java编写。Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的 网站中的所有动作流数据。 这种动作（网页浏览，搜索和其他用户的行动）是在现代网络上的许多社会功能的一个关键因素。 这些数据通常是由于吞吐量的要求 而通过处理日志和日志聚合来解决。 对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka的目的是通 过Hadoop的并行加载机制来统一线上和离线的消息处理，也是为了通过集群来提供实时的消息</p></div><div class=card-footer><span class=float-left>September 17, 2021</span>
+<a href=/posts/knowledge/2006-hadoop/001-env/ class="float-right btn btn-outline-info btn-sm">阅读</a></div></div></a></div></div><div class=paginator></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
 <script type=text/javascript src=/js/popper.min.js></script>
 <script type=text/javascript src=/js/bootstrap.min.js></script>
 <script type=text/javascript src=/js/navbar.js></script>
@@ -290,6 +47,4 @@ Toha
 <script type=text/javascript src=/js/main.js></script>
 <script type=text/javascript src=/js/darkreader.js></script>
 <script type=text/javascript src=/js/darkmode-darkreader.js></script>
-<script src=/js/list.js></script>
-</body>
-</html>
+<script src=/js/list.js></script></body></html>

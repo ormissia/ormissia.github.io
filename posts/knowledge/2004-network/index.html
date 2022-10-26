@@ -1,197 +1,12 @@
-<!doctype html><html>
-<head>
-<title>Network</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<link rel=stylesheet href=/css/bootstrap.min.css>
-<link rel=stylesheet href=/css/layouts/main.css>
-<link rel=stylesheet href=/css/navigators/navbar.css>
-<link rel=stylesheet href=/css/plyr.css>
-<link rel=stylesheet href=/css/flag-icon.min.css>
-<link rel=stylesheet href=/google-fonts/Mulish/mulish.css>
-<link rel=stylesheet href=/fontawesome/css/all.min.css>
-<link rel=stylesheet href=/css/colortheme/colortheme.css>
-<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Network">
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2004-network/">
-<link rel=stylesheet href=/css/layouts/list.css>
-<link rel=stylesheet href=/css/navigators/sidebar.css>
-<link rel=stylesheet href=/css/style.css>
-</head>
-<body data-spy=scroll data-target=#TableOfContents data-offset=80>
-<div class="container-fluid bg-dimmed wrapper">
-<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
-<div class=container>
-<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span>
-</button>
-<a class=navbar-brand href=/>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+<!doctype html><html><head><title>Network</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=stylesheet href=/fontawesome/css/all.min.css><link rel=stylesheet href=/css/colortheme/colortheme.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="Network"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2004-network/"><link rel=stylesheet href=/css/layouts/list.css><link rel=stylesheet href=/css/navigators/sidebar.css><link rel=stylesheet href=/css/style.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span></button>
+<a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span>
-</button>
-<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
-<ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-<div id=theme-initialization style=display:none default-theme=system></div>
-<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
-<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
-<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
-<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
-<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
-</a>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
-</nav>
-<section class=sidebar-section id=sidebar-section>
-<div class=sidebar-holder>
-<div class=sidebar id=sidebar>
-<form class=mx-auto method=get action=/search>
-<input type=text name=keyword placeholder=搜索 data-search id=search-box>
-</form>
-<div class=sidebar-tree>
-<ul class=tree id=tree>
-<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
-<div class=subtree>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
-<ul class=active>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
-<ul>
-<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
-<li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
-<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2004-network/>Network</a>
-<ul class=active>
-<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
-<ul>
-<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
-<ul>
-<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
-<ul>
-<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
-<ul>
-<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
-<li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
-<ul>
-<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li>
-<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
-<ul>
-<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
-<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
-<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
-<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
-<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
-<ul>
-<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
-<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
-<ul>
-<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
-<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
-<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
-<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
-<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
-<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a>
-<ul>
-<li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</div>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class=content-section id=content-section>
-<div class="content container-fluid" id=content>
-<div class="container-fluid post-card-holder" id=post-card-holder>
-<div class=post-card>
-<a href=/posts/knowledge/2004-network/002-http_statuscode/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/images/default-hero.jpg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>HTTP笔记</h5>
-<p class="card-text post-summary">#http-code
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"><li class="nav-item dropdown"><div id=theme-initialization style=display:none default-theme=system></div><a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20></a><div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector><a class="dropdown-item nav-link" href=# onclick=enableLightTheme()><img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()><img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()><img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20></a></div></li></ul></div></div><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=搜索 data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/posts data-filter=all>博文</a></li><div class=subtree><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a><ul class=active><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a><ul><li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li><li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li><li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li><li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li><li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li><li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li><li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li></ul></li><li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li><li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2004-network/>Network</a><ul class=active><li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li><li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a><ul><li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a><ul><li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a><ul><li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li><li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2007-kubernetes/>Kubernetes</a><ul><li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li><li><a href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li></ul></li><li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a><ul><li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li></ul></li><li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li><li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a><ul><li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li><li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li><li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li><li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li><li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li><li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li><li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li><li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a><ul><li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li><li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a><ul><li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li><li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li><li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li><li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li><li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li><li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a><ul><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a><ul><li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class="content container-fluid" id=content><div class="container-fluid post-card-holder" id=post-card-holder><div class=post-card><a href=/posts/knowledge/2004-network/002-http_statuscode/ class=post-card-link><div class=card><div class=card-head><img class=card-img-top src=/images/default-hero.jpg alt="Hero Image"></div><div class=card-body><h5 class=card-title>HTTP笔记</h5><p class="card-text post-summary">#http-code
 http协议（超文本传输协议） 是客户端和服务器端两者通信共同遵循的一些规则。主要内容是定义了客户端如何向服务器请求资源，服务器如何响应客户端请求。
 请求中的POST与GET方法的区别
 get是从服务器上获取数据，post是向服务器传送数据。 在客户端，Get方式在通过URL提交数据，数据在URL中可以看到；POST方式，数据放置在HTML HEADER内提交。 对于get方式，服务器端用Request.QueryString获取变量的值，对于post方式，服务器端用Request.Form获取提交的数据。 GET方式提交的数据最多只能有1024字节，而POST则没有此限制。 安全性问题。正如在（1）中提到，使用 GET 的时候，参数会显示在地址栏上，而 Post 不会。所以，如果这些数据是中文数据而且是非敏感数据，那么使用 GET；如果用户输入的数据不是中文字符而且包含敏感数据，那么还是使用 post为好。 HTTP 1.0 HTTP 1.0规定浏览器与服务器只保持短暂的连接，浏览器的每次请求都需要与服务器建立一个TCP连接，服务器完成请求处理后立即断开TCP连接
@@ -202,24 +17,8 @@ HTTP 1.1还允许客户端不用等待上一次请求结果返回，就可以发
 在HTTP 1.1中，client和server都是默认对方支持长链接的， 如果client使用HTTP 1.1协议，但又不希望使用长链接，则需要在header中指明connection的值为close；如果server方也不想支持长链接，则在response中也需要明确说明connection的值为close。不论request还是response的header中包含了值为close的connection，都表明当前正在使用的tcp链接在当天请求处理完毕后会被断掉。以后client再进行新的请求时就必须创建新的tcp链接了。
 HTTP 1.1在继承了HTTP 1.0优点的基础上，也克服了HTTP 1.0的性能问题。
 HTTP 1.1通过增加更多的请求头和响应头来改进和扩充HTTP 1.0的功能。如，HTTP 1.0不支持Host请求头字段，浏览器无法使用主机头名来明确表示要访问服务器上的哪个WEB站点，这样就无法使用WEB服务器在同一个IP地址和端口号上配置多个虚拟WEB站点。在HTTP 1.1中增加Host请求头字段后，WEB浏览器可以使用主机头名来明确表示要访问服务器上的哪个WEB站点，这才实现了在一台WEB服务器上可以在同一个IP地址和端口号上使用不同的主机名来创建多个虚拟WEB站点。HTTP 1.1的持续连接，也需要增加新的请求头来帮助实现，例如，Connection请求头的值为Keep-Alive时，客户端通知服务器返回本次请求结果后保持连接；Connection请求头的值为close时，客户端通知服务器返回本次请求结果后关闭连接。HTTP 1.1还提供了与身份认证、状态管理和Cache缓存等机制相关的请求头和响应头。HTTP 1.0不支持文件断点续传，RANGE:bytes是HTTP 1.1新增内容，HTTP 1.0每次传送文件都是从文件头开始，即0字节处开始。RANGE:bytes=XXXX表示要求服务器从文件XXXX字节处开始传送，这就是我们平时所说的断点续传。
-HTTP 1.1和HTTP 1.0协议的区别 缓存处理 带宽优化及网络连接的使用 错误通知的管理 消息在网络中的发送 互联网地址的维护 安全性及完整性 HTTP 1.x和HTTP 2协议的区别 二进制分帧：HTTP 2采用二进制格式传输数据，而非HTTP 1.</p>
-</div>
-<div class=card-footer>
-<span class=float-left>March 31, 2022</span>
-<a href=/posts/knowledge/2004-network/002-http_statuscode/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-<div class=post-card>
-<a href=/posts/knowledge/2004-network/001-oauth/ class=post-card-link>
-<div class=card>
-<div class=card-head>
-<img class=card-img-top src=/images/default-hero.jpg alt="Hero Image">
-</div>
-<div class=card-body>
-<h5 class=card-title>OAuth 2.0扩展协议PKCE</h5>
-<p class="card-text post-summary">#oauth
+HTTP 1.1和HTTP 1.0协议的区别 缓存处理 带宽优化及网络连接的使用 错误通知的管理 消息在网络中的发送 互联网地址的维护 安全性及完整性 HTTP 1.x和HTTP 2协议的区别 二进制分帧：HTTP 2采用二进制格式传输数据，而非HTTP 1.x的文本格式 头部压缩：头部表在HTTP 2的连接存续期内始终存在，由客户端和服务器共同渐进地更新。请求一发送了所有的头部字段，第二个请求则只需要发送差异数据，这样可以减少冗余数据，降低开销 多路复用：直白的说就是所有的请求都是通过一个TCP连接并发完成。HTTP 1.x虽然通过pipeline也能并发请求，但是多个请求之间的响应会被阻塞的，所以pipeline至今也没有被普及应用，而HTTP 2做到了真正的并发请求。同时，流还支持优先级和流量控制。 服务器推送：服务端能够更快的把资源推送给客户端。例如服务端可以主动把JS和CSS文件推送给客户端，而不需要客户端解析HTML再发送这些请求。当客户端需要的时候，它已经在客户端了。 HTTP 2主要是HTTP 1.</p></div><div class=card-footer><span class=float-left>March 31, 2022</span>
+<a href=/posts/knowledge/2004-network/002-http_statuscode/ class="float-right btn btn-outline-info btn-sm">阅读</a></div></div></a></div><div class=post-card><a href=/posts/knowledge/2004-network/001-oauth/ class=post-card-link><div class=card><div class=card-head><img class=card-img-top src=/images/default-hero.jpg alt="Hero Image"></div><div class=card-body><h5 class=card-title>OAuth 2.0扩展协议PKCE</h5><p class="card-text post-summary">#oauth
 PKCE全称是Proof Key for Code Exchange，在2015年发布，它是OAuth 2.0核心的一个扩展协议，所以可以和现有的授权模式结合使用，比如Authorization Code+PKCE， 这也是最佳实践，PKCE最初是为移动设备应用和本地应用创建的， 主要是为了减少公共客户端的授权码拦截攻击。 在最新的OAuth 2.1规范中，推荐所有客户端都使用PKCE，而不仅仅是公共客户端，并且移除了Implicit隐式和Password模式，那之前使用这两种模式的客户端怎么办? 是的，现在都可以尝试使用Authorization Code+PKCE的授权模式。那PKCE为什么有这种魔力呢? 实际上它的原理是客户端提供一个自创建的证明给授权服务器，授权服务器通过它来验证客户端，把访问令牌(access_token)颁发给真实的客户端而不是伪造的。
 客户端类型 上面说到了PKCE主要是为了减少公共客户端的授权码拦截攻击，那就有必要介绍下两种客户端类型了。
 OAuth 2.0核心规范定义了两种客户端类型， confidential 机密的， 和 public 公开的， 区分这两种类型的方法是， 判断这个客户端是否有能力维护自己的机密性凭据 client_secret。
@@ -233,58 +32,11 @@ PKCE 协议流程 PKCE协议本身是对OAuth 2.0的扩展，它和之前的授�
 PKCE是怎么做的呢?既然固定的client_secret是不安全的，那就每次请求生成一个随机的密钥（code_verifier），第一次请求到授权服务器的authorize endpoint时，携带code_challenge和code_challenge_method，也就是code_verifier转换后的值和转换方法，然后授权服务器需要把这两个参数缓存起来，第二次请求到token endpoint时，携带生成的随机密钥的原始值(code_verifier)，然后授权服务器使用下面的方法进行验证:
 plain
 code_challenge = code_verifier sha256
-code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier))) 通过后才颁发令牌，那向授权服务器authorize endpoint和token endpoint发起的这两次请求，该如何关联起来呢?</p>
-</div>
-<div class=card-footer>
-<span class=float-left>February 10, 2022</span>
-<a href=/posts/knowledge/2004-network/001-oauth/ class="float-right btn btn-outline-info btn-sm">阅读</a>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class=paginator>
-</div>
-</div>
-</section>
-</div>
-<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
-<div class="container pt-5">
-<div class="row text-left">
-<div class="col-md-4 col-sm-12">
-<h5>联系方式:</h5>
-<ul>
-<li><span>QQ: </span> <span>1432050813</span></li>
-<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
-<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
-</a></li>
-</ul>
-</div>
-</div>
-</div>
-<hr>
-<div class=container>
-<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
-</div>
-<hr>
-<div class=container>
-<div class="row text-left">
-<div class=col-md-4>
-<a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener>
-<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
-Toha
-</a>
-</div>
-<div class="col-md-4 text-center">© 2021 Copyright.</div>
-<div class="col-md-4 text-right">
-<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
-</a>
-</div>
-</div>
-</div>
-</footer>
-<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier))) 通过后才颁发令牌，那向授权服务器authorize endpoint和token endpoint发起的这两次请求，该如何关联起来呢?通过授权码code即可，所以就算恶意程序拦截到了授权码code，但是没有code_verifier，也是不能获取访问令牌的，当然PKCE也可以用在机密（confidential）的客户端，那就是client_secret+code_verifier双重密钥了。
+参考连接 oauth文档</p></div><div class=card-footer><span class=float-left>February 10, 2022</span>
+<a href=/posts/knowledge/2004-network/001-oauth/ class="float-right btn btn-outline-info btn-sm">阅读</a></div></div></a></div></div><div class=paginator></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
 <script type=text/javascript src=/js/popper.min.js></script>
 <script type=text/javascript src=/js/bootstrap.min.js></script>
 <script type=text/javascript src=/js/navbar.js></script>
@@ -292,6 +44,4 @@ Toha
 <script type=text/javascript src=/js/main.js></script>
 <script type=text/javascript src=/js/darkreader.js></script>
 <script type=text/javascript src=/js/darkmode-darkreader.js></script>
-<script src=/js/list.js></script>
-</body>
-</html>
+<script src=/js/list.js></script></body></html>

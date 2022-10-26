@@ -1,448 +1,115 @@
-<!doctype html><html>
-<head>
-<title>k8s中通过Headless连接StatefulSet</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<link rel=stylesheet href=/css/bootstrap.min.css>
-<link rel=stylesheet href=/css/layouts/main.css>
-<link rel=stylesheet href=/css/navigators/navbar.css>
-<link rel=stylesheet href=/css/plyr.css>
-<link rel=stylesheet href=/css/flag-icon.min.css>
-<link rel=stylesheet href=/google-fonts/Mulish/mulish.css>
-<link rel=stylesheet href=/fontawesome/css/all.min.css>
-<link rel=stylesheet href=/css/colortheme/colortheme.css>
-<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="k8s中通过Headless连接StatefulSet">
-<meta property="og:description" content="#kubernetes #k8s
-  连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
+<!doctype html><html><head><title>k8s中通过Headless连接StatefulSet</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=stylesheet href=/fontawesome/css/all.min.css><link rel=stylesheet href=/css/colortheme/colortheme.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="k8s中通过Headless连接StatefulSet"><meta property="og:description" content="#kubernetes #k8s
+连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。
 假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。
 但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。
- 实验环境  多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟）  本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
-Server cluster  服务端模拟相关资源在kube-test-1下创建
- StatefulSet 使用traefik/whoami镜像来模拟服务端
+实验环境 多实例服务whoami在kube-test-1的命名空间下 多实例服务whoami以StatefulSet方式部署，设置为3个实例，会自动创建whoami-0、whoami-1以及whoami-2三个Pod 给StatefulSet创建Headless类型的Service 模拟客户端使用Nginx镜像，部署在kube-test-2的命名空间下（使用curl命令模拟） 本实验创建资源使用的k8s dashboard，创建的资源默认放在选中的明明空间下，因此yml文件中未指定namespace。
+Server cluster 服务端模拟相关资源在kube-test-1下创建
+StatefulSet 使用traefik/whoami镜像来模拟服务端
 这里使用StatefulSet的方式创建服务端。spec.replicas设为3，此时会自动创建whoami-0、whoami-1以及whoami-2三个Pod。
 apiVersion: apps/v1 kind: StatefulSet metadata: name: whoami labels: app: whoami spec: replicas: 3 selector: matchLabels: app: whoami serviceName: whoami template: metadata: name: whoami labels: app: whoami spec: containers: - name: whoami image: traefik/whoami ports: - containerPort: 80 注意这里的spec.serviceName必须与下面的Service名字相同，否则调用时候pod的subdomain只能使用IP
-$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10.">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2007-kubernetes/002-handless-statefullset/"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2021-11-01T16:59:32+08:00">
-<meta property="article:modified_time" content="2021-11-01T16:59:32+08:00">
-<meta name=description content="k8s中通过Headless连接StatefulSet">
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
-<link rel=stylesheet href=/css/layouts/single.css>
-<link rel=stylesheet href=/css/navigators/sidebar.css>
-<link rel=stylesheet href=/css/style.css>
-</head>
-<body data-spy=scroll data-target=#TableOfContents data-offset=80>
-<div class="container-fluid bg-dimmed wrapper">
-<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
-<div class=container>
-<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span>
-</button>
-<a class=navbar-brand href=/>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+$ k get pod -n kube-test-1 -o wide | grep whoami whoami-0 1/1 Running 0 29m 10."><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/posts/knowledge/2007-kubernetes/002-handless-statefullset/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-11-01T16:59:32+08:00"><meta property="article:modified_time" content="2021-11-01T16:59:32+08:00"><meta name=description content="k8s中通过Headless连接StatefulSet"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css><link rel=stylesheet href=/css/layouts/single.css><link rel=stylesheet href=/css/navigators/sidebar.css><link rel=stylesheet href=/css/style.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span></button>
+<a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span>
-</button>
-<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
-<ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-<div id=theme-initialization style=display:none default-theme=system></div>
-<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
-<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
-<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
-<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
-<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
-</a>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
-</nav>
-<section class=sidebar-section id=sidebar-section>
-<div class=sidebar-holder>
-<div class=sidebar id=sidebar>
-<form class=mx-auto method=get action=/search>
-<input type=text name=keyword placeholder=搜索 data-search id=search-box>
-</form>
-<div class=sidebar-tree>
-<ul class=tree id=tree>
-<li id=list-heading><a href=/posts data-filter=all>博文</a></li>
-<div class=subtree>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a>
-<ul class=active>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a>
-<ul>
-<li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li>
-<li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li>
-<li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li>
-<li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li>
-<li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li>
-<li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li>
-<li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li>
-<li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a>
-<ul>
-<li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li>
-<li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a>
-<ul>
-<li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a>
-<ul>
-<li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a>
-<ul>
-<li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li>
-<li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2007-kubernetes/>Kubernetes</a>
-<ul class=active>
-<li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li>
-<li><a class=active href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a>
-<ul>
-<li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li>
-</ul>
-</li>
-<li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li>
-<li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a>
-<ul>
-<li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li>
-<li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li>
-<li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li>
-<li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li>
-<li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li>
-<li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li>
-<li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li>
-<li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a>
-<ul>
-<li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li>
-<li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a>
-<ul>
-<li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li>
-<li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li>
-<li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li>
-<li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li>
-<li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li>
-<li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a>
-<ul>
-<li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-<li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</div>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class=content-section id=content-section>
-<div class=content>
-<div class="container p-0 read-area">
-<div class="hero-area col-sm-12" id=hero-area style=background-image:url(/images/default-hero.jpg)>
-</div>
-<div class=page-content>
-<div class="author-profile ml-auto align-self-lg-center">
-<img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image">
-<h5 class=author-name>Ormissia</h5>
-<p>Monday, November 1, 2021</p>
-</div>
-<div class=title>
-<h1>k8s中通过Headless连接StatefulSet</h1>
-</div>
-<div class=post-content id=post-content>
-<hr>
-<p>#kubernetes #k8s</p>
-<hr>
-<blockquote>
-<p>连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。<br>
-假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。<br>
-但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。</p>
-</blockquote>
-<h2 id=实验环境>实验环境</h2>
-<ul>
-<li>多实例服务<code>whoami</code>在<code>kube-test-1</code>的命名空间下</li>
-<li>多实例服务<code>whoami</code>以<code>StatefulSet</code>方式部署，设置为3个实例，会自动创建<code>whoami-0</code>、<code>whoami-1</code>以及<code>whoami-2</code>三个<code>Pod</code></li>
-<li>给<code>StatefulSet</code>创建<code>Headless</code>类型的<code>Service</code></li>
-<li>模拟客户端使用<code>Nginx</code>镜像，部署在<code>kube-test-2</code>的命名空间下（使用curl命令模拟）</li>
-</ul>
-<p><em>本实验创建资源使用的<code>k8s dashboard</code>，创建的资源默认放在选中的明明空间下，因此<code>yml</code>文件中未指定<code>namespace</code>。</em></p>
-<h2 id=server-cluster>Server cluster</h2>
-<blockquote>
-<p>服务端模拟相关资源在<code>kube-test-1</code>下创建</p>
-</blockquote>
-<h3 id=statefulset>StatefulSet</h3>
-<p>使用<code>traefik/whoami</code>镜像来模拟服务端</p>
-<p>这里使用<code>StatefulSet</code>的方式创建服务端。<code>spec.replicas</code>设为3，此时会自动创建<code>whoami-0</code>、<code>whoami-1</code>以及<code>whoami-2</code>三个<code>Pod</code>。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
-<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>StatefulSet</span>
-<span style=color:#f92672>metadata</span>:
-  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
-  <span style=color:#f92672>labels</span>:
-    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
-<span style=color:#f92672>spec</span>:
-  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
-  <span style=color:#f92672>selector</span>:
-    <span style=color:#f92672>matchLabels</span>:
-      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
-  <span style=color:#f92672>serviceName</span>: <span style=color:#ae81ff>whoami</span>
-  <span style=color:#f92672>template</span>:
-    <span style=color:#f92672>metadata</span>:
-      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
-      <span style=color:#f92672>labels</span>:
-        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
-    <span style=color:#f92672>spec</span>:
-      <span style=color:#f92672>containers</span>:
-        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
-          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>traefik/whoami</span>
-          <span style=color:#f92672>ports</span>:
-            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
-</code></pre></div><p><strong>注意这里的<code>spec.serviceName</code>必须与下面的<code>Service</code>名字相同，否则调用时候<code>pod</code>的<code>subdomain</code>只能使用<code>IP</code></strong></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ k get pod -n kube-test-1 -o wide | grep whoami
-whoami-0                 1/1     Running   <span style=color:#ae81ff>0</span>          29m   10.244.1.220   node2   &lt;none&gt;           &lt;none&gt;
-whoami-1                 1/1     Running   <span style=color:#ae81ff>0</span>          29m   10.244.0.52    node1   &lt;none&gt;           &lt;none&gt;
-whoami-2                 1/1     Running   <span style=color:#ae81ff>0</span>          29m   10.244.1.221   node2   &lt;none&gt;           &lt;none&gt;
-</code></pre></div><h3 id=headless>Headless</h3>
-<p>使用<code>Headless</code>的方式向外暴露<code>Pod</code>，不允许使用<code>Service</code>的负载均衡</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
-<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
-<span style=color:#f92672>metadata</span>:
-  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
-<span style=color:#f92672>spec</span>:
-  <span style=color:#f92672>clusterIP</span>: <span style=color:#ae81ff>None</span>
-  <span style=color:#f92672>ports</span>:
-    - <span style=color:#f92672>port</span>: <span style=color:#ae81ff>80</span>
-  <span style=color:#f92672>selector</span>:
-    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ k get service -n kube-test-1 -o wide | grep whoami
-whoami   ClusterIP   None         &lt;none&gt;        80/TCP    10s   app<span style=color:#f92672>=</span>whoami
-</code></pre></div><h2 id=client>Client</h2>
-<blockquote>
-<p>客户端模拟相关资源在<code>kube-test-2</code>下创建</p>
-</blockquote>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
-<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
-<span style=color:#f92672>metadata</span>:
-  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
-  <span style=color:#f92672>labels</span>:
-    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx</span>
-<span style=color:#f92672>spec</span>:
-  <span style=color:#f92672>selector</span>:
-    <span style=color:#f92672>matchLabels</span>:
-      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx</span>
-  <span style=color:#f92672>template</span>:
-    <span style=color:#f92672>metadata</span>:
-      <span style=color:#f92672>labels</span>:
-        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx</span>
-    <span style=color:#f92672>spec</span>:
-      <span style=color:#f92672>containers</span>:
-        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
-          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx</span>
-</code></pre></div><p><code>nginx</code>用来模拟客户端，调用镜像自带的curl命令</p>
-<p>进入<code>nginx</code>容器</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ k exec -it nginx-6799fc88d8-cgvtp -n kube-test-2 /bin/bash
-</code></pre></div><p>使用<code>curl</code>命令分别调用几个服务端</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ curl whoami-0.whoami.kube-test-1.svc.cluster.local
-Hostname: whoami-0
-IP: 127.0.0.1
-IP: 10.244.1.220
-RemoteAddr: 10.244.0.53:39400
-GET / HTTP/1.1
-Host: whoami-0.whoami.kube-test-1.svc.cluster.local
-User-Agent: curl/7.64.0
-Accept: */*
-
-$ curl whoami-1.whoami.kube-test-1.svc.cluster.local
-Hostname: whoami-1
-IP: 127.0.0.1
-IP: 10.244.0.52
-RemoteAddr: 10.244.0.53:40354
-GET / HTTP/1.1
-Host: whoami-1.whoami.kube-test-1.svc.cluster.local
-User-Agent: curl/7.64.0
-Accept: */*
-
-$ curl whoami-2.whoami.kube-test-1.svc.cluster.local
-Hostname: whoami-2
-IP: 127.0.0.1
-IP: 10.244.1.221
-RemoteAddr: 10.244.0.53:38370
-GET / HTTP/1.1
-Host: whoami-2.whoami.kube-test-1.svc.cluster.local
-User-Agent: curl/7.64.0
-Accept: */*
-</code></pre></div><p>可以看到分别访问到三个不同的服务端<code>pod</code>了。</p>
-<h2 id=总结>总结</h2>
-<p>访问的url格式为：</p>
-<pre tabindex=0><code>pod-ip-address.deployment-name.my-namespace.svc.cluster-domain.example
-</code></pre><h2 id=参考链接>参考链接</h2>
-<ul>
-<li><a href=https://kubernetes.io/zh/docs/concepts/services-networking/dns-pod-service/#a-aaaa-%E8%AE%B0%E5%BD%95-1>k8s 文档：A/AAAA 记录</a></li>
-</ul>
-</div>
-<div class="row pl-3 pr-3">
-<div class="col-md-6 share-buttons">
-<strong>分享:</strong>
-<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2007-kubernetes%2f002-handless-statefullset%2f&title=k8s%e4%b8%ad%e9%80%9a%e8%bf%87Headless%e8%bf%9e%e6%8e%a5StatefulSet" target=_blank>
-<i class="fab fa-reddit"></i>
-</a>
-<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2007-kubernetes%2f002-handless-statefullset%2f&title=k8s%e4%b8%ad%e9%80%9a%e8%bf%87Headless%e8%bf%9e%e6%8e%a5StatefulSet" target=_blank>
-<i class="fab fa-linkedin"></i>
-</a>
-<a class="btn btn-sm email-btn" href="mailto:?subject=k8s%e4%b8%ad%e9%80%9a%e8%bf%87Headless%e8%bf%9e%e6%8e%a5StatefulSet&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2007-kubernetes%2f002-handless-statefullset%2f" target=_blank>
-<i class="fas fa-envelope-open-text"></i>
-</a>
-</div>
-<div class="col-md-6 btn-improve-page">
-<a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2007-kubernetes/002-handless-statefullset/index.md title=改善此页面 target=_blank rel=noopener>
-<i class="fas fa-code-branch"></i>
-改善此页面
-</a>
-</div>
-</div>
-<hr>
-<div class="row next-prev-navigator">
-<div class="col-md-6 previous-article">
-<a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引 class="btn btn-outline-info">
-<div><i class="fas fa-chevron-circle-left"></i> 上一篇</div>
-<div class=next-prev-text>Kubernetes文档索引</div>
-</a>
-</div>
-<div class="col-md-6 next-article">
-<a href=/posts/knowledge/2008-mysql/ title=Mysql class="btn btn-outline-info">
-<div>下一篇 <i class="fas fa-chevron-circle-right"></i></div>
-<div class=next-prev-text>Mysql</div>
-</a>
-</div>
-</div>
-<hr>
-<div id=utteranc_thread></div>
-<div id=comments class=comments>
-<div id=comments-container></div>
-</div>
-<script type=text/javascript>(function(){var a=document.createElement('script');a.type='text/javascript',a.async=!0,a.setAttribute('repo','ormissia/ormissia.github.io'),a.setAttribute('issue-term','title'),a.setAttribute('theme','github-light'),a.crossorigin='anonymous',a.src='https://utteranc.es/client.js',document.getElementById('comments-container').appendChild(a)})()</script>
-</div>
-</div>
-</div>
-<a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a>
-</section>
-<section class=toc-section id=toc-section>
-<div class=toc-holder>
-<h5 class="text-center pl-3">目录</h5>
-<hr>
-<div class=toc>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#实验环境>实验环境</a></li>
-<li><a href=#server-cluster>Server cluster</a>
-<ul>
-<li><a href=#statefulset>StatefulSet</a></li>
-<li><a href=#headless>Headless</a></li>
-</ul>
-</li>
-<li><a href=#client>Client</a></li>
-<li><a href=#总结>总结</a></li>
-<li><a href=#参考链接>参考链接</a></li>
-</ul>
-</nav>
-</div>
-</div>
-</section>
-</div>
-<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
-<div class="container pt-5">
-<div class="row text-left">
-<div class="col-md-4 col-sm-12">
-<h5>联系方式:</h5>
-<ul>
-<li><span>QQ: </span> <span>1432050813</span></li>
-<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
-<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
-</a></li>
-</ul>
-</div>
-</div>
-</div>
-<hr>
-<div class=container>
-<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
-</div>
-<hr>
-<div class=container>
-<div class="row text-left">
-<div class=col-md-4>
-<a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener>
-<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
-Toha
-</a>
-</div>
-<div class="col-md-4 text-center">© 2021 Copyright.</div>
-<div class="col-md-4 text-right">
-<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
-</a>
-</div>
-</div>
-</div>
-</footer>
-<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"><li class="nav-item dropdown"><div id=theme-initialization style=display:none default-theme=system></div><a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20></a><div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector><a class="dropdown-item nav-link" href=# onclick=enableLightTheme()><img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()><img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()><img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20></a></div></li></ul></div></div><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=搜索 data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/posts data-filter=all>博文</a></li><div class=subtree><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/>知识积累</a><ul class=active><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2001-go/>Go</a><ul><li><a href=/posts/knowledge/2001-go/001-partten-1/ title=函数选项模式>函数选项模式</a></li><li><a href=/posts/knowledge/2001-go/002-param-verify/ title=实体参数校验>实体参数校验</a></li><li><a href=/posts/knowledge/2001-go/003-reflect/ title=Golang反射>Golang反射</a></li><li><a href=/posts/knowledge/2001-go/004-pprof/ title=pprof>pprof</a></li><li><a href=/posts/knowledge/2001-go/005-tag/ title="Golang struct tag">Golang struct tag</a></li><li><a href=/posts/knowledge/2001-go/006-atomic/ title=Golang中的原子操作>Golang中的原子操作</a></li><li><a href=/posts/knowledge/2001-go/007-cacheline/ title=全局变量加锁的优化>全局变量加锁的优化</a></li></ul></li><li><a href=/posts/knowledge/2002-rust/ title=Rust>Rust</a></li><li><a href=/posts/knowledge/2003-scala/ title=Scala>Scala</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2004-network/>Network</a><ul><li><a href=/posts/knowledge/2004-network/001-oauth/ title="OAuth 2.0扩展协议PKCE">OAuth 2.0扩展协议PKCE</a></li><li><a href=/posts/knowledge/2004-network/002-http_statuscode/ title=HTTP笔记>HTTP笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2005-operating-system/>Operating System</a><ul><li><a href=/posts/knowledge/2005-operating-system/001-io-network/ title=网络IO演进历程>网络IO演进历程</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2010-elastic/>Elastic</a><ul><li><a href=/posts/knowledge/2010-elastic/001-elasticstack-es/ title=Elasticsearch>Elasticsearch</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2006-hadoop/>Hadoop</a><ul><li><a href=/posts/knowledge/2006-hadoop/001-env/ title=Hadoop生态组件>Hadoop生态组件</a></li><li><a href=/posts/knowledge/2006-hadoop/2007-hadoop-hdfs/ title=HDFS基础知识>HDFS基础知识</a></li></ul></li><li><i class="fas fa-minus-circle"></i><a class=active href=/posts/knowledge/2007-kubernetes/>Kubernetes</a><ul class=active><li><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引>Kubernetes文档索引</a></li><li><a class=active href=/posts/knowledge/2007-kubernetes/002-handless-statefullset/ title=k8s中通过Headless连接StatefulSet>k8s中通过Headless连接StatefulSet</a></li></ul></li><li><a href=/posts/knowledge/2008-mysql/ title=Mysql>Mysql</a></li><li><i class="fas fa-plus-circle"></i><a href=/posts/knowledge/2009-redis/>Redis</a><ul><li><a href=/posts/knowledge/2009-redis/001-cache/ title=Redis缓存相关问题>Redis缓存相关问题</a></li></ul></li><li><a href=/posts/knowledge/2012-framework/ title=Framework>Framework</a></li><li><a href=/posts/knowledge/2011-react-note/ title=React学习笔记>React学习笔记</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/deployment/>环境部署</a><ul><li><a href=/posts/deployment/3001-blog-cicd/ title=我的博客后端Docker镜像打包自动部署流程>我的博客后端Docker镜像打包自动部署流程</a></li><li><a href=/posts/deployment/3002-linux-nginx/ title=Linux部署Nginx流程>Linux部署Nginx流程</a></li><li><a href=/posts/deployment/3003-linux-traefik/ title=Traefik部署流程>Traefik部署流程</a></li><li><a href=/posts/deployment/3004-linux-grafana/ title=Grafana部署流程>Grafana部署流程</a></li><li><a href=/posts/deployment/3005-linux-prometheus/ title=Prometheus部署流程>Prometheus部署流程</a></li><li><a href=/posts/deployment/3006-linux-elk/ title=ELK部署流程>ELK部署流程</a></li><li><a href=/posts/deployment/3007-linux-kubernetes/ title=Linux部署Kubernetes流程>Linux部署Kubernetes流程</a></li><li><a href=/posts/deployment/3008-linux-redis/ title=Redis默认配置文件修改>Redis默认配置文件修改</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/algorithm/>算法</a><ul><li><a href=/posts/algorithm/4001-algorithm-sort/ title=排序算法>排序算法</a></li><li><a href=/posts/algorithm/4002-algorithm-trie/ title=前缀树>前缀树</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/problems/>疑难杂症</a><ul><li><a href=/posts/problems/5001-go-online-service-oom/ title=记一次线上的内存持续增长问题>记一次线上的内存持续增长问题</a></li><li><a href=/posts/problems/5002-k8s-memory/ title=Grafana上监控不准问题排查>Grafana上监控不准问题排查</a></li><li><a href=/posts/problems/5003-elasticsearch-start-failed/ title=CentOS安装完ES无法启动>CentOS安装完ES无法启动</a></li><li><a href=/posts/problems/5004-kubernetes-dashboard-token/ title="k8s dashboard token过期时间太短">k8s dashboard token过期时间太短</a></li><li><a href=/posts/problems/5005-docker-image-source/ title=修改Docker镜像源>修改Docker镜像源</a></li><li><a href=/posts/problems/5006-mysql-brew-conf/ title=修改Mac上brew安装的MySQL配置>修改Mac上brew安装的MySQL配置</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/>读书笔记</a><ul><li><i class="fas fa-plus-circle"></i><a href=/posts/booknotes/6001-ddia/>DDIA</a><ul><li><a href=/posts/booknotes/6001-ddia/001-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li><li><a href=/posts/booknotes/6001-ddia/003-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记>数据密集型应用系统设计(DDIA)读书笔记</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class=content><div class="container p-0 read-area"><div class="hero-area col-sm-12" id=hero-area style=background-image:url(/images/default-hero.jpg)></div><div class=page-content><div class="author-profile ml-auto align-self-lg-center"><img class=rounded-circle src=/images/avatar_hu6760e73bd186896e9f58f2b8b663dec5_93204_120x120_fit_box_3.png alt="Author Image"><h5 class=author-name>Ormissia</h5><p>Monday, November 1, 2021</p></div><div class=title><h1>k8s中通过Headless连接StatefulSet</h1></div><div class=post-content id=post-content><hr><p>#kubernetes #k8s</p><hr><blockquote><p>连接一些多实例的服务（比如Kafka、ES）时，通常是在client端做负载均衡。<br>假如这种集群又恰好跑在k8s中，如果是普通业务类型的服务，通常是创建一个Service来做为一个代理去访问不同实例，从而达到负载均衡的目的。<br>但是诸如如：Kafka、ES类型的服务，还用Service来做负载均衡，显然就不那么合理了（诚然，Kafka、ES这种东西多半是不会跑在k8s上的，这里只是作为一个引子，不在本文讨论的范畴）。</p></blockquote><h2 id=实验环境>实验环境</h2><ul><li>多实例服务<code>whoami</code>在<code>kube-test-1</code>的命名空间下</li><li>多实例服务<code>whoami</code>以<code>StatefulSet</code>方式部署，设置为3个实例，会自动创建<code>whoami-0</code>、<code>whoami-1</code>以及<code>whoami-2</code>三个<code>Pod</code></li><li>给<code>StatefulSet</code>创建<code>Headless</code>类型的<code>Service</code></li><li>模拟客户端使用<code>Nginx</code>镜像，部署在<code>kube-test-2</code>的命名空间下（使用curl命令模拟）</li></ul><p><em>本实验创建资源使用的<code>k8s dashboard</code>，创建的资源默认放在选中的明明空间下，因此<code>yml</code>文件中未指定<code>namespace</code>。</em></p><h2 id=server-cluster>Server cluster</h2><blockquote><p>服务端模拟相关资源在<code>kube-test-1</code>下创建</p></blockquote><h3 id=statefulset>StatefulSet</h3><p>使用<code>traefik/whoami</code>镜像来模拟服务端</p><p>这里使用<code>StatefulSet</code>的方式创建服务端。<code>spec.replicas</code>设为3，此时会自动创建<code>whoami-0</code>、<code>whoami-1</code>以及<code>whoami-2</code>三个<code>Pod</code>。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>StatefulSet</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>serviceName</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>traefik/whoami</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
+</span></span></code></pre></div><p><strong>注意这里的<code>spec.serviceName</code>必须与下面的<code>Service</code>名字相同，否则调用时候<code>pod</code>的<code>subdomain</code>只能使用<code>IP</code></strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ k get pod -n kube-test-1 -o wide | grep whoami
+</span></span><span style=display:flex><span>whoami-0                 1/1     Running   <span style=color:#ae81ff>0</span>          29m   10.244.1.220   node2   &lt;none&gt;           &lt;none&gt;
+</span></span><span style=display:flex><span>whoami-1                 1/1     Running   <span style=color:#ae81ff>0</span>          29m   10.244.0.52    node1   &lt;none&gt;           &lt;none&gt;
+</span></span><span style=display:flex><span>whoami-2                 1/1     Running   <span style=color:#ae81ff>0</span>          29m   10.244.1.221   node2   &lt;none&gt;           &lt;none&gt;
+</span></span></code></pre></div><h3 id=headless>Headless</h3><p>使用<code>Headless</code>的方式向外暴露<code>Pod</code>，不允许使用<code>Service</code>的负载均衡</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>whoami</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>clusterIP</span>: <span style=color:#ae81ff>None</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>port</span>: <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>whoami</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ k get service -n kube-test-1 -o wide | grep whoami
+</span></span><span style=display:flex><span>whoami   ClusterIP   None         &lt;none&gt;        80/TCP    10s   app<span style=color:#f92672>=</span>whoami
+</span></span></code></pre></div><h2 id=client>Client</h2><blockquote><p>客户端模拟相关资源在<code>kube-test-2</code>下创建</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx</span>
+</span></span></code></pre></div><p><code>nginx</code>用来模拟客户端，调用镜像自带的curl命令</p><p>进入<code>nginx</code>容器</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ k exec -it nginx-6799fc88d8-cgvtp -n kube-test-2 /bin/bash
+</span></span></code></pre></div><p>使用<code>curl</code>命令分别调用几个服务端</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>$ curl whoami-0.whoami.kube-test-1.svc.cluster.local
+</span></span><span style=display:flex><span>Hostname: whoami-0
+</span></span><span style=display:flex><span>IP: 127.0.0.1
+</span></span><span style=display:flex><span>IP: 10.244.1.220
+</span></span><span style=display:flex><span>RemoteAddr: 10.244.0.53:39400
+</span></span><span style=display:flex><span>GET / HTTP/1.1
+</span></span><span style=display:flex><span>Host: whoami-0.whoami.kube-test-1.svc.cluster.local
+</span></span><span style=display:flex><span>User-Agent: curl/7.64.0
+</span></span><span style=display:flex><span>Accept: */*
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ curl whoami-1.whoami.kube-test-1.svc.cluster.local
+</span></span><span style=display:flex><span>Hostname: whoami-1
+</span></span><span style=display:flex><span>IP: 127.0.0.1
+</span></span><span style=display:flex><span>IP: 10.244.0.52
+</span></span><span style=display:flex><span>RemoteAddr: 10.244.0.53:40354
+</span></span><span style=display:flex><span>GET / HTTP/1.1
+</span></span><span style=display:flex><span>Host: whoami-1.whoami.kube-test-1.svc.cluster.local
+</span></span><span style=display:flex><span>User-Agent: curl/7.64.0
+</span></span><span style=display:flex><span>Accept: */*
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ curl whoami-2.whoami.kube-test-1.svc.cluster.local
+</span></span><span style=display:flex><span>Hostname: whoami-2
+</span></span><span style=display:flex><span>IP: 127.0.0.1
+</span></span><span style=display:flex><span>IP: 10.244.1.221
+</span></span><span style=display:flex><span>RemoteAddr: 10.244.0.53:38370
+</span></span><span style=display:flex><span>GET / HTTP/1.1
+</span></span><span style=display:flex><span>Host: whoami-2.whoami.kube-test-1.svc.cluster.local
+</span></span><span style=display:flex><span>User-Agent: curl/7.64.0
+</span></span><span style=display:flex><span>Accept: */*
+</span></span></code></pre></div><p>可以看到分别访问到三个不同的服务端<code>pod</code>了。</p><h2 id=总结>总结</h2><p>访问的url格式为：</p><pre tabindex=0><code>pod-ip-address.deployment-name.my-namespace.svc.cluster-domain.example
+</code></pre><h2 id=参考链接>参考链接</h2><ul><li><a href=https://kubernetes.io/zh/docs/concepts/services-networking/dns-pod-service/#a-aaaa-%E8%AE%B0%E5%BD%95-1>k8s 文档：A/AAAA 记录</a></li></ul></div><div class="row pl-3 pr-3"><div class="col-md-6 share-buttons"><strong>分享:</strong>
+<a class="btn btn-sm reddit-btn" href="https://reddit.com/submit?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2007-kubernetes%2f002-handless-statefullset%2f&title=k8s%e4%b8%ad%e9%80%9a%e8%bf%87Headless%e8%bf%9e%e6%8e%a5StatefulSet" target=_blank><i class="fab fa-reddit"></i></a>
+<a class="btn btn-sm linkedin-btn" href="https://www.linkedin.com/shareArticle?url=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2007-kubernetes%2f002-handless-statefullset%2f&title=k8s%e4%b8%ad%e9%80%9a%e8%bf%87Headless%e8%bf%9e%e6%8e%a5StatefulSet" target=_blank><i class="fab fa-linkedin"></i></a>
+<a class="btn btn-sm email-btn" href="mailto:?subject=k8s%e4%b8%ad%e9%80%9a%e8%bf%87Headless%e8%bf%9e%e6%8e%a5StatefulSet&body=https%3a%2f%2formissia.github.io%2fposts%2fknowledge%2f2007-kubernetes%2f002-handless-statefullset%2f" target=_blank><i class="fas fa-envelope-open-text"></i></a></div><div class="col-md-6 btn-improve-page"><a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/knowledge/2007-kubernetes/002-handless-statefullset/index.md title=改善此页面 target=_blank rel=noopener><i class="fas fa-code-branch"></i>
+改善此页面</a></div></div><hr><div class="row next-prev-navigator"><div class="col-md-6 previous-article"><a href=/posts/knowledge/2007-kubernetes/001-link-index/ title=Kubernetes文档索引 class="btn btn-outline-info"><div><i class="fas fa-chevron-circle-left"></i> 上一篇</div><div class=next-prev-text>Kubernetes文档索引</div></a></div><div class="col-md-6 next-article"><a href=/posts/knowledge/2008-mysql/ title=Mysql class="btn btn-outline-info"><div>下一篇 <i class="fas fa-chevron-circle-right"></i></div><div class=next-prev-text>Mysql</div></a></div></div><hr><div id=utteranc_thread></div><div id=comments class=comments><div id=comments-container></div></div><script type=text/javascript>(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.setAttribute("repo","ormissia/ormissia.github.io"),e.setAttribute("issue-term","title"),e.setAttribute("theme","github-light"),e.crossorigin="anonymous",e.src="https://utteranc.es/client.js",document.getElementById("comments-container").appendChild(e)})()</script></div></div></div><a id=scroll-to-top class=btn><i class="fas fa-chevron-circle-up"></i></a></section><section class=toc-section id=toc-section><div class=toc-holder><h5 class="text-center pl-3">目录</h5><hr><div class=toc><nav id=TableOfContents><ul><li><a href=#实验环境>实验环境</a></li><li><a href=#server-cluster>Server cluster</a><ul><li><a href=#statefulset>StatefulSet</a></li><li><a href=#headless>Headless</a></li></ul></li><li><a href=#client>Client</a></li><li><a href=#总结>总结</a></li><li><a href=#参考链接>参考链接</a></li></ul></nav></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
 <script type=text/javascript src=/js/popper.min.js></script>
 <script type=text/javascript src=/js/bootstrap.min.js></script>
 <script type=text/javascript src=/js/navbar.js></script>
@@ -452,6 +119,4 @@ Toha
 <script type=text/javascript src=/js/darkmode-darkreader.js></script>
 <script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
 <script src=/js/single.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-</body>
-</html>
+<script>hljs.initHighlightingOnLoad()</script></body></html>

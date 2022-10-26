@@ -1,915 +1,140 @@
-<!doctype html><html>
-<head>
-<title>Notes</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=x-ua-compatible content="ie=edge">
-<link rel=stylesheet href=/css/bootstrap.min.css>
-<link rel=stylesheet href=/css/layouts/main.css>
-<link rel=stylesheet href=/css/navigators/navbar.css>
-<link rel=stylesheet href=/css/plyr.css>
-<link rel=stylesheet href=/css/flag-icon.min.css>
-<link rel=stylesheet href=/google-fonts/Mulish/mulish.css>
-<link rel=stylesheet href=/fontawesome/css/all.min.css>
-<link rel=stylesheet href=/css/colortheme/colortheme.css>
-<link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png>
-<meta property="og:title" content="Notes">
-<meta property="og:description" content>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ormissia.github.io/notes/">
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css>
-<link rel=stylesheet href=/css/layouts/notes.css>
-<link rel=stylesheet href=/css/navigators/sidebar.css>
-</head>
-<body data-spy=scroll data-target=#TableOfContents data-offset=80>
-<div class="container-fluid bg-dimmed wrapper">
-<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
-<div class=container>
-<button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
-<span class=navbar-toggler-icon></span>
-</button>
-<a class=navbar-brand href=/>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
+<!doctype html><html><head><title>Notes</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=stylesheet href=/fontawesome/css/all.min.css><link rel=stylesheet href=/css/colortheme/colortheme.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="Notes"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://ormissia.github.io/notes/"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css><link rel=stylesheet href=/css/layouts/notes.css><link rel=stylesheet href=/css/navigators/sidebar.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button onclick=toggleSidebar()>
+<span class=navbar-toggler-icon></span></button>
+<a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
 <button class="navbar-toggler navbar-light" id=toc-toggler type=button onclick=toggleTOC()>
-<span class=navbar-toggler-icon></span>
-</button>
-<div class="collapse navbar-collapse lang-selector" id=top-nav-items>
-<ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-<div id=theme-initialization style=display:none default-theme=system></div>
-<a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false>
-<img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector>
-<a class="dropdown-item nav-link" href=# onclick=enableLightTheme()>
-<img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()>
-<img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20>
-</a>
-<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()>
-<img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20>
-</a>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
-<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo">
-</nav>
-<section class=sidebar-section id=sidebar-section>
-<div class=sidebar-holder>
-<div class=sidebar id=sidebar>
-<form class=mx-auto method=get action=/search>
-<input type=text name=keyword placeholder=搜索 data-search id=search-box>
-</form>
-<div class=sidebar-tree>
-<ul class=tree id=tree>
-<li id=list-heading><a href=/notes data-filter=all>笔记</a></li>
-<div class=subtree>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/go/>Go</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/go/basic/>Basics</a>
-<ul>
-<li><a href=/notes/go/basic/basic/ title=Basic>Basic</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/go/advance/>Advance</a>
-<ul>
-<li><a href=/notes/go/advance/time/ title=time>time</a></li>
-<li><a href=/notes/go/advance/gomod/ title="go mod">go mod</a></li>
-<li><a href=/notes/go/advance/chan/ title="go chan">go chan</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/go/algorithm/>Algorithm</a>
-<ul>
-<li><a href=/notes/go/algorithm/basic/ title=Basic>Basic</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/java/>Java</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/java/basic/>Basics</a>
-<ul>
-<li><a href=/notes/java/basic/basic_type/ title="Basic Types">Basic Types</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/scala/>Scala</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/scala/basic/>Basic</a>
-<ul>
-<li><a href=/notes/scala/basic/basic_type/ title="Basic Types">Basic Types</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/python/>Python</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/python/basic/>Basic</a>
-<ul>
-<li><a href=/notes/python/basic/basic/ title=Basic>Basic</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/js/>JavaScript</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/js/basic/>Basic</a>
-<ul>
-<li><a href=/notes/js/basic/basic/ title=Basic>Basic</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/sql/>SQL</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/sql/dml/>DML</a>
-<ul>
-<li><a href=/notes/sql/dml/dml/ title="SQL DML">SQL DML</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/>Linux</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/shell/>Shell</a>
-<ul>
-<li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li>
-<li><a href=/notes/linux/shell/advance/ title=Advance>Advance</a></li>
-<li><a href=/notes/linux/shell/vi/ title=vi>vi</a></li>
-<li><a href=/notes/linux/shell/script/ title=Script>Script</a></li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/linux/system/>System</a>
-<ul>
-<li><a href=/notes/linux/system/system/ title=Memory>Memory</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/hbase/>Hbase</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/hbase/shell/>Shell</a>
-<ul>
-<li><a href=/notes/hbase/shell/basic/ title=Basic>Basic</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/kafka/>Kafka</a>
-<ul>
-<li>
-<i class="fas fa-plus-circle"></i><a href=/notes/kafka/shell/>Shell</a>
-<ul>
-<li><a href=/notes/kafka/shell/basic/ title=Basic>Basic</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</div>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section class=content-section id=content-section>
-<div class="content container-fluid" id=content>
-<div class="container-fluid note-card-holder" id=note-card-holder>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>快捷键</span></h5>
-<div class=card>
-<div class=card-body><p>回到命令行开头&ndash;<code>Home</code></p>
-<pre tabindex=0><code>Ctrl+a
-</code></pre><p>回到命令行的尾部&ndash;<code>End</code></p>
-<pre tabindex=0><code>Ctrl+e
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>删除光标前边的所有字符</p>
-<pre tabindex=0><code>Ctrl+u
-</code></pre><p>删除光标后边的所有字符</p>
-<pre tabindex=0><code>Ctrl+k
-</code></pre><p>删除光标前的一个单词</p>
-<pre tabindex=0><code>Ctrl+w
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>输入曾经的命令下的某个单词或字母，按照单词的匹配<code>history</code></p>
-<pre tabindex=0><code>Ctrl+r
-</code></pre></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>cat</span></h5>
-<div class=card>
-<div class=card-body><p>在<code>cat</code>输出时候显示行数</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>cat -n maim.go
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>wc</span></h5>
-<div class=card>
-<div class=card-body><p>统计文件行、单词、字符数量
-格式：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>usage: wc <span style=color:#f92672>[</span>-clmw<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>file ...<span style=color:#f92672>]</span>
-</code></pre></div><p>统计<code>main.go</code>的行、单词、字符数量</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>wc main.go
-</code></pre></div><p>选项：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>-l 统计行数
--c 统计字符数
--w 统计单词数
--L 统计最长的行的字符数
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>nc</span></h5>
-<div class=card>
-<div class=card-body><p>简单的文件传输工具</p>
-<p>接收方</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nc -l <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &gt; filename
-</code></pre></div><p>发送方</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>nc <span style=color:#f92672>[</span>ip<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &lt; filename
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>gzip</span></h5>
-<div class=card>
-<div class=card-body><p>解压<code>*.gz</code>的压缩文件</p>
-<p>与<code>*.tar.gz</code>文件不同，<code>*.gz</code>文件需要用<code>gzip</code>来解压</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>gzip -d filename
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>hostnamectl</span></h5>
-<div class=card>
-<div class=card-body><p>修改<code>hostname</code>，重启也生效</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>hostnamectl set-hostname CentOS
-</code></pre></div><p>查看<code>hostname</code></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>hostname
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>echo</span></h5>
-<div class=card>
-<div class=card-body><p><code>-n</code>：不换行
-<code>-e</code>：支持扩展属性</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 红色显示OK</span>
-echo -e <span style=color:#e6db74>&#34;\033[31mOK\033[0m&#34;</span>
-<span style=color:#75715e># 绿色显示OK</span>
-echo -e <span style=color:#e6db74>&#34;\033[32mOK\033[0m&#34;</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>tr</span></h5>
-<div class=card>
-<div class=card-body><p>删除多余重复字符串</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 删除多余的空格</span>
-echo <span style=color:#e6db74>&#34;a   b   c&#34;</span> | tr -s <span style=color:#e6db74>&#34; &#34;</span>
-<span style=color:#75715e># 输出：a b c</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 删除多余的a</span>
-echo <span style=color:#e6db74>&#34;aaaaacccdetaaadfa   c&#34;</span> | tr -s <span style=color:#e6db74>&#34;a&#34;</span>
-<span style=color:#75715e># 输出：acccdetadfa   c</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>cut</span></h5>
-<div class=card>
-<div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># 以冒号为分隔，过滤第一列</span>
-cut -d: -f1 /etc/passwd
-<span style=color:#75715e># 输出当前系统下所有用户名</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>date</span></h5>
-<div class=card>
-<div class=card-body><p>查看系统时间</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>date
-<span style=color:#75715e># Tue Oct 12 13:36:24 CST 2021</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>tzselect</span></h5>
-<div class=card>
-<div class=card-body><p>查看时区</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ls -l /etc/localtime
-<span style=color:#75715e># lrwxrwxrwx. 1 root root 33 Oct 12 11:32 /etc/localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai</span>
-</code></pre></div></div>
-</div>
-<div class=card>
-<div class=card-body><p>获取TZ时区</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>tzselect
-</code></pre></div><p>输出：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>Please identify a location so that time zone rules can be set correctly.
-Please <span style=color:#66d9ef>select</span> a continent, ocean, <span style=color:#e6db74>&#34;coord&#34;</span>, or <span style=color:#e6db74>&#34;TZ&#34;</span>.
- 1<span style=color:#f92672>)</span> Africa
- 2<span style=color:#f92672>)</span> Americas
- 3<span style=color:#f92672>)</span> Antarctica
- 4<span style=color:#f92672>)</span> Asia
- 5<span style=color:#f92672>)</span> Atlantic Ocean
- 6<span style=color:#f92672>)</span> Australia
- 7<span style=color:#f92672>)</span> Europe
- 8<span style=color:#f92672>)</span> Indian Ocean
- 9<span style=color:#f92672>)</span> Pacific Ocean
-10<span style=color:#f92672>)</span> coord - I want to use geographical coordinates.
-11<span style=color:#f92672>)</span> TZ - I want to specify the time zone using the Posix TZ format.
-<span style=color:#75715e>#? </span>
-
-<span style=color:#75715e># 选择数字，依次选择地区、国家、城市，即可得到对应时区</span>
-<span style=color:#75715e># Asia/Shanghai</span>
-</code></pre></div></div>
-</div>
-<div class=card>
-<div class=card-body><p>修改系统时区（所有用户生效）</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>rm -f /etc/localtime
-ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>xargs</span></h5>
-<div class=card>
-<div class=card-body><p><code>xargs</code>是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
-格式:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
-</code></pre></div><p>选项：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>-a file 从文件中读入作为 stdin
--e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。
--p 当每次执行一个argument的时候询问一次用户。
--n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。
--t 表示先打印命令，然后再执行。
--i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 <span style=color:#f92672>{}</span>，可以用 <span style=color:#f92672>{}</span> 代替。
--r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。
--s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。
--L num 从标准输入一次读取 num 行送给 command 命令。
--l 同 -L。
--d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。
--x exit的意思，主要是配合-s使用。。
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>top</span></h5>
-<div class=card>
-<div class=card-body><p>Linux <code>top</code>命令VIRT,RES,SHR,DATA的含义:</p>
-<ul>
-<li><code>VIRT</code>:<code>virtual memory usage</code>虚拟内存
-<ul>
-<li>进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等</li>
-<li>假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量</li>
-</ul>
-</li>
-<li><code>RES</code>:<code>resident memory usage</code>常驻内存
-<ul>
-<li>进程当前使用的内存大小，但不包括swap out</li>
-<li>包含其他进程的共享</li>
-<li>如果申请100m的内存，实际使用10m，它只增长10m，与<code>VIRT</code>相反</li>
-<li>关于库占用内存的情况，它只统计加载的库文件所占内存大小</li>
-</ul>
-</li>
-<li><code>SHR</code>:<code>shared memory</code>共享内存
-<ul>
-<li>除了自身进程的共享内存，也包括其他进程的共享内存</li>
-<li>虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小</li>
-<li>计算某个进程所占的物理内存大小公式：<code>RES – SHR</code></li>
-<li><code>swap out</code>后，它将会降下来</li>
-</ul>
-</li>
-</ul>
-<p><code>top</code>运行中可以通过<code>top</code>的内部命令对进程的显示方式进行控制。内部命令如下：<br>
-s – 改变画面更新频率<br>
-l – 关闭或开启第一部分第一行 top 信息的表示<br>
-t – 关闭或开启第一部分第二行 Tasks 和第三行 Cpus 信息的表示<br>
-m – 关闭或开启第一部分第四行 Mem 和 第五行 Swap 信息的表示<br>
-N – 以 PID 的大小的顺序排列表示进程列表<br>
-P – 以 CPU 占用率大小的顺序排列进程列表<br>
-M – 以内存占用率大小的顺序排列进程列表<br>
-h – 显示帮助<br>
-n – 设置在进程列表所显示进程的数量<br>
-q – 退出 top</p>
-<p>序号 列名 含义<br>
-a PID 进程id<br>
-b PPID 父进程id<br>
-c RUSER Real user name<br>
-d UID 进程所有者的用户id<br>
-e USER 进程所有者的用户名<br>
-f GROUP 进程所有者的组名<br>
-g TTY 启动进程的终端名。不是从终端启动的进程则显示为 ?<br>
-h PR 优先级<br>
-i NI nice值。负值表示高优先级，正值表示低优先级<br>
-j P 最后使用的CPU，仅在多CPU环境下有意义<br>
-k %CPU 上次更新到现在的CPU时间占用百分比<br>
-l TIME 进程使用的CPU时间总计，单位秒<br>
-m TIME+ 进程使用的CPU时间总计，单位1/100秒<br>
-n %MEM 进程使用的物理内存百分比<br>
-o VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES<br>
-p SWAP 进程使用的虚拟内存中，被换出的大小，单位kb。<br>
-q RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA<br>
-r CODE 可执行代码占用的物理内存大小，单位kb<br>
-s DATA 可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb<br>
-t SHR 共享内存大小，单位kb<br>
-u nFLT 页面错误次数<br>
-v nDRT 最后一次写入到现在，被修改过的页面数。<br>
-w S 进程状态。（D=不可中断的睡眠状态，R=运行，S=睡眠，T=跟踪/停止，Z=僵尸进程）<br>
-x COMMAND 命令名/命令行<br>
-y WCHAN 若该进程在睡眠，则显示睡眠中的系统函数名<br>
-z Flags 任务标志，参考 sched.h</p>
-<p>默认情况下仅显示比较重要的 PID、USER、PR、NI、VIRT、RES、SHR、S、%CPU、%MEM、TIME+、COMMAND 列。可以通过下面的快捷键来更改显示内容。<br>
-通过<code>f</code>键可以选择显示的内容。按<code>f</code>键之后会显示列的列表，按<code>a-z</code>即可显示或隐藏对应的列，最后按回车键确定。
+<span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse lang-selector" id=top-nav-items><ul class="navbar-nav ml-auto"><li class="nav-item dropdown"><div id=theme-initialization style=display:none default-theme=system></div><a class="nav-link dropdown-toggle" href=# id=themeSelector role=button data-toggle=dropdown aria-haspopup=true aria-expanded=false><img id=navbar-theme-icon-svg src=/icons/moon-svgrepo-com.svg width=20></a><div class="dropdown-menu dropdown-menu-icons-only" aria-labelledby=themeSelector><a class="dropdown-item nav-link" href=# onclick=enableLightTheme()><img class=menu-icon-center src=/icons/sun-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=enableDarkTheme()><img class=menu-icon-center src=/icons/moon-svgrepo-com.svg width=20></a>
+<a class="dropdown-item nav-link" href=# onclick=useSystemTheme()><img class=menu-icon-center src=/icons/computer-svgrepo-com.svg width=20></a></div></li></ul></div></div><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=main-logo alt=Logo>
+<img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png class=d-none id=inverted-logo alt="Inverted Logo"></nav><section class=sidebar-section id=sidebar-section><div class=sidebar-holder><div class=sidebar id=sidebar><form class=mx-auto method=get action=/search><input type=text name=keyword placeholder=搜索 data-search id=search-box></form><div class=sidebar-tree><ul class=tree id=tree><li id=list-heading><a href=/notes data-filter=all>笔记</a></li><div class=subtree><li><i class="fas fa-plus-circle"></i><a href=/notes/go/>Go</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/go/basic/>Basics</a><ul><li><a href=/notes/go/basic/basic/ title=Basic>Basic</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/go/advance/>Advance</a><ul><li><a href=/notes/go/advance/time/ title=time>time</a></li><li><a href=/notes/go/advance/gomod/ title="go mod">go mod</a></li><li><a href=/notes/go/advance/chan/ title="go chan">go chan</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/go/algorithm/>Algorithm</a><ul><li><a href=/notes/go/algorithm/basic/ title=Basic>Basic</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/java/>Java</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/java/basic/>Basics</a><ul><li><a href=/notes/java/basic/basic_type/ title="Basic Types">Basic Types</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/scala/>Scala</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/scala/basic/>Basic</a><ul><li><a href=/notes/scala/basic/basic_type/ title="Basic Types">Basic Types</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/python/>Python</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/python/basic/>Basic</a><ul><li><a href=/notes/python/basic/basic/ title=Basic>Basic</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/js/>JavaScript</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/js/basic/>Basic</a><ul><li><a href=/notes/js/basic/basic/ title=Basic>Basic</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/sql/>SQL</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/sql/dml/>DML</a><ul><li><a href=/notes/sql/dml/dml/ title="SQL DML">SQL DML</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/linux/>Linux</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/linux/shell/>Shell</a><ul><li><a href=/notes/linux/shell/basic/ title=Basic>Basic</a></li><li><a href=/notes/linux/shell/advance/ title=Advance>Advance</a></li><li><a href=/notes/linux/shell/vi/ title=vi>vi</a></li><li><a href=/notes/linux/shell/script/ title=Script>Script</a></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/linux/system/>System</a><ul><li><a href=/notes/linux/system/system/ title=Memory>Memory</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/hbase/>Hbase</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/hbase/shell/>Shell</a><ul><li><a href=/notes/hbase/shell/basic/ title=Basic>Basic</a></li></ul></li></ul></li><li><i class="fas fa-plus-circle"></i><a href=/notes/kafka/>Kafka</a><ul><li><i class="fas fa-plus-circle"></i><a href=/notes/kafka/shell/>Shell</a><ul><li><a href=/notes/kafka/shell/basic/ title=Basic>Basic</a></li></ul></li></ul></li></div></ul></div></div></div></section><section class=content-section id=content-section><div class="content container-fluid" id=content><div class="container-fluid note-card-holder" id=note-card-holder><div class=note-card><div class=item><h5 class=note-title><span>快捷键</span></h5><div class=card><div class=card-body><p>回到命令行开头&ndash;<code>Home</code></p><pre tabindex=0><code>Ctrl+a
+</code></pre><p>回到命令行的尾部&ndash;<code>End</code></p><pre tabindex=0><code>Ctrl+e
+</code></pre></div></div><div class=card><div class=card-body><p>删除光标前边的所有字符</p><pre tabindex=0><code>Ctrl+u
+</code></pre><p>删除光标后边的所有字符</p><pre tabindex=0><code>Ctrl+k
+</code></pre><p>删除光标前的一个单词</p><pre tabindex=0><code>Ctrl+w
+</code></pre></div></div><div class=card><div class=card-body><p>输入曾经的命令下的某个单词或字母，按照单词的匹配<code>history</code></p><pre tabindex=0><code>Ctrl+r
+</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>cat</span></h5><div class=card><div class=card-body><p>在<code>cat</code>输出时候显示行数</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>cat -n maim.go
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>wc</span></h5><div class=card><div class=card-body><p>统计文件行、单词、字符数量
+格式：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>usage: wc <span style=color:#f92672>[</span>-clmw<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>file ...<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>统计<code>main.go</code>的行、单词、字符数量</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>wc main.go
+</span></span></code></pre></div><p>选项：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>-l 统计行数
+</span></span><span style=display:flex><span>-c 统计字符数
+</span></span><span style=display:flex><span>-w 统计单词数
+</span></span><span style=display:flex><span>-L 统计最长的行的字符数
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>nc</span></h5><div class=card><div class=card-body><p>简单的文件传输工具</p><p>接收方</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>nc -l <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &gt; filename
+</span></span></code></pre></div><p>发送方</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>nc <span style=color:#f92672>[</span>ip<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>port<span style=color:#f92672>]</span> &lt; filename
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>gzip</span></h5><div class=card><div class=card-body><p>解压<code>*.gz</code>的压缩文件</p><p>与<code>*.tar.gz</code>文件不同，<code>*.gz</code>文件需要用<code>gzip</code>来解压</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>gzip -d filename
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>hostnamectl</span></h5><div class=card><div class=card-body><p>修改<code>hostname</code>，重启也生效</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>hostnamectl set-hostname CentOS
+</span></span></code></pre></div><p>查看<code>hostname</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>hostname
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>echo</span></h5><div class=card><div class=card-body><p><code>-n</code>：不换行
+<code>-e</code>：支持扩展属性</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 红色显示OK</span>
+</span></span><span style=display:flex><span>echo -e <span style=color:#e6db74>&#34;\033[31mOK\033[0m&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 绿色显示OK</span>
+</span></span><span style=display:flex><span>echo -e <span style=color:#e6db74>&#34;\033[32mOK\033[0m&#34;</span>
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>tr</span></h5><div class=card><div class=card-body><p>删除多余重复字符串</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 删除多余的空格</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;a   b   c&#34;</span> | tr -s <span style=color:#e6db74>&#34; &#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 输出：a b c</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 删除多余的a</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;aaaaacccdetaaadfa   c&#34;</span> | tr -s <span style=color:#e6db74>&#34;a&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 输出：acccdetadfa   c</span>
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>cut</span></h5><div class=card><div class=card-body><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 以冒号为分隔，过滤第一列</span>
+</span></span><span style=display:flex><span>cut -d: -f1 /etc/passwd
+</span></span><span style=display:flex><span><span style=color:#75715e># 输出当前系统下所有用户名</span>
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>date</span></h5><div class=card><div class=card-body><p>查看系统时间</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>date
+</span></span><span style=display:flex><span><span style=color:#75715e># Tue Oct 12 13:36:24 CST 2021</span>
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>tzselect</span></h5><div class=card><div class=card-body><p>查看时区</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>ls -l /etc/localtime
+</span></span><span style=display:flex><span><span style=color:#75715e># lrwxrwxrwx. 1 root root 33 Oct 12 11:32 /etc/localtime -&gt; /usr/share/zoneinfo/Asia/Shanghai</span>
+</span></span></code></pre></div></div></div><div class=card><div class=card-body><p>获取TZ时区</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>tzselect
+</span></span></code></pre></div><p>输出：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>Please identify a location so that time zone rules can be set correctly.
+</span></span><span style=display:flex><span>Please <span style=color:#66d9ef>select</span> a continent, ocean, <span style=color:#e6db74>&#34;coord&#34;</span>, or <span style=color:#e6db74>&#34;TZ&#34;</span>.
+</span></span><span style=display:flex><span> 1<span style=color:#f92672>)</span> Africa
+</span></span><span style=display:flex><span> 2<span style=color:#f92672>)</span> Americas
+</span></span><span style=display:flex><span> 3<span style=color:#f92672>)</span> Antarctica
+</span></span><span style=display:flex><span> 4<span style=color:#f92672>)</span> Asia
+</span></span><span style=display:flex><span> 5<span style=color:#f92672>)</span> Atlantic Ocean
+</span></span><span style=display:flex><span> 6<span style=color:#f92672>)</span> Australia
+</span></span><span style=display:flex><span> 7<span style=color:#f92672>)</span> Europe
+</span></span><span style=display:flex><span> 8<span style=color:#f92672>)</span> Indian Ocean
+</span></span><span style=display:flex><span> 9<span style=color:#f92672>)</span> Pacific Ocean
+</span></span><span style=display:flex><span>10<span style=color:#f92672>)</span> coord - I want to use geographical coordinates.
+</span></span><span style=display:flex><span>11<span style=color:#f92672>)</span> TZ - I want to specify the time zone using the Posix TZ format.
+</span></span><span style=display:flex><span><span style=color:#75715e>#? </span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 选择数字，依次选择地区、国家、城市，即可得到对应时区</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Asia/Shanghai</span>
+</span></span></code></pre></div></div></div><div class=card><div class=card-body><p>修改系统时区（所有用户生效）</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>rm -f /etc/localtime
+</span></span><span style=display:flex><span>ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>xargs</span></h5><div class=card><div class=card-body><p><code>xargs</code>是给命令传递参数的一个过滤器，可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据，一般是和管道一起使用。
+格式:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>somecommand | xargs <span style=color:#f92672>[</span>-item<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>command<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>选项：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>-a file 从文件中读入作为 stdin
+</span></span><span style=display:flex><span>-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。
+</span></span><span style=display:flex><span>-p 当每次执行一个argument的时候询问一次用户。
+</span></span><span style=display:flex><span>-n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的。
+</span></span><span style=display:flex><span>-t 表示先打印命令，然后再执行。
+</span></span><span style=display:flex><span>-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给 <span style=color:#f92672>{}</span>，可以用 <span style=color:#f92672>{}</span> 代替。
+</span></span><span style=display:flex><span>-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。
+</span></span><span style=display:flex><span>-s num 命令行的最大字符数，指的是 xargs 后面那个命令的最大命令行字符数。
+</span></span><span style=display:flex><span>-L num 从标准输入一次读取 num 行送给 command 命令。
+</span></span><span style=display:flex><span>-l 同 -L。
+</span></span><span style=display:flex><span>-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符。
+</span></span><span style=display:flex><span>-x exit的意思，主要是配合-s使用。。
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>top</span></h5><div class=card><div class=card-body><p>Linux <code>top</code>命令VIRT,RES,SHR,DATA的含义:</p><ul><li><code>VIRT</code>:<code>virtual memory usage</code>虚拟内存<ul><li>进程“需要的”虚拟内存大小，包括进程使用的库、代码、数据等</li><li>假如进程申请100m的内存，但实际只使用了10m，那么它会增长100m，而不是实际的使用量</li></ul></li><li><code>RES</code>:<code>resident memory usage</code>常驻内存<ul><li>进程当前使用的内存大小，但不包括swap out</li><li>包含其他进程的共享</li><li>如果申请100m的内存，实际使用10m，它只增长10m，与<code>VIRT</code>相反</li><li>关于库占用内存的情况，它只统计加载的库文件所占内存大小</li></ul></li><li><code>SHR</code>:<code>shared memory</code>共享内存<ul><li>除了自身进程的共享内存，也包括其他进程的共享内存</li><li>虽然进程只使用了几个共享库的函数，但它包含了整个共享库的大小</li><li>计算某个进程所占的物理内存大小公式：<code>RES – SHR</code></li><li><code>swap out</code>后，它将会降下来</li></ul></li></ul><p><code>top</code>运行中可以通过<code>top</code>的内部命令对进程的显示方式进行控制。内部命令如下：<br>s – 改变画面更新频率<br>l – 关闭或开启第一部分第一行 top 信息的表示<br>t – 关闭或开启第一部分第二行 Tasks 和第三行 Cpus 信息的表示<br>m – 关闭或开启第一部分第四行 Mem 和 第五行 Swap 信息的表示<br>N – 以 PID 的大小的顺序排列表示进程列表<br>P – 以 CPU 占用率大小的顺序排列进程列表<br>M – 以内存占用率大小的顺序排列进程列表<br>h – 显示帮助<br>n – 设置在进程列表所显示进程的数量<br>q – 退出 top</p><p>序号 列名 含义<br>a PID 进程id<br>b PPID 父进程id<br>c RUSER Real user name<br>d UID 进程所有者的用户id<br>e USER 进程所有者的用户名<br>f GROUP 进程所有者的组名<br>g TTY 启动进程的终端名。不是从终端启动的进程则显示为 ?<br>h PR 优先级<br>i NI nice值。负值表示高优先级，正值表示低优先级<br>j P 最后使用的CPU，仅在多CPU环境下有意义<br>k %CPU 上次更新到现在的CPU时间占用百分比<br>l TIME 进程使用的CPU时间总计，单位秒<br>m TIME+ 进程使用的CPU时间总计，单位1/100秒<br>n %MEM 进程使用的物理内存百分比<br>o VIRT 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES<br>p SWAP 进程使用的虚拟内存中，被换出的大小，单位kb。<br>q RES 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA<br>r CODE 可执行代码占用的物理内存大小，单位kb<br>s DATA 可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb<br>t SHR 共享内存大小，单位kb<br>u nFLT 页面错误次数<br>v nDRT 最后一次写入到现在，被修改过的页面数。<br>w S 进程状态。（D=不可中断的睡眠状态，R=运行，S=睡眠，T=跟踪/停止，Z=僵尸进程）<br>x COMMAND 命令名/命令行<br>y WCHAN 若该进程在睡眠，则显示睡眠中的系统函数名<br>z Flags 任务标志，参考 sched.h</p><p>默认情况下仅显示比较重要的 PID、USER、PR、NI、VIRT、RES、SHR、S、%CPU、%MEM、TIME+、COMMAND 列。可以通过下面的快捷键来更改显示内容。<br>通过<code>f</code>键可以选择显示的内容。按<code>f</code>键之后会显示列的列表，按<code>a-z</code>即可显示或隐藏对应的列，最后按回车键确定。
 按<code>o</code>键可以改变列的显示顺序。按小写的<code>a-z</code>可以将相应的列向右移动，而大写的<code>A-Z</code>可以将相应的列向左移动。最后按回车键确定。
-按大写的<code>F</code>或<code>O</code>键，然后按<code>a-z</code>可以将进程按照相应的列进行排序。而大写的<code>R</code>键可以将当前的排序倒转。</p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>命令</span></h5>
-<div class=card>
-<div class=card-body><p>显示行号</p>
-<pre tabindex=0><code>:set number
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>在<code>vi</code>中执行shell命令</p>
-<pre tabindex=0><code>:!ls-l
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>将<code>shell</code>命令的结果插入到当前行的下一行</p>
-<pre tabindex=0><code>:r !date  //读取系统时间并插入到当前行的下一行
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容</p>
-<pre tabindex=0><code>:62,72 !sort  //将62行到72行的内容进行排序
-</code></pre><p>当前光标所在行，除可以指定行号外，也可以用<code>.</code>表示</p>
-<pre tabindex=0><code>:. !tr [a-z] [A-Z]  //将当前行的小写转为大写
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容</p>
-<pre tabindex=0><code>:62,72 w !sort  //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域
-</code></pre></div>
-</div>
-<div class=card>
-<div class=card-body><p>将某一行作为<code>shell</code>命令执行</p>
-<pre tabindex=0><code>:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容
-</code></pre></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>脚本执行方式</span></h5>
-<div class=card>
-<div class=card-body><ol>
-<li>需要可执行权限
-<ul>
-<li>相对路径执行</li>
-<li>绝对路径执行</li>
-</ul>
-</li>
-<li>不需要可执行权限
-<ul>
-<li><code>sh 脚本文件名</code></li>
-<li><code>source 脚本文件名</code> // 不会启动子进程，通过<code>pstree</code>查看进程树</li>
-</ul>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>定义变量</span></h5>
-<div class=card>
-<div class=card-body><ul>
-<li>定义变量：<code>变量名=变量值</code></li>
-<li>取消变量：<code>unset 变量名</code></li>
-<li>注意事项：
-<ul>
-<li><code>=</code>两边不能有空格</li>
-<li>不能使用关键字做变量名，如：<code>ls</code>、<code>cd</code>等</li>
-<li>如果变量名已存在，则会覆盖之前的变量值</li>
-<li>变量名称由字母、数字、下划线组成，不能以数字开头</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>变量类型</span></h5>
-<div class=card>
-<div class=card-body><ul>
-<li>环境变量：变量名通常大写，由操作系统维护</li>
-<li>位置变量：shell内置变量，存储脚本执行时的参数
-<ul>
-<li>使用<code>$n</code>表示，<code>n</code>为数字序列号：<code>$1</code>、<code>$2</code>、&mldr;、<code>${10}</code>、<code>${11}</code>、&mldr;</li>
-</ul>
-</li>
-<li>预定义变量：shell内置变量，可以直接调用但是不能赋值或修改'
-<ul>
-<li><code>$0</code>：存储所在的进程或脚本名</li>
-<li><code>$$</code>：当前进程的<code>PID</code>号</li>
-<li><code>$?</code>：命令执行后的返回状态，0-正常，其他-异常</li>
-<li><code>$#</code>：已加载的位置变量的个数</li>
-<li><code>$*</code>：所有位置变量的值</li>
-</ul>
-</li>
-<li>自定义变量：用户自主设置</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>多种引号的区别</span></h5>
-<div class=card>
-<div class=card-body><ul>
-<li>双引号：允许扩展，以<code>$</code>引用其他变量</li>
-<li>单引号：禁用扩展，将<code>$</code>视为普通字符</li>
-<li>反引号：将命令执行的输出作为变量值，<code>$()</code>与反引号等效</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>变量的作用范围</span></h5>
-<div class=card>
-<div class=card-body><ul>
-<li>局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用</li>
-<li>全局变量：在当前Shell以及子Shell中均有效（<code>export a=1</code>：定义全局变量<code>a</code>）</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>read标准输入取值</span></h5>
-<div class=card>
-<div class=card-body><p><code>read</code>从键盘读入变量值完成赋值</p>
-<ul>
-<li>格式：<code>read [参数] [变量名]</code></li>
-<li>参数：
-<ul>
-<li><code>-p</code>：提示信息</li>
-<li><code>-t</code>：指定超时秒数</li>
-<li><code>-s</code>：设置是否在终端显示输入的内容</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>变量作用范围</span></h5>
-<div class=card>
-<div class=card-body><ul>
-<li>局部变量
-<ul>
-<li>新定义的变量默认只在当前Shell环境中有效，无法在子Shell环境中使用</li>
-</ul>
-</li>
-<li>全局变量
-<ul>
-<li>全局变量在当前Shell及子Shell中均有效，定义格式：<code>export a=1</code></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>数学运算</span></h5>
-<div class=card>
-<div class=card-body><p>整数运算</p>
-<p>使用<code>$[]</code>或<code>$(())</code>表达式</p>
-<p>格式：$[整数1 运算符 整数2]</p>
-</div>
-</div>
-<div class=card>
-<div class=card-body><p>小数运算</p>
-<p>Bash内建机制仅支持整数运算，不支持小数运算
-可以通过计算器软件<code>bc</code>实现小数计算</p>
-<p>如果没有该软件需要使用<code>yum</code>安装
-<code>bc</code>支持交互式和非交互式两种方式计算，<code>scale=n</code>可以约束小数位</p>
-<p><code>bc</code>也支持比较操作：
+按大写的<code>F</code>或<code>O</code>键，然后按<code>a-z</code>可以将进程按照相应的列进行排序。而大写的<code>R</code>键可以将当前的排序倒转。</p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>命令</span></h5><div class=card><div class=card-body><p>显示行号</p><pre tabindex=0><code>:set number
+</code></pre></div></div><div class=card><div class=card-body><p>在<code>vi</code>中执行shell命令</p><pre tabindex=0><code>:!ls-l
+</code></pre></div></div><div class=card><div class=card-body><p>将<code>shell</code>命令的结果插入到当前行的下一行</p><pre tabindex=0><code>:r !date  //读取系统时间并插入到当前行的下一行
+</code></pre></div></div><div class=card><div class=card-body><p>将起始行号和结束行号指定的范围中的内容输入到shell命令command处理，并将处理结果替换起始行号和结束行号指定的范围中的内容</p><pre tabindex=0><code>:62,72 !sort  //将62行到72行的内容进行排序
+</code></pre><p>当前光标所在行，除可以指定行号外，也可以用<code>.</code>表示</p><pre tabindex=0><code>:. !tr [a-z] [A-Z]  //将当前行的小写转为大写
+</code></pre></div></div><div class=card><div class=card-body><p>将起始行号和结束行号所指定的范围的内容作为命令command的输入，不会改变当前编辑的文件的内容</p><pre tabindex=0><code>:62,72 w !sort  //将62行到72行的内容进行排序，但排序的结果并不会直接输出到当前编辑的文件中，而是显示在vim敲命令的区域
+</code></pre></div></div><div class=card><div class=card-body><p>将某一行作为<code>shell</code>命令执行</p><pre tabindex=0><code>:62 w !shell //将会把第62行的内容作为shell命令来执行并显示结果，而且不会改变当前编辑的文件的内容
+</code></pre></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>脚本执行方式</span></h5><div class=card><div class=card-body><ol><li>需要可执行权限<ul><li>相对路径执行</li><li>绝对路径执行</li></ul></li><li>不需要可执行权限<ul><li><code>sh 脚本文件名</code></li><li><code>source 脚本文件名</code> // 不会启动子进程，通过<code>pstree</code>查看进程树</li></ul></li></ol></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>定义变量</span></h5><div class=card><div class=card-body><ul><li>定义变量：<code>变量名=变量值</code></li><li>取消变量：<code>unset 变量名</code></li><li>注意事项：<ul><li><code>=</code>两边不能有空格</li><li>不能使用关键字做变量名，如：<code>ls</code>、<code>cd</code>等</li><li>如果变量名已存在，则会覆盖之前的变量值</li><li>变量名称由字母、数字、下划线组成，不能以数字开头</li></ul></li></ul></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>变量类型</span></h5><div class=card><div class=card-body><ul><li>环境变量：变量名通常大写，由操作系统维护</li><li>位置变量：shell内置变量，存储脚本执行时的参数<ul><li>使用<code>$n</code>表示，<code>n</code>为数字序列号：<code>$1</code>、<code>$2</code>、&mldr;、<code>${10}</code>、<code>${11}</code>、&mldr;</li></ul></li><li>预定义变量：shell内置变量，可以直接调用但是不能赋值或修改'<ul><li><code>$0</code>：存储所在的进程或脚本名</li><li><code>$$</code>：当前进程的<code>PID</code>号</li><li><code>$?</code>：命令执行后的返回状态，0-正常，其他-异常</li><li><code>$#</code>：已加载的位置变量的个数</li><li><code>$*</code>：所有位置变量的值</li></ul></li><li>自定义变量：用户自主设置</li></ul></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>多种引号的区别</span></h5><div class=card><div class=card-body><ul><li>双引号：允许扩展，以<code>$</code>引用其他变量</li><li>单引号：禁用扩展，将<code>$</code>视为普通字符</li><li>反引号：将命令执行的输出作为变量值，<code>$()</code>与反引号等效</li></ul></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>变量的作用范围</span></h5><div class=card><div class=card-body><ul><li>局部变量：新定义的变量默认只在当前Shell中有效，无法在子Shell环境中使用</li><li>全局变量：在当前Shell以及子Shell中均有效（<code>export a=1</code>：定义全局变量<code>a</code>）</li></ul></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>read标准输入取值</span></h5><div class=card><div class=card-body><p><code>read</code>从键盘读入变量值完成赋值</p><ul><li>格式：<code>read [参数] [变量名]</code></li><li>参数：<ul><li><code>-p</code>：提示信息</li><li><code>-t</code>：指定超时秒数</li><li><code>-s</code>：设置是否在终端显示输入的内容</li></ul></li></ul></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>变量作用范围</span></h5><div class=card><div class=card-body><ul><li>局部变量<ul><li>新定义的变量默认只在当前Shell环境中有效，无法在子Shell环境中使用</li></ul></li><li>全局变量<ul><li>全局变量在当前Shell及子Shell中均有效，定义格式：<code>export a=1</code></li></ul></li></ul></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>数学运算</span></h5><div class=card><div class=card-body><p>整数运算</p><p>使用<code>$[]</code>或<code>$(())</code>表达式</p><p>格式：$[整数1 运算符 整数2]</p></div></div><div class=card><div class=card-body><p>小数运算</p><p>Bash内建机制仅支持整数运算，不支持小数运算
+可以通过计算器软件<code>bc</code>实现小数计算</p><p>如果没有该软件需要使用<code>yum</code>安装
+<code>bc</code>支持交互式和非交互式两种方式计算，<code>scale=n</code>可以约束小数位</p><p><code>bc</code>也支持比较操作：
 <code>>,>=,&lt;,&lt;=,==,!=</code>
-表达式成立返回<code>1</code>，否则返回<code>0</code></p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>字符串</span></h5>
-<div class=card>
-<div class=card-body><p>字符串比较</p>
-<p><em>中括号与字符串之间和运算符与字符串之间均有有个空格</em><br>
-是否为空：<code>[ -z 字符串 ]</code><br>
-等于：<code>[ 字符串1 == 字符串2 ]</code><br>
-不等于：<code>[ 字符串1 ！= 字符串2 ]</code></p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>整数值比较</span></h5>
-<div class=card>
-<div class=card-body><p><code>[ 整数值1 操作符 整数值2 ]</code></p>
-<p>-eq 等于（equal）
+表达式成立返回<code>1</code>，否则返回<code>0</code></p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>字符串</span></h5><div class=card><div class=card-body><p>字符串比较</p><p><em>中括号与字符串之间和运算符与字符串之间均有有个空格</em><br>是否为空：<code>[ -z 字符串 ]</code><br>等于：<code>[ 字符串1 == 字符串2 ]</code><br>不等于：<code>[ 字符串1 ！= 字符串2 ]</code></p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>整数值比较</span></h5><div class=card><div class=card-body><p><code>[ 整数值1 操作符 整数值2 ]</code></p><p>-eq 等于（equal）
 -ne 不等于（not equal）
 -ge 大于等于（greater or equal）
 -le 小于等于（less or equal）
 -gt 大于（greater than）
--lt 小于（less than）</p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>文件状态测试</span></h5>
-<div class=card>
-<div class=card-body><p><code>[ 操作符 文件或目录 ]</code></p>
-<p>-e 判断对象是否存在（exit）
+-lt 小于（less than）</p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>文件状态测试</span></h5><div class=card><div class=card-body><p><code>[ 操作符 文件或目录 ]</code></p><p>-e 判断对象是否存在（exit）
 -d 判断对象是否为目录（directory）
 -f 判断对象是否为一般文件（file）
 -r 判断对象是否有可读权限（read）
 -w 判断对象是否有可写权限（write）
--x 判断对象是否有可执行权限（excute）</p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>组合多个命令</span></h5>
-<div class=card>
-<div class=card-body><code>;</code>：顺序执行
+-x 判断对象是否有可执行权限（excute）</p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>组合多个命令</span></h5><div class=card><div class=card-body><code>;</code>：顺序执行
 <code>||</code>：前面执行失败继续执行
-<code>&&</code>：前面执行成功继续执行</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>数组</span></h5>
-<div class=card>
-<div class=card-body><p>存储多个数据的集合</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>test<span style=color:#f92672>=(</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>2</span> 3<span style=color:#f92672>)</span>
-echo <span style=color:#e6db74>${</span>test[0]<span style=color:#e6db74>}</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>函数</span></h5>
-<div class=card>
-<div class=card-body><p>语法格式</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#66d9ef>function</span> 函数名<span style=color:#f92672>{</span>
-  <span style=color:#75715e>#命令序列</span>
-<span style=color:#f92672>}</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>函数名<span style=color:#f92672>(){</span>
-  <span style=color:#75715e>#命令序列</span>
-<span style=color:#f92672>}</span>
-</code></pre></div></div>
-</div>
-<div class=card>
-<div class=card-body><p>调用</p>
-<p><code>函数名 参数1 参数2 ...</code>
-传递的值作为函数的位置参数</p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>中断与退出</span></h5>
-<div class=card>
-<div class=card-body><code>continue</code>：结束单次循环
+<code>&&</code>：前面执行成功继续执行</div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>数组</span></h5><div class=card><div class=card-body><p>存储多个数据的集合</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>test<span style=color:#f92672>=(</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>2</span> 3<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>${</span>test[0]<span style=color:#e6db74>}</span>
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>函数</span></h5><div class=card><div class=card-body><p>语法格式</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#66d9ef>function</span> 函数名<span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>#命令序列</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>函数名<span style=color:#f92672>(){</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>#命令序列</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div></div></div><div class=card><div class=card-body><p>调用</p><p><code>函数名 参数1 参数2 ...</code>
+传递的值作为函数的位置参数</p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>中断与退出</span></h5><div class=card><div class=card-body><code>continue</code>：结束单次循环
 <code>break</code>：跳出循环体
-<code>exit</code>：退出脚本</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>子串截取</span></h5>
-<div class=card>
-<div class=card-body><p><code>${变量:起始位置:长度}</code></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ab<span style=color:#f92672>=</span><span style=color:#ae81ff>123456</span>
-<span style=color:#75715e># 统计ab长度</span>
-echo <span style=color:#e6db74>${#</span>ab<span style=color:#e6db74>}</span>
-<span style=color:#75715e># 输出：6</span>
-echo <span style=color:#e6db74>${</span>ab:2:5<span style=color:#e6db74>}</span>
-<span style=color:#75715e># 输出：3456</span>
-</code></pre></div></div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>内存</span></h5>
-<div class=card>
-<div class=card-body><p>一般来说内存占用大小有如下规律：VSS >= RSS >= PSS >= USS</p>
-<ul>
-<li>VSS - Virtual Set Size 虚拟耗用内存（包含共享库占用的内存）</li>
-<li>RSS - Resident Set Size 实际使用物理内存（包含共享库占用的内存）</li>
-<li>PSS - Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存）</li>
-<li>USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存）</li>
-</ul>
-</div>
-</div>
-<div class=card>
-<div class=card-body><p>RSS / VSZ</p>
-<ul>
-<li>RSS是<code>Resident Set Size</code>（常驻内存大小）的缩写，用于表示进程使用了多少内存（RAM中的物理内存），
-RSS不包含已经被换出的内存。RSS包含了它所链接的动态库并且被加载到物理内存中的内存。RSS还包含栈内存和堆内存。</li>
-<li>VSZ是<code>Virtual Memory Size</code>（虚拟内存大小）的缩写。它包含了进程所能访问的所有内存，包含了被换出的内存，
-被分配但是还没有被使用的内存，以及动态库中的内存。</li>
-</ul>
-<p>假设进程A的二进制文件是500K，并且链接了一个2500K的动态库，堆和栈共使用了200K，其中100K在内存中（剩下的被换出或者不再被使用），
-一共加载了动态库中的1000K内容以及二进制文件中的400K内容至内存中，那么：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>RSS: 400K + 1000K + 100K <span style=color:#f92672>=</span> 1500K
-VSZ: 500K + 2500K + 200K <span style=color:#f92672>=</span> 3200K
-</code></pre></div><p>由于部分内存是共享的，被多个进程使用，所以如果将所有进程的RSS值加起来可能会大于系统的内存总量。</p>
-<p>申请过的内存如果程序没有实际使用，则可能不显示在RSS里。比如说一个程序，预先申请了一大批内存，
-过了一段时间才使用，你会发现RSS会增长而VSZ保持不变。</p>
-<p>还有一个概念是PSS，它是<code>proportional set size</code>（proportional是成比例的意思）的缩写。
-这是一种新的度量方式。它将动态库所使用的内存按比例划分。比如我们前面例子中的动态库如果是被两个进程使用，那么：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>PSS: 400K + <span style=color:#f92672>(</span>1000K/2<span style=color:#f92672>)</span> + 100K <span style=color:#f92672>=</span> 400K + 500K + 100K <span style=color:#f92672>=</span> 1000K
-</code></pre></div><p>一个进程中的多个线程共享同样的地址空间。所以一个进程中的多个线程的RSS，VSZ，PSS是完全相同的。linux下可以使用ps或者top命令查看这些信息。</p>
-<p><a href=https://stackoverflow.com/a/21049737>英文原文</a></p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>shell</span></h5>
-<div class=card>
-<div class=card-body><p>在hbase的shell中scan时指定列</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>scan <span style=color:#e6db74>&#39;table_name&#39;</span>,<span style=color:#f92672>{</span>STARTROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;start_row&#39;</span>,ENDROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;end_row&#39;</span>,LIMIT<span style=color:#f92672>=</span>&gt;100,COLUMNS<span style=color:#f92672>=</span>&gt;<span style=color:#f92672>[</span><span style=color:#e6db74>&#39;info:type&#39;</span><span style=color:#f92672>]}</span>
-</code></pre></div><p><code>COLUMNS=>['info:type']</code>中参数为数组，可以指定列簇名和列名</p>
-</div>
-</div>
-</div>
-</div>
-<div class=note-card>
-<div class=item>
-<h5 class=note-title><span>shell</span></h5>
-<div class=card>
-<div class=card-body><p>查询消费者组</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --list
-kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --describe --group group_name
-</code></pre></div><p>删除消费者组</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --delete --group group_name
-</code></pre></div><p>查看<code>topic</code>消息数量</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server bigdata7:9092 --topic topic_name --time -1
-</code></pre></div></div>
-</div>
-</div>
-</div>
-</div>
-<div class=paginator>
-<ul class="pagination pagination-default">
-<li class=page-item>
-<a href=/notes/ aria-label=First class=page-link role=button><span aria-hidden=true>&#171;&#171;</span></a>
-</li>
-<li class=page-item>
-<a href=/notes/ aria-label=Previous class=page-link role=button><span aria-hidden=true>&#171;</span></a>
-</li>
-<li class=page-item>
-<a href=/notes/ aria-label="Page 1" class=page-link role=button>1</a>
-</li>
-<li class="page-item active">
-<a aria-current=page aria-label="Page 2" class=page-link role=button>2</a>
-</li>
-<li class=page-item>
-<a href=/notes/page/3/ aria-label="Page 3" class=page-link role=button>3</a>
-</li>
-<li class=page-item>
-<a href=/notes/page/3/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
-</li>
-<li class=page-item>
-<a href=/notes/page/3/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
-</li>
-</ul>
-</div>
-</div>
-</section>
-</div>
-<footer id=footer class="container-fluid text-center align-content-center footer pb-2">
-<div class="container pt-5">
-<div class="row text-left">
-<div class="col-md-4 col-sm-12">
-<h5>联系方式:</h5>
-<ul>
-<li><span>QQ: </span> <span>1432050813</span></li>
-<li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener>
-<span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span>
-</a></li>
-</ul>
-</div>
-</div>
-</div>
-<hr>
-<div class=container>
-<p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p>
-</div>
-<hr>
-<div class=container>
-<div class="row text-left">
-<div class=col-md-4>
-<a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener>
-<img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
-Toha
-</a>
-</div>
-<div class="col-md-4 text-center">© 2021 Copyright.</div>
-<div class="col-md-4 text-right">
-<a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18>
-</a>
-</div>
-</div>
-</div>
-</footer>
-<script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
+<code>exit</code>：退出脚本</div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>子串截取</span></h5><div class=card><div class=card-body><p><code>${变量:起始位置:长度}</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>ab<span style=color:#f92672>=</span><span style=color:#ae81ff>123456</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 统计ab长度</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>${#</span>ab<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 输出：6</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>${</span>ab:2:5<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 输出：3456</span>
+</span></span></code></pre></div></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>内存</span></h5><div class=card><div class=card-body><p>一般来说内存占用大小有如下规律：VSS >= RSS >= PSS >= USS</p><ul><li>VSS - Virtual Set Size 虚拟耗用内存（包含共享库占用的内存）</li><li>RSS - Resident Set Size 实际使用物理内存（包含共享库占用的内存）</li><li>PSS - Proportional Set Size 实际使用的物理内存（比例分配共享库占用的内存）</li><li>USS - Unique Set Size 进程独自占用的物理内存（不包含共享库占用的内存）</li></ul></div></div><div class=card><div class=card-body><p>RSS / VSZ</p><ul><li>RSS是<code>Resident Set Size</code>（常驻内存大小）的缩写，用于表示进程使用了多少内存（RAM中的物理内存），
+RSS不包含已经被换出的内存。RSS包含了它所链接的动态库并且被加载到物理内存中的内存。RSS还包含栈内存和堆内存。</li><li>VSZ是<code>Virtual Memory Size</code>（虚拟内存大小）的缩写。它包含了进程所能访问的所有内存，包含了被换出的内存，
+被分配但是还没有被使用的内存，以及动态库中的内存。</li></ul><p>假设进程A的二进制文件是500K，并且链接了一个2500K的动态库，堆和栈共使用了200K，其中100K在内存中（剩下的被换出或者不再被使用），
+一共加载了动态库中的1000K内容以及二进制文件中的400K内容至内存中，那么：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>RSS: 400K + 1000K + 100K <span style=color:#f92672>=</span> 1500K
+</span></span><span style=display:flex><span>VSZ: 500K + 2500K + 200K <span style=color:#f92672>=</span> 3200K
+</span></span></code></pre></div><p>由于部分内存是共享的，被多个进程使用，所以如果将所有进程的RSS值加起来可能会大于系统的内存总量。</p><p>申请过的内存如果程序没有实际使用，则可能不显示在RSS里。比如说一个程序，预先申请了一大批内存，
+过了一段时间才使用，你会发现RSS会增长而VSZ保持不变。</p><p>还有一个概念是PSS，它是<code>proportional set size</code>（proportional是成比例的意思）的缩写。
+这是一种新的度量方式。它将动态库所使用的内存按比例划分。比如我们前面例子中的动态库如果是被两个进程使用，那么：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>PSS: 400K + <span style=color:#f92672>(</span>1000K/2<span style=color:#f92672>)</span> + 100K <span style=color:#f92672>=</span> 400K + 500K + 100K <span style=color:#f92672>=</span> 1000K
+</span></span></code></pre></div><p>一个进程中的多个线程共享同样的地址空间。所以一个进程中的多个线程的RSS，VSZ，PSS是完全相同的。linux下可以使用ps或者top命令查看这些信息。</p><p><a href=https://stackoverflow.com/a/21049737>英文原文</a></p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>shell</span></h5><div class=card><div class=card-body><p>在hbase的shell中scan时指定列</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>scan <span style=color:#e6db74>&#39;table_name&#39;</span>,<span style=color:#f92672>{</span>STARTROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;start_row&#39;</span>,ENDROW<span style=color:#f92672>=</span>&gt;<span style=color:#e6db74>&#39;end_row&#39;</span>,LIMIT<span style=color:#f92672>=</span>&gt;100,COLUMNS<span style=color:#f92672>=</span>&gt;<span style=color:#f92672>[</span><span style=color:#e6db74>&#39;info:type&#39;</span><span style=color:#f92672>]}</span>
+</span></span></code></pre></div><p><code>COLUMNS=>['info:type']</code>中参数为数组，可以指定列簇名和列名</p></div></div></div></div><div class=note-card><div class=item><h5 class=note-title><span>shell</span></h5><div class=card><div class=card-body><p>查询消费者组</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --list
+</span></span><span style=display:flex><span>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --describe --group group_name
+</span></span></code></pre></div><p>删除消费者组</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kafka-consumer-groups.sh --bootstrap-server bigdata7:9092 --delete --group group_name
+</span></span></code></pre></div><p>查看<code>topic</code>消息数量</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>kafka-run-class.sh kafka.tools.GetOffsetShell --bootstrap-server bigdata7:9092 --topic topic_name --time -1
+</span></span></code></pre></div></div></div></div></div></div><div class=paginator><ul class="pagination pagination-default"><li class=page-item><a href=/notes/ aria-label=First class=page-link role=button><span aria-hidden=true>&#171;&#171;</span></a></li><li class=page-item><a href=/notes/ aria-label=Previous class=page-link role=button><span aria-hidden=true>&#171;</span></a></li><li class=page-item><a href=/notes/ aria-label="Page 1" class=page-link role=button>1</a></li><li class="page-item active"><a aria-current=page aria-label="Page 2" class=page-link role=button>2</a></li><li class=page-item><a href=/notes/page/3/ aria-label="Page 3" class=page-link role=button>3</a></li><li class=page-item><a href=/notes/page/3/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a></li><li class=page-item><a href=/notes/page/3/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a></li></ul></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
+Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script type=text/javascript src=/js/jquery-3.4.1.min.js></script>
 <script type=text/javascript src=/js/popper.min.js></script>
 <script type=text/javascript src=/js/bootstrap.min.js></script>
 <script type=text/javascript src=/js/navbar.js></script>
@@ -920,6 +145,4 @@ Toha
 <script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js></script>
 <script src=/js/imagesloaded.pkgd.min.js></script>
 <script src=/js/note.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-</body>
-</html>
+<script>hljs.initHighlightingOnLoad()</script></body></html>
