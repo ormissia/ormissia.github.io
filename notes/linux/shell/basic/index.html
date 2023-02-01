@@ -1,4 +1,4 @@
-<!doctype html><html><head><title>Basic</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/layouts/main.css><link rel=stylesheet href=/css/navigators/navbar.css><link rel=stylesheet href=/css/plyr.css><link rel=stylesheet href=/css/flag-icon.min.css><link rel=stylesheet href=/google-fonts/Mulish/mulish.css><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="Basic"><meta property="og:description" content="快捷键 回到命令行开头&ndash;Home
+<!doctype html><html lang=zh-cn><head><title>Basic</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><link rel=stylesheet href=/application.45a5c976822bbb18695d6a4e0b0a54cc50b1e5934a15d3139ada0b1165781c4d.css integrity="sha256-RaXJdoIruxhpXWpOCwpUzFCx5ZNKFdMTmtoLEWV4HE0="><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="Basic"><meta property="og:description" content="快捷键 回到命令行开头&ndash;Home
 Ctrl+a 回到命令行的尾部&ndash;End
 Ctrl+e 删除光标前边的所有字符
 Ctrl+u 删除光标后边的所有字符
@@ -16,7 +16,25 @@ nc [ip] [port] < filename gzip 解压*.gz的压缩文件
 gzip -d filename hostnamectl 修改hostname，重启也生效
 hostnamectl set-hostname CentOS 查看hostname
 hostname echo -n：不换行 -e：支持扩展属性
-# 红色显示OK echo -e &#34;\033[31mOK\033[0m&#34; # 绿色显示OK echo -e &#34;\033[32mOK\033[0m&#34; tr 删除多余重复字符串"><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/notes/linux/shell/basic/"><meta property="article:section" content="notes"><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css><link rel=stylesheet href=/css/layouts/notes.css><link rel=stylesheet href=/css/navigators/sidebar.css></head><body data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button>
+# 红色显示OK echo -e &#34;\033[31mOK\033[0m&#34; # 绿色显示OK echo -e &#34;\033[32mOK\033[0m&#34; tr 删除多余重复字符串"><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/notes/linux/shell/basic/"><meta property="article:section" content="notes"><meta name=twitter:card content="summary"><meta name=twitter:title content="Basic"><meta name=twitter:description content="快捷键 回到命令行开头&ndash;Home
+Ctrl+a 回到命令行的尾部&ndash;End
+Ctrl+e 删除光标前边的所有字符
+Ctrl+u 删除光标后边的所有字符
+Ctrl+k 删除光标前的一个单词
+Ctrl+w 输入曾经的命令下的某个单词或字母，按照单词的匹配history
+Ctrl+r cat 在cat输出时候显示行数
+cat -n maim.go wc 统计文件行、单词、字符数量 格式：
+usage: wc [-clmw] [file ...] 统计main.go的行、单词、字符数量
+wc main.go 选项：
+-l 统计行数 -c 统计字符数 -w 统计单词数 -L 统计最长的行的字符数 nc 简单的文件传输工具
+接收方
+nc -l [port] > filename 发送方
+nc [ip] [port] < filename gzip 解压*.gz的压缩文件
+与*.tar.gz文件不同，*.gz文件需要用gzip来解压
+gzip -d filename hostnamectl 修改hostname，重启也生效
+hostnamectl set-hostname CentOS 查看hostname
+hostname echo -n：不换行 -e：支持扩展属性
+# 红色显示OK echo -e &#34;\033[31mOK\033[0m&#34; # 绿色显示OK echo -e &#34;\033[32mOK\033[0m&#34; tr 删除多余重复字符串"></head><body class="type-notes kind-page" data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-dimmed wrapper"><nav class="navbar navbar-expand-xl top-navbar final-navbar shadow"><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button>
 <span class=navbar-toggler-icon></span></button>
 <a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png alt=Logo>
 Ormissia's Blog</a>
@@ -81,4 +99,4 @@ Ormissia's Blog</a>
 </span></span><span style=display:flex><span>ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 </span></span></code></pre></div></div></div></div></div></div></div></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ:</span> <span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
 Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script src=/application.7d08aaa72f97abc6cb9d0e7f40c9446448591b8677d480a8d9a37a2f2edbedd9.js integrity="sha256-fQiqpy+Xq8bLnQ5/QMlEZEhZG4Z31ICo2aN6Ly7b7dk=" defer></script></body></html>
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script src=/application.91c2b3baa170c673e542581701eee7565947db7f9eeb7136e15d592100b47c9a.js integrity="sha256-kcKzuqFwxnPlQlgXAe7nVllH23+e63E24V1ZIQC0fJo=" defer></script></body></html>
