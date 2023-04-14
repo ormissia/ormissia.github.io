@@ -7,7 +7,7 @@ func Read() { lock.RLock() defer lock.RUnlock() // read global variable } func W
 func Write() { lock.Lock() defer lock.Unlock() // do something... } 但在实际代码中，如果对全局变量读写前后会有较长时间去做其他工作的情况下，就会造成极大的性能损耗。加锁之后没有立即对全局变量进行读写，或者对全局变量读写完之后没有立即释放锁，都会使其他线程没有办法立即抢到锁，从而拉低了整个系统的并发性能。
 根据这个逻辑，可以将上述代码改成如下格式：
 func Write() { // do something... lock.Lock() // read or write global variable lock.Unlock() // do something.</description></item><item><title>Golang中的原子操作</title><link>https://ormissia.github.io/posts/knowledge/2001-go/006-atomic/</link><pubDate>Wed, 30 Mar 2022 16:13:12 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2001-go/006-atomic/</guid><description>#golang #atomic
-互斥锁跟原子操作的区别 在并发编程里，Go语言sync包里的同步原语Mutex是我们经常用来保证并发安全的，那么他跟atomic包在使用目的和底层实现上都不一样：
+互斥锁跟原子操作的区别 在并发编程里，Go语言sync包里的同步原语Mutex是我们经常用来保证并发安全的，但是他跟atomic包在使用目的和底层实现上都不一样：
 使用目的 互斥锁是用来保护一段逻辑，原子操作用于对一个变量的更新保护。
 底层实现 Mutex由操作系统的调度器实现，而atomic包中的原子操作则由底层硬件指令直接提供支持，这些指令在执行的过程中是不允许中断的，因此原子操作可以在lock-free的情况下保证并发安全，并且它的性能也能做到随CPU个数的增多而线性扩展。
 对于一个变量更新的保护，原子操作通常会更有效率，并且更能利用计算机多核的优势。
