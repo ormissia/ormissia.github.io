@@ -48,4 +48,4 @@ jobs:
 
       # 通知cloudflare
       - name: notice cloudflare
-        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ secret.CLOUD_FLARE_WORKFLOW }}"
+        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ secrets.CLOUD_FLARE_WORKFLOW }}"
