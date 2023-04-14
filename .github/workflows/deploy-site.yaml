@@ -45,8 +45,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: main # if your main branch is `master` use that here.
           publish_dir: ./public
-  curl-notice-cloudflare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send request using curl
-        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ vars.CLOUD_FLARE_WORKFLOW }}"
+
+      # 通知cloudflare
+      - name: notice cloudflare
+        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/${{ secret.CLOUD_FLARE_WORKFLOW }}"
