@@ -277,19 +277,19 @@ WantedBy=multi-user.target
 ###  作为服务开启
 
 ```shell
-systemctil start traefik.service
+systemctl start traefik.service
 ```
 
 ### 设置开机启动
 
 ```shell
-systemctil enable traefik.service
+systemctl enable traefik.service
 ```
 
 ### 查看运行状态
 
 ```shell
-systemctil status traefik.service
+systemctl status traefik.service
 ```
 
 ## 文件汇总

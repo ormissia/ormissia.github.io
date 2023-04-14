@@ -10,16 +10,7 @@ menu:
     weight: 001
 ---
 
----
-
-#IO #bio #nio #多路复用
-
----
-
-
-> 作为
-
-## 网络IO演进模型
+## 网络IO模型演进历程
 
 1. 阻塞IO BIO(Blocking IO)
 2. 非阻塞IO NIO(Nonblocking IO)
