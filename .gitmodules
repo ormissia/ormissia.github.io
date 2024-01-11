@@ -3,5 +3,5 @@
 	url = https://github.com/hugo-toha/toha.git
 
 [submodule "notes"]
-	path = content/notes/my_notes
+	path = my_notes
 	url = https://github.com/ormissia/notes.git
