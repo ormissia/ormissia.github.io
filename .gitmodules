@@ -4,4 +4,4 @@
 
 [submodule "notes"]
 	path = content/notes/my_notes
-	url = https://github.com/hugo-toha/toha.git
+	url = https://github.com/ormissia/notes.git
