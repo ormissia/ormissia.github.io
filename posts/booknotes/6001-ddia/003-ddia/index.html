@@ -1,12 +1,12 @@
 <!doctype html><html lang=zh-cn><head><title>数据密集型应用系统设计(DDIA)读书笔记</title>
-<meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><link rel=stylesheet href=/application.87ecd420aa4299c8e4b21123c5360ef38ce9d1370c88559d014914f4a65e6b89.css integrity="sha256-h+zUIKpCmcjkshEjxTYO84zp0TcMiFWdAUkU9KZea4k="><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="数据密集型应用系统设计(DDIA)读书笔记"><meta property="og:description" content="#golang
+<meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><link rel=stylesheet href=/application.6053c2440fb32ef2010c84f629a987aa593a9a7ff9a82643ef43d9bbe9096d92.css integrity="sha256-YFPCRA+zLvIBDIT2KamHqlk6mn/5qCZD70PZu+kJbZI="><link rel=icon type=image/png href=/images/favicon_hu8376fd15465fef26ffe66b6bcf0ca686_13669_42x0_resize_box_3.png><meta property="og:title" content="数据密集型应用系统设计(DDIA)读书笔记"><meta property="og:description" content='#golang
 前面几次着重讨论了在分布式系统中出现错误之后该如何处理。虽然长篇累牍谈了很多，但所谈到的情况还是过于乐观，现实则会更加复杂。我们可以根据墨菲定律做一个非常悲观的假定：即所有可能出错的事情最终一定会出错。
 作为开发者，我们的核心任务是构建可靠的系统，即使系统面临各种出错的可能，也需要完成预定的工作（确保满足用户期望）。
 所以，首先我们要充分认识目前所面临的挑战。
 比如：故障可能来自网络问题，以及时钟与时序问题等等&mldr;&mldr;
 在有一段工作经历中，我们的线上系统使用的是公有云，其中用到了不同地区的实例。两地区之间使用的是一条百兆带宽的专线。某个星期天的下午，领导通知我们有个服务出问题了，我查了程序日志之后，看到有许多访问上游服务网络超时的日志，即网络问题。随机运维查看之后告诉我们，上面提到的那条百兆专线被跑满了。至此，服务出问题的罪魁祸首已经找到——网络原因。当然，带宽被占满是由于业务增长还是某些服务出现bug抑或是恶意攻击，这就是另一个话题了。
 所以，在我看来，所谓网络的不可靠性并不一定特指网络本身出了什么问题。
-故障与部分失效 我们所开发的单点程序，通常会以一种确定的方式运行：要么工作，要么出错。单台节点上的软件通常不应该出现模棱两可的现象。而在分布式系统中，可能会出现系统的一部分正常工作，但其他部分出现难以预测的故障，我们称之为&#34;部分失效&#34;。
+故障与部分失效 我们所开发的单点程序，通常会以一种确定的方式运行：要么工作，要么出错。单台节点上的软件通常不应该出现模棱两可的现象。而在分布式系统中，可能会出现系统的一部分正常工作，但其他部分出现难以预测的故障，我们称之为"部分失效"。
 问题的难点就在于这种部分失效是不确定的：如果涉及多个节点和网络，几乎肯定会碰到有时网络正常，有时则莫名地失败。
 正是由于这种不确定性和部分失效大大提高了分布式系统的复杂性。
 不可靠的网络 我们目前关注的主要是分布式无共享系统，即通过网络连接多个节点。所以网络是跨节点通信的唯一途径，并且每台机器都有自己的内存和磁盘，一台机器不能直接访问另一台机器的内存或磁盘除非通过网络向对方发出请求。
@@ -17,14 +17,14 @@
 检测故障 许多系统都有自动检测节点失效这种的功能，比如
 在ES中节点超过1分钟无响应则踢出集群，而后数据分片在正常的节点上进行重建。 在kubernetes中节点失效后，集群也会自动将失效节点的任务自动负载到其他节点之上。 超时与无限期的延迟 如果超时是故障检测唯一可行的方法，那么超时应该设置多长呢？很不幸，这并没有一个标准的答案。在上面提到的ES的例子是采用了一分钟的时间，延迟1分钟是为了防止偶尔的网络延迟等，因为将某个节点踢出集群后数据分片在集群中重新分配是需要消耗资源的。
 设置较长超时则意味着更长时间的等待，才能宣告节点失效（在这期间，用户只能等待或者看到错误信息）。而较短的超时设置可以帮助更快地检测故障，但可能会出现误判，例如实际上节点只是出现短暂的性能波动（由于节点或者网络上的高负载峰值）。
-参考链接 《数据密集型应用系统设计》"><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/posts/booknotes/6001-ddia/003-ddia/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-05-03T15:06:52+08:00"><meta property="article:modified_time" content="2022-05-03T15:06:52+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="数据密集型应用系统设计(DDIA)读书笔记"><meta name=twitter:description content="#golang
+参考链接 《数据密集型应用系统设计》'><meta property="og:type" content="article"><meta property="og:url" content="https://ormissia.github.io/posts/booknotes/6001-ddia/003-ddia/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-05-03T15:06:52+08:00"><meta property="article:modified_time" content="2022-05-03T15:06:52+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="数据密集型应用系统设计(DDIA)读书笔记"><meta name=twitter:description content='#golang
 前面几次着重讨论了在分布式系统中出现错误之后该如何处理。虽然长篇累牍谈了很多，但所谈到的情况还是过于乐观，现实则会更加复杂。我们可以根据墨菲定律做一个非常悲观的假定：即所有可能出错的事情最终一定会出错。
 作为开发者，我们的核心任务是构建可靠的系统，即使系统面临各种出错的可能，也需要完成预定的工作（确保满足用户期望）。
 所以，首先我们要充分认识目前所面临的挑战。
 比如：故障可能来自网络问题，以及时钟与时序问题等等&mldr;&mldr;
 在有一段工作经历中，我们的线上系统使用的是公有云，其中用到了不同地区的实例。两地区之间使用的是一条百兆带宽的专线。某个星期天的下午，领导通知我们有个服务出问题了，我查了程序日志之后，看到有许多访问上游服务网络超时的日志，即网络问题。随机运维查看之后告诉我们，上面提到的那条百兆专线被跑满了。至此，服务出问题的罪魁祸首已经找到——网络原因。当然，带宽被占满是由于业务增长还是某些服务出现bug抑或是恶意攻击，这就是另一个话题了。
 所以，在我看来，所谓网络的不可靠性并不一定特指网络本身出了什么问题。
-故障与部分失效 我们所开发的单点程序，通常会以一种确定的方式运行：要么工作，要么出错。单台节点上的软件通常不应该出现模棱两可的现象。而在分布式系统中，可能会出现系统的一部分正常工作，但其他部分出现难以预测的故障，我们称之为&#34;部分失效&#34;。
+故障与部分失效 我们所开发的单点程序，通常会以一种确定的方式运行：要么工作，要么出错。单台节点上的软件通常不应该出现模棱两可的现象。而在分布式系统中，可能会出现系统的一部分正常工作，但其他部分出现难以预测的故障，我们称之为"部分失效"。
 问题的难点就在于这种部分失效是不确定的：如果涉及多个节点和网络，几乎肯定会碰到有时网络正常，有时则莫名地失败。
 正是由于这种不确定性和部分失效大大提高了分布式系统的复杂性。
 不可靠的网络 我们目前关注的主要是分布式无共享系统，即通过网络连接多个节点。所以网络是跨节点通信的唯一途径，并且每台机器都有自己的内存和磁盘，一台机器不能直接访问另一台机器的内存或磁盘除非通过网络向对方发出请求。
@@ -35,7 +35,7 @@
 检测故障 许多系统都有自动检测节点失效这种的功能，比如
 在ES中节点超过1分钟无响应则踢出集群，而后数据分片在正常的节点上进行重建。 在kubernetes中节点失效后，集群也会自动将失效节点的任务自动负载到其他节点之上。 超时与无限期的延迟 如果超时是故障检测唯一可行的方法，那么超时应该设置多长呢？很不幸，这并没有一个标准的答案。在上面提到的ES的例子是采用了一分钟的时间，延迟1分钟是为了防止偶尔的网络延迟等，因为将某个节点踢出集群后数据分片在集群中重新分配是需要消耗资源的。
 设置较长超时则意味着更长时间的等待，才能宣告节点失效（在这期间，用户只能等待或者看到错误信息）。而较短的超时设置可以帮助更快地检测故障，但可能会出现误判，例如实际上节点只是出现短暂的性能波动（由于节点或者网络上的高负载峰值）。
-参考链接 《数据密集型应用系统设计》"><meta name=description content="数据密集型应用系统设计(DDIA)读书笔记"><script>theme=localStorage.getItem("darkmode:color-scheme")||"system",theme=="system"&&(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?theme="dark":theme="light"),document.documentElement.setAttribute("data-theme",theme)</script></head><body class="type-posts kind-page" data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-secondary wrapper"><nav class="navbar navbar-expand-xl top-navbar shadow" id=top-navbar><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button>
+参考链接 《数据密集型应用系统设计》'><meta name=description content="数据密集型应用系统设计(DDIA)读书笔记"><script>theme=localStorage.getItem("darkmode:color-scheme")||"system",theme=="system"&&(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?theme="dark":theme="light"),document.documentElement.setAttribute("data-theme",theme)</script></head><body class="type-posts kind-page" data-spy=scroll data-target=#TableOfContents data-offset=80><div class="container-fluid bg-secondary wrapper"><nav class="navbar navbar-expand-xl top-navbar shadow" id=top-navbar><div class=container><button class="navbar-toggler navbar-light" id=sidebar-toggler type=button>
 <i data-feather=sidebar></i>
 </button>
 <a class=navbar-brand href=/><img src=/images/ormissia_hu763a76473558eea2a316ef50b45aaecf_966068_42x0_resize_box_3.png id=logo alt=Logo>
@@ -48,4 +48,4 @@ Ormissia's Blog</a>
 </a><a class="btn icon-button" href="mailto:?subject=%e6%95%b0%e6%8d%ae%e5%af%86%e9%9b%86%e5%9e%8b%e5%ba%94%e7%94%a8%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%28DDIA%29%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0&body=https%3a%2f%2formissia.github.io%2fposts%2fbooknotes%2f6001-ddia%2f003-ddia%2f" target=_blank><i class="fas fa-envelope-open-text"></i></a></div><div class="col-md-6 btn-improve-page"><a href=https://github.com/ormissia/ormissia.github.io/edit/master/content/posts/booknotes/6001-ddia/003-ddia/index.md title=改善此页面 target=_blank rel=noopener><i class="fas fa-code-branch"></i>
 改善此页面</a></div></div><hr><div class="row next-prev-navigator"><div class="col-md-6 previous-article"><a href=/posts/booknotes/6001-ddia/002-ddia/ title=数据密集型应用系统设计(DDIA)读书笔记 class="btn filled-button"><div><i class="fas fa-chevron-circle-left"></i> 上一篇</div><div class=next-prev-text>数据密集型应用系统设计(DDIA)读书笔记</div></a></div></div><hr></div></div></div><a id=scroll-to-top class=btn data-toggle=tooltip data-placement=left title="Scroll to top"><i class="fas fa-chevron-circle-up"></i></a></section><section class=toc-section id=toc-section></section></div><footer id=footer class="container-fluid text-center align-content-center footer pb-2"><div class="container pt-5"><div class="row text-left"><div class="col-md-4 col-sm-12"><h5>联系方式:</h5><ul><li><span>QQ: </span><span>1432050813</span></li><li><a href=mailto:ormissia@outlook.com target=_blank rel=noopener><span><i class="fas fa-envelope"></i></span> <span>ormissia@outlook.com</span></a></li></ul></div></div></div><hr><div class=container><p id=disclaimer><strong>免责声明:</strong> 老铁看到底了，要负责的哦</p></div><hr><div class=container><div class="row text-left"><div class=col-md-4><a id=theme href=https://github.com/hugo-toha/toha target=_blank rel=noopener><img src=/images/theme-logo_hu8376fd15465fef26ffe66b6bcf0ca686_13669_32x0_resize_box_3.png alt="Toha Theme Logo">
 Toha</a></div><div class="col-md-4 text-center">© 2021 Copyright.</div><div class="col-md-4 text-right"><a id=hugo href=https://gohugo.io/ target=_blank rel=noopener>Powered by
-<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script src=/application.dd14ce5884a636a7014ae8dc2953b8089e2c54e6449da331e2726c712c81c910.js integrity="sha256-3RTOWISmNqcBSujcKVO4CJ4sVOZEnaMx4nJscSyByRA=" defer></script></body></html>
+<img src=/images/hugo-logo.svg alt="Hugo Logo" height=18></a></div></div></div></footer><script src=/application.e6af70c70fb8850ec6823cff9948cef8a1c6767867776c6eaddd49816d54b179.js integrity="sha256-5q9wxw+4hQ7Ggjz/mUjO+KHGdnhnd2xurd1JgW1UsXk=" defer></script></body></html>
