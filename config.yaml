@@ -1,3 +1,15 @@
+# Use Hugo modules to add theme
+module:
+  imports:
+    - path: github.com/hugo-toha/toha/v4
+  mounts:
+    - source: ./node_modules/flag-icon-css/flags
+      target: static/flags
+    - source: ./node_modules/@fontsource/mulish/files
+      target: static/files
+    - source: ./node_modules/katex/dist/fonts
+      target: static/fonts
+
 baseURL: https://ormissia.github.io
 
 languageCode: en-us
@@ -5,8 +17,6 @@ languageCode: en-us
 defaultContentLanguage: zh-cn
 # 页面左上角和标签栏的标题标题
 title: "Ormissia's Blog"
-# 主题
-theme: "toha"
 
 # Manage languages
 # For any more details, you can check the official documentation: https://gohugo.io/content-management/multilingual/
@@ -56,14 +66,11 @@ params:
   # Default branch of your Git repo
   gitBranch: master
 
-  # Enable dark theme
-  darkMode:
-    provider: darkreader
-    enable: true
-    default: system
-
   # Configure various features of this theme
   features:
+    # Enable dark theme
+    darkMode:
+      enable: true
     # Enable and configure portfolio
     portfolio:
       enable: true
@@ -82,13 +89,15 @@ params:
     # Enable comment feature. There, should be only one of them.
     comment:
       enable: true
-      utteranc:
-        repo: ormissia/ormissia.github.io
-        issueTerm: title
-        theme: github-light
+      services:
+        utteranc:
+          repo: ormissia/ormissia.github.io
+          issueTerm: title
+          theme: github-light
 
   # specify whether you want to show Table of Contents in reading page
-  enableTOC: true
+  toc:
+    enable: true
 
   # Provide footer configuration.
   footer:
