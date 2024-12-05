@@ -246,7 +246,6 @@ kafka kafka是由Apache软件基金会开发的一个开源流处理平台，由
 猜想三 通过top命令可以通过可以查看容器中程序的内存占用VSZ为711，无法查看RSS，关于RSS和VSZ的区别，可以参考RSS和VSZ
 容器内存判定是通过container_memory_working_set_bytes，而container_memory_working_set_bytes是由cadvisor提供的。
 原因 从cadvisor/issues/638 可得知container_memory_working_set_bytes指标的组 成实际上是RSS + Cache。而Cache高的情况，常见于进程有大量文件IO，占用Cache可能就会比较高，猜测也与Go版本、Linux 内核版本的Cache释放、回收方式有较大关系。 只要是涉及有大量文件IO的服务，基本上是这个问题的老常客了，写这类服务基本写一个中一个，因为这是一个混合问题，像其它单纯操作为主的业务服务就很 “正常”，不会出现内存居高不下。
-没多久看到烤鱼佬的一篇文章，与这个情况类似，他的解决办法也就是写了个脚本，&amp;ldquo;手动&amp;quot;HPA（其实也就是自动重启）。
 总结 虽然这问题时间跨度比较长，整体来讲都是阶段性排查，本质上可以说是对Kubernetes的不熟悉有关。但因为内存居高不下的可能性有很多种，要一个个排查。</description></item><item><title>Golang struct tag浅析与自定义tag实践</title><link>https://ormissia.github.io/posts/knowledge/2001-go/005-tag/</link><pubDate>Fri, 13 Aug 2021 16:55:47 +0800</pubDate><guid>https://ormissia.github.io/posts/knowledge/2001-go/005-tag/</guid><description>#golang #struct-tag #reflect
 StructTag是写在结构体字段类型后面反引号中的内容，用来标记结构体中各字段的属性。
 源码中对struct tag的解释：
